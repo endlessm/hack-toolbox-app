@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.10"/>
+  <template class="Gjs_CodingAnimationsTweakSettingsPanel" parent="GtkBox">
+    <property name="can-focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkGrid" id="grid">
+        <property name="column-homogeneous">True</property>
+        <property name="can-focus">False</property>
+        <property name="visible">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="can-focus">False</property>
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkButton" id="remove-button">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Remove</property>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+      </packing>
+    </child>
+  </template>
+</interface>

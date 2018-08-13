@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=Coding Animations Tweak Tool
+Comment=Tweak Animations on a Window
+Type=Application
+Exec=com.endlessm.CodingAnimationsTweak
+Icon=coding-animations-tweak
+Categories=Development;
+DBusActivatable=true
+StartupNotify=true
+NoDisplay=true

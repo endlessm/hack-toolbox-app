@@ -1,0 +1,74 @@
+{
+  "app-id": "com.endlessm.CodingAnimationsTweak",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "3.28",
+  "branch": "master",
+  "sdk": "org.gnome.Sdk",
+  "command": "com.endlessm.CodingAnimationsTweak",
+  "finish-args": [
+    "--share=ipc",
+    "--socket=x11",
+    "--socket=wayland",
+    "--socket=session-bus",
+    "--talk-name=com.endlessm.Libanimation",
+    "--own-name=com.endlessm.CodingAnimationsTweak"
+  ],
+  "modules": [
+    {
+      "name": "meson",
+      "cleanup": ["*"],
+      "buildsystem": "simple",
+      "ensure-writable": [
+        "/lib/python3.6/site-packages/easy-install.pth",
+        "/lib/python3.6/site-packages/setuptools.pth"
+      ],
+      "build-commands": [
+        "python3 setup.py install --prefix=$FLATPAK_DEST"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/mesonbuild/meson/releases/download/0.47.1/meson-0.47.1.tar.gz",
+          "sha256": "d673de79f7bab064190a5ea06140eaa8415efb386d0121ba549f6d66c555ada6"
+        },
+        {
+          "type": "patch",
+          "path": "patches/meson-no-lib64.patch"
+        }
+      ]
+    },
+    {
+      "name": "jasmine-gjs",
+      "cleanup": ["*"],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/ptomato/jasmine-gjs"
+        }
+      ]
+    },
+    {
+      "name": "libanimation-dbus",
+      "buildsystem": "meson",
+      "sources": [
+        {
+          "type": "git",
+          "url": "git://github.com/endlessm/libanimation-dbus",
+          "branch": "T23314"
+        }
+      ]
+    },
+    {
+      "name": "coding-animations-tweak",
+      "buildsystem": "meson",
+      "run-tests": "@RUN_TESTS@",
+      "sources": [
+        {
+          "type": "git",
+          "path": ".",
+          "branch": "@GIT_CLONE_BRANCH@"
+        }
+      ]
+    }
+  ]
+}

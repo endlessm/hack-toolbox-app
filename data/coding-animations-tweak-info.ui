@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.10"/>
+  <template class="Gjs_CodingAnimationsTweakInfo" parent="GtkBox">
+    <property name="can-focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="use-markup">True</property>
+            <property name="wrap">True</property>
+            <property name="max-width-chars">30</property>
+            <property name="label" translatable="yes">Add wonder to this window with animations</property>
+            <property name="halign">center</property>
+            <property name="justify">center</property>
+            <style>
+              <class name="title-text"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">true</property>
+            <property name="fill">true</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkButton" id="plus-button">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Add</property>
+                <property name="sensitive">false</property>
+              </object>
+              <packing>
+                <property name="fill">true</property>
+                <property name="pack-type">end</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">true</property>
+            <property name="fill">true</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">true</property>
+        <property name="fill">true</property>
+      </packing>
+    </child>
+  </template>
+</interface>

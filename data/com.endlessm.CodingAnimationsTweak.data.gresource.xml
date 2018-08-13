@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/endlessm/CodingAnimationsTweak">
+    <file>application.css</file>
+    <file preprocess="xml-stripblanks">coding-animations-tweak-info.ui</file>
+    <file preprocess="xml-stripblanks">coding-animations-tweak-line.ui</file>
+    <file preprocess="xml-stripblanks">coding-animations-tweak-main-window.ui</file>
+    <file preprocess="xml-stripblanks">coding-animations-tweak-settings-panel.ui</file>
+    <file preprocess="xml-stripblanks">coding-animations-tweak-slider-setting.ui</file>
+  </gresource>
+</gresources>
