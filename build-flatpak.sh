@@ -12,8 +12,8 @@ sed \
   -e "s|@BRANCH@|${BRANCH}|g" \
   -e "s|@GIT_CLONE_BRANCH@|${GIT_CLONE_BRANCH}|g" \
   -e "s|\"@RUN_TESTS@\"|${RUN_TESTS}|g" \
-  com.endlessm.CodingAnimationsTweak.json.in \
-  > com.endlessm.CodingAnimationsTweak.json
+  com.endlessm.HackToolbox.json.in \
+  > com.endlessm.HackToolbox.json
 
-flatpak-builder build --ccache com.endlessm.CodingAnimationsTweak.json --repo=repo
-flatpak build-bundle ${REPO} com.endlessm.CodingAnimationsTweak.flatpak com.endlessm.CodingAnimationsTweak
+flatpak-builder build --ccache com.endlessm.HackToolbox.json --repo=repo
+flatpak build-bundle ${REPO} com.endlessm.HackToolbox.flatpak com.endlessm.HackToolbox

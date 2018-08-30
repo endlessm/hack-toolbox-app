@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=Hack Toolbox
+Comment=Hack Toolbox
+Type=Application
+Exec=com.endlessm.HackToolbox
+Icon=hack-toolbox
+Categories=Development;
+DBusActivatable=true
+StartupNotify=true
+NoDisplay=true

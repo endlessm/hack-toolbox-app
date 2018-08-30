@@ -1,17 +1,17 @@
 {
-  "app-id": "com.endlessm.CodingAnimationsTweak",
+  "app-id": "com.endlessm.HackToolbox",
   "runtime": "org.gnome.Platform",
   "runtime-version": "3.28",
   "branch": "master",
   "sdk": "org.gnome.Sdk",
-  "command": "com.endlessm.CodingAnimationsTweak",
+  "command": "com.endlessm.HackToolbox",
   "finish-args": [
     "--share=ipc",
     "--socket=x11",
     "--socket=wayland",
     "--socket=session-bus",
     "--talk-name=com.endlessm.Libanimation",
-    "--own-name=com.endlessm.CodingAnimationsTweak"
+    "--own-name=com.endlessm.HackToolbox"
   ],
   "modules": [
     {
@@ -38,28 +38,18 @@
       ]
     },
     {
-      "name": "jasmine-gjs",
-      "cleanup": ["*"],
-      "sources": [
-        {
-          "type": "git",
-          "url": "https://github.com/ptomato/jasmine-gjs"
-        }
-      ]
-    },
-    {
-      "name": "libanimation-dbus",
+      "name": "libhackable",
       "buildsystem": "meson",
       "sources": [
         {
           "type": "git",
-          "url": "git://github.com/endlessm/libanimation-dbus",
-          "branch": "T23314"
+          "url": "git://github.com/smspillaz/libhackable",
+          "branch": "libhackable-demo"
         }
       ]
     },
     {
-      "name": "coding-animations-tweak",
+      "name": "hack-toolbox",
       "buildsystem": "meson",
       "run-tests": "@RUN_TESTS@",
       "sources": [

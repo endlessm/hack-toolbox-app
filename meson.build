@@ -1,6 +1,6 @@
 # Copyright 2018 Endless Mobile, Inc.
 
-project('com.endlessm.CodingAnimationsTweak', version: '0.0.0',
+project('com.endlessm.HackToolbox', 'c', version: '0.0.0',
     license: ['LGPL-2.1'], meson_version: '>= 0.40.0')
 
 gnome = import('gnome')
@@ -14,6 +14,10 @@ if junit_reports_dir != ''
 endif
 
 # Build rules
+gio = dependency('gio-2.0')
+gio_unix = dependency('gio-unix-2.0')
+glib = dependency('glib-2.0')
+gobject = dependency('gobject-2.0')
 
 pkgdatadir = join_paths(get_option('datadir'), meson.project_name())
 gjs = find_program('gjs', 'gjs-console')

@@ -3,13 +3,13 @@ const GLib = imports.gi.GLib;
 
 log(ARGV[0]);
 let bus = Gio.bus_get_sync(Gio.BusType.SESSION, null);
-let proxy = bus.call_sync('com.endlessm.CodingAnimationsTweak',
-                          '/com/endlessm/CodingAnimationsTweak',
+let proxy = bus.call_sync('com.endlessm.HackToolbox',
+                          '/com/endlessm/HackToolbox',
                           'org.gtk.Actions',
                           'Activate',
                           new GLib.Variant('(sava{sv})', [
-                              'show-for-surface-path',
-                              [new GLib.Variant('s', ARGV[0])],
+                              'show-for-dbus-object',
+                              [new GLib.Variant('(ss)', [ARGV[0], ARGV[1]])],
                               {}
                           ]),
                           null,
