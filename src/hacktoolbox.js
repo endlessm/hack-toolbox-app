@@ -3,29 +3,6 @@ const {Gio, GLib, GObject, Gtk, Hackable, HackToolbox} = imports.gi;
 
 const DATA_RESOURCE_PATH = 'resource:///com/endlessm/HackToolbox';
 
-// Try to get a Hackable Proxy object for the objectPath on
-// busName, but if one does not exist, just return null
-function maybeGetHackableProxySync(connection, busName, objectPath) {
-    try {
-        return Hackable.HackableProxy.new_sync(connection,
-            Gio.DBusProxyFlags.NONE, busName, objectPath, null);
-    } catch (e) {
-        logError(e, `${busName}:${objectPath} does not export the Hackable ` +
-            'interface, using default toolbox');
-        return null;
-    }
-}
-
-function createHackToolboxSkeletonOnPath(connection, objectPath, targetBusName,
-    targetObjectPath) {
-    log(`Creating toolbox for ${targetBusName}:${targetObjectPath}`);
-    const skeleton = new HackToolbox.ToolboxSkeleton({
-        target: new GLib.Variant('(ss)', [targetBusName, targetObjectPath]),
-    });
-    skeleton.export(connection, objectPath);
-    return skeleton;
-}
-
 var HackToolboxMainWindow = GObject.registerClass({
     Template: `${DATA_RESOURCE_PATH}/hack-toolbox-main-window.ui`,
     Children: [
@@ -47,12 +24,32 @@ var HackToolboxMainWindow = GObject.registerClass({
 
         // Need to create the hack toolbox after the window
         // is created, since we need its id
-        const connection = this.application.get_dbus_connection();
-        this.hack_toolbox_skeleton = createHackToolboxSkeletonOnPath(connection,
-            GLib.build_filenamev([this.application.get_dbus_object_path(),
-                'window', String(this.get_id())]),
-            this.target_bus_name, this.target_object_path);
-        this.hackable_proxy = maybeGetHackableProxySync(connection,
-            this.target_bus_name, this.target_object_path);
+        const objectPath = GLib.build_filenamev([this.application.get_dbus_object_path(),
+            'window', String(this.get_id())]);
+        this.hack_toolbox_skeleton = this._createHackToolboxSkeletonOnPath(objectPath);
+        this.hackable_proxy = this._maybeGetHackableProxySync();
+    }
+
+    _createHackToolboxSkeletonOnPath(objectPath) {
+        log(`Creating toolbox for ${this.target_bus_name}:${this.target_object_path}`);
+        const skeleton = new HackToolbox.ToolboxSkeleton({
+            target: new GLib.Variant('(ss)', [this.target_bus_name, this.target_object_path]),
+        });
+        skeleton.export(this.application.get_dbus_connection(), objectPath);
+        return skeleton;
+    }
+
+    // Try to get a Hackable Proxy object for the objectPath on
+    // busName, but if one does not exist, just return null
+    _maybeGetHackableProxySync() {
+        try {
+            return Hackable.HackableProxy.new_sync(this.application.get_dbus_connection(),
+                Gio.DBusProxyFlags.NONE, this.target_bus_name,
+                this.target_object_path, null);
+        } catch (e) {
+            logError(e, `${this.target_bus_name}:${this.target_object_path} does ` +
+                'not export the Hackable interface, using default toolbox');
+            return null;
+        }
     }
 });
