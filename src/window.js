@@ -19,8 +19,8 @@ var ToolboxWindowBase = GObject.registerClass({
 
         // Need to create the hack toolbox after the window
         // is created, since we need its id
-        const objectPath = GLib.build_filenamev([this.application.get_dbus_object_path(),
-            'window', String(this.get_id())]);
+        const objectPath =
+            `${this.application.get_dbus_object_path()}/window/${this.get_id()}`;
         this.hack_toolbox_skeleton = this._createHackToolboxSkeletonOnPath(objectPath);
         this.hackable_proxy = this._maybeGetHackableProxySync();
     }
