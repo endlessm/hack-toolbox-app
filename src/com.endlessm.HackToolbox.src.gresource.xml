@@ -4,5 +4,6 @@
     <file>app.js</file>
     <file>hacktoolbox.js</file>
     <file>main.js</file>
+    <file>window.js</file>
   </gresource>
 </gresources>
