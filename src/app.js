@@ -2,13 +2,19 @@
 /* global pkg, _ */
 
 const {Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
-const {HackToolboxMainWindow} = imports.hacktoolbox;
 
 function _loadStyleSheet(resourcePath) {
     const provider = new Gtk.CssProvider();
     provider.load_from_resource(resourcePath);
     Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
         provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+}
+
+function _windowClassForBusName(targetBusName) {
+    switch (targetBusName) {
+    default:
+        return imports.hacktoolbox.hacktoolbox.HackToolboxMainWindow;
+    }
 }
 
 const AUTO_CLOSE_MILLISECONDS_TIMEOUT = 12000;
@@ -37,7 +43,8 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
                 this._windows[busName] = {};
 
             if (!this._windows[busName][objectPath]) {
-                this._windows[busName][objectPath] = new HackToolboxMainWindow({
+                const WindowClass = _windowClassForBusName(busName);
+                this._windows[busName][objectPath] = new WindowClass({
                     application: this,
                     target_bus_name: busName,
                     target_object_path: objectPath,

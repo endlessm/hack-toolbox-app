@@ -2,6 +2,6 @@
 <gresources>
   <gresource prefix="/com/endlessm/HackToolbox">
     <file compressed="true">application.css</file>
-    <file compressed="true" preprocess="xml-stripblanks">hack-toolbox-main-window.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">hacktoolbox/main-window.ui</file>
   </gresource>
 </gresources>

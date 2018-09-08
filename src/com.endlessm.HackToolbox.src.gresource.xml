@@ -2,7 +2,7 @@
 <gresources>
   <gresource prefix="/com/endlessm/HackToolbox/js">
     <file>app.js</file>
-    <file>hacktoolbox.js</file>
+    <file>hacktoolbox/hacktoolbox.js</file>
     <file>main.js</file>
     <file>window.js</file>
   </gresource>
