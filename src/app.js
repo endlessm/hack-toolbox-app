@@ -17,6 +17,13 @@ function _windowClassForBusName(targetBusName) {
     }
 }
 
+function _shouldUseDarkTheme(targetBusName) {
+    switch (targetBusName) {
+    default:
+        return true;
+    }
+}
+
 const AUTO_CLOSE_MILLISECONDS_TIMEOUT = 12000;
 
 var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application {
@@ -49,6 +56,10 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
                     target_bus_name: busName,
                     target_object_path: objectPath,
                 });
+
+                const settings = Gtk.Settings.get_default();
+                const darkTheme = _shouldUseDarkTheme(busName);
+                settings.gtk_application_prefer_dark_theme = darkTheme;
             }
 
             this._windows[busName][objectPath].present();
@@ -58,9 +69,6 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
 
     vfunc_startup() {
         super.vfunc_startup();
-
-        const settings = Gtk.Settings.get_default();
-        settings.gtk_application_prefer_dark_theme = true;
 
         _loadStyleSheet('/com/endlessm/HackToolbox/application.css');
     }
