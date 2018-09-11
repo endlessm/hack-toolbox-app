@@ -1,8 +1,7 @@
 const {GLib, Gio} = imports.gi;
 
-log(ARGV[0]);
-const bus = Gio.bus_get_sync(Gio.BusType.SESSION, null);
-bus.call_sync('com.endlessm.HackToolbox', '/com/endlessm/HackToolbox',
+Gio.DBus.session.call_sync('com.endlessm.HackToolbox',
+    '/com/endlessm/HackToolbox',
     'org.gtk.Actions', 'Activate',
     new GLib.Variant('(sava{sv})', [
         'show-for-dbus-object',
