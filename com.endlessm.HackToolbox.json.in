@@ -43,7 +43,7 @@
       "sources": [
         {
           "type": "git",
-          "url": "git://github.com/smspillaz/libhackable",
+          "url": "https://github.com/endlessm/libhackable.git",
           "branch": "libhackable-demo"
         }
       ]
