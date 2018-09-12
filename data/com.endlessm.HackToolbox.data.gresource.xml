@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/endlessm/HackToolbox">
-    <file>application.css</file>
-    <file preprocess="xml-stripblanks">hack-toolbox-main-window.ui</file>
+    <file compressed="true">application.css</file>
+    <file compressed="true" preprocess="xml-stripblanks">hacktoolbox/main-window.ui</file>
   </gresource>
 </gresources>

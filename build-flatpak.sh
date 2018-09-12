@@ -15,5 +15,5 @@ sed \
   com.endlessm.HackToolbox.json.in \
   > com.endlessm.HackToolbox.json
 
-flatpak-builder build --ccache com.endlessm.HackToolbox.json --repo=repo
+flatpak-builder build --ccache com.endlessm.HackToolbox.json --repo=${REPO}
 flatpak build-bundle ${REPO} com.endlessm.HackToolbox.flatpak com.endlessm.HackToolbox
