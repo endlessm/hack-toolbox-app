@@ -11,6 +11,7 @@
     "--socket=wayland",
     "--socket=session-bus",
     "--talk-name=com.endlessm.Libanimation",
+    "--talk-name=com.endlessm.hackybird",
     "--own-name=com.endlessm.HackToolbox"
   ],
   "modules": [

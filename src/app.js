@@ -14,6 +14,8 @@ function _windowClassForBusName(targetBusName) {
     switch (targetBusName) {
     case 'com.endlessm.dinosaurs.en':
         return imports.framework.appWindow.RaAppWindow;
+    case 'com.endlessm.hackybird':
+        return imports.hackybird.toolbox.HackyWindow;
     default:
         return imports.hacktoolbox.hacktoolbox.HackToolboxMainWindow;
     }

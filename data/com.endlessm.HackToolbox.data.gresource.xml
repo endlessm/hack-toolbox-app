@@ -25,5 +25,6 @@
     <file preprocess="xml-stripblanks">framework/socialsciences.svg</file>
     <file preprocess="xml-stripblanks">framework/travel.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">hacktoolbox/main-window.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">hackybird/panel.ui</file>
   </gresource>
 </gresources>

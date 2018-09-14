@@ -12,5 +12,6 @@
     <file>hacktoolbox/hacktoolbox.js</file>
     <file>main.js</file>
     <file>window.js</file>
+    <file>hackybird/toolbox.js</file>
   </gresource>
 </gresources>
