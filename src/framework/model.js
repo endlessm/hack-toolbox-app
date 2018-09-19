@@ -1,6 +1,25 @@
 /* exported RaModel */
 
-const {Gdk, GLib, GObject, Pango} = imports.gi;
+const {Gdk, Gio, GLib, GObject, Pango} = imports.gi;
+const ByteArray = imports.byteArray;
+
+const Gen = imports.framework.gen;
+const Utils = imports.framework.utils;
+
+const _PRIO = GLib.PRIORITY_DEFAULT;
+
+const KnowledgeControlIface = `
+<node>
+  <interface name="com.endlessm.KnowledgeControl">
+    <method name="Restart">
+      <arg type="a{sh}" name="paths" direction="in"/>
+      <arg type="ah" name="gresources" direction="in"/>
+      <arg type="ah" name="shards" direction="in"/>
+      <arg type="a{sv}" name="options" direction="in"/>
+    </method>
+  </interface>
+</node>
+`;
 
 const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 
@@ -207,5 +226,82 @@ var RaModel = GObject.registerClass({
             this._hoverSound = 'none';
             this.notify('hover-sound');
         }
+    }
+
+    _createCSS() {
+        const scss = Gen.generateSCSS(this);
+        return Utils.transformStringToFD(scss,
+            ['sassc', '-s', '-I', '/usr/share/eos-knowledge/theme']);
+    }
+
+    _createJSON() {
+        const yaml = Gen.generateYAML(this);
+        return Utils.transformStringToFD(yaml,
+            ['autobahn', '-I', '/usr/share/eos-knowledge/preset']);
+    }
+
+    async _createGResource() {
+        const tmpDir = Gio.File.new_for_path(GLib.get_user_runtime_dir());
+
+        const logoResource = Gio.File.new_for_uri(`resource://${this._logoGraphic}`);
+        const logo = tmpDir.get_child('logo');
+        await logoResource.copy_async(logo, Gio.FileCopyFlags.OVERWRITE, _PRIO,
+            null, null);
+
+        const manifest = Gen.generateGResource(this);
+        const manifestXml = tmpDir.get_child('hacking.gresource.xml');
+        await manifestXml.replace_contents_bytes_async(ByteArray.fromString(manifest),
+            null, false, Gio.FileCreateFlags.NONE, null);
+
+        const gresource = tmpDir.get_child('hacking.gresource');
+        const proc = new Gio.Subprocess({
+            argv: ['glib-compile-resources', '--target', gresource.get_path(),
+                '--sourcedir', tmpDir.get_path(), manifestXml.get_path()],
+        });
+        proc.init(null);
+        await proc.wait_check_async(null);
+
+        // Ah, geez, this is terrible
+        return Utils.transformStringToFD('', ['cat', gresource.get_path()]);
+    }
+
+    async launch(busName) {
+        const css = await this._createCSS();
+        const json = await this._createJSON();
+        const gresource = await this._createGResource();
+        const modules = await Utils.getModulesGResource();
+
+        const AppProxy = Gio.DBusProxy.makeProxyWrapper(KnowledgeControlIface);
+
+        // Here we need to talk to the framework app itself, instead of its
+        // window. In eos-knowledge-lib the path of the app object is equal to
+        // the app ID but with slashes instead of dots.
+        const appObjectPath = `/${busName.replace(/\./g, '/')}`;
+        const app = new AppProxy(Gio.DBus.session, busName, appObjectPath);
+
+        // Work around the Gio.DBus overrides not supporting Gio.UnixFDList
+        // https://gitlab.gnome.org/GNOME/gjs/issues/204
+        const fdlist = Gio.UnixFDList.new_from_array([
+            css,
+            json,
+            gresource,
+            modules,
+        ]);
+        return new Promise((resolve, reject) => {
+            Utils.proxyCallWithFDList.call(app, 'Restart', false,
+                ['a{sh}', 'ah', 'ah', 'a{sv}'],
+                {
+                    theme: 0,
+                    ui: 1,
+                },
+                [2, 3],
+                [], {}, fdlist,
+                (out, err) => {
+                    if (err)
+                        reject(err);
+                    else
+                        resolve(out);
+                });
+        });
     }
 });

@@ -5,8 +5,10 @@
     <file>framework/appWindow.js</file>
     <file>framework/buttonGroup.js</file>
     <file>framework/controlPanel.js</file>
+    <file>framework/gen.js</file>
     <file>framework/logoImage.js</file>
     <file>framework/model.js</file>
+    <file>framework/utils.js</file>
     <file>hacktoolbox/hacktoolbox.js</file>
     <file>main.js</file>
     <file>window.js</file>
