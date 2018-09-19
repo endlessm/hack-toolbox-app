@@ -4,7 +4,7 @@ Gio.DBus.session.call_sync('com.endlessm.HackToolbox',
     '/com/endlessm/HackToolbox',
     'org.gtk.Actions', 'Activate',
     new GLib.Variant('(sava{sv})', [
-        'show-for-dbus-object',
+        'flip',
         [new GLib.Variant('(ss)', [ARGV[0], ARGV[1]])],
         {},
     ]),

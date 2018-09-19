@@ -37,14 +37,14 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
 
         this._windows = {};
 
-        const showForDBusObject = new Gio.SimpleAction({
-            name: 'show-for-dbus-object',
+        const flip = new Gio.SimpleAction({
+            name: 'flip',
             parameter_type: new GLib.VariantType('(ss)'),
         });
-        showForDBusObject.connect('activate', (action, parameterVariant) => {
+        flip.connect('activate', (action, parameterVariant) => {
             const unpacked = parameterVariant.deep_unpack();
             const [busName, objectPath] = unpacked;
-            log(`Call showForDBusObject with ${JSON.stringify(unpacked)}`);
+            log(`Call flip with ${JSON.stringify(unpacked)}`);
 
             if (!this._windows[busName])
                 this._windows[busName] = {};
@@ -64,7 +64,7 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
 
             this._windows[busName][objectPath].present();
         });
-        this.add_action(showForDBusObject);
+        this.add_action(flip);
     }
 
     vfunc_startup() {
