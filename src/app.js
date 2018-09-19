@@ -41,29 +41,7 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
             name: 'flip',
             parameter_type: new GLib.VariantType('(ss)'),
         });
-        flip.connect('activate', (action, parameterVariant) => {
-            const unpacked = parameterVariant.deep_unpack();
-            const [busName, objectPath] = unpacked;
-            log(`Call flip with ${JSON.stringify(unpacked)}`);
-
-            if (!this._windows[busName])
-                this._windows[busName] = {};
-
-            if (!this._windows[busName][objectPath]) {
-                const WindowClass = _windowClassForBusName(busName);
-                this._windows[busName][objectPath] = new WindowClass({
-                    application: this,
-                    target_bus_name: busName,
-                    target_object_path: objectPath,
-                });
-
-                const settings = Gtk.Settings.get_default();
-                const darkTheme = _shouldUseDarkTheme(busName);
-                settings.gtk_application_prefer_dark_theme = darkTheme;
-            }
-
-            this._windows[busName][objectPath].present();
-        });
+        flip.connect('activate', this._onFlip.bind(this));
         this.add_action(flip);
     }
 
@@ -71,5 +49,29 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         super.vfunc_startup();
 
         _loadStyleSheet('/com/endlessm/HackToolbox/application.css');
+    }
+
+    _onFlip(action, parameterVariant) {
+        const unpacked = parameterVariant.deep_unpack();
+        const [busName, objectPath] = unpacked;
+        log(`Call flip with ${JSON.stringify(unpacked)}`);
+
+        if (!this._windows[busName])
+            this._windows[busName] = {};
+
+        if (!this._windows[busName][objectPath]) {
+            const WindowClass = _windowClassForBusName(busName);
+            this._windows[busName][objectPath] = new WindowClass({
+                application: this,
+                target_bus_name: busName,
+                target_object_path: objectPath,
+            });
+
+            const settings = Gtk.Settings.get_default();
+            const darkTheme = _shouldUseDarkTheme(busName);
+            settings.gtk_application_prefer_dark_theme = darkTheme;
+        }
+
+        this._windows[busName][objectPath].present();
     }
 });
