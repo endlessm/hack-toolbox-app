@@ -12,6 +12,8 @@ function _loadStyleSheet(resourcePath) {
 
 function _windowClassForBusName(targetBusName) {
     switch (targetBusName) {
+    case 'com.endlessm.dinosaurs.en':
+        return imports.framework.appWindow.RaAppWindow;
     default:
         return imports.hacktoolbox.hacktoolbox.HackToolboxMainWindow;
     }
@@ -19,6 +21,8 @@ function _windowClassForBusName(targetBusName) {
 
 function _shouldUseDarkTheme(targetBusName) {
     switch (targetBusName) {
+    case 'com.endlessm.dinosaurs.en':
+        return false;
     default:
         return true;
     }
@@ -56,6 +60,9 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         super.vfunc_startup();
 
         _loadStyleSheet('/com/endlessm/HackToolbox/application.css');
+
+        const iconTheme = Gtk.IconTheme.get_default();
+        iconTheme.add_resource_path('/com/endlessm/HackToolbox/framework/icons');
     }
 
     _onFlip(action, parameterVariant) {

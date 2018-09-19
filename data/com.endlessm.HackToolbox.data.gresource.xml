@@ -2,6 +2,28 @@
 <gresources>
   <gresource prefix="/com/endlessm/HackToolbox">
     <file compressed="true">application.css</file>
+    <file compressed="true" preprocess="xml-stripblanks">framework/controlpanel.ui</file>
+    <file preprocess="xml-stripblanks">framework/animals.svg</file>
+    <file preprocess="xml-stripblanks">framework/art.svg</file>
+    <file preprocess="xml-stripblanks">framework/astronomy.svg</file>
+    <file preprocess="xml-stripblanks">framework/biology.svg</file>
+    <file preprocess="xml-stripblanks">framework/celebrities.svg</file>
+    <file preprocess="xml-stripblanks">framework/dinosaur.svg</file>
+    <file preprocess="xml-stripblanks">framework/encyclopedia.svg</file>
+    <file preprocess="xml-stripblanks">framework/farming.svg</file>
+    <file preprocess="xml-stripblanks">framework/geography.svg</file>
+    <file preprocess="xml-stripblanks">framework/history.svg</file>
+    <file preprocess="xml-stripblanks">framework/icons/16x16/actions/nest-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">framework/icons/16x16/actions/overflow-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">framework/icons/16x16/actions/piano-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">framework/icons/16x16/actions/tiled-grid-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">framework/icons/16x16/actions/windshield-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">framework/math.svg</file>
+    <file preprocess="xml-stripblanks">framework/nature.svg</file>
+    <file preprocess="xml-stripblanks">framework/physics.svg</file>
+    <file preprocess="xml-stripblanks">framework/soccer.svg</file>
+    <file preprocess="xml-stripblanks">framework/socialsciences.svg</file>
+    <file preprocess="xml-stripblanks">framework/travel.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">hacktoolbox/main-window.ui</file>
   </gresource>
 </gresources>
