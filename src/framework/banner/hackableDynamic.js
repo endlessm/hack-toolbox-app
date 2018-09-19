@@ -1,6 +1,7 @@
 // Copyright 2018 Endless Mobile, Inc.
 
-/* exported Dynamic */
+/* exported HackableDynamic */
+/* global custom_modules */
 
 const {Gio, GObject, Gtk} = imports.gi;
 
@@ -8,6 +9,7 @@ const Module = imports.framework.interfaces.module;
 // Make sure included for glade template
 const DynamicLogo = imports.framework.widgets.dynamicLogo;
 const FormattableLabel = imports.framework.widgets.formattableLabel;
+const TextFilters = custom_modules.textFilters;
 const Utils = imports.framework.utils;
 
 void DynamicLogo;
@@ -15,8 +17,8 @@ void FormattableLabel;
 
 const LOGO_URI = 'resource:///app/assets/logo';
 
-var Dynamic = new Module.Class({
-    Name: 'Banner.Dynamic',
+var HackableDynamic = new Module.Class({
+    Name: 'Banner.HackableDynamic',
     Extends: Gtk.Grid,
 
     Properties: {
@@ -31,9 +33,12 @@ var Dynamic = new Module.Class({
         'format-string': GObject.ParamSpec.string('format-string', 'Format string',
             'The format string for this title',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, '%s'),
+        textfilter: GObject.ParamSpec.string('textfilter', 'Text filter', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            'normal'),
     },
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/banner/dynamic.ui',
+    Template: 'resource:///com/endlessm/HackToolbox/CustomModules/banner/hackableDynamic.ui',
     InternalChildren: ['subtitle-label', 'logo'],
 
     _init(props = {}) {
@@ -58,13 +63,13 @@ var Dynamic = new Module.Class({
         const app_info = Utils.get_desktop_app_info();
         if (app_info && app_info.get_name())
             text = this.format_string.format(app_info.get_name());
-        this._logo.text = text;
+        this._logo.text = this._processText(text);
 
         let subtitle = '';
         if (app_info)
             subtitle = app_info.get_description();
         if (this.show_subtitle && subtitle) {
-            this._subtitle_label.label = subtitle;
+            this._subtitle_label.label = this._processText(subtitle);
             this._subtitle_label.justify = Utils.alignment_to_justification(this.halign);
         }
         this._subtitle_label.visible = this.show_subtitle;
@@ -79,5 +84,10 @@ var Dynamic = new Module.Class({
 
     get subtitle() {
         return this._subtitle || '';
+    },
+
+    _processText(text) {
+        const decomposedText = text.normalize('NFKD');
+        return TextFilters[this.textfilter](decomposedText);
     },
 });

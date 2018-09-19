@@ -55,3 +55,5 @@ gnome.generate_gir(main_library, extra_args: ['--warn-all', '--warn-error'],
     sources: introspection_sources, symbol_prefix: 'hack_toolbox')
 
 install_headers(installed_headers, subdir: api_name)
+
+subdir('framework')

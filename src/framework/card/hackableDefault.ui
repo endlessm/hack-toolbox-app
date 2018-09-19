@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface domain="eos-knowledge">
   <requires lib="gtk+" version="3.12"/>
-  <template class="EknCard_Default" parent="GtkButton">
+  <template class="EknCard_HackableDefault" parent="GtkButton">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="receives_default">False</property>
@@ -16,9 +16,13 @@
             <child type="overlay">
               <object class="GtkFrame" id="thumbnail-overlay">
                 <property name="can_focus">False</property>
-                <property name="visible">False</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
+                <property name="visible">True</property>
+                <property name="halign">fill</property>
+                <property name="valign">fill</property>
+                <property name="expand">True</property>
+                <style>
+                    <class name="CardHackableDefault__filter_overlay"/>
+                </style>
               </object>
               <packing>
                 <property name="pass_through">True</property>

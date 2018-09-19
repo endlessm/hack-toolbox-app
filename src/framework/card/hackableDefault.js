@@ -1,14 +1,21 @@
-/* exported Default */
+/* exported HackableDefault */
+/* global custom_modules */
 // Copyright 2018 Endless Mobile, Inc.
 
-const {Emeus, GObject, Gtk} = imports.gi;
-
+const {Emeus, GLib, GObject, Gtk} = imports.gi;
+const Gettext = imports.gettext;
 GObject.type_ensure(Emeus.ConstraintLayout.$gtype);
 
 const Card = imports.framework.interfaces.card;
+const Config = imports.framework.config;
+const {FormattableLabel} = imports.framework.widgets.formattableLabel;
 const Module = imports.framework.interfaces.module;
+const {SpaceContainer} = imports.framework.widgets.spaceContainer;
+const TextFilters = custom_modules.textFilters;
 const Utils = imports.framework.utils;
 const {View} = imports.framework.interfaces.view;
+
+const ngettext = Gettext.dngettext.bind(null, Config.GETTEXT_PACKAGE);
 
 const CardType = {
     LOW_RES_IMAGE: 0,
@@ -38,12 +45,12 @@ const CARD_POLAROID_VERTICAL_HEIGHTS = {
     LARGE: 220,
 };
 
-var Default = new Module.Class({
-    Name: 'Card.Default',
+var HackableDefault = new Module.Class({
+    Name: 'Card.HackableDefault',
     Extends: Gtk.Button,
     Implements: [View, Card.Card],
 
-    Template: 'resource:///com/endlessm/knowledge/data/widgets/card/default.ui',
+    Template: 'resource:///com/endlessm/HackToolbox/CustomModules/card/hackableDefault.ui',
     InternalChildren: ['layout', 'inner-content-grid', 'thumbnail-frame',
         'grid', 'title-label', 'synopsis-label', 'context-frame',
         'thumbnail-overlay', 'content-overlay', 'title-box'],
@@ -52,6 +59,9 @@ var Default = new Module.Class({
             'Justify', 'Horizontal justification of the title, synopsis and context',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Gtk.Justification.$gtype, Gtk.Justification.LEFT),
+        textfilter: GObject.ParamSpec.string('textfilter', 'Text filter', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            'normal'),
     },
 
     _init: function (props = {}) {
@@ -64,6 +74,9 @@ var Default = new Module.Class({
         delete props.excluded_types;
         // eslint-disable-next-line no-restricted-syntax
         this.parent(props);
+
+        // Drop-in replacement for Card.Default, assume all its theming
+        this.get_style_context().add_class('CardDefault');
 
         this.set_thumbnail_frame_from_model(this._thumbnail_frame);
 
@@ -591,5 +604,59 @@ var Default = new Module.Class({
         const card_margins = context.get_margin(context.get_state());
         context.restore();
         return card_margins;
+    },
+
+    _processText(text) {
+        const decomposedText = text.normalize('NFKD');
+        return TextFilters[this.textfilter](decomposedText);
+    },
+
+    // View override
+    set_label_or_hide(label, text) {
+        const processedText = this._processText(text);
+        label.label = GLib.markup_escape_text(processedText, -1);
+        label.visible = !!processedText;
+    },
+
+    // Card override
+    _create_contextual_tag_widget() {
+        const widget = new SpaceContainer({
+            orientation: Gtk.Orientation.HORIZONTAL,
+            halign: Gtk.Align.START,
+        });
+
+        // Sort the context tags from shortest to longest in order to
+        // maximise chances that we can fit two of them on the card.
+        const titles = this.get_parent_set_titles().sort((a, b) => a.length - b.length);
+        if (titles.length > 0) {
+            const first_tag = new FormattableLabel({
+                lines: 1,
+                label: this._processText(titles[0]),
+            });
+            widget.add(first_tag);
+
+            if (titles.length > 1) {
+                const second_tag = new FormattableLabel({
+                    lines: 1,
+                    label: ` | ${this._processText(titles[1])}`,
+                });
+                widget.add(second_tag);
+            }
+            widget.show_all();
+        }
+        return widget;
+    },
+
+    // Card override
+    _create_inventory_widget() {
+        this._child_count = 0;
+        const label = new FormattableLabel();
+
+        this._count_set(this.model, count => {
+            const text = ngettext('%d item', '%d items', count).format(count);
+            label.label = this._processText(text);
+            label.show();
+        });
+        return label;
     },
 });

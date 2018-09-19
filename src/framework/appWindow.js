@@ -20,4 +20,9 @@ var RaAppWindow = GObject.registerClass(class RaAppWindow extends ToolboxWindowB
 
         this._controlPanel.bindModel(this._model);
     }
+
+    // Overrides ToolboxWindowBase
+    applyChanges() {
+        return this._model.launch(this.target_bus_name, this.target_object_path);
+    }
 });
