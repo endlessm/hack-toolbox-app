@@ -1,9 +1,9 @@
 {
   "app-id": "com.endlessm.HackToolbox",
-  "runtime": "org.gnome.Platform",
-  "runtime-version": "3.28",
-  "branch": "master",
-  "sdk": "org.gnome.Sdk",
+  "runtime": "com.endlessm.apps.Sdk",
+  "runtime-version": "5",
+  "branch": "@BRANCH@",
+  "sdk": "com.endlessm.apps.Sdk",
   "command": "com.endlessm.HackToolbox",
   "finish-args": [
     "--share=ipc",
