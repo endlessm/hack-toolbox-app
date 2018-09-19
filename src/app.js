@@ -52,6 +52,7 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
     }
 
     _onFlip(action, parameterVariant) {
+        this.hold();
         const unpacked = parameterVariant.deep_unpack();
         const [busName, objectPath] = unpacked;
         log(`Call flip with ${JSON.stringify(unpacked)}`);
@@ -73,5 +74,6 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         }
 
         this._windows[busName][objectPath].present();
+        this.release();
     }
 });
