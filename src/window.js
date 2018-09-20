@@ -47,4 +47,11 @@ var ToolboxWindowBase = GObject.registerClass({
             return null;
         }
     }
+
+    // Intended to be overridden by subclasses, if they need to implement any
+    // behaviour before flipping back to the app
+    applyChanges() {
+        void this;
+        return Promise.resolve();
+    }
 });
