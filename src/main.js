@@ -20,8 +20,12 @@ pkg.require({
     HackToolbox: '0',
 });
 
+const {GLib} = imports.gi;
 const {HackToolboxApplication} = imports.app;
 
 function main(argv) {
-    return (new HackToolboxApplication()).run(argv);
+    let app = new HackToolboxApplication();
+    if (GLib.getenv('HACK_TOOLBOX_PERSIST'))
+        app.hold();
+    return app.run(argv);
 }
