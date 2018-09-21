@@ -121,11 +121,15 @@ var Default = new Module.Class({
             return CardType.LOW_RES_IMAGE;
 
         let chosen_type;
-        Object.keys(CardType)
-        .filter(key => this.excluded_types.indexOf(CardType[key]) < 0)
-        .every(key => {
-            chosen_type = CardType[key];
-            return size.width > THRESHOLDS[key].width && size.height > THRESHOLDS[key].height;
+        Object.entries(CardType)
+        .filter(([, value]) => !this.excluded_types.includes(value))
+        .find(([key, value]) => {
+            // This bears a little explanation. It finds either the first
+            // card type where the height and width are over the threshold, or
+            // the last card type if there is none.
+            chosen_type = value;
+            const {width, height} = THRESHOLDS[key];
+            return size.width > width && size.height > height;
         });
         return chosen_type;
     },
