@@ -34,6 +34,10 @@ const HACKY_IFACE = `
 var HackyWindow = GObject.registerClass(class HackyWindow extends ToolboxWindowBase {
     _init(props = {}) {
         super._init(props);
+        const screen = this.get_screen();
+        const visual = screen.get_rgba_visual();
+        this.set_visual(visual);
+        this.set_decorated(false);
         this.add(new HackyPanel());
         this.show_all();
     }

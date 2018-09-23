@@ -6,3 +6,32 @@
 .content {
     margin: 20px;
 }
+
+* {
+    color: rgb(0, 0, 0);
+    background-color: white;
+}
+
+.background {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.panel_hacky {
+    margin-top: 200px;
+    margin-right: 300px;
+    margin-left: 300px;
+}
+
+#label_apparience,
+#text_code,
+#label_mechanics,
+#text_box {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    border-width: 2px;
+}
+
+#text_box {
+    border-width: 0px 2px 2px 2px;
+}
+

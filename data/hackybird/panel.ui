@@ -47,6 +47,7 @@
     <property name="page_increment">10</property>
   </object>
   <template class="HackyPanel" parent="GtkBox">
+    <property name="name">panel_hacky</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
@@ -236,7 +237,6 @@
                         <property name="name">label_apparience</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="halign">start</property>
                         <property name="label" translatable="yes">Apparecience</property>
                       </object>
                       <packing>
@@ -341,7 +341,6 @@
                         <property name="name">label_mechanics</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="halign">start</property>
                         <property name="label" translatable="yes">Mechanics</property>
                       </object>
                       <packing>
@@ -499,7 +498,6 @@
                     <property name="name">text_code</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="halign">start</property>
                     <property name="label" translatable="yes">Code</property>
                   </object>
                   <packing>
@@ -510,6 +508,7 @@
                 </child>
                 <child>
                   <object class="GtkBox">
+                    <property name="name">text_box</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
@@ -581,5 +580,8 @@
         <property name="position">1</property>
       </packing>
     </child>
+    <style>
+      <class name="panel_hacky"/>
+    </style>
   </template>
 </interface>
