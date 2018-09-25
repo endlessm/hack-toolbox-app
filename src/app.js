@@ -48,12 +48,11 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         flip.connect('activate', this._onFlip.bind(this));
         this.add_action(flip);
 
-        const flipBack = new Gio.SimpleAction({
+        this._flipBack = new Gio.SimpleAction({
             name: 'flip-back',
             parameter_type: new GLib.VariantType('(ss)'),
         });
-        flipBack.connect('activate', this._onFlipBack.bind(this));
-        this.add_action(flipBack);
+        this._flipBack.connect('activate', this._onFlipBack.bind(this));
     }
 
     vfunc_startup() {
@@ -111,5 +110,12 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         } else {
             this.release();
         }
+    }
+
+    set enableFlipBack(val) {
+        if (val)
+            this.add_action(this._flipBack);
+        else
+            this.remove_action('flip-back');
     }
 });
