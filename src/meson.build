@@ -20,12 +20,14 @@ gdbus_targets = gnome.gdbus_codegen('hack-toolbox-objects',
     namespace: 'HackToolbox')
 
 installed_headers = [
+    'lib/htb.h',
 ]
 private_headers = [
 ]
 sources = [
     gdbus_targets[0],
-    gdbus_targets[1]
+    gdbus_targets[1],
+    'lib/htb-file.c',
 ]
 
 include = include_directories('.')

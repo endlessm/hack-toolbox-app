@@ -1,6 +1,6 @@
 /* exported RaModel */
 
-const {Gdk, Gio, GLib, GObject, Pango} = imports.gi;
+const {Gdk, Gio, GLib, GObject, HackToolbox, Pango} = imports.gi;
 const ByteArray = imports.byteArray;
 
 const Gen = imports.framework.gen;
@@ -261,8 +261,7 @@ var RaModel = GObject.registerClass({
         proc.init(null);
         await proc.wait_check_async(null);
 
-        // Ah, geez, this is terrible
-        return Utils.transformStringToFD('', ['cat', gresource.get_path()]);
+        return HackToolbox.open_fd_readonly(gresource);
     }
 
     async launch(busName) {

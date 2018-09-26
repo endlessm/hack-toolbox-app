@@ -2,7 +2,7 @@
 /* global pkg */
 
 const ByteArray = imports.byteArray;
-const {Gio, GLib} = imports.gi;
+const {Gio, GLib, HackToolbox} = imports.gi;
 
 function _promisify(proto, asyncFunc, finishFunc) {
     proto[`_original_${asyncFunc}`] = proto[asyncFunc];
@@ -125,6 +125,7 @@ async function transformStringToFD(str, transformArgv, cancellable = null) {
 }
 
 function getModulesGResource() {
-    const resource = GLib.build_filenamev([pkg.pkgdatadir, 'customModules.gresource']);
-    return transformStringToFD('', ['cat', resource]);
+    const pkgdatadir = Gio.File.new_for_path(pkg.pkgdatadir);
+    const resource = pkgdatadir.get_child('customModules.gresource');
+    return HackToolbox.open_fd_readonly(resource);
 }
