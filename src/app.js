@@ -12,6 +12,8 @@ function _loadStyleSheet(resourcePath) {
 
 function _windowClassForBusName(targetBusName) {
     switch (targetBusName) {
+    case 'com.endlessm.dinosaurs.en':
+        return imports.framework.appWindow.RaAppWindow;
     default:
         return imports.hacktoolbox.hacktoolbox.HackToolboxMainWindow;
     }
@@ -19,6 +21,8 @@ function _windowClassForBusName(targetBusName) {
 
 function _shouldUseDarkTheme(targetBusName) {
     switch (targetBusName) {
+    case 'com.endlessm.dinosaurs.en':
+        return false;
     default:
         return true;
     }
@@ -44,18 +48,20 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         flip.connect('activate', this._onFlip.bind(this));
         this.add_action(flip);
 
-        const flipBack = new Gio.SimpleAction({
+        this._flipBack = new Gio.SimpleAction({
             name: 'flip-back',
             parameter_type: new GLib.VariantType('(ss)'),
         });
-        flipBack.connect('activate', this._onFlipBack.bind(this));
-        this.add_action(flipBack);
+        this._flipBack.connect('activate', this._onFlipBack.bind(this));
     }
 
     vfunc_startup() {
         super.vfunc_startup();
 
         _loadStyleSheet('/com/endlessm/HackToolbox/application.css');
+
+        const iconTheme = Gtk.IconTheme.get_default();
+        iconTheme.add_resource_path('/com/endlessm/HackToolbox/framework/icons');
     }
 
     _onFlip(action, parameterVariant) {
@@ -69,7 +75,7 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
 
         if (!this._windows[busName][objectPath]) {
             const WindowClass = _windowClassForBusName(busName);
-            this._windows[busName][objectPath] = new WindowClass({
+            const win = new WindowClass({
                 application: this,
                 target_bus_name: busName,
                 target_object_path: objectPath,
@@ -78,6 +84,11 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
             const settings = Gtk.Settings.get_default();
             const darkTheme = _shouldUseDarkTheme(busName);
             settings.gtk_application_prefer_dark_theme = darkTheme;
+
+            this._windows[busName][objectPath] = win;
+            win.connect('destroy', () => {
+                delete this._windows[busName][objectPath];
+            });
         }
 
         this._windows[busName][objectPath].present();
@@ -94,7 +105,6 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         if (win) {
             win.applyChanges()
             .then(() => {
-                win.close();
                 this.release();
             })
             .catch(e => {
@@ -104,5 +114,12 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         } else {
             this.release();
         }
+    }
+
+    set enableFlipBack(val) {
+        if (val)
+            this.add_action(this._flipBack);
+        else
+            this.remove_action('flip-back');
     }
 });

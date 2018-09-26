@@ -20,12 +20,14 @@ gdbus_targets = gnome.gdbus_codegen('hack-toolbox-objects',
     namespace: 'HackToolbox')
 
 installed_headers = [
+    'lib/htb.h',
 ]
 private_headers = [
 ]
 sources = [
     gdbus_targets[0],
-    gdbus_targets[1]
+    gdbus_targets[1],
+    'lib/htb-file.c',
 ]
 
 include = include_directories('.')
@@ -55,3 +57,5 @@ gnome.generate_gir(main_library, extra_args: ['--warn-all', '--warn-error'],
     sources: introspection_sources, symbol_prefix: 'hack_toolbox')
 
 install_headers(installed_headers, subdir: api_name)
+
+subdir('framework')

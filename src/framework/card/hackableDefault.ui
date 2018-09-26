@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface domain="eos-knowledge">
+  <requires lib="gtk+" version="3.12"/>
+  <template class="EknCard_HackableDefault" parent="GtkButton">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="receives_default">False</property>
+    <child>
+      <object class="EmeusConstraintLayout" id="layout">
+        <property name="expand">True</property>
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkOverlay" id="thumbnail-frame">
+            <property name="can_focus">False</property>
+            <child type="overlay">
+              <object class="GtkFrame" id="thumbnail-overlay">
+                <property name="can_focus">False</property>
+                <property name="visible">True</property>
+                <property name="halign">fill</property>
+                <property name="valign">fill</property>
+                <property name="expand">True</property>
+                <style>
+                    <class name="CardHackableDefault__filter_overlay"/>
+                </style>
+              </object>
+              <packing>
+                <property name="pass_through">True</property>
+              </packing>
+            </child>
+            <style>
+              <class name="CardDefault__thumbnail"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkFrame" id="grid">
+            <property name="visible">True</property>
+            <style>
+              <class name="CardDefault__content_grid"/>
+            </style>
+            <child>
+              <object class="EmeusConstraintLayout" id="inner-content-grid">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkFrame" id="context-frame">
+                    <property name="can_focus">False</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="synopsis-label">
+                    <property name="can_focus">False</property>
+                    <property name="expand">True</property>
+                    <property name="valign">start</property>
+                    <property name="use_markup">True</property>
+                    <property name="wrap">True</property>
+                    <property name="wrap_mode">word-char</property>
+                    <property name="ellipsize">end</property>
+                    <property name="lines">5</property>
+                    <style>
+                      <class name="CardDefault__synopsis"/>
+                      <class name="Card__synopsis"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                    <object class="GtkBox" id="title-box">
+                      <property name="can_focus">False</property>
+                      <property name="expand">True</property>
+                      <property name="orientation">vertical</property>
+                      <child>
+                        <object class="GtkBox" id="content-overlay">
+                          <property name="can_focus">False</property>
+                          <property name="expand">True</property>
+                          <property name="visible">False</property>
+                          <property name="halign">center</property>
+                          <property name="valign">center</property>
+                        </object>
+                      </child>
+                      <child>
+                        <object class="EknFormattableLabel" id="title-label">
+                          <property name="can_focus">False</property>
+                          <property name="expand">False</property>
+                          <property name="valign">end</property>
+                          <property name="use_markup">True</property>
+                          <property name="wrap">True</property>
+                          <property name="wrap_mode">word</property>
+                          <property name="ellipsize">end</property>
+                          <property name="lines">1</property>
+                          <style>
+                              <class name="CardDefault__title"/>
+                              <class name="Card__title"/>
+                          </style>
+                        </object>
+                      </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

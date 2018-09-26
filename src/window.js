@@ -23,6 +23,8 @@ var ToolboxWindowBase = GObject.registerClass({
             `${this.application.get_dbus_object_path()}/window/${this.get_id()}`;
         this.hack_toolbox_skeleton = this._createHackToolboxSkeletonOnPath(objectPath);
         this.hackable_proxy = this._maybeGetHackableProxySync();
+
+        this.application.enableFlipBack = false;
     }
 
     _createHackToolboxSkeletonOnPath(objectPath) {
