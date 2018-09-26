@@ -100,7 +100,6 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         if (win) {
             win.applyChanges()
             .then(() => {
-                win.close();
                 this.release();
             })
             .catch(e => {
