@@ -19,7 +19,7 @@ var RaAppWindow = GObject.registerClass(class RaAppWindow extends ToolboxWindowB
         this._model = new RaModel();
 
         this._controlPanel.bindModel(this._model);
-        this.application.enableFlipBack = true;
+        this.enableFlipBack = true;
     }
 
     // Overrides ToolboxWindowBase
