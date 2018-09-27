@@ -129,11 +129,15 @@ var HackyPanel = GObject.registerClass({
         this._bind_local_to_proxy('raining');
 
         /* Update local property when proxy changed */
-        this._proxy.connectSignal('ObjectNotify', (p, s, [o, prop, val]) => {
+        let objectNotifyId = this._proxy.connectSignal('ObjectNotify', (p, s, [o, prop, val]) => {
             const value = val.deep_unpack();
             if (this[prop] === value)
                 return;
             this.set_property(prop, value);
+        });
+
+        this.connect('destroy', () => {
+            this._proxy.disconnectSignal(objectNotifyId);
         });
 
         /* Bind UI to local properties */
