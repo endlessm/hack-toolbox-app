@@ -1,14 +1,16 @@
-/* exported HackToolboxMainWindow */
+/* exported DefaultHackToolbox */
 
-const {GObject} = imports.gi;
-const {ToolboxWindowBase} = imports.window;
+const {GObject, Gtk} = imports.gi;
 
 const DATA_RESOURCE_PATH = 'resource:///com/endlessm/HackToolbox';
 
-var HackToolboxMainWindow = GObject.registerClass({
-    Template: `${DATA_RESOURCE_PATH}/hacktoolbox/main-window.ui`,
-    Children: [
-        'hack-button',
-    ],
-}, class HackToolboxMainWindow extends ToolboxWindowBase {
+var DefaultHackToolbox = GObject.registerClass({
+    Template: `${DATA_RESOURCE_PATH}/hacktoolbox/toolbox.ui`,
+}, class DefaultHackToolbox extends Gtk.Box {
+    // Intended to be implemented by other toolbox classes, if they need to
+    // implement any behaviour before flipping back to the app
+    applyChanges(busName, objectPath) {
+        void (this, busName, objectPath);
+        return Promise.resolve();
+    }
 });

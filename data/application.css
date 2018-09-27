@@ -6,3 +6,15 @@
 .content {
     margin: 20px;
 }
+
+.toolbox-surrounding-window {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.toolbox {
+    background-color: #e8e8e7;  /* Adwaita background color */
+}
+
+.toolbox.dark {
+    background-color: #33393b;  /* Adwaita-dark background color */
+}

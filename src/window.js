@@ -1,8 +1,17 @@
-/* exported ToolboxWindowBase */
+/* exported ToolboxWindow */
 
 const {Gio, GLib, GObject, Gtk, Hackable, HackToolbox} = imports.gi;
 
-var ToolboxWindowBase = GObject.registerClass({
+function _shouldEnableFlipBack(targetBusName) {
+    switch (targetBusName) {
+    case 'com.endlessm.dinosaurs.en':
+        return true;
+    default:
+        return false;
+    }
+}
+
+var ToolboxWindow = GObject.registerClass({
     Properties: {
         'target-bus-name': GObject.ParamSpec.string('target-bus-name',
             'Target Bus Name', 'The Bus Name that this toolbox is "hacking"',
@@ -13,8 +22,9 @@ var ToolboxWindowBase = GObject.registerClass({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
     },
-}, class ToolboxWindowBase extends Gtk.ApplicationWindow {
+}, class ToolboxWindow extends Gtk.ApplicationWindow {
     _init(params) {
+        Object.assign(params, {expand: true});
         super._init(params);
 
         // Need to create the hack toolbox after the window
@@ -28,15 +38,40 @@ var ToolboxWindowBase = GObject.registerClass({
             name: 'flip-back',
         });
         this._flipBack.connect('activate', this._onFlipBack.bind(this));
+        this.enableFlipBack = _shouldEnableFlipBack(this.target_bus_name);
+
+        const screen = this.get_screen();
+        this.set_visual(screen.get_rgba_visual());
+
+        this._toolbox_frame = new Gtk.Frame({
+            halign: Gtk.Align.END,
+            valign: Gtk.Align.END,
+            marginEnd: 50,
+            visible: true,
+        });
+        this._toolbox_frame.get_style_context().add_class('toolbox');
+        Gtk.Container.prototype.add.call(this, this._toolbox_frame);
+
+        this.get_style_context().add_class('toolbox-surrounding-window');
     }
 
     _onFlipBack(action, parameterVariant) {
         log(`Call flip-back for ${this.target_bus_name}, ${this.target_object_path}`);
 
-        this.applyChanges()
+        this.toolbox.applyChanges(this.target_bus_name, this.target_object_path)
         .catch(e => {
             logError(e);
         });
+    }
+
+    // Override Gtk.Container.add()
+    add(widget) {
+        this._toolbox = widget;
+        this._toolbox_frame.add(widget);
+    }
+
+    get toolbox() {
+        return this._toolbox;
     }
 
     set enableFlipBack(val) {
@@ -67,12 +102,5 @@ var ToolboxWindowBase = GObject.registerClass({
                 'not export the Hackable interface, using default toolbox');
             return null;
         }
-    }
-
-    // Intended to be overridden by subclasses, if they need to implement any
-    // behaviour before flipping back to the app
-    applyChanges() {
-        void this;
-        return Promise.resolve();
     }
 });

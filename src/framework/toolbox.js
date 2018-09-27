@@ -1,12 +1,11 @@
-/* exported RaAppWindow */
+/* exported FrameworkToolbox */
 
-const {GObject} = imports.gi;
+const {GObject, Gtk} = imports.gi;
 
 const {RaControlPanel} = imports.framework.controlPanel;
 const {RaModel} = imports.framework.model;
-const {ToolboxWindowBase} = imports.window;
 
-var RaAppWindow = GObject.registerClass(class RaAppWindow extends ToolboxWindowBase {
+var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Gtk.Grid {
     _init(props = {}) {
         super._init(props);
         this.show_all();
@@ -19,11 +18,10 @@ var RaAppWindow = GObject.registerClass(class RaAppWindow extends ToolboxWindowB
         this._model = new RaModel();
 
         this._controlPanel.bindModel(this._model);
-        this.enableFlipBack = true;
     }
 
-    // Overrides ToolboxWindowBase
-    applyChanges() {
-        return this._model.launch(this.target_bus_name, this.target_object_path);
+    // See DefaultHackToolbox
+    applyChanges(busName, objectPath) {
+        return this._model.launch(busName, objectPath);
     }
 });
