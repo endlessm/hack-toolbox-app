@@ -3,6 +3,8 @@
 
 const {Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
 
+const {ToolboxWindow} = imports.window;
+
 function _loadStyleSheet(resourcePath) {
     const provider = new Gtk.CssProvider();
     provider.load_from_resource(resourcePath);
@@ -10,12 +12,12 @@ function _loadStyleSheet(resourcePath) {
         provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
-function _windowClassForBusName(targetBusName) {
+function _toolboxClassForBusName(targetBusName) {
     switch (targetBusName) {
     case 'com.endlessm.dinosaurs.en':
-        return imports.framework.appWindow.RaAppWindow;
+        return imports.framework.toolbox.FrameworkToolbox;
     default:
-        return imports.hacktoolbox.hacktoolbox.HackToolboxMainWindow;
+        return imports.hacktoolbox.hacktoolbox.DefaultHackToolbox;
     }
 }
 
@@ -68,12 +70,14 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
             this._windows[busName] = {};
 
         if (!this._windows[busName][objectPath]) {
-            const WindowClass = _windowClassForBusName(busName);
-            const win = new WindowClass({
+            const ToolboxClass = _toolboxClassForBusName(busName);
+            const toolbox = new ToolboxClass({visible: true});
+            const win = new ToolboxWindow({
                 application: this,
                 target_bus_name: busName,
                 target_object_path: objectPath,
             });
+            win.add(toolbox);
 
             const settings = Gtk.Settings.get_default();
             const darkTheme = _shouldUseDarkTheme(busName);
