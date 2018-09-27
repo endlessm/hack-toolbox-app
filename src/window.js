@@ -24,7 +24,26 @@ var ToolboxWindowBase = GObject.registerClass({
         this.hack_toolbox_skeleton = this._createHackToolboxSkeletonOnPath(objectPath);
         this.hackable_proxy = this._maybeGetHackableProxySync();
 
-        this.application.enableFlipBack = false;
+        this._flipBack = new Gio.SimpleAction({
+            name: 'flip-back',
+        });
+        this._flipBack.connect('activate', this._onFlipBack.bind(this));
+    }
+
+    _onFlipBack(action, parameterVariant) {
+        log(`Call flip-back for ${this.target_bus_name}, ${this.target_object_path}`);
+
+        this.applyChanges()
+        .catch(e => {
+            logError(e);
+        });
+    }
+
+    set enableFlipBack(val) {
+        if (val)
+            this.add_action(this._flipBack);
+        else
+            this.remove_action('flip-back');
     }
 
     _createHackToolboxSkeletonOnPath(objectPath) {
