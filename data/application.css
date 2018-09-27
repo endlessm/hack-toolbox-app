@@ -18,3 +18,9 @@
 .toolbox.dark {
     background-color: #33393b;  /* Adwaita-dark background color */
 }
+
+/* Temporarily make the buttons smaller until we figure out how to layout */
+button.radio {
+    font-size: 10px;
+    padding: 2px 4px;
+}
