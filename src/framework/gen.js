@@ -9,7 +9,7 @@ function generateSCSS(model) {
     const font = model.font.get_family();
 
     let overlayFilterProperties;
-    switch (model.filter) {
+    switch (model.image_filter) {
     case 'none':
         overlayFilterProperties = 'background: none;';
         break;
@@ -117,7 +117,7 @@ background-repeat: no-repeat;
 `;
         break;
     default:
-        throw new Error(`${model.filter}, oops`);
+        throw new Error(`${model.image_filter}, oops`);
     }
 
     return `
@@ -422,7 +422,7 @@ function generateWebSCSS(model) {
 
 function generateYAML(model) {
     let order;
-    switch (model.order) {
+    switch (model.card_order) {
     case 'ordered':
         order = 'Order.Sequence';
         break;
@@ -436,11 +436,11 @@ function generateYAML(model) {
         order = "'Order.Alphabetical(ascending: false)'";
         break;
     default:
-        throw new Error(`${model.order}, oops`);
+        throw new Error(`${model.card_order}, oops`);
     }
 
     let layout;
-    switch (model.layout) {
+    switch (model.card_layout) {
     case 'tiledGrid':
         layout = 'Arrangement.TiledGrid';
         break;
@@ -457,23 +457,23 @@ function generateYAML(model) {
         layout = 'Arrangement.Overflow';
         break;
     default:
-        throw new Error(`${model.layout}, oops`);
+        throw new Error(`${model.card_layout}, oops`);
     }
 
-    if (model.hover_sound !== 'none')
-        layout += `Noise(click: false, soundpack: ${model.hover_sound})`;
-    else if (model.click_sound !== 'none')
-        layout += `Noise(click: true, soundpack: ${model.click_sound})`;
+    if (model.sounds_cursor_hover !== 'none')
+        layout += `Noise(click: false, soundpack: ${model.sounds_cursor_hover})`;
+    else if (model.sounds_cursor_click !== 'none')
+        layout += `Noise(click: true, soundpack: ${model.sounds_cursor_click})`;
 
     let textFilterProperty = '';
     let defaultCard = 'Card.Default';
     let titleCard = 'Card.Title';
     let dynamicBanner = 'Banner.Dynamic';
     let searchBanner = 'Banner.Search';
-    if (model.text !== 'normal' || model.filter !== 'none') {
+    if (model.text_transformation !== 'normal' || model.image_filter !== 'none') {
         defaultCard = 'Card.HackableDefault';
         titleCard = 'Card.HackableTitle';
-        textFilterProperty = `textfilter: ${model.text}`;
+        textFilterProperty = `textfilter: ${model.text_transformation}`;
         dynamicBanner = 'Banner.HackableDynamic';
         searchBanner = 'Banner.HackableSearch';
     }

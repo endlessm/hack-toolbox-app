@@ -68,13 +68,13 @@ var FrameworkLevel2 = GObject.registerClass({
 
         const flags = GObject.BindingFlags.BIDIRECTIONAL;
         model.bind_property('border-color', this._borderColorButton, 'rgba', flags);
-        model.bind_property('card-borders', this._borderWidthAdjustment, 'value', flags);
-        model.bind_property('click-sound', this._clickSoundGroup, 'value', flags);
-        model.bind_property('filter', this._filterGroup, 'value', flags);
-        model.bind_property('hover-sound', this._hoverSoundGroup, 'value', flags);
-        model.bind_property('layout', this._layoutGroup, 'value', flags);
-        model.bind_property('order', this._orderGroup, 'value', flags);
-        model.bind_property('text', this._textGroup, 'value', flags);
+        model.bind_property('border-width', this._borderWidthAdjustment, 'value', flags);
+        model.bind_property('card-layout', this._layoutGroup, 'value', flags);
+        model.bind_property('card-order', this._orderGroup, 'value', flags);
+        model.bind_property('image-filter', this._filterGroup, 'value', flags);
+        model.bind_property('sounds-cursor-click', this._clickSoundGroup, 'value', flags);
+        model.bind_property('sounds-cursor-hover', this._hoverSoundGroup, 'value', flags);
+        model.bind_property('text-transformation', this._textGroup, 'value', flags);
 
         this._model = model;
     }
