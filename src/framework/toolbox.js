@@ -10,9 +10,7 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Gtk.
         super._init(props);
         this.show_all();
 
-        this._controlPanel = new RaControlPanel();
-        this.borderWidth = 20;
-
+        this._controlPanel = new RaControlPanel({visible: true});
         this.add(this._controlPanel);
 
         this._model = new RaModel();
