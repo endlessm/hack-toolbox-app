@@ -1,7 +1,7 @@
 /* exported FrameworkLevel1 */
 
 const {GObject, Gtk} = imports.gi;
-const {LogoImage} = imports.framework.logoImage;
+const {logoIDToResource, LogoImage, VALID_LOGOS} = imports.framework.logoImage;
 
 var FrameworkLevel1 = GObject.registerClass({
     GTypeName: 'FrameworkLevel1',
@@ -13,11 +13,8 @@ var FrameworkLevel1 = GObject.registerClass({
     _init(props = {}) {
         super._init(props);
 
-        const ICONS = ['animals', 'art', 'astronomy', 'biology', 'celebrities',
-            'dinosaur', 'encyclopedia', 'farming', 'geography', 'history',
-            'math', 'nature', 'physics', 'soccer', 'socialsciences', 'travel'];
-        ICONS.forEach(name => {
-            const resource = `/com/endlessm/HackToolbox/framework/${name}.svg`;
+        VALID_LOGOS.forEach(name => {
+            const resource = logoIDToResource(name);
             const widget = new LogoImage({resource, visible: true});
             this._logoChoices.add(widget);
         });
