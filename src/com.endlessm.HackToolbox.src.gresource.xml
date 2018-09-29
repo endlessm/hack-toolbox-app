@@ -8,6 +8,7 @@
     <file>framework/gen.js</file>
     <file>framework/level1.js</file>
     <file>framework/level2.js</file>
+    <file>framework/level3.js</file>
     <file>framework/logoImage.js</file>
     <file>framework/model.js</file>
     <file>framework/toolbox.js</file>
