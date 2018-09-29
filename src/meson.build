@@ -58,4 +58,4 @@ gnome.generate_gir(main_library, extra_args: ['--warn-all', '--warn-error'],
 
 install_headers(installed_headers, subdir: api_name)
 
-subdir('framework')
+subdir('framework/customModules')
