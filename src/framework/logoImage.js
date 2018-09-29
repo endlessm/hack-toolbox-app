@@ -1,4 +1,4 @@
-/* exported logoIDToResource, LogoImage, VALID_LOGOS */
+/* exported logoIDToResource, LogoImage, resourceToLogoID, VALID_LOGOS */
 
 const {GdkPixbuf, GObject, Gtk} = imports.gi;
 
@@ -8,6 +8,12 @@ var VALID_LOGOS = ['animals', 'art', 'astronomy', 'biology', 'celebrities',
 
 function logoIDToResource(id) {
     return `/com/endlessm/HackToolbox/framework/${id}.svg`;
+}
+
+function resourceToLogoID(resource) {
+    const paths = resource.split('/');
+    const basename = paths[paths.length - 1];
+    return basename.slice(0, -'.svg'.length);
 }
 
 var LogoImage = GObject.registerClass({
