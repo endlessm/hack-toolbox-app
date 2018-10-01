@@ -248,43 +248,7 @@ Graphic</property>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">3</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkGrid">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="column_spacing">6</property>
-            <child>
-              <object class="GtkColorButton" id="infoColorButton1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="rgba">rgb(244,217,79)</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">end</property>
-                <property name="label" translatable="yes">Font Color</property>
-                <property name="xalign">0</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">3</property>
+            <property name="width">3</property>
           </packing>
         </child>
         <child>

@@ -39,17 +39,23 @@ var RaModel = GObject.registerClass({
             Pango.FontDescription),
         'font-size': GObject.ParamSpec.uint('font-size', 'Font Size', '',
             _propFlags, 0, GLib.MAXUINT32, 10),
-        'card-borders': GObject.ParamSpec.uint('card-borders', 'Card Borders', '',
+        'border-width': GObject.ParamSpec.uint('border-width', 'Border Width', '',
             _propFlags, 0, GLib.MAXUINT32, 0),
         'border-color': GObject.ParamSpec.boxed('border-color', 'Border Color', '',
             _propFlags, Gdk.RGBA),
-        text: GObject.ParamSpec.string('text', 'Text', '', _propFlags, 'normal'),
-        order: GObject.ParamSpec.string('order', 'Order', '', _propFlags, 'ordered'),
-        layout: GObject.ParamSpec.string('layout', 'Layout', '', _propFlags, 'tiledGrid'),
-        filter: GObject.ParamSpec.string('filter', 'Filter', '', _propFlags, 'none'),
-        'hover-sound': GObject.ParamSpec.string('hover-sound', 'Hover Sound', '',
+        'text-transformation': GObject.ParamSpec.string('text-transformation',
+            'Text Transformation', '', _propFlags, 'normal'),
+        'card-order': GObject.ParamSpec.string('card-order', 'Card Order', '',
+            _propFlags, 'ordered'),
+        'card-layout': GObject.ParamSpec.string('card-layout', 'Card Layout', '',
+            _propFlags, 'tiledGrid'),
+        'image-filter': GObject.ParamSpec.string('image-filter', 'Image Filter', '',
             _propFlags, 'none'),
-        'click-sound': GObject.ParamSpec.string('click-sound', 'Click Sound', '',
+        'sounds-cursor-hover': GObject.ParamSpec.string('sounds-cursor-hover',
+            'Sounds on Cursor Hover', '',
+            _propFlags, 'none'),
+        'sounds-cursor-click': GObject.ParamSpec.string('sounds-cursor-click',
+            'Sounds on Cursor Click', '',
             _propFlags, 'none'),
     },
 }, class RaModel extends GObject.Object {
@@ -130,15 +136,15 @@ var RaModel = GObject.registerClass({
         this.notify('font-size');
     }
 
-    get card_borders() {
-        return this._cardBorders;
+    get border_width() {
+        return this._borderWidth;
     }
 
-    set card_borders(value) {
-        if ('_cardBorders' in this && this._cardBorders === value)
+    set border_width(value) {
+        if ('_borderWidth' in this && this._borderWidth === value)
             return;
-        this._cardBorders = value;
-        this.notify('card-borders');
+        this._borderWidth = value;
+        this.notify('border-width');
     }
 
     get border_color() {
@@ -152,79 +158,79 @@ var RaModel = GObject.registerClass({
         this.notify('border-color');
     }
 
-    get text() {
-        return this._text;
+    get text_transformation() {
+        return this._textTransformation;
     }
 
-    set text(value) {
-        if ('_text' in this && this._text === value)
+    set text_transformation(value) {
+        if ('_textTransformation' in this && this._textTransformation === value)
             return;
-        this._text = value;
-        this.notify('text');
+        this._textTransformation = value;
+        this.notify('text-transformation');
     }
 
-    get order() {
-        return this._order;
+    get card_order() {
+        return this._cardOrder;
     }
 
-    set order(value) {
-        if ('_order' in this && this._order === value)
+    set card_order(value) {
+        if ('_cardOrder' in this && this._cardOrder === value)
             return;
-        this._order = value;
-        this.notify('order');
+        this._cardOrder = value;
+        this.notify('card-order');
     }
 
-    get layout() {
-        return this._layout;
+    get card_layout() {
+        return this._cardLayout;
     }
 
-    set layout(value) {
-        if ('_layout' in this && this._layout === value)
+    set card_layout(value) {
+        if ('_cardLayout' in this && this._cardLayout === value)
             return;
-        this._layout = value;
-        this.notify('layout');
+        this._cardLayout = value;
+        this.notify('card-layout');
     }
 
-    get filter() {
-        return this._filter;
+    get image_filter() {
+        return this._imageFilter;
     }
 
-    set filter(value) {
-        if ('_filter' in this && this._filter === value)
+    set image_filter(value) {
+        if ('_imageFilter' in this && this._imageFilter === value)
             return;
-        this._filter = value;
-        this.notify('filter');
+        this._imageFilter = value;
+        this.notify('image-filter');
     }
 
-    get hover_sound() {
-        return this._hoverSound;
+    get sounds_cursor_hover() {
+        return this._soundsCursorHover;
     }
 
-    set hover_sound(value) {
-        if ('_hoverSound' in this && this._hoverSound === value)
+    set sounds_cursor_hover(value) {
+        if ('_soundsCursorHover' in this && this._soundsCursorHover === value)
             return;
-        this._hoverSound = value;
-        this.notify('hover-sound');
+        this._soundsCursorHover = value;
+        this.notify('sounds-cursor-hover');
 
         if (value !== 'none') {
-            this._clickSound = 'none';
-            this.notify('click-sound');
+            this._soundsCursorClick = 'none';
+            this.notify('sounds-cursor-click');
         }
     }
 
-    get click_sound() {
-        return this._clickSound;
+    get sounds_cursor_click() {
+        return this._soundsCursorClick;
     }
 
-    set click_sound(value) {
-        if ('_clickSound' in this && this._clickSound === value)
+    set sounds_cursor_click(value) {
+        if ('_soundsCursorClick' in this && this._soundsCursorClick === value)
             return;
-        this._clickSound = value;
-        this.notify('click-sound');
+        this._soundsCursorClick = value;
+        this.notify('sounds-cursor-click');
 
         if (value !== 'none') {
-            this._hoverSound = 'none';
-            this.notify('hover-sound');
+            this._soundsCursorHover = 'none';
+            this.notify('sounds-cursor-hover');
         }
     }
 

@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/com/endlessm/HackToolbox">
     <file compressed="true">application.css</file>
+    <file compressed="true">codeview.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">framework/level1.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">framework/level2.ui</file>
     <file preprocess="xml-stripblanks">framework/animals.svg</file>

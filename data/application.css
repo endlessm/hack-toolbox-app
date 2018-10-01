@@ -24,3 +24,12 @@ button.radio {
     font-size: 10px;
     padding: 2px 4px;
 }
+
+.codeview {
+    font-family: monospace;
+}
+
+popover.error {
+    background-color: #ffb1aa;
+    padding: 12px;
+}
