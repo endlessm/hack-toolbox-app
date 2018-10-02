@@ -58,21 +58,16 @@
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkButton" id="okButton">
+          <object class="GtkButton" id="fixButton">
+            <property name="label" translatable="yes">Fix</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="no_show_all">True</property>
             <property name="halign">end</property>
             <property name="valign">end</property>
-            <child>
-              <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">emblem-default-symbolic</property>
-              </object>
-            </child>
             <style>
-              <class name="suggested-action"/>
+              <class name="destructive-action"/>
             </style>
           </object>
           <packing>
@@ -103,6 +98,7 @@
           <object class="GtkLabel" id="helpHeading">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="no_show_all">True</property>
             <property name="label" translatable="yes">heading</property>
             <property name="xalign">0</property>
             <attributes>
