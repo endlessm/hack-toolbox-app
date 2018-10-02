@@ -97,6 +97,7 @@ Width</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="valign">end</property>
+                <property name="rgba">rgb(0,0,0)</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
