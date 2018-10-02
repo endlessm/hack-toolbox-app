@@ -71,14 +71,22 @@ var Codeview = GObject.registerClass({
         try {
             if (this._buffer)
                 this._buffer.text = value;
+            this._cached_ast = null;
         } finally {
             if (this._changedHandler)
                 GObject.signal_handler_unblock(this._buffer, this._changedHandler);
         }
     }
 
+    get ast() {
+        if (this._cached_ast)
+            return this._cached_ast;
+        return Reflect.parse(this.text);
+    }
+
     _onBufferChanged() {
         this.ensureNoTimeout();
+        this._cached_ast = null;
         this._compileTimeout = GLib.timeout_add_seconds(GLib.PRIORITY_HIGH, 1,
             this.compile.bind(this));
     }
@@ -137,5 +145,14 @@ var Codeview = GObject.registerClass({
             const mark = this._buffer.create_source_mark(null, MarkType.ERROR, iter);
             mark._message = message;
         });
+    }
+
+    findAssignmentLocation(variable) {
+        const node = this.ast.body
+            .filter(({type, expression}) => type === 'ExpressionStatement' &&
+                    expression.type === 'AssignmentExpression')
+            .map(({expression}) => expression)
+            .find(({left}) => left.type === 'Identifier' && left.name === variable);
+        return node ? node.right.loc : null;
     }
 });
