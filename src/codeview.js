@@ -129,10 +129,10 @@ var Codeview = GObject.registerClass({
     }
 
     setCompileResults(results) {
-        const [start, end] = this._buffer.get_bounds();
-        this._buffer.remove_source_marks(start, end, MarkType.ERROR);
-        results.forEach(({line, column, message}) => {
-            const iter = this._buffer.get_iter_at_line_offset(line - 1, column);
+        const [begin, bound] = this._buffer.get_bounds();
+        this._buffer.remove_source_marks(begin, bound, MarkType.ERROR);
+        results.forEach(({start, message}) => {
+            const iter = this._buffer.get_iter_at_line_offset(start.line - 1, start.column);
             const mark = this._buffer.create_source_mark(null, MarkType.ERROR, iter);
             mark._message = message;
         });
