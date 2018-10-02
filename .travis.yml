@@ -1,0 +1,11 @@
+---
+language: c  # actually javascript, but c is the basic environment
+sudo: required
+services:
+  - docker
+
+# Specify which linters to run in .lint-condo.yaml
+# See https://github.com/singapore/lint-condo for instructions
+
+script:
+  - docker run -v $PWD:/src/ singapore/lint-condo
