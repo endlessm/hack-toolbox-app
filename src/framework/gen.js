@@ -200,7 +200,7 @@ $logo-font: 'Patrick Hand SC';
 // Card borders:
 
 .CardDefault {
-    padding: ${model.card_borders}px;
+    padding: ${model.border_width}px;
     background-color: ${borderColor};
 }
 
