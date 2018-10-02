@@ -103,6 +103,7 @@ var Codeview = GObject.registerClass({
 
     _onRendererActivate(renderer, iter, area) {
         const marks = this._getOurSourceMarks(iter);
+        this._helpHeading.hide();
         this._helpLabel.label = marks.map(mark => mark._message).join('\n');
         this._helpMessage.pointingTo = area;
         this._helpMessage.relativeTo = this._view;
