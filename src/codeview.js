@@ -1,6 +1,6 @@
 /* exported Codeview */
 
-const {Gdk, GLib, GObject, Gtk, GtkSource} = imports.gi;
+const {Gdk, GLib, GObject, Gtk, GtkSource, Pango} = imports.gi;
 
 // Can add more, e.g. WARNING, SUGGESTION
 const MarkType = {
@@ -28,13 +28,21 @@ var Codeview = GObject.registerClass({
 
         this._buffer = new GtkSource.Buffer({language, styleScheme});
 
+        const darkRed = new Gdk.RGBA({red: 0xa4});
+        this._errorUnderline = new GtkSource.Tag({
+            name: 'error-underline',
+            underline: Pango.Underline.ERROR,
+            underlineRgba: darkRed,
+        });
+        this._buffer.tagTable.add(this._errorUnderline);
+
         this._view = new GtkSource.View({
             buffer: this._buffer,
             showLineMarks: true,
             visible: true,
         });
 
-        const background = new Gdk.RGBA({red: 0xa4, green: 0, blue: 0, alpha: 0.2});
+        const background = new Gdk.RGBA({red: 0xa4, alpha: 0.2});
         const attrs = new GtkSource.MarkAttributes({background});
         this._view.set_mark_attributes(MarkType.ERROR, attrs, 0);
 
@@ -140,10 +148,21 @@ var Codeview = GObject.registerClass({
     setCompileResults(results) {
         const [begin, bound] = this._buffer.get_bounds();
         this._buffer.remove_source_marks(begin, bound, MarkType.ERROR);
-        results.forEach(({start, message}) => {
+        this._buffer.remove_tag(this._errorUnderline, begin, bound);
+        results.forEach(({start, end, message}) => {
             const iter = this._buffer.get_iter_at_line_offset(start.line - 1, start.column);
             const mark = this._buffer.create_source_mark(null, MarkType.ERROR, iter);
             mark._message = message;
+
+            let endIter;
+            if (end) {
+                endIter = this._buffer.get_iter_at_line_offset(end.line - 1, end.column);
+            } else {
+                iter.set_line_offset(0);
+                endIter = iter.copy();
+                endIter.forward_to_line_end();
+            }
+            this._buffer.apply_tag(this._errorUnderline, iter, endIter);
         });
     }
 
