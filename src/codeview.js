@@ -145,13 +145,9 @@ var Codeview = GObject.registerClass({
         if (this._fixHandler)
             this._fixButton.disconnect(this._fixHandler);
         this._fixButton.hide();
-        print('deciding whether to show fix button');
-        marks.forEach(mark => print(_markHasFixmeInformation(mark)));
-        marks.forEach(mark => print(mark._fixme, mark._endLine, mark._endColumn));
         if (marks.every(_markHasFixmeInformation)) {
             this._fixHandler = this._fixButton.connect('clicked',
                 this._onFixClicked.bind(this, marks));
-            print('showing fix button');
             this._fixButton.show();
         }
 
