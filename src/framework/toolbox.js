@@ -22,4 +22,8 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Gtk.
     applyChanges(busName, objectPath) {
         return this._model.launch(busName, objectPath);
     }
+
+    bindWindow(win) {
+        this._controlPanel.bindWindow(win);
+    }
 });
