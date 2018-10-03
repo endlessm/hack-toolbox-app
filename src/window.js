@@ -70,6 +70,13 @@ var ToolboxWindow = GObject.registerClass({
         this._lockscreen.add(this._toolbox_frame);
 
         this.get_style_context().add_class('toolbox-surrounding-window');
+
+        const cheatcode = new Gio.SimpleAction({
+            name: 'unlock-cheat',
+            enabled: true,
+        });
+        this.add_action(cheatcode);
+        cheatcode.connect('activate', () => this.unlock());
     }
 
     _onFlipBack() {
