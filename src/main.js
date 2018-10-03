@@ -24,7 +24,7 @@ const {GLib} = imports.gi;
 const {HackToolboxApplication} = imports.app;
 
 function main(argv) {
-    let app = new HackToolboxApplication();
+    const app = new HackToolboxApplication();
     if (GLib.getenv('HACK_TOOLBOX_PERSIST'))
         app.hold();
     return app.run(argv);

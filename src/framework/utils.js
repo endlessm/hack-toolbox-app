@@ -214,7 +214,6 @@ function rgbaToString(rgba) {
         '#778899': 'light slate gray',
         '#b0c4de': 'light steel blue',
         '#ffffe0': 'light yellow',
-        '#00ff00': 'lime',
         '#32cd32': 'lime green',
         '#faf0e6': 'linen',
         '#ff00ff': 'magenta',

@@ -55,7 +55,7 @@ var ToolboxWindow = GObject.registerClass({
         this.get_style_context().add_class('toolbox-surrounding-window');
     }
 
-    _onFlipBack(action, parameterVariant) {
+    _onFlipBack() {
         log(`Call flip-back for ${this.target_bus_name}, ${this.target_object_path}`);
 
         this.toolbox.applyChanges(this.target_bus_name, this.target_object_path)
