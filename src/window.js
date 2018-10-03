@@ -1,6 +1,7 @@
 /* exported ToolboxWindow */
 
 const {Gio, GLib, GObject, Gtk, Hackable, HackToolbox} = imports.gi;
+const {Lockscreen} = imports.lockscreen;
 
 // This is later to be replaced by global game state.
 const unlockState = {
@@ -51,6 +52,12 @@ var ToolboxWindow = GObject.registerClass({
         const screen = this.get_screen();
         this.set_visual(screen.get_rgba_visual());
 
+        this._lockscreen = new Lockscreen({
+            expand: true,
+            visible: true,
+            locked: !this.getUnlockState()[0],
+        });
+
         this._toolbox_frame = new Gtk.Frame({
             halign: Gtk.Align.END,
             valign: Gtk.Align.END,
@@ -58,7 +65,9 @@ var ToolboxWindow = GObject.registerClass({
             visible: true,
         });
         this._toolbox_frame.get_style_context().add_class('toolbox');
-        Gtk.Container.prototype.add.call(this, this._toolbox_frame);
+
+        Gtk.Container.prototype.add.call(this, this._lockscreen);
+        this._lockscreen.add(this._toolbox_frame);
 
         this.get_style_context().add_class('toolbox-surrounding-window');
     }
@@ -84,6 +93,9 @@ var ToolboxWindow = GObject.registerClass({
         const index = unlockState[this.target_bus_name].findIndex(state => !state);
         unlockState[this.target_bus_name][index] = true;
         this.emit('unlock-state-changed');
+
+        // Update state of the common lockscreen in this window
+        this._lockscreen.locked = !this.getUnlockState()[0];
     }
 
     // Override Gtk.Container.add()
