@@ -13,4 +13,10 @@ var DefaultHackToolbox = GObject.registerClass({
         void (this, busName, objectPath);
         return Promise.resolve();
     }
+
+    // Intended to be implemented by other toolbox classes, if they need to
+    // connect to the window's unlock state.
+    bindWindow(win) {
+        void (this, win);
+    }
 });

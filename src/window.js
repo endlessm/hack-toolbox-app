@@ -2,6 +2,11 @@
 
 const {Gio, GLib, GObject, Gtk, Hackable, HackToolbox} = imports.gi;
 
+// This is later to be replaced by global game state.
+const unlockState = {
+    'com.endlessm.dinosaurs.en': [false, false, false],
+};
+
 function _shouldEnableFlipBack(targetBusName) {
     switch (targetBusName) {
     case 'com.endlessm.dinosaurs.en':
@@ -21,6 +26,9 @@ var ToolboxWindow = GObject.registerClass({
             'Target Object Path', 'The Object Path that this toolbox is "hacking"',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
+    },
+    Signals: {
+        'unlock-state-changed': {},
     },
 }, class ToolboxWindow extends Gtk.ApplicationWindow {
     _init(params) {
@@ -62,6 +70,20 @@ var ToolboxWindow = GObject.registerClass({
         .catch(e => {
             logError(e);
         });
+    }
+
+    getUnlockState() {
+        if (!(this.target_bus_name in unlockState))
+            unlockState[this.target_bus_name] = [false];
+        return unlockState[this.target_bus_name];
+    }
+
+    unlock() {
+        if (!(this.target_bus_name in unlockState))
+            unlockState[this.target_bus_name] = [true];
+        const index = unlockState[this.target_bus_name].findIndex(state => !state);
+        unlockState[this.target_bus_name][index] = true;
+        this.emit('unlock-state-changed');
     }
 
     // Override Gtk.Container.add()

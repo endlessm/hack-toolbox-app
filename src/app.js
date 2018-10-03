@@ -78,6 +78,7 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
                 target_object_path: objectPath,
             });
             win.add(toolbox);
+            toolbox.bindWindow(win);
 
             const settings = Gtk.Settings.get_default();
             const darkTheme = _shouldUseDarkTheme(busName);
