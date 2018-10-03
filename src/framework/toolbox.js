@@ -1,11 +1,12 @@
 /* exported FrameworkToolbox */
 
-const {GObject, Gtk} = imports.gi;
+const {GObject} = imports.gi;
 
 const {RaControlPanel} = imports.framework.controlPanel;
 const {RaModel} = imports.framework.model;
+const {Toolbox} = imports.toolbox;
 
-var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Gtk.Grid {
+var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Toolbox {
     _init(props = {}) {
         super._init(props);
         this.show_all();
