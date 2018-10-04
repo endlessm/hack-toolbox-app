@@ -19,6 +19,7 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
         this.add(this._controlPanel);
 
         this._model = new RaModel();
+        this.connect('reset', () => this._model.reset());
 
         this._controlPanel.bindModel(this._model);
     }

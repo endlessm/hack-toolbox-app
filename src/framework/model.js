@@ -23,6 +23,27 @@ const KnowledgeControlIface = `
 
 const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 
+// FIXME: these are only valid for the dinosaurs app
+// FIXME: Determine one source of truth for paramspec defaults, default values,
+// and code defaults
+const _DEFAULTS = {
+    'logo-graphic': '/com/endlessm/HackToolbox/framework/dinosaur.svg',
+    'logo-color': new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0}),
+    'main-color': new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0}),
+    'accent-color': new Gdk.RGBA({red: 0.8, green: 0.3255, blue: 0.1686, alpha: 1.0}),
+    'info-color': new Gdk.RGBA({red: 0.9569, green: 0.851, blue: 0.3098, alpha: 1.0}),
+    font: Pango.FontDescription.from_string('Skranji'),
+    'font-size': 10,
+    'border-width': 0,
+    'border-color': new Gdk.RGBA({red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0}),
+    'text-transformation': 'normal',
+    'card-order': 'ordered',
+    'card-layout': 'tiledGrid',
+    'image-filter': 'none',
+    'sounds-cursor-hover': 'none',
+    'sounds-cursor-click': 'none',
+};
+
 var RaModel = GObject.registerClass({
     Properties: {
         'logo-graphic': GObject.ParamSpec.string('logo-graphic', 'Logo Graphic', '',
@@ -309,4 +330,28 @@ var RaModel = GObject.registerClass({
                 });
         });
     }
+
+    reset() {
+        Object.entries(_DEFAULTS).forEach(([prop, value]) => {
+            this[prop.replace(/-/g, '_')] = value;
+        });
+    }
 });
+
+RaModel.CODE_DEFAULTS = {
+    logo_graphic: "'dinosaur'",
+    logo_color: "'white'",
+    main_color: "'white'",
+    accent_color: "'rgb(204,83,43)'",
+    info_color: "'rgb(244,217,79)'",
+    font: "'Skranji'",
+    font_size: '10',
+    border_width: '0',
+    border_color: "'black'",
+    text_transformation: "'normal'",
+    card_order: "'ordered'",
+    card_layout: "'tiledGrid'",
+    image_filter: "'none'",
+    sounds_cursor_hover: "'none'",
+    sounds_cursor_click: "'none'",
+};
