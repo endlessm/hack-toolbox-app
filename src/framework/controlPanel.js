@@ -31,15 +31,18 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         this._level3.bindModel(model);
     }
 
+    _onUnlockStateChanged(win) {
+        const [, l2, l3] = win.getUnlockState();
+        if (l2) {
+            this._level2lock.locked = false;
+            this._level3lock.show_all();
+        }
+        if (l3)
+            this._level3lock.locked = false;
+    }
+
     bindWindow(win) {
-        win.connect('unlock-state-changed', () => {
-            const [, l2, l3] = win.getUnlockState();
-            if (l2) {
-                this._level2lock.locked = false;
-                this._level3lock.show_all();
-            }
-            if (l3)
-                this._level3lock.locked = false;
-        });
+        win.connect('unlock-state-changed', this._onUnlockStateChanged.bind(this));
+        this._onUnlockStateChanged(win);
     }
 });
