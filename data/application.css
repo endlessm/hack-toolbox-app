@@ -33,3 +33,7 @@ popover.error {
     background-color: #ffb1aa;
     padding: 12px;
 }
+
+.framework.toolbox-surrounding-window {
+    background-color: rgba(0, 0, 0, 0.6);
+}
