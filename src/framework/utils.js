@@ -135,7 +135,9 @@ function getModulesGResource() {
 // when possible.
 function rgbaToString(rgba) {
     function format(val) {
-        return (val * 255).toString(16).padStart(2, '0');
+        return Math.round(val * 255)
+            .toString(16)
+            .padStart(2, '0');
     }
     const HUMAN_READABLE_NAMES = {
         '#f0f8ff': 'alice blue',
