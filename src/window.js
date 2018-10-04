@@ -91,7 +91,7 @@ var ToolboxWindow = GObject.registerClass({
     getUnlockState() {
         if (!(this.target_bus_name in unlockState))
             unlockState[this.target_bus_name] = [false];
-        return unlockState[this.target_bus_name];
+        return unlockState[this.target_bus_name].slice();
     }
 
     unlock() {
