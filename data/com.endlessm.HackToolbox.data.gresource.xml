@@ -28,5 +28,10 @@
     <file preprocess="xml-stripblanks">framework/socialsciences.svg</file>
     <file preprocess="xml-stripblanks">framework/travel.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">hacktoolbox/toolbox.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">hackyballs/controlpanel.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">hackyballs/level1.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">hackyballs/level2.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">hackyballs/level3.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">hackyballs/sliders.ui</file>
   </gresource>
 </gresources>
