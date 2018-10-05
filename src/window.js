@@ -17,6 +17,15 @@ function _shouldEnableFlipBack(targetBusName) {
     }
 }
 
+function _extraToplevelCssClass(targetBusName) {
+    switch (targetBusName) {
+    case 'com.endlessm.dinosaurs.en':
+        return 'framework';
+    default:
+        return null;
+    }
+}
+
 var ToolboxWindow = GObject.registerClass({
     Properties: {
         'target-bus-name': GObject.ParamSpec.string('target-bus-name',
@@ -69,7 +78,11 @@ var ToolboxWindow = GObject.registerClass({
         Gtk.Container.prototype.add.call(this, this._lockscreen);
         this._lockscreen.add(this._toolbox_frame);
 
-        this.get_style_context().add_class('toolbox-surrounding-window');
+        const context = this.get_style_context();
+        context.add_class('toolbox-surrounding-window');
+        const extraClass = _extraToplevelCssClass(this.target_bus_name);
+        if (extraClass)
+            context.add_class(extraClass);
 
         const cheatcode = new Gio.SimpleAction({
             name: 'unlock-cheat',
