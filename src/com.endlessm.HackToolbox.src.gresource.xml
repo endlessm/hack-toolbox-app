@@ -16,6 +16,7 @@
     <file>hacktoolbox/hacktoolbox.js</file>
     <file>lockscreen.js</file>
     <file>main.js</file>
+    <file>toolbox.js</file>
     <file>window.js</file>
   </gresource>
 </gresources>

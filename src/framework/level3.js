@@ -4,6 +4,7 @@ const {Gdk, GObject, Gtk, Pango} = imports.gi;
 
 const {Codeview} = imports.codeview;
 const {logoIDToResource, resourceToLogoID, VALID_LOGOS} = imports.framework.logoImage;
+const {RaModel} = imports.framework.model;
 const Utils = imports.framework.utils;
 
 const VALID_ENUMS = {
@@ -21,25 +22,6 @@ const COLOR_PROPS = ['logo_color', 'main_color', 'accent_color', 'info_color',
     'border_color'];
 const ENUM_PROPS = ['text_transformation', 'card_order', 'card_layout',
     'image_filter', 'sounds_cursor_hover', 'sounds_cursor_click'];
-
-// FIXME: these are only valid for the dinosaurs app
-const DEFAULTS = {
-    logo_graphic: "'dinosaur'",
-    logo_color: "'white'",
-    main_color: "'white'",
-    accent_color: "'rgb(204,83,43)'",
-    info_color: "'rgb(244,217,79)'",
-    font: "'Skranji'",
-    font_size: '10',
-    border_width: '0',
-    border_color: "'black'",
-    text_transformation: "'normal'",
-    card_order: "'ordered'",
-    card_layout: "'tiledGrid'",
-    image_filter: "'none'",
-    sounds_cursor_hover: "'none'",
-    sounds_cursor_click: "'none'",
-};
 
 function _fontNameToFontDescription(name) {
     const desc = new Pango.FontDescription();
@@ -139,7 +121,7 @@ var FrameworkLevel3 = GObject.registerClass({
 
     _errorRecordAtAssignmentLocation(variable, message) {
         const {start, end} = this._codeview.findAssignmentLocation(variable);
-        return {start, end, message, fixme: String(DEFAULTS[variable])};
+        return {start, end, message, fixme: String(RaModel.CODE_DEFAULTS[variable])};
     }
 
     _searchCodeForErrors(scope) {
