@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <template class="HBLevel1" parent="GtkGrid">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkLabel">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">SELECT BACKGROUND</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+        <property name="width">5</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="background0">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">False</property>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixel_size">48</property>
+            <property name="icon_name">background1</property>
+            <property name="icon_size">6</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="background1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="draw_indicator">False</property>
+        <property name="group">background0</property>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixel_size">48</property>
+            <property name="icon_name">background2</property>
+            <property name="icon_size">6</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="background2">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="draw_indicator">False</property>
+        <property name="group">background0</property>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixel_size">48</property>
+            <property name="icon_name">background3</property>
+            <property name="icon_size">6</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">2</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="background3">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="draw_indicator">False</property>
+        <property name="group">background0</property>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixel_size">48</property>
+            <property name="icon_name">background4</property>
+            <property name="icon_size">6</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">3</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="background4">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="draw_indicator">False</property>
+        <property name="group">background0</property>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixel_size">48</property>
+            <property name="icon_name">background5</property>
+            <property name="icon_size">6</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">4</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+  </template>
+</interface>

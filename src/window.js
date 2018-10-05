@@ -6,6 +6,7 @@ const {Lockscreen} = imports.lockscreen;
 // This is later to be replaced by global game state.
 const unlockState = {
     'com.endlessm.dinosaurs.en': [false, false, false],
+    'com.endlessm.hackyballs': [false, false, false],
 };
 
 function _shouldEnableFlipBack(targetBusName) {
