@@ -27,7 +27,7 @@ const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 // FIXME: Determine one source of truth for paramspec defaults, default values,
 // and code defaults
 const _DEFAULTS = {
-    'logo-graphic': '/com/endlessm/HackToolbox/framework/dinosaur.svg',
+    'logo-graphic': 'dinosaur',
     'logo-color': new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0}),
     'main-color': new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0}),
     'accent-color': new Gdk.RGBA({red: 0.8, green: 0.3255, blue: 0.1686, alpha: 1.0}),
@@ -47,7 +47,7 @@ const _DEFAULTS = {
 var RaModel = GObject.registerClass({
     Properties: {
         'logo-graphic': GObject.ParamSpec.string('logo-graphic', 'Logo Graphic', '',
-            _propFlags, '/com/endlessm/HackToolbox/framework/dinosaur.svg'),
+            _propFlags, 'dinosaur'),
         'logo-color': GObject.ParamSpec.boxed('logo-color', 'Logo Color', '',
             _propFlags, Gdk.RGBA),
         'main-color': GObject.ParamSpec.boxed('main-color', 'Main Color', '',
@@ -270,7 +270,8 @@ var RaModel = GObject.registerClass({
     async _createGResource() {
         const tmpDir = Gio.File.new_for_path(GLib.get_user_runtime_dir());
 
-        const logoResource = Gio.File.new_for_uri(`resource://${this._logoGraphic}`);
+        const logoResource = Gio.File.new_for_uri(
+            `resource:///com/endlessm/HackToolbox/framework/${this._logoGraphic}.svg`);
         const logo = tmpDir.get_child('logo');
         await logoResource.copy_async(logo, Gio.FileCopyFlags.OVERWRITE, _PRIO,
             null, null);

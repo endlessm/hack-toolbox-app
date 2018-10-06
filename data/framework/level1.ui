@@ -9,20 +9,6 @@
     <property name="step_increment">1</property>
     <property name="page_increment">5</property>
   </object>
-  <object class="GtkPopover" id="logoMenu">
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkFlowBox" id="logoChoices">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="homogeneous">True</property>
-        <property name="column_spacing">6</property>
-        <property name="row_spacing">6</property>
-        <property name="min_children_per_line">4</property>
-        <property name="max_children_per_line">4</property>
-      </object>
-    </child>
-  </object>
   <template class="FrameworkLevel1" parent="GtkGrid">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -117,7 +103,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="popover">logoMenu</property>
                 <child>
                   <placeholder/>
                 </child>

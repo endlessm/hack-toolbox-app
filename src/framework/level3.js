@@ -3,7 +3,7 @@
 const {Gdk, GObject, Gtk, Pango} = imports.gi;
 
 const {Codeview} = imports.codeview;
-const {logoIDToResource, resourceToLogoID, VALID_LOGOS} = imports.framework.logoImage;
+const {logoIDToResource, VALID_LOGOS} = imports.framework.logoImage;
 const {RaModel} = imports.framework.model;
 const Utils = imports.framework.utils;
 
@@ -177,7 +177,7 @@ var FrameworkLevel3 = GObject.registerClass({
 // Theme
 /////////////////////
 
-logo_graphic = '${resourceToLogoID(this._model.logo_graphic)}'
+logo_graphic = '${this._model.logo_graphic}'
 logo_color = '${Utils.rgbaToString(this._model.logo_color)}'
 main_color = '${Utils.rgbaToString(this._model.main_color)}'
 accent_color = '${Utils.rgbaToString(this._model.accent_color)}'

@@ -23,6 +23,7 @@
     <file>hackyballs/level3.js</file>
     <file>lockscreen.js</file>
     <file>main.js</file>
+    <file>popupMenu.js</file>
     <file>toolbox.js</file>
     <file>window.js</file>
   </gresource>
