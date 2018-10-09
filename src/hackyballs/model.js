@@ -102,74 +102,100 @@ var HBModelGlobal = GObject.registerClass({
 
         radius0: GObject.ParamSpec.double(
             'radius0', 'radius0', '',
-            _propFlags, 0.0, 50.0, 30.0),
+            _propFlags, 10.0, 100.0, 30.0),
         gravity0: GObject.ParamSpec.double(
             'gravity0', 'gravity0', '',
-            _propFlags, 0.0, 0.8, 0.4),
+            _propFlags, -50.0, 50.0, 20.0),
         collision0: GObject.ParamSpec.double(
             'collision0', 'collision0', '',
             _propFlags, 0.0, 0.2, 0.2),
         friction0: GObject.ParamSpec.double(
             'friction0', 'friction0', '',
-            _propFlags, 0.0, 0.3, 0.045),
+            _propFlags, 0.0, 18.0, 2.0),
         socialForce00: GObject.ParamSpec.double(
             'socialForce00', 'socialForce00', '',
-            _propFlags, -0.5, 0.5, -0.15),
+            _propFlags, -30.0, 30.0, -8.0),
         socialForce01: GObject.ParamSpec.double(
             'socialForce01', 'socialForce01', '',
-            _propFlags, -0.5, 0.5, 0.0),
+            _propFlags, -30.0, 30.0, 0.0),
         socialForce02: GObject.ParamSpec.double(
             'socialForce02', 'socialForce02', '',
-            _propFlags, -0.5, 0.5, 0.0),
+            _propFlags, -30.0, 30.0, 0.0),
 
         radius1: GObject.ParamSpec.double(
             'radius1', 'radius1', '',
-            _propFlags, 0.0, 50.0, 50.0),
+            _propFlags, 10.0, 100.0, 50.0),
         gravity1: GObject.ParamSpec.double(
             'gravity1', 'gravity1', '',
-            _propFlags, 0.0, 0.8, 0.0),
+            _propFlags, -50.0, 50.0, 0.0),
         collision1: GObject.ParamSpec.double(
             'collision1', 'collision1', '',
             _propFlags, 0.0, 0.2, 0.2),
         friction1: GObject.ParamSpec.double(
             'friction1', 'friction1', '',
-            _propFlags, 0.0, 0.3, 0.099),
+            _propFlags, 0.0, 18.0, 5.0),
         socialForce10: GObject.ParamSpec.double(
             'socialForce10', 'socialForce10', '',
-            _propFlags, -0.5, 0.5, -0.5),
+            _propFlags, -30.0, 30.0, -20.0),
         socialForce11: GObject.ParamSpec.double(
             'socialForce11', 'socialForce11', '',
-            _propFlags, -0.5, 0.5, 0.0),
+            _propFlags, -30.0, 30.0, 0.0),
         socialForce12: GObject.ParamSpec.double(
             'socialForce12', 'socialForce12', '',
-            _propFlags, -0.5, 0.5, 0.5),
+            _propFlags, -30.0, 30.0, 20.0),
 
         radius2: GObject.ParamSpec.double(
             'radius2', 'radius2', '',
-            _propFlags, 0.0, 50.0, 30.0),
+            _propFlags, 10.0, 100.0, 30.0),
         gravity2: GObject.ParamSpec.double(
             'gravity2', 'gravity2', '',
-            _propFlags, 0.0, 0.8, 0.08),
+            _propFlags, -50.0, 50.0, 8.0),
         collision2: GObject.ParamSpec.double(
             'collision2', 'collision2', '',
             _propFlags, 0.0, 0.2, 0.2),
         friction2: GObject.ParamSpec.double(
             'friction2', 'friction2', '',
-            _propFlags, 0.0, 0.3, 0.099),
+            _propFlags, 0.0, 18.0, 10.0),
         socialForce20: GObject.ParamSpec.double(
             'socialForce20', 'socialForce20', '',
-            _propFlags, -0.5, 0.5, 0.0),
+            _propFlags, -30.0, 30.0, 0.0),
         socialForce21: GObject.ParamSpec.double(
             'socialForce21', 'socialForce21', '',
-            _propFlags, -0.5, 0.5, 0.0),
+            _propFlags, -30.0, 30.0, 0.0),
         socialForce22: GObject.ParamSpec.double(
             'socialForce22', 'socialForce22', '',
-            _propFlags, -0.5, 0.5, -0.5),
+            _propFlags, -30.0, 30.0, -10.0),
 
     },
 }, class HBModelGlobal extends HBModelBase {
     _init(props = {}) {
         super._init(props);
-        this.bindProperties();
+        this.bindProperties({
+            backgroundImageIndex: 'backgroundImageIndex',
+
+            radius0: 'radius-0',
+            gravity0: 'gravity-0',
+            collision0: 'collision-0',
+            friction0: 'friction-0',
+            socialForce00: 'socialForce-0-0',
+            socialForce01: 'socialForce-0-1',
+            socialForce02: 'socialForce-0-2',
+
+            radius1: 'radius-1',
+            gravity1: 'gravity-1',
+            collision1: 'collision-1',
+            friction1: 'friction-1',
+            socialForce10: 'socialForce-1-0',
+            socialForce11: 'socialForce-1-1',
+            socialForce12: 'socialForce-1-2',
+
+            radius2: 'radius-2',
+            gravity2: 'gravity-2',
+            collision2: 'collision-2',
+            friction2: 'friction-2',
+            socialForce20: 'socialForce-2-0',
+            socialForce21: 'socialForce-2-1',
+            socialForce22: 'socialForce-2-2',
+        });
     }
 });
