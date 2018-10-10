@@ -1,7 +1,7 @@
 /* exported HBLevel2 */
 
 const {GObject, Gtk} = imports.gi;
-const {HBSliders} = imports.hackyballs.sliders;
+const {HBObjectEditor} = imports.hackyballs.objectEditor;
 
 var HBLevel2 = GObject.registerClass({
     GTypeName: 'HBLevel2',
@@ -16,13 +16,13 @@ var HBLevel2 = GObject.registerClass({
 }, class HBLevel2 extends Gtk.Box {
     _init(props = {}) {
         super._init(props);
-        this._sliders0 = new HBSliders();
-        this._sliders1 = new HBSliders();
-        this._sliders2 = new HBSliders();
+        this._editor0 = new HBObjectEditor();
+        this._editor1 = new HBObjectEditor();
+        this._editor2 = new HBObjectEditor();
 
-        this._pageObject0.add(this._sliders0);
-        this._pageObject1.add(this._sliders1);
-        this._pageObject2.add(this._sliders2);
+        this._pageObject0.add(this._editor0);
+        this._pageObject1.add(this._editor1);
+        this._pageObject2.add(this._editor2);
 
         this._comboObjects.connect('changed', () => {
             this._onObjectChanged();
@@ -35,7 +35,7 @@ var HBLevel2 = GObject.registerClass({
     }
 
     bindModel(model) {
-        this._sliders0.bindModel(
+        this._editor0.bindModel(
             model, {
                 radius: 'radius0',
                 gravity: 'gravity0',
@@ -46,7 +46,7 @@ var HBLevel2 = GObject.registerClass({
                 social2: 'socialForce02',
             }
         );
-        this._sliders1.bindModel(
+        this._editor1.bindModel(
             model, {
                 radius: 'radius1',
                 gravity: 'gravity1',
@@ -57,7 +57,7 @@ var HBLevel2 = GObject.registerClass({
                 social2: 'socialForce12',
             }
         );
-        this._sliders2.bindModel(
+        this._editor2.bindModel(
             model, {
                 radius: 'radius2',
                 gravity: 'gravity2',

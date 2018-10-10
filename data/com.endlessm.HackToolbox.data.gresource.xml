@@ -33,5 +33,6 @@
     <file compressed="true" preprocess="xml-stripblanks">hackyballs/level2.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">hackyballs/level3.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">hackyballs/sliders.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">hackyballs/objectEditor.ui</file>
   </gresource>
 </gresources>
