@@ -13,6 +13,7 @@ var HBObjectEditor = GObject.registerClass({
         'adjustmentSocial0',
         'adjustmentSocial1',
         'adjustmentSocial2',
+        'buttonPhysics',
     ],
 }, class HBObjectEditor extends Gtk.Grid {
     bindModel(model, map) {
@@ -21,6 +22,7 @@ var HBObjectEditor = GObject.registerClass({
         model.bind_property(map['gravity'], this._adjustmentGravity, 'value', flags);
         model.bind_property(map['collision'], this._adjustmentCollision, 'value', flags);
         model.bind_property(map['friction'], this._adjustmentFriction, 'value', flags);
+        model.bind_property(map['physics'], this._buttonPhysics, 'active', flags);
         model.bind_property(map['social0'], this._adjustmentSocial0, 'value', flags);
         model.bind_property(map['social1'], this._adjustmentSocial1, 'value', flags);
         model.bind_property(map['social2'], this._adjustmentSocial2, 'value', flags);
