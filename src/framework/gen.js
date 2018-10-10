@@ -442,28 +442,29 @@ function generateYAML(model) {
     let layout;
     switch (model.card_layout) {
     case 'tiledGrid':
-        layout = 'Arrangement.TiledGrid';
+        layout = 'Arrangement.TiledGridNoise';
         break;
     case 'windshield':
-        layout = 'Arrangement.Windshield';
+        layout = 'Arrangement.WindshieldNoise';
         break;
     case 'piano':
-        layout = 'Arrangement.Piano';
+        layout = 'Arrangement.PianoNoise';
         break;
     case 'nest':
-        layout = 'Arrangement.Nest';
+        layout = 'Arrangement.NestNoise';
         break;
     case 'overflow':
-        layout = 'Arrangement.Overflow';
+        layout = 'Arrangement.OverflowNoise';
         break;
     default:
         throw new Error(`${model.card_layout}, oops`);
     }
 
+    let soundpackProperty = '';
     if (model.sounds_cursor_hover !== 'none')
-        layout += `Noise(click: false, soundpack: ${model.sounds_cursor_hover})`;
+        soundpackProperty = `soundpack: ${model.sounds_cursor_hover}`;
     else if (model.sounds_cursor_click !== 'none')
-        layout += `Noise(click: true, soundpack: ${model.sounds_cursor_click})`;
+        soundpackProperty = `soundpack: ${model.sounds_cursor_click}`;
 
     let textFilterProperty = '';
     let rotationProperty = '';
@@ -499,7 +500,12 @@ overrides:
 
   set-articles-order: *order
 
-  home-sets-arrangement: '${layout}'
+  home-sets-arrangement:
+    type: ${layout}
+    properties:
+      allow_navigation: ${model.hyperlinks}
+      click: ${model.sounds_cursor_click !== 'none'}
+      ${soundpackProperty}
 
   home-sets-card:
     type: ${defaultCard}

@@ -12,7 +12,7 @@ var FrameworkLevel2 = GObject.registerClass({
     Template: 'resource:///com/endlessm/HackToolbox/framework/level2.ui',
     Children: ['leftInnerGrid', 'rightInnerGrid'],
     InternalChildren: ['cipherAdjustment', 'cipherSlider', 'effectButton',
-        'filterButton'],
+        'filterButton', 'hyperlinksSwitch'],
 }, class FrameworkLevel2 extends Gtk.Grid {
     _init(props = {}) {
         super._init(props);
@@ -35,10 +35,6 @@ var FrameworkLevel2 = GObject.registerClass({
 
         this._cipherSlider.connect('format-value', (scale, value) =>
             `A→${String.fromCharCode(value + 'A'.charCodeAt())}`);
-
-        // temporarily hide widgets that don't correspond to model properties
-        this.rightInnerGrid.get_child_at(0, 1).hide();
-        this.rightInnerGrid.get_child_at(1, 1).hide();
     }
 
     bindModel(model) {
@@ -46,6 +42,7 @@ var FrameworkLevel2 = GObject.registerClass({
         model.bind_property('text-transformation', this._effectGroup, 'value', flags);
         model.bind_property('image-filter', this._filterGroup, 'value', flags);
         model.bind_property('text-cipher', this._cipherAdjustment, 'value', flags);
+        model.bind_property('hyperlinks', this._hyperlinksSwitch, 'active', flags);
 
         this._model = model;
     }

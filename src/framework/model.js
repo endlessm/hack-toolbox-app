@@ -42,6 +42,7 @@ const _DEFAULTS = {
     'image-filter': 'none',
     'sounds-cursor-hover': 'none',
     'sounds-cursor-click': 'none',
+    hyperlinks: true,
 };
 
 var RaModel = GObject.registerClass({
@@ -80,6 +81,8 @@ var RaModel = GObject.registerClass({
             _propFlags, 'none'),
         'text-cipher': GObject.ParamSpec.uint('text-cipher', 'Text Cipher', '',
             _propFlags, 0, 25, 0),
+        hyperlinks: GObject.ParamSpec.boolean('hyperlinks', 'Hyperlinks', '',
+            _propFlags, true),
     },
 }, class RaModel extends GObject.Object {
     get logo_graphic() {
@@ -268,6 +271,17 @@ var RaModel = GObject.registerClass({
         this.notify('text-cipher');
     }
 
+    get hyperlinks() {
+        return this._hyperlinks;
+    }
+
+    set hyperlinks(value) {
+        if ('_hyperlinks' in this && this._hyperlinks === value)
+            return;
+        this._hyperlinks = value;
+        this.notify('hyperlinks');
+    }
+
     _createCSS() {
         const scss = Gen.generateSCSS(this);
         return Utils.transformStringToFD(scss,
@@ -368,4 +382,5 @@ RaModel.CODE_DEFAULTS = {
     image_filter: "'none'",
     sounds_cursor_hover: "'none'",
     sounds_cursor_click: "'none'",
+    hyperlinks: 'yes',
 };
