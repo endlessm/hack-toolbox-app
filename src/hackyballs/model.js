@@ -124,6 +124,9 @@ var HBModelGlobal = GObject.registerClass({
         socialForce02: GObject.ParamSpec.double(
             'socialForce02', 'socialForce02', '',
             _propFlags, -30.0, 30.0, 0.0),
+        imageIndex0: GObject.ParamSpec.uint(
+            'imageIndex0', 'imageIndex0', '',
+            _propFlags, 0, 8, 0),
 
         radius1: GObject.ParamSpec.double(
             'radius1', 'radius1', '',
@@ -149,6 +152,9 @@ var HBModelGlobal = GObject.registerClass({
         socialForce12: GObject.ParamSpec.double(
             'socialForce12', 'socialForce12', '',
             _propFlags, -30.0, 30.0, 20.0),
+        imageIndex1: GObject.ParamSpec.uint(
+            'imageIndex1', 'imageIndex1', '',
+            _propFlags, 0, 8, 1),
 
         radius2: GObject.ParamSpec.double(
             'radius2', 'radius2', '',
@@ -174,6 +180,9 @@ var HBModelGlobal = GObject.registerClass({
         socialForce22: GObject.ParamSpec.double(
             'socialForce22', 'socialForce22', '',
             _propFlags, -30.0, 30.0, -10.0),
+        imageIndex2: GObject.ParamSpec.uint(
+            'imageIndex2', 'imageIndex2', '',
+            _propFlags, 0, 8, 2),
 
     },
 }, class HBModelGlobal extends HBModelBase {
@@ -190,6 +199,7 @@ var HBModelGlobal = GObject.registerClass({
             socialForce00: 'socialForce-0-0',
             socialForce01: 'socialForce-0-1',
             socialForce02: 'socialForce-0-2',
+            imageIndex0: 'imageIndex-0',
 
             radius1: 'radius-1',
             gravity1: 'gravity-1',
@@ -199,6 +209,7 @@ var HBModelGlobal = GObject.registerClass({
             socialForce10: 'socialForce-1-0',
             socialForce11: 'socialForce-1-1',
             socialForce12: 'socialForce-1-2',
+            imageIndex1: 'imageIndex-1',
 
             radius2: 'radius-2',
             gravity2: 'gravity-2',
@@ -208,6 +219,7 @@ var HBModelGlobal = GObject.registerClass({
             socialForce20: 'socialForce-2-0',
             socialForce21: 'socialForce-2-1',
             socialForce22: 'socialForce-2-2',
+            imageIndex2: 'imageIndex-2',
         });
     }
 });

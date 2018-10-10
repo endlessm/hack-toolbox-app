@@ -45,6 +45,10 @@ var HBLevel2 = GObject.registerClass({
                 social0: 'socialForce00',
                 social1: 'socialForce01',
                 social2: 'socialForce02',
+                skin: 'imageIndex0',
+                skin0: 'imageIndex0',
+                skin1: 'imageIndex1',
+                skin2: 'imageIndex2',
             }
         );
         this._editor1.bindModel(
@@ -57,6 +61,10 @@ var HBLevel2 = GObject.registerClass({
                 social0: 'socialForce10',
                 social1: 'socialForce11',
                 social2: 'socialForce12',
+                skin: 'imageIndex1',
+                skin0: 'imageIndex0',
+                skin1: 'imageIndex1',
+                skin2: 'imageIndex2',
             }
         );
         this._editor2.bindModel(
@@ -69,6 +77,10 @@ var HBLevel2 = GObject.registerClass({
                 social0: 'socialForce20',
                 social1: 'socialForce21',
                 social2: 'socialForce22',
+                skin: 'imageIndex2',
+                skin0: 'imageIndex0',
+                skin1: 'imageIndex1',
+                skin2: 'imageIndex2',
             }
         );
     }
