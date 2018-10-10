@@ -16,11 +16,9 @@
     <file>hacktoolbox/hacktoolbox.js</file>
     <file>hackyballs/controlpanel.js</file>
     <file>hackyballs/model.js</file>
-    <file>hackyballs/sliders.js</file>
     <file>hackyballs/toolbox.js</file>
     <file>hackyballs/level1.js</file>
     <file>hackyballs/level2.js</file>
-    <file>hackyballs/level3.js</file>
     <file>hackyballs/objectEditor.js</file>
     <file>hackyballs/skinImage.js</file>
     <file>lockscreen.js</file>
