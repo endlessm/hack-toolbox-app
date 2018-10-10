@@ -10,6 +10,7 @@ const Config = imports.framework.config;
 const HistoryStore = imports.framework.historyStore;
 const Module = imports.framework.interfaces.module;
 const TextFilters = custom_modules.textFilters;
+const TextProcessing = custom_modules.textProcessing;
 const Utils = imports.framework.utils;
 
 const _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
@@ -21,6 +22,14 @@ var HackableSearch = new Module.Class({
         textfilter: GObject.ParamSpec.string('textfilter', 'Text filter', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             'normal'),
+        rotation: GObject.ParamSpec.uint('rotation', 'Rotation',
+            'Number of positions to advance each letter in the string',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, 25, 0),
+        decodefunc: GObject.ParamSpec.string('decodefunc', 'Decode Function',
+            'Source code of function to evaluate to decode the text',
+            GObject.ParamFlags.WRITABLE | GObject.ParamFlags.CONSTRUCT,
+            ''),
     },
 
     Template: 'resource:///com/endlessm/HackToolbox/CustomModules/banner/hackableSearch.ui',
@@ -32,9 +41,31 @@ var HackableSearch = new Module.Class({
             this._on_history_changed.bind(this));
     },
 
+    get rotation() {
+        return this._rotation;
+    },
+
+    set rotation(value) {
+        this._rotation = value;
+    },
+
+    get decodefunc() {
+        throw new Error('property not readable');
+    },
+
+    set decodefunc(value) {
+        if (!value) {
+            this._decodefunc = null;
+            return;
+        }
+        // eslint-disable-next-line no-new-func
+        this._decodefunc = new Function('letter', value);
+    },
+
     _processText(text) {
-        const decomposedText = text.normalize('NFKD');
-        return TextFilters[this.textfilter](decomposedText);
+        const caesar = TextProcessing.caesar(text, this._rotation,
+            this._decodefunc);
+        return TextFilters[this.textfilter](caesar);
     },
 
     _on_history_changed: function (store) {

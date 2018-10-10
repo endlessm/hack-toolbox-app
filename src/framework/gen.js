@@ -466,14 +466,19 @@ function generateYAML(model) {
         layout += `Noise(click: true, soundpack: ${model.sounds_cursor_click})`;
 
     let textFilterProperty = '';
+    let rotationProperty = '';
+    let shorthandProperties = '';
     let defaultCard = 'Card.Default';
     let titleCard = 'Card.Title';
     let dynamicBanner = 'Banner.Dynamic';
     let searchBanner = 'Banner.Search';
-    if (model.text_transformation !== 'normal' || model.image_filter !== 'none') {
+    if (model.text_transformation !== 'normal' || model.image_filter !== 'none' ||
+        model.text_cipher !== 0) {
         defaultCard = 'Card.HackableDefault';
         titleCard = 'Card.HackableTitle';
         textFilterProperty = `textfilter: ${model.text_transformation}`;
+        rotationProperty = `rotation: ${model.text_cipher}`;
+        shorthandProperties = `${textFilterProperty}, ${rotationProperty}`;
         dynamicBanner = 'Banner.HackableDynamic';
         searchBanner = 'Banner.HackableSearch';
     }
@@ -487,6 +492,7 @@ overrides:
       valign: center
       halign: center
       ${textFilterProperty}
+      ${rotationProperty}
 
   home-sets-order: &order
     shortdef: ${order}
@@ -502,17 +508,22 @@ overrides:
         - 0
         - 1
       ${textFilterProperty}
+      ${rotationProperty}
 
   root.window.content.content.content.set-page.sidebar.content.arrangement.card:
-    shortdef: '${titleCard}(${textFilterProperty})'
+    shortdef: '${titleCard}(${shorthandProperties})'
   root.window.content.content.content.set-page.content.card:
-    shortdef: '${titleCard}(max-title-lines: 5, ${textFilterProperty})'
+    type: ${titleCard}
+    properties:
+      max-title-lines: 5
+      ${textFilterProperty}
+      ${rotationProperty}
   root.window.content.content.content.search-page.sidebar.content.arrangement.card:
-    shortdef: '${titleCard}(${textFilterProperty})'
+    shortdef: '${titleCard}(${shorthandProperties})'
   root.window.content.content.content.search-page.content:
-    shortdef: '${searchBanner}(${textFilterProperty})'
+    shortdef: '${searchBanner}(${shorthandProperties})'
   root.window.content.content.content.article-page.sidebar.content.arrangement.card:
-    shortdef: '${titleCard}(${textFilterProperty})'
+    shortdef: '${titleCard}(${shorthandProperties})'
 ---
 !import 'thematic'
 `;

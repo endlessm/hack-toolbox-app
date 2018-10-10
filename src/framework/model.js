@@ -78,6 +78,8 @@ var RaModel = GObject.registerClass({
         'sounds-cursor-click': GObject.ParamSpec.string('sounds-cursor-click',
             'Sounds on Cursor Click', '',
             _propFlags, 'none'),
+        'text-cipher': GObject.ParamSpec.uint('text-cipher', 'Text Cipher', '',
+            _propFlags, 0, 25, 0),
     },
 }, class RaModel extends GObject.Object {
     get logo_graphic() {
@@ -253,6 +255,17 @@ var RaModel = GObject.registerClass({
             this._soundsCursorHover = 'none';
             this.notify('sounds-cursor-hover');
         }
+    }
+
+    get text_cipher() {
+        return this._textCipher;
+    }
+
+    set text_cipher(value) {
+        if ('_textCipher' in this && this._textCipher === value)
+            return;
+        this._textCipher = value;
+        this.notify('text-cipher');
     }
 
     _createCSS() {
