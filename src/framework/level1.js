@@ -1,57 +1,76 @@
 /* exported FrameworkLevel1 */
 
 const {GObject, Gtk} = imports.gi;
+const Gettext = imports.gettext;
+
 const {logoIDToResource, LogoImage, VALID_LOGOS} = imports.framework.logoImage;
+const {PopupMenu} = imports.popupMenu;
+
+const _ = Gettext.gettext;
 
 var FrameworkLevel1 = GObject.registerClass({
     GTypeName: 'FrameworkLevel1',
     Template: 'resource:///com/endlessm/HackToolbox/framework/level1.ui',
-    InternalChildren: ['accentColorButton', 'fontButton', 'fontSizeAdjustment',
-        'infoColorButton', 'logoButton', 'logoChoices', 'logoColorButton',
-        'logoMenu', 'mainColorButton'],
+    Children: ['leftInnerGrid', 'rightInnerGrid'],
+    InternalChildren: ['accentColorButton', 'borderColorButton',
+        'borderWidthAdjustment', 'clickSoundChooser', 'fontButton',
+        'fontSizeAdjustment', 'hoverSoundChooser', 'infoColorButton',
+        'layoutButton', 'logoButton', 'logoColorButton', 'mainColorButton',
+        'orderButton'],
 }, class FrameworkLevel1 extends Gtk.Grid {
     _init(props = {}) {
         super._init(props);
 
-        VALID_LOGOS.forEach(name => {
-            const resource = logoIDToResource(name);
-            const widget = new LogoImage({resource, visible: true});
-            this._logoChoices.add(widget);
-        });
-        this._logoImage = new LogoImage({
-            resource: '/com/endlessm/HackToolbox/framework/dinosaur.svg',
-            visible: true,
-        });
-        this._logoButton.add(this._logoImage);
+        this._layoutGroup = new PopupMenu(this._layoutButton, {
+            tiledGrid: 'tiled-grid-symbolic',
+            windshield: 'windshield-symbolic',
+            piano: 'piano-symbolic',
+            nest: 'nest-symbolic',
+            overflow: 'overflow-symbolic',
+        }, Gtk.Image, 'iconName', {pixelSize: 50});
 
-        this._logoChoices.connect('child-activated',
-            this._onLogoChoicesActivated.bind(this));
+        const logoChoices = {};
+        VALID_LOGOS.forEach(name => {
+            logoChoices[name] = logoIDToResource(name);
+        });
+        this._logoGroup = new PopupMenu(this._logoButton, logoChoices,
+            LogoImage, 'resource', {});
+        this._logoGroup.value = 'dinosaur';
+
+        this._orderGroup = new PopupMenu(this._orderButton, {
+            ordered: _('Ordered'),
+            random: _('Random'),
+            az: _('A–Z'),
+            za: _('Z–A'),
+        }, Gtk.Label, 'label', {});
     }
 
     bindModel(model) {
         // Sync some properties from the target to the source, to begin with.
         // The default value of a Gdk.RGBA GObject property is null.
         model.accent_color = this._accentColorButton.rgba;
+        model.border_color = this._borderColorButton.rgba;
         model.info_color = this._infoColorButton.rgba;
         model.logo_color = this._logoColorButton.rgba;
+        model.logo_graphic = this._logoGroup.value;
         model.main_color = this._mainColorButton.rgba;
         model.font = this._fontButton.font_desc;
 
         const flags = GObject.BindingFlags.BIDIRECTIONAL;
         model.bind_property('accent-color', this._accentColorButton, 'rgba', flags);
+        model.bind_property('border-color', this._borderColorButton, 'rgba', flags);
+        model.bind_property('border-width', this._borderWidthAdjustment, 'value', flags);
+        model.bind_property('card-layout', this._layoutGroup, 'value', flags);
+        model.bind_property('card-order', this._orderGroup, 'value', flags);
         model.bind_property('font', this._fontButton, 'font-desc', flags);
         model.bind_property('font-size', this._fontSizeAdjustment, 'value', flags);
         model.bind_property('info-color', this._infoColorButton, 'rgba', flags);
         model.bind_property('logo-color', this._logoColorButton, 'rgba', flags);
-        model.bind_property('logo-graphic', this._logoImage, 'resource', flags);
+        model.bind_property('logo-graphic', this._logoGroup, 'value', flags);
         model.bind_property('main-color', this._mainColorButton, 'rgba', flags);
+        model.bind_property('sounds-cursor-click', this._clickSoundChooser, 'active-id', flags);
+        model.bind_property('sounds-cursor-hover', this._hoverSoundChooser, 'active-id', flags);
 
         this._model = model;
-    }
-
-    _onLogoChoicesActivated(widget, child) {
-        const choice = child.get_child();  // child of the FlowBoxChild
-        this._logoImage.resource = choice.resource;
-        this._logoMenu.popdown();
     }
 });

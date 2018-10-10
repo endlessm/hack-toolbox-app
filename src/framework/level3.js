@@ -3,7 +3,7 @@
 const {Gdk, GObject, Gtk, Pango} = imports.gi;
 
 const {Codeview} = imports.codeview;
-const {logoIDToResource, resourceToLogoID, VALID_LOGOS} = imports.framework.logoImage;
+const {logoIDToResource, VALID_LOGOS} = imports.framework.logoImage;
 const {RaModel} = imports.framework.model;
 const Utils = imports.framework.utils;
 
@@ -63,6 +63,13 @@ var FrameworkLevel3 = GObject.registerClass({
             sounds_cursor_click: null,
             sounds_cursor_hover: null,
             text_transformation: null,
+            hyperlinks: null,
+
+            // aliases for boolean literals
+            yes: true,
+            no: false,
+            on: true,
+            off: false,
         };
         try {
             // eslint-disable-next-line no-new-func
@@ -99,10 +106,10 @@ var FrameworkLevel3 = GObject.registerClass({
                 this._model.logo_graphic = logoIDToResource(scope.logo_graphic);
             if (scope.font !== null)
                 this._model.font = _fontNameToFontDescription(scope.font);
-            if (scope.border_width !== null)
-                this._model.border_width = scope.border_width;
-            if (scope.font_size !== null)
-                this._model.font_size = scope.font_size;
+            ['border_width', 'font_size', 'hyperlinks'].forEach(prop => {
+                if (scope[prop] !== null)
+                    this._model[prop] = scope[prop];
+            });
             COLOR_PROPS.forEach(prop => {
                 if (scope[prop] !== null) {
                     const rgba = new Gdk.RGBA();
@@ -168,6 +175,13 @@ var FrameworkLevel3 = GObject.registerClass({
             }
         });
 
+        if (scope.hyperlinks !== null && scope.hyperlinks !== true &&
+            scope.hyperlinks !== false) {
+            errors.push(this._errorRecordAtAssignmentLocation('hyperlinks',
+                `Unknown value ${scope.hyperlinks}: value must be yes or no, ` +
+                'on or off, true or false'));
+        }
+
         return errors;
     }
 
@@ -177,7 +191,7 @@ var FrameworkLevel3 = GObject.registerClass({
 // Theme
 /////////////////////
 
-logo_graphic = '${resourceToLogoID(this._model.logo_graphic)}'
+logo_graphic = '${this._model.logo_graphic}'
 logo_color = '${Utils.rgbaToString(this._model.logo_color)}'
 main_color = '${Utils.rgbaToString(this._model.main_color)}'
 accent_color = '${Utils.rgbaToString(this._model.accent_color)}'
@@ -197,6 +211,7 @@ card_layout = '${this._model.card_layout}'
 image_filter = '${this._model.image_filter}'
 sounds_cursor_hover = '${this._model.sounds_cursor_hover}'
 sounds_cursor_click = '${this._model.sounds_cursor_click}'
+hyperlinks = ${this._model.hyperlinks ? 'yes' : 'no'}
 `;
     }
 

@@ -8,6 +8,7 @@ const Card = imports.framework.interfaces.card;
 const Module = imports.framework.interfaces.module;
 const NavigationCard = imports.framework.interfaces.navigationCard;
 const TextFilters = custom_modules.textFilters;
+const TextProcessing = custom_modules.textProcessing;
 // Make sure included for glade template
 const ThemeableImage = imports.framework.widgets.themeableImage;
 const Utils = imports.framework.utils;
@@ -29,6 +30,14 @@ var HackableTitle = new Module.Class({
         textfilter: GObject.ParamSpec.string('textfilter', 'Text filter', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             'normal'),
+        rotation: GObject.ParamSpec.uint('rotation', 'Rotation',
+            'Number of positions to advance each letter in the string',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, 25, 0),
+        decodefunc: GObject.ParamSpec.string('decodefunc', 'Decode Function',
+            'Source code of function to evaluate to decode the text',
+            GObject.ParamFlags.WRITABLE | GObject.ParamFlags.CONSTRUCT,
+            ''),
     },
 
     Template: 'resource:///com/endlessm/HackToolbox/CustomModules/card/hackableTitle.ui',
@@ -48,9 +57,31 @@ var HackableTitle = new Module.Class({
         this._title_label.lines = this.max_title_lines;
     },
 
+    get rotation() {
+        return this._rotation;
+    },
+
+    set rotation(value) {
+        this._rotation = value;
+    },
+
+    get decodefunc() {
+        throw new Error('property not readable');
+    },
+
+    set decodefunc(value) {
+        if (!value) {
+            this._decodefunc = null;
+            return;
+        }
+        // eslint-disable-next-line no-new-func
+        this._decodefunc = new Function('letter', value);
+    },
+
     _processText(text) {
-        const decomposedText = text.normalize('NFKD');
-        return TextFilters[this.textfilter](decomposedText);
+        const caesar = TextProcessing.caesar(text, this._rotation,
+            this._decodefunc);
+        return TextFilters[this.textfilter](caesar);
     },
 
     // View override

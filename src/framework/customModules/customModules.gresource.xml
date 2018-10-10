@@ -43,5 +43,6 @@
     <file compressed="true">noiseArrangement.js</file>
     <file compressed="true">order/random.js</file>
     <file compressed="true">textFilters.js</file>
+    <file compressed="true">textProcessing.js</file>
   </gresource>
 </gresources>

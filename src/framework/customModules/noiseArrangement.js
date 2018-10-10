@@ -20,6 +20,10 @@ function generateProto(Name, Extends, nchannels) {
             soundpack: GObject.ParamSpec.string('soundpack', 'Sound pack', '',
                 GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
                 ''),
+            'allow-navigation': GObject.ParamSpec.boolean('allow-navigation',
+                'Allow navigation', '',
+                GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+                true),
         },
 
         _init(props = {}) {
@@ -31,7 +35,7 @@ function generateProto(Name, Extends, nchannels) {
                 soundpack: this._soundpack,
             });
 
-            if (this._click) {
+            if (!this._allowNavigation) {
                 // Prevent clicks on cards from actually going anywhere
                 // Priority slightly lower than the dispatcher priority
                 GLib.idle_add(Gtk.PRIORITY_RESIZE - 9, () => {
@@ -57,6 +61,14 @@ function generateProto(Name, Extends, nchannels) {
             this._soundpack = value;
         },
 
+        get allow_navigation() {
+            return this._allowNavigation;
+        },
+
+        set allow_navigation(value) {
+            this._allowNavigation = value;
+        },
+
         // Module override
         drop_submodule() {
             this._audioPlayer.cleanup();
@@ -65,17 +77,19 @@ function generateProto(Name, Extends, nchannels) {
         // Override of the original Arrangement class
         pack_card(card) {
             const id = this._ncards++;
-            if (this._click) {
-                card.connect('clicked', () => this._audioPlayer.play(id));
-            } else {
-                card.connect('enter-notify-event', () => {
-                    this._audioPlayer.play(id);
-                    return Gdk.EVENT_PROPAGATE;
-                });
-                card.connect('leave-notify-event', () => {
-                    this._audioPlayer.stop(id);
-                    return Gdk.EVENT_PROPAGATE;
-                });
+            if (this._soundpack) {
+                if (this._click) {
+                    card.connect('clicked', () => this._audioPlayer.play(id));
+                } else {
+                    card.connect('enter-notify-event', () => {
+                        this._audioPlayer.play(id);
+                        return Gdk.EVENT_PROPAGATE;
+                    });
+                    card.connect('leave-notify-event', () => {
+                        this._audioPlayer.stop(id);
+                        return Gdk.EVENT_PROPAGATE;
+                    });
+                }
             }
             // eslint-disable-next-line no-restricted-syntax
             this.parent(card);

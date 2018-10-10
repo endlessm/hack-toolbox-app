@@ -27,7 +27,7 @@ const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 // FIXME: Determine one source of truth for paramspec defaults, default values,
 // and code defaults
 const _DEFAULTS = {
-    'logo-graphic': '/com/endlessm/HackToolbox/framework/dinosaur.svg',
+    'logo-graphic': 'dinosaur',
     'logo-color': new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0}),
     'main-color': new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0}),
     'accent-color': new Gdk.RGBA({red: 0.8, green: 0.3255, blue: 0.1686, alpha: 1.0}),
@@ -42,12 +42,13 @@ const _DEFAULTS = {
     'image-filter': 'none',
     'sounds-cursor-hover': 'none',
     'sounds-cursor-click': 'none',
+    hyperlinks: true,
 };
 
 var RaModel = GObject.registerClass({
     Properties: {
         'logo-graphic': GObject.ParamSpec.string('logo-graphic', 'Logo Graphic', '',
-            _propFlags, '/com/endlessm/HackToolbox/framework/dinosaur.svg'),
+            _propFlags, 'dinosaur'),
         'logo-color': GObject.ParamSpec.boxed('logo-color', 'Logo Color', '',
             _propFlags, Gdk.RGBA),
         'main-color': GObject.ParamSpec.boxed('main-color', 'Main Color', '',
@@ -78,6 +79,10 @@ var RaModel = GObject.registerClass({
         'sounds-cursor-click': GObject.ParamSpec.string('sounds-cursor-click',
             'Sounds on Cursor Click', '',
             _propFlags, 'none'),
+        'text-cipher': GObject.ParamSpec.uint('text-cipher', 'Text Cipher', '',
+            _propFlags, 0, 25, 0),
+        hyperlinks: GObject.ParamSpec.boolean('hyperlinks', 'Hyperlinks', '',
+            _propFlags, true),
     },
 }, class RaModel extends GObject.Object {
     get logo_graphic() {
@@ -255,6 +260,28 @@ var RaModel = GObject.registerClass({
         }
     }
 
+    get text_cipher() {
+        return this._textCipher;
+    }
+
+    set text_cipher(value) {
+        if ('_textCipher' in this && this._textCipher === value)
+            return;
+        this._textCipher = value;
+        this.notify('text-cipher');
+    }
+
+    get hyperlinks() {
+        return this._hyperlinks;
+    }
+
+    set hyperlinks(value) {
+        if ('_hyperlinks' in this && this._hyperlinks === value)
+            return;
+        this._hyperlinks = value;
+        this.notify('hyperlinks');
+    }
+
     _createCSS() {
         const scss = Gen.generateSCSS(this);
         return Utils.transformStringToFD(scss,
@@ -270,7 +297,8 @@ var RaModel = GObject.registerClass({
     async _createGResource() {
         const tmpDir = Gio.File.new_for_path(GLib.get_user_runtime_dir());
 
-        const logoResource = Gio.File.new_for_uri(`resource://${this._logoGraphic}`);
+        const logoResource = Gio.File.new_for_uri(
+            `resource:///com/endlessm/HackToolbox/framework/${this._logoGraphic}.svg`);
         const logo = tmpDir.get_child('logo');
         await logoResource.copy_async(logo, Gio.FileCopyFlags.OVERWRITE, _PRIO,
             null, null);
@@ -354,4 +382,5 @@ RaModel.CODE_DEFAULTS = {
     image_filter: "'none'",
     sounds_cursor_hover: "'none'",
     sounds_cursor_click: "'none'",
+    hyperlinks: 'yes',
 };
