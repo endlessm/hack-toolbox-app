@@ -112,6 +112,9 @@ var HBModelGlobal = GObject.registerClass({
         friction0: GObject.ParamSpec.double(
             'friction0', 'friction0', '',
             _propFlags, 0.0, 18.0, 2.0),
+        usePhysics0: GObject.ParamSpec.boolean(
+            'usePhysics0', 'usePhysics0', 'usePhysics0',
+            _propFlags, true),
         socialForce00: GObject.ParamSpec.double(
             'socialForce00', 'socialForce00', '',
             _propFlags, -30.0, 30.0, -8.0),
@@ -134,6 +137,9 @@ var HBModelGlobal = GObject.registerClass({
         friction1: GObject.ParamSpec.double(
             'friction1', 'friction1', '',
             _propFlags, 0.0, 18.0, 5.0),
+        usePhysics1: GObject.ParamSpec.boolean(
+            'usePhysics1', 'usePhysics1', 'usePhysics1',
+            _propFlags, true),
         socialForce10: GObject.ParamSpec.double(
             'socialForce10', 'socialForce10', '',
             _propFlags, -30.0, 30.0, -20.0),
@@ -156,6 +162,9 @@ var HBModelGlobal = GObject.registerClass({
         friction2: GObject.ParamSpec.double(
             'friction2', 'friction2', '',
             _propFlags, 0.0, 18.0, 10.0),
+        usePhysics2: GObject.ParamSpec.boolean(
+            'usePhysics2', 'usePhysics2', 'usePhysics2',
+            _propFlags, true),
         socialForce20: GObject.ParamSpec.double(
             'socialForce20', 'socialForce20', '',
             _propFlags, -30.0, 30.0, 0.0),
@@ -177,6 +186,7 @@ var HBModelGlobal = GObject.registerClass({
             gravity0: 'gravity-0',
             collision0: 'collision-0',
             friction0: 'friction-0',
+            usePhysics0: 'usePhysics-0',
             socialForce00: 'socialForce-0-0',
             socialForce01: 'socialForce-0-1',
             socialForce02: 'socialForce-0-2',
@@ -185,6 +195,7 @@ var HBModelGlobal = GObject.registerClass({
             gravity1: 'gravity-1',
             collision1: 'collision-1',
             friction1: 'friction-1',
+            usePhysics1: 'usePhysics-1',
             socialForce10: 'socialForce-1-0',
             socialForce11: 'socialForce-1-1',
             socialForce12: 'socialForce-1-2',
@@ -193,6 +204,7 @@ var HBModelGlobal = GObject.registerClass({
             gravity2: 'gravity-2',
             collision2: 'collision-2',
             friction2: 'friction-2',
+            usePhysics2: 'usePhysics-2',
             socialForce20: 'socialForce-2-0',
             socialForce21: 'socialForce-2-1',
             socialForce22: 'socialForce-2-2',

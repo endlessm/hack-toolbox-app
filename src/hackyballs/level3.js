@@ -112,12 +112,13 @@ backgroundImageIndex = ${this._model.backgroundImageIndex}
 // Object Parameters
 /////////////////////
 
-// Object 1
+// Object 0
 
 radius0 = ${this._model.radius0}
 gravity0 = ${this._model.gravity0}
 collision0 = ${this._model.collision0}
 friction0 = ${this._model.friction0}
+usePhysics0 = ${this._model.usePhysics0}
 socialForce00 = ${this._model.socialForce00}
 socialForce01 = ${this._model.socialForce01}
 socialForce02 = ${this._model.socialForce02}
@@ -128,6 +129,7 @@ radius1 = ${this._model.radius1}
 gravity1 = ${this._model.gravity1}
 collision1 = ${this._model.collision1}
 friction1 = ${this._model.friction1}
+usePhysics1 = ${this._model.usePhysics1}
 socialForce10 = ${this._model.socialForce10}
 socialForce11 = ${this._model.socialForce11}
 socialForce12 = ${this._model.socialForce12}
@@ -138,6 +140,7 @@ radius2 = ${this._model.radius2}
 gravity2 = ${this._model.gravity2}
 collision2 = ${this._model.collision2}
 friction2 = ${this._model.friction2}
+usePhysics2 = ${this._model.usePhysics2}
 socialForce20 = ${this._model.socialForce20}
 socialForce21 = ${this._model.socialForce21}
 socialForce22 = ${this._model.socialForce22}
