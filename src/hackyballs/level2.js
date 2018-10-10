@@ -109,10 +109,10 @@ var HBLevel2 = GObject.registerClass({
 backgroundImageIndex = ${this._model.backgroundImageIndex}
 
 /////////////////////
-// Object Parameters
+// Balls Parameters
 /////////////////////
 
-// Object 0
+// Balls 0
 
 radius0 = ${this._model.radius0}
 gravity0 = ${this._model.gravity0}
@@ -124,7 +124,7 @@ socialForce01 = ${this._model.socialForce01}
 socialForce02 = ${this._model.socialForce02}
 imageIndex0 = ${this._model.imageIndex0}
 
-// Object 1
+// Balls 1
 
 radius1 = ${this._model.radius1}
 gravity1 = ${this._model.gravity1}
@@ -136,7 +136,7 @@ socialForce11 = ${this._model.socialForce11}
 socialForce12 = ${this._model.socialForce12}
 imageIndex1 = ${this._model.imageIndex1}
 
-// Object 2
+// Balls 2
 
 radius2 = ${this._model.radius2}
 gravity2 = ${this._model.gravity2}

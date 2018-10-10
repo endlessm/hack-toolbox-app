@@ -7,10 +7,11 @@
     <property name="can_focus">False</property>
     <property name="orientation">vertical</property>
     <child>
-      <object class="GtkLabel">
+      <object class="GtkHeaderBar">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">CODE</property>
+        <property name="title" translatable="yes">Code</property>
+        <property name="has_subtitle">False</property>
       </object>
       <packing>
         <property name="expand">False</property>
