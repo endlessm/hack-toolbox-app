@@ -31,9 +31,10 @@
     <file compressed="true" preprocess="xml-stripblanks">hackyballs/controlpanel.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">hackyballs/level1.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">hackyballs/level2.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">hackyballs/level3.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">hackyballs/sliders.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">hackyballs/objectEditor.ui</file>
+    <file>hackyballs/backgrounds/0.png</file>
+    <file>hackyballs/backgrounds/1.png</file>
+    <file>hackyballs/backgrounds/2.png</file>
     <file>hackyballs/skins/0.png</file>
     <file>hackyballs/skins/1.png</file>
     <file>hackyballs/skins/2.png</file>
