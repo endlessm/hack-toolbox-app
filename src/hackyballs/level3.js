@@ -122,6 +122,7 @@ usePhysics0 = ${this._model.usePhysics0}
 socialForce00 = ${this._model.socialForce00}
 socialForce01 = ${this._model.socialForce01}
 socialForce02 = ${this._model.socialForce02}
+imageIndex0 = ${this._model.imageIndex0}
 
 // Object 1
 
@@ -133,6 +134,7 @@ usePhysics1 = ${this._model.usePhysics1}
 socialForce10 = ${this._model.socialForce10}
 socialForce11 = ${this._model.socialForce11}
 socialForce12 = ${this._model.socialForce12}
+imageIndex1 = ${this._model.imageIndex1}
 
 // Object 2
 
@@ -144,6 +146,7 @@ usePhysics2 = ${this._model.usePhysics2}
 socialForce20 = ${this._model.socialForce20}
 socialForce21 = ${this._model.socialForce21}
 socialForce22 = ${this._model.socialForce22}
+imageIndex2 = ${this._model.imageIndex2}
 `;
     }
 
