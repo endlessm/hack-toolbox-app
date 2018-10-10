@@ -5,28 +5,6 @@
     <file compressed="true" preprocess="xml-stripblanks">banner/hackableSearch.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">card/hackableDefault.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">card/hackableTitle.ui</file>
-    <!-- sounds from freesound.org -->
-    <!-- Note: for any production usage, we can't use the CC Sampling+ licensed
-    files. Commercial use is only allowed if sampling to use in another audio
-    work. The CC-BY files would need to be attributed in production. -->
-    <file>soundpacks/drumkit/0</file> <!--176980__snapper4298__kick-2-with-start.wav, CC-BY -->
-    <file>soundpacks/drumkit/1</file> <!--176997__snapper4298__snare-3.wav, CC-BY -->
-    <file>soundpacks/drumkit/2</file> <!--176977__snapper4298__closed-hat-1.wav, CC-BY -->
-    <file>soundpacks/drumkit/3</file> <!--176986__snapper4298__tom-low.wav, CC-BY -->
-    <file>soundpacks/drumkit/4</file> <!--176996__snapper4298__tom-hi.wav, CC-BY -->
-    <file>soundpacks/drumkit/5</file> <!--176979__snapper4298__crash-1.wav, CC-BY -->
-    <file>soundpacks/piano/0</file> <!--39177__jobro__piano-ff-030.wav, CC-BY -->
-    <file>soundpacks/piano/1</file> <!--39179__jobro__piano-ff-032.wav, CC-BY -->
-    <file>soundpacks/piano/2</file> <!--39181__jobro__piano-ff-034.wav, CC-BY -->
-    <file>soundpacks/piano/3</file> <!--39182__jobro__piano-ff-035.wav, CC-BY -->
-    <file>soundpacks/piano/4</file> <!--39184__jobro__piano-ff-037.wav, CC-BY -->
-    <file>soundpacks/piano/5</file> <!--39186__jobro__piano-ff-039.wav, CC-BY -->
-    <file>soundpacks/scifi/0</file> <!--112169__doffel__dief-omhoog.wav, CC Sampling+ -->
-    <file>soundpacks/scifi/1</file> <!--117037__jamalboi101__no-glue-included.mp3, CC-BY -->
-    <file>soundpacks/scifi/2</file> <!--35203__metamorphmuses__wierd-to-phonetone.wav, CC-BY-->
-    <file>soundpacks/scifi/3</file> <!--59552__kauaiboyrk__obsound-zipchopedvoice.wav, CC Sampling+ -->
-    <file>soundpacks/scifi/4</file> <!--59553__kauaiboyrk__obsound-tremoloagressivebeep.wav, CC Sampling+ -->
-    <file>soundpacks/scifi/5</file> <!--90030__tewell__oneascendingquack.wav, CC-BY -->
   </gresource>
   <gresource prefix="/app/js">
     <file compressed="true">arrangement/nest.js</file>
