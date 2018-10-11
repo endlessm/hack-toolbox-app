@@ -1,7 +1,7 @@
 /* exported RaModel */
 /* global pkg */
 
-const {Gdk, Gio, GLib, GObject, HackToolbox, Pango} = imports.gi;
+const {Gdk, Gio, GLib, GObject, HackToolbox} = imports.gi;
 const ByteArray = imports.byteArray;
 
 const Gen = imports.framework.gen;
@@ -33,7 +33,7 @@ const _DEFAULTS = {
     'main-color': new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0}),
     'accent-color': new Gdk.RGBA({red: 0.8, green: 0.3255, blue: 0.1686, alpha: 1.0}),
     'info-color': new Gdk.RGBA({red: 0.9569, green: 0.851, blue: 0.3098, alpha: 1.0}),
-    font: Pango.FontDescription.from_string('Skranji'),
+    font: 'Skranji',
     'font-size': 10,
     'border-width': 0,
     'border-color': new Gdk.RGBA({red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0}),
@@ -58,8 +58,7 @@ var RaModel = GObject.registerClass({
             _propFlags, Gdk.RGBA),
         'info-color': GObject.ParamSpec.boxed('info-color', 'Info Color', '',
             _propFlags, Gdk.RGBA),
-        font: GObject.ParamSpec.boxed('font', 'Font', '', _propFlags,
-            Pango.FontDescription),
+        font: GObject.ParamSpec.string('font', 'Font', '', _propFlags, 'Skranji'),
         'font-size': GObject.ParamSpec.uint('font-size', 'Font Size', '',
             _propFlags, 0, GLib.MAXUINT32, 10),
         'border-width': GObject.ParamSpec.uint('border-width', 'Border Width', '',
@@ -397,3 +396,16 @@ RaModel.CODE_DEFAULTS = {
     sounds_cursor_click: "'none'",
     hyperlinks: 'yes',
 };
+
+// FIXME This should turn into a function that provides available fonts in each
+// flatpak app's sandbox, possibly hardcoded
+RaModel.FONT_LIST = [
+    'Fira Sans',
+    'HammersmithOne',
+    'Lato',
+    'Marcellus SC',
+    'Pathway Gothic One',
+    'Podkova',
+    'Raleway',
+    'Skranji',
+];
