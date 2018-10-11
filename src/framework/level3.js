@@ -3,7 +3,7 @@
 const {Gdk, GObject, Gtk, Pango} = imports.gi;
 
 const {Codeview} = imports.codeview;
-const {logoIDToResource, VALID_LOGOS} = imports.framework.logoImage;
+const {VALID_LOGOS} = imports.framework.logoImage;
 const {RaModel} = imports.framework.model;
 const Utils = imports.framework.utils;
 
@@ -103,7 +103,7 @@ var FrameworkLevel3 = GObject.registerClass({
 
         try {
             if (scope.logo_graphic !== null)
-                this._model.logo_graphic = logoIDToResource(scope.logo_graphic);
+                this._model.logo_graphic = scope.logo_graphic;
             if (scope.font !== null)
                 this._model.font = _fontNameToFontDescription(scope.font);
             ['border_width', 'font_size', 'hyperlinks'].forEach(prop => {
