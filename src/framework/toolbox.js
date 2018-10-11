@@ -1,6 +1,6 @@
 /* exported FrameworkToolbox */
 
-const {GObject} = imports.gi;
+const {GLib, GObject} = imports.gi;
 const Gettext = imports.gettext;
 
 const {RaControlPanel} = imports.framework.controlPanel;
@@ -11,6 +11,8 @@ const _ = Gettext.gettext;
 
 var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Toolbox {
     _init(props = {}) {
+        this._timeout = null;
+
         props.title = _('Hack Modules');
         super._init(props);
         this.show_all();
@@ -22,14 +24,28 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
         this.connect('reset', () => this._model.reset());
 
         this._controlPanel.bindModel(this._model);
+
+        this.setBusy(false);
     }
 
     // See DefaultHackToolbox
     applyChanges(busName, objectPath) {
+        this.setBusy(true);
+        this._timeout = GLib.timeout_add_seconds(GLib.PRIORITY_LOW, 5, () => {
+            this.setBusy(false);
+            this._timeout = null;
+            return GLib.SOURCE_REMOVE;
+        });
         return this._model.launch(busName, objectPath);
     }
 
     bindWindow(win) {
         this._controlPanel.bindWindow(win);
+    }
+
+    // parent class override
+    shutdown() {
+        if (this._timeout)
+            GLib.Source.remove(this._timeout);
     }
 });
