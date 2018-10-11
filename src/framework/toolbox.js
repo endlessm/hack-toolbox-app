@@ -26,6 +26,8 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
         this._controlPanel.bindModel(this._model);
 
         this.setBusy(false);
+
+        this._model.snapshot();  // ignore any initial syncing
     }
 
     // See DefaultHackToolbox
@@ -41,6 +43,9 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
 
     bindWindow(win) {
         this._controlPanel.bindWindow(win);
+        this._model.connect('notify::changed', () => {
+            win.enableFlipBack = this._model.changed;
+        });
     }
 
     // parent class override

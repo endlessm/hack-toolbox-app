@@ -9,15 +9,6 @@ const unlockState = {
     'com.endlessm.hackyballs': [false, false],
 };
 
-function _shouldEnableFlipBack(targetBusName) {
-    switch (targetBusName) {
-    case 'com.endlessm.dinosaurs.en':
-        return true;
-    default:
-        return false;
-    }
-}
-
 function _extraToplevelCssClass(targetBusName) {
     switch (targetBusName) {
     case 'com.endlessm.dinosaurs.en':
@@ -57,7 +48,7 @@ var ToolboxWindow = GObject.registerClass({
             name: 'flip-back',
         });
         this._flipBack.connect('activate', this._onFlipBack.bind(this));
-        this.enableFlipBack = _shouldEnableFlipBack(this.target_bus_name);
+        this.enableFlipBack = false;
 
         const screen = this.get_screen();
         this.set_visual(screen.get_rgba_visual());
