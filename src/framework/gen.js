@@ -6,7 +6,6 @@ function generateSCSS(model) {
     const infoColor = model.info_color.to_string();
     const logoColor = model.logo_color.to_string();
     const mainColor = model.main_color.to_string();
-    const font = model.font.get_family();
 
     let overlayFilterProperties;
     switch (model.image_filter) {
@@ -127,7 +126,7 @@ $primary-dark-color: darken(${mainColor}, 30%);
 $accent-light-color: ${accentColor};
 $accent-dark-color: darken(${accentColor}, 30%);
 
-$title-font: '${font}';
+$title-font: '${model.font}';
 $logo-font: 'Patrick Hand SC';
 
 @import 'thematic';

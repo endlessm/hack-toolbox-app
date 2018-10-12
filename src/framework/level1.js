@@ -5,6 +5,7 @@ const Gettext = imports.gettext;
 
 const {logoIDToResource, LogoImage, VALID_LOGOS} = imports.framework.logoImage;
 const {PopupMenu} = imports.popupMenu;
+const {RaModel} = imports.framework.model;
 
 const _ = Gettext.gettext;
 
@@ -13,13 +14,23 @@ var FrameworkLevel1 = GObject.registerClass({
     Template: 'resource:///com/endlessm/HackToolbox/framework/level1.ui',
     Children: ['leftInnerGrid', 'rightInnerGrid'],
     InternalChildren: ['accentColorButton', 'borderColorButton',
-        'borderWidthAdjustment', 'clickSoundChooser', 'fontButton',
-        'fontSizeAdjustment', 'hoverSoundChooser', 'infoColorButton',
-        'layoutButton', 'logoButton', 'logoColorButton', 'mainColorButton',
-        'orderButton'],
+        'borderWidthAdjustment', 'clickSoundChooser', 'fontChooser',
+        'fontRenderer', 'fontSizeAdjustment', 'hoverSoundChooser',
+        'infoColorButton', 'layoutButton', 'logoButton', 'logoColorButton',
+        'mainColorButton', 'orderButton'],
 }, class FrameworkLevel1 extends Gtk.Grid {
     _init(props = {}) {
         super._init(props);
+
+        const fontList = Gtk.ListStore.new([GObject.TYPE_STRING]);
+        RaModel.FONT_LIST.forEach(fontFamily => {
+            const iter = fontList.append();
+            fontList.set(iter, [0], [fontFamily]);
+        });
+        this._fontChooser.model = fontList;
+        this._fontChooser.idColumn = 0;
+        this._fontChooser.add_attribute(this._fontRenderer, 'text', 0);
+        this._fontChooser.add_attribute(this._fontRenderer, 'family', 0);
 
         this._layoutGroup = new PopupMenu(this._layoutButton, {
             tiledGrid: 'tiled-grid-symbolic',
@@ -54,7 +65,6 @@ var FrameworkLevel1 = GObject.registerClass({
         model.logo_color = this._logoColorButton.rgba;
         model.logo_graphic = this._logoGroup.value;
         model.main_color = this._mainColorButton.rgba;
-        model.font = this._fontButton.font_desc;
 
         const flags = GObject.BindingFlags.BIDIRECTIONAL;
         model.bind_property('accent-color', this._accentColorButton, 'rgba', flags);
@@ -62,7 +72,8 @@ var FrameworkLevel1 = GObject.registerClass({
         model.bind_property('border-width', this._borderWidthAdjustment, 'value', flags);
         model.bind_property('card-layout', this._layoutGroup, 'value', flags);
         model.bind_property('card-order', this._orderGroup, 'value', flags);
-        model.bind_property('font', this._fontButton, 'font-desc', flags);
+        model.bind_property('font', this._fontChooser, 'active-id',
+            flags | GObject.BindingFlags.SYNC_CREATE);
         model.bind_property('font-size', this._fontSizeAdjustment, 'value', flags);
         model.bind_property('info-color', this._infoColorButton, 'rgba', flags);
         model.bind_property('logo-color', this._logoColorButton, 'rgba', flags);

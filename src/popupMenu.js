@@ -42,6 +42,7 @@ var PopupMenu = GObject.registerClass({
             this._choices.add(choice);
         });
 
+        this._button.connect('clicked', this._onClicked.bind(this));
         this._choices.connect('child-activated', this._onChoicesActivated.bind(this));
 
         this._itemProp = itemProp;
@@ -76,7 +77,15 @@ var PopupMenu = GObject.registerClass({
         return [2, 2];
     }
 
+    _onClicked() {
+        // Not sure why the selection doesn't persist when the FlowBox is hidden
+        const selectChild = this._choices.get_children().find(child =>
+            child.get_child()._enumValue === this.value);
+        this._choices.select_child(selectChild);
+    }
+
     _onChoicesActivated(widget, child) {
+        this._choices.select_child(child);
         const choice = child.get_child();  // child of the FlowBoxChild
         this.value = choice._enumValue;
         this._menu.popdown();
