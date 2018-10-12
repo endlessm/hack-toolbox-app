@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/endlessm/HackToolbox/CustomModules/soundpacks/drumkit">
+    <!-- sounds from freesound.org -->
+    <!-- Note: The CC-BY files will need to be attributed in production. -->
+    <file>0</file> <!--176980__snapper4298__kick-2-with-start.wav, CC-BY -->
+    <file>1</file> <!--176997__snapper4298__snare-3.wav, CC-BY -->
+    <file>2</file> <!--176977__snapper4298__closed-hat-1.wav, CC-BY -->
+    <file>3</file> <!--176986__snapper4298__tom-low.wav, CC-BY -->
+    <file>4</file> <!--176996__snapper4298__tom-hi.wav, CC-BY -->
+    <file>5</file> <!--176979__snapper4298__crash-1.wav, CC-BY -->
+  </gresource>
+</gresources>

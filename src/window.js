@@ -91,6 +91,11 @@ var ToolboxWindow = GObject.registerClass({
         });
         this.add_action(cheatcode);
         cheatcode.connect('activate', () => this.unlock());
+
+        this.connect('destroy', () => {
+            if (this._toolbox)
+                this._toolbox.shutdown();
+        });
     }
 
     _onFlipBack() {

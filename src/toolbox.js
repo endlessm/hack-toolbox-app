@@ -32,7 +32,17 @@ var Toolbox = GObject.registerClass({
         const buttonMinimize = new Gtk.Button();
         buttonMinimize.add(this._minimizeImage);
 
-        this._headerbar.pack_start(buttonMinimize);
+        this._leftStack = new Gtk.Stack({
+            transitionType: Gtk.StackTransitionType.CROSSFADE,
+            homogeneous: true,
+            visible: true,
+        });
+        this._spinner = new Gtk.Spinner({active: false, visible: true});
+        this._leftStack.add_named(this._spinner, 'busy');
+        this._leftStack.add_named(buttonMinimize, 'normal');
+        this._leftStack.visibleChildName = 'normal';
+
+        this._headerbar.pack_start(this._leftStack);
         this._headerbar.pack_end(buttonReset);
         this._headerbar.show_all();
         this._realAdd(this._headerbar);
@@ -71,5 +81,15 @@ var Toolbox = GObject.registerClass({
         const open = this._revealer.revealChild;
         this._minimizeImage.iconName = open ? 'go-up-symbolic' : 'go-down-symbolic';
         this._revealer.revealChild = !open;
+    }
+
+    setBusy(value) {
+        this._leftStack.visibleChildName = value ? 'busy' : 'normal';
+        this._spinner.active = value;
+    }
+
+    // Can be overridden by subclasses to do any work on window close
+    shutdown() {
+        void this;
     }
 });

@@ -1,4 +1,5 @@
 /* exported RaModel */
+/* global pkg */
 
 const {Gdk, Gio, GLib, GObject, HackToolbox, Pango} = imports.gi;
 const ByteArray = imports.byteArray;
@@ -324,6 +325,17 @@ var RaModel = GObject.registerClass({
         const json = await this._createJSON();
         const gresource = await this._createGResource();
         const modules = await Utils.getModulesGResource();
+        let soundpack = null;
+        let packname;
+        if (this.sounds_cursor_hover !== 'none')
+            packname = this.sounds_cursor_hover;
+        if (this.sounds_cursor_click !== 'none')
+            packname = this.sounds_cursor_click;
+        if (packname) {
+            const pkgdatadir = Gio.File.new_for_path(pkg.pkgdatadir);
+            const soundpackResource = pkgdatadir.get_child(`soundpack-${packname}.gresource`);
+            soundpack = HackToolbox.open_fd_readonly(soundpackResource);
+        }
 
         const AppProxy = Gio.DBusProxy.makeProxyWrapper(KnowledgeControlIface);
 
@@ -333,14 +345,16 @@ var RaModel = GObject.registerClass({
         const appObjectPath = `/${busName.replace(/\./g, '/')}`;
         const app = new AppProxy(Gio.DBus.session, busName, appObjectPath);
 
+        const fdsToPass = [css, json, gresource, modules];
+        const gresourceIndices = [2, 3];
+        if (soundpack !== null) {
+            fdsToPass.push(soundpack);
+            gresourceIndices.push(4);
+        }
+
         // Work around the Gio.DBus overrides not supporting Gio.UnixFDList
         // https://gitlab.gnome.org/GNOME/gjs/issues/204
-        const fdlist = Gio.UnixFDList.new_from_array([
-            css,
-            json,
-            gresource,
-            modules,
-        ]);
+        const fdlist = Gio.UnixFDList.new_from_array(fdsToPass);
         return new Promise((resolve, reject) => {
             Utils.proxyCallWithFDList.call(app, 'Restart', false,
                 ['a{sh}', 'ah', 'ah', 'a{sv}'],
@@ -348,8 +362,7 @@ var RaModel = GObject.registerClass({
                     theme: 0,
                     ui: 1,
                 },
-                [2, 3],
-                [], {}, fdlist,
+                gresourceIndices, [], {}, fdlist,
                 (out, err) => {
                     if (err)
                         reject(err);
