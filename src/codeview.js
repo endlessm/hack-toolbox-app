@@ -85,6 +85,7 @@ var Codeview = GObject.registerClass({
             if (this._buffer)
                 this._buffer.text = value;
             this._cached_ast = null;
+            this.setCompileResults([]);
         } finally {
             if (this._changedHandler)
                 GObject.signal_handler_unblock(this._buffer, this._changedHandler);
