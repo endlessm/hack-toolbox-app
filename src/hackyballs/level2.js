@@ -109,7 +109,7 @@ var HBLevel2 = GObject.registerClass({
 backgroundImageIndex = ${this._model.backgroundImageIndex}
 
 /////////////////////
-// Balls Parameters
+// Parameters
 /////////////////////
 
 // Balls 0
