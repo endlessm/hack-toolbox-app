@@ -1,9 +1,9 @@
 /* exported Lockscreen */
 
-const {GObject, Gtk} = imports.gi;
+const {Gdk, GObject, Gtk} = imports.gi;
 
 const _css = `
-frame {
+widget {
     background: -gtk-icontheme('dialog-password'),
                 linear-gradient(to right, rgba(61, 70, 81, 1) 0%,
                                           rgba(61, 70, 81, 1) 50%,
@@ -21,7 +21,7 @@ frame {
     transition-timing-function: cubic-bezier(.5, 0, 1, .5), linear;
 }
 
-frame.locked {
+widget.locked {
     background-position: center, 0px, 0px;
     opacity: 1;
 }
@@ -33,11 +33,14 @@ var Lockscreen = GObject.registerClass({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             true),
     },
+    Signals: {
+        'overlay-clicked': {},
+    },
 }, class Lockscreen extends Gtk.Overlay {
     _init(props = {}) {
         super._init(props);
 
-        this._overlay = new Gtk.Frame({
+        this._overlay = new Gtk.EventBox({
             expand: true,
             visible: true,
         });
@@ -49,6 +52,11 @@ var Lockscreen = GObject.registerClass({
         style.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         this._updateUI();
+
+        this._overlay.connect('button-release-event', () => {
+            this.emit('overlay-clicked');
+            return Gdk.EVENT_PROPAGATE;
+        });
     }
 
     get locked() {
