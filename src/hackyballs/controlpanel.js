@@ -42,5 +42,8 @@ var HBControlPanel = GObject.registerClass({
     bindWindow(win) {
         win.connect('unlock-state-changed', this._onUnlockStateChanged.bind(this));
         this._onUnlockStateChanged(win);
+
+        // FIXME For playtest only. Remove this later.
+        this._level2lock.connect('overlay-clicked', () => win.unlock());
     }
 });

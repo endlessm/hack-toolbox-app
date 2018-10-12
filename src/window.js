@@ -96,6 +96,9 @@ var ToolboxWindow = GObject.registerClass({
             if (this._toolbox)
                 this._toolbox.shutdown();
         });
+
+        // FIXME For playtest only. Remove this later.
+        this._lockscreen.connect('overlay-clicked', this.unlock.bind(this));
     }
 
     _onFlipBack() {
