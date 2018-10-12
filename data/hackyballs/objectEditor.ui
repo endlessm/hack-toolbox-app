@@ -73,19 +73,6 @@
         <property name="column_spacing">12</property>
         <property name="column_homogeneous">True</property>
         <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">center</property>
-            <property name="label" translatable="yes">ASSETS &amp; EFFECTS</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-            <property name="width">11</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkMenuButton" id="buttonSkin">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -689,6 +676,9 @@
             <property name="top_attach">3</property>
             <property name="height">4</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>
