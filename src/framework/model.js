@@ -48,6 +48,8 @@ const _DEFAULTS = {
 
 var RaModel = GObject.registerClass({
     Properties: {
+        changed: GObject.ParamSpec.boolean('changed', 'Changed', '',
+            GObject.ParamFlags.READABLE, false),
         'logo-graphic': GObject.ParamSpec.string('logo-graphic', 'Logo Graphic', '',
             _propFlags, 'dinosaur'),
         'logo-color': GObject.ParamSpec.boxed('logo-color', 'Logo Color', '',
@@ -86,6 +88,20 @@ var RaModel = GObject.registerClass({
             _propFlags, true),
     },
 }, class RaModel extends GObject.Object {
+    _init(props = {}) {
+        super._init(props);
+        this.connect('notify', (obj, pspec) => {
+            if (pspec.name === 'changed' || this.changed)
+                return;
+            this._changed = true;
+            this.notify('changed');
+        });
+    }
+
+    get changed() {
+        return !!this._changed;
+    }
+
     get logo_graphic() {
         return this._logoGraphic;
     }
@@ -321,6 +337,8 @@ var RaModel = GObject.registerClass({
     }
 
     async launch(busName) {
+        this.snapshot();  // now, "changed" is relative to this snapshot
+
         const css = await this._createCSS();
         const json = await this._createJSON();
         const gresource = await this._createGResource();
@@ -376,6 +394,11 @@ var RaModel = GObject.registerClass({
         Object.entries(_DEFAULTS).forEach(([prop, value]) => {
             this[prop.replace(/-/g, '_')] = value;
         });
+    }
+
+    snapshot() {
+        this._changed = false;
+        this.notify('changed');
     }
 });
 
