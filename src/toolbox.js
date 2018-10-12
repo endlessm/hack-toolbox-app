@@ -55,6 +55,7 @@ var Toolbox = GObject.registerClass({
 
         buttonReset.connect('clicked', () => this.emit('reset'));
         buttonMinimize.connect('clicked', this._onMinimize.bind(this));
+        this.setBusy(false);
     }
 
     get title() {
