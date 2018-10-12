@@ -1,6 +1,8 @@
 /* exported Lockscreen */
 
-const {Gdk, GObject, Gtk} = imports.gi;
+const {Gdk, GLib, GObject, Gtk} = imports.gi;
+
+const FADE_OUT_TIME_MS = 750;
 
 const _css = `
 widget {
@@ -17,7 +19,7 @@ widget {
     background-position: center, -600px, 600px;
     opacity: 0;
     transition-property: background-position, opacity;
-    transition-duration: 0.5s, 0.75s;
+    transition-duration: 0.5s, ${FADE_OUT_TIME_MS}ms;
     transition-timing-function: cubic-bezier(.5, 0, 1, .5), linear;
 }
 
@@ -44,7 +46,6 @@ var Lockscreen = GObject.registerClass({
             expand: true,
             visible: true,
         });
-        this.add_overlay(this._overlay);
 
         const provider = new Gtk.CssProvider();
         provider.load_from_data(_css);
@@ -76,10 +77,19 @@ var Lockscreen = GObject.registerClass({
             return;
 
         const style = this._overlay.get_style_context();
-        if (this._locked)
+        if (this._locked) {
             style.add_class('locked');
-        else
+            this.add_overlay(this._overlay);
+        } else {
             style.remove_class('locked');
+
+            // hide widget after transition completes, so that it doesn't
+            // continue to intercept clicks
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT, FADE_OUT_TIME_MS, () => {
+                this.remove(this._overlay);
+                return GLib.SOURCE_REMOVE;
+            });
+        }
 
         this.set_overlay_pass_through(this._overlay, !this._locked);
     }
