@@ -3,15 +3,6 @@
 const {Gio, GLib, GObject, Gtk, Hackable, HackToolbox} = imports.gi;
 const {Lockscreen} = imports.lockscreen;
 
-function _extraToplevelCssClass(targetBusName) {
-    switch (targetBusName) {
-    case 'com.endlessm.dinosaurs.en':
-        return 'framework';
-    default:
-        return null;
-    }
-}
-
 var ToolboxWindow = GObject.registerClass({
     Properties: {
         'target-bus-name': GObject.ParamSpec.string('target-bus-name',
@@ -65,9 +56,6 @@ var ToolboxWindow = GObject.registerClass({
 
         const context = this.get_style_context();
         context.add_class('toolbox-surrounding-window');
-        const extraClass = _extraToplevelCssClass(this.target_bus_name);
-        if (extraClass)
-            context.add_class(extraClass);
 
         const cheatcode = new Gio.SimpleAction({
             name: 'unlock-cheat',

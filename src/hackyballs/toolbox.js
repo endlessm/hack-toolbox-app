@@ -26,6 +26,7 @@ var HBToolbox = GObject.registerClass(class HBToolbox extends Toolbox {
     }
 
     bindWindow(win) {
+        win.get_style_context().add_class('hackyballs');
         this._controlPanel.bindWindow(win);
     }
 });

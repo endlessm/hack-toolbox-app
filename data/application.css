@@ -7,10 +7,6 @@
     margin: 20px;
 }
 
-.toolbox-surrounding-window {
-    background-color: rgba(0, 0, 0, 0);
-}
-
 toolbox {
     background-color: #e8e8e7;  /* Adwaita background color */
 }
@@ -36,4 +32,8 @@ popover.error {
 
 .framework.toolbox-surrounding-window {
     background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hackyballs.toolbox-surrounding-window {
+    background-color: rgba(0, 0, 0, 0);
 }

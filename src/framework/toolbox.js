@@ -43,6 +43,7 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
     }
 
     bindWindow(win) {
+        win.get_style_context().add_class('framework');
         this._controlPanel.bindWindow(win);
         this._model.connect('notify::changed', () => {
             win.enableFlipBack = this._model.changed;
