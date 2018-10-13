@@ -18,6 +18,7 @@ var Toolbox = GObject.registerClass({
 }, class Toolbox extends Gtk.Grid {
     _init(props = {}) {
         this._headerbar = new Gtk.HeaderBar({hasSubtitle: false});
+        this._unlockState = [false];
 
         props.orientation = Gtk.Orientation.VERTICAL;
         super._init(props);
@@ -82,6 +83,14 @@ var Toolbox = GObject.registerClass({
         const open = this._revealer.revealChild;
         this._minimizeImage.iconName = open ? 'go-up-symbolic' : 'go-down-symbolic';
         this._revealer.revealChild = !open;
+    }
+
+    getUnlockState() {
+        return this._unlockState;
+    }
+
+    setUnlockState(index, v) {
+        this._unlockState[index] = v;
     }
 
     setBusy(value) {

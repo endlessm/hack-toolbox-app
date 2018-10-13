@@ -13,6 +13,7 @@ var HBToolbox = GObject.registerClass(class HBToolbox extends Toolbox {
     _init(props = {}) {
         props.title = _('Hack Modules');
         super._init(props);
+        this._unlockState = [false, false];
         this._model = new HBModelGlobal();
         this._controlPanel = new HBControlPanel({visible: true});
         this._controlPanel.bindModel(this._model);
