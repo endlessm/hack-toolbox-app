@@ -30,6 +30,11 @@ widget.lockscreen.locked {
     opacity: 1;
 }
 
+.default widget.lockscreen.locked {
+    background-image: url('resource:///com/endlessm/HackToolbox/hacktoolbox/lockscreen.png');
+    opacity: 1;
+}
+
 toolbox {
     background-color: #e8e8e7;  /* Adwaita background color */
 }

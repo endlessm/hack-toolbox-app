@@ -19,6 +19,7 @@ var DefaultHackToolbox = GObject.registerClass({
     // Intended to be implemented by other toolbox classes, if they need to
     // connect to the window's unlock state.
     bindWindow(win) {
+        win.get_style_context().add_class('default');
         void (this, win);
     }
 });
