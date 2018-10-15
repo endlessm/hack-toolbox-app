@@ -3,21 +3,6 @@
 const {Gio, GLib, GObject, Gtk, Hackable, HackToolbox} = imports.gi;
 const {Lockscreen} = imports.lockscreen;
 
-// This is later to be replaced by global game state.
-const unlockState = {
-    'com.endlessm.dinosaurs.en': [false, false, false],
-    'com.endlessm.hackyballs': [false, false],
-};
-
-function _extraToplevelCssClass(targetBusName) {
-    switch (targetBusName) {
-    case 'com.endlessm.dinosaurs.en':
-        return 'framework';
-    default:
-        return null;
-    }
-}
-
 var ToolboxWindow = GObject.registerClass({
     Properties: {
         'target-bus-name': GObject.ParamSpec.string('target-bus-name',
@@ -56,7 +41,6 @@ var ToolboxWindow = GObject.registerClass({
         this._lockscreen = new Lockscreen({
             expand: true,
             visible: true,
-            locked: !this.getUnlockState()[0],
         });
 
         this._toolbox_frame = new Gtk.Frame({
@@ -72,9 +56,6 @@ var ToolboxWindow = GObject.registerClass({
 
         const context = this.get_style_context();
         context.add_class('toolbox-surrounding-window');
-        const extraClass = _extraToplevelCssClass(this.target_bus_name);
-        if (extraClass)
-            context.add_class(extraClass);
 
         const cheatcode = new Gio.SimpleAction({
             name: 'unlock-cheat',
@@ -102,16 +83,17 @@ var ToolboxWindow = GObject.registerClass({
     }
 
     getUnlockState() {
-        if (!(this.target_bus_name in unlockState))
-            unlockState[this.target_bus_name] = [false];
-        return unlockState[this.target_bus_name].slice();
+        return this.toolbox.getUnlockState();
+    }
+
+    setUnlockState(index, v) {
+        this.toolbox.setUnlockState(index, v);
     }
 
     unlock() {
-        if (!(this.target_bus_name in unlockState))
-            unlockState[this.target_bus_name] = [true];
-        const index = unlockState[this.target_bus_name].findIndex(state => !state);
-        unlockState[this.target_bus_name][index] = true;
+        const unlockState = this.getUnlockState();
+        const index = unlockState.findIndex(state => !state);
+        this.setUnlockState(index, true);
         this.emit('unlock-state-changed');
 
         // Update state of the common lockscreen in this window
@@ -122,6 +104,8 @@ var ToolboxWindow = GObject.registerClass({
     add(widget) {
         this._toolbox = widget;
         this._toolbox_frame.add(widget);
+
+        this._toolbox.locked = !this.getUnlockState()[0];
     }
 
     get toolbox() {
