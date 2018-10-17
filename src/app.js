@@ -18,6 +18,8 @@ function _toolboxClassForBusName(targetBusName) {
         return imports.framework.toolbox.FrameworkToolbox;
     case 'com.endlessm.hackyballs':
         return imports.hackyballs.toolbox.HBToolbox;
+    case 'com.endlessm.HackUnlock':
+        return imports.HackUnlock.toolbox.HUToolbox;
     case 'com.endlessm.OperatingSystemApp':
         return imports.OperatingSystemApp.toolbox.OSToolbox;
     default:
@@ -29,6 +31,7 @@ function _shouldUseDarkTheme(targetBusName) {
     switch (targetBusName) {
     case 'com.endlessm.dinosaurs.en':
     case 'com.endlessm.hackyballs':
+    case 'com.endlessm.HackUnlock':
     case 'com.endlessm.OperatingSystemApp':
         return false;
     default:

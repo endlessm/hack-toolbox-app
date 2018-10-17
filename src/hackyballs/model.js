@@ -3,7 +3,7 @@
 const {Gio, GLib, GObject} = imports.gi;
 
 const ViewName = 'view.JSContext.globalParameters';
-const BusName = 'com.endlessm.hackyballs';
+const AppBusName = 'com.endlessm.hackyballs';
 const AppObjectPath = '/com/endlessm/hackyballs';
 const ClippyIface = `
 <node xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
@@ -36,12 +36,6 @@ const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 
 var HBModelBase = GObject.registerClass({
 }, class HBModelBase extends GObject.Object {
-    _init(props = {}) {
-        super._init(props);
-        const Proxy = Gio.DBusProxy.makeProxyWrapper(ClippyIface);
-        this._proxy = new Proxy(Gio.DBus.session, BusName, AppObjectPath);
-    }
-
     reset() {
         const props = GObject.Object.list_properties.call(this.constructor.$gtype);
         props.forEach(pspec => {
@@ -49,7 +43,9 @@ var HBModelBase = GObject.registerClass({
         });
     }
 
-    bindProperties(map = {}) {
+    bindProperties(busName, objectPath, map = {}) {
+        const Proxy = Gio.DBusProxy.makeProxyWrapper(ClippyIface);
+        this._proxy = new Proxy(Gio.DBus.session, busName, objectPath);
         const invertMap = {};
 
         const props = GObject.Object.list_properties.call(this.constructor.$gtype);
@@ -188,7 +184,7 @@ var HBModelGlobal = GObject.registerClass({
 }, class HBModelGlobal extends HBModelBase {
     _init(props = {}) {
         super._init(props);
-        this.bindProperties({
+        this.bindProperties(AppBusName, AppObjectPath, {
             backgroundImageIndex: 'backgroundImageIndex',
 
             radius0: 'radius-0',

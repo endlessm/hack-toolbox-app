@@ -21,6 +21,9 @@
     <file>hackyballs/level2.js</file>
     <file>hackyballs/objectEditor.js</file>
     <file>hackyballs/skinImage.js</file>
+    <file>HackUnlock/controlpanel.js</file>
+    <file>HackUnlock/model.js</file>
+    <file>HackUnlock/toolbox.js</file>
     <file>OperatingSystemApp/controlpanel.js</file>
     <file>OperatingSystemApp/toolbox.js</file>
     <file>lockscreen.js</file>

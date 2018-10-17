@@ -45,6 +45,7 @@
     <file>hackyballs/skins/6.png</file>
     <file>hackyballs/skins/7.png</file>
     <file>hackyballs/skins/8.png</file>
+    <file>HackUnlock/controlpanel.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">OperatingSystemApp/controlpanel.ui</file>
   </gresource>
 </gresources>
