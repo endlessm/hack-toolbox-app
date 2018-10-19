@@ -62,6 +62,7 @@ popover.error {
     background-color: rgba(0, 0, 0, 0.6);
 }
 
+.HackUnlock.toolbox-surrounding-window,
 .hackyballs.toolbox-surrounding-window {
     background-color: rgba(0, 0, 0, 0);
 }
