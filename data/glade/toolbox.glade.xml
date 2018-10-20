@@ -1,0 +1,27 @@
+<glade-catalog name="hack-toolbox" depends="gtk+">
+  <glade-widget-classes>
+
+    <glade-widget-class name="Codeview" parent="GtkOverlay"
+                        generic-name="codeview"
+                        title="Code view"/>
+
+    <glade-widget-class name="Lockscreen" parent="GtkOverlay"
+                        generic-name="lockscreen"
+                        title="Lockscreen">
+      <properties>
+        <property id="locked" name="Locked" default="True">
+          <parameter-spec>
+            <type>GParamBoolean</type>
+          </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+  </glade-widget-classes>
+
+  <glade-widget-group name="hack-toolbox" title="Hack Toolbox">
+    <glade-widget-class-ref name="Codeview"/>
+    <glade-widget-class-ref name="Lockscreen"/>
+  </glade-widget-group>
+
+</glade-catalog>
