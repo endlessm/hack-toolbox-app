@@ -43,6 +43,13 @@ toolbox.dark {
     background-color: #33393b;  /* Adwaita-dark background color */
 }
 
+/* Toolbox HeaderBar */
+frame.toolbox > border,
+frame.toolbox > toolbox,
+frame.toolbox > toolbox > headerbar {
+    border-radius: 8px 8px 0px 0px;
+}
+
 /* Temporarily make the buttons smaller until we figure out how to layout */
 button.radio {
     font-size: 10px;
