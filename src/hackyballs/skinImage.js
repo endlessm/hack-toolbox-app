@@ -12,7 +12,7 @@ var HBSkinImage = GObject.registerClass({
             0, HBSkinMaxIndex, 0),
         pixels: GObject.ParamSpec.uint(
             'pixels', 'pixels', 'pixels',
-            GObject.ParamFlags.READWRITE,
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, 64, 64),
     },
 }, class HBSkinImage extends Gtk.Image {
