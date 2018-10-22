@@ -5,6 +5,7 @@
     <file>codeview.js</file>
     <file>framework/buttonGroup.js</file>
     <file>framework/controlPanel.js</file>
+    <file>framework/defaults.js</file>
     <file>framework/gen.js</file>
     <file>framework/level1.js</file>
     <file>framework/level2.js</file>

@@ -5,7 +5,6 @@ const Gettext = imports.gettext;
 
 const {logoIDToResource, LogoImage, VALID_LOGOS} = imports.framework.logoImage;
 const {PopupMenu} = imports.popupMenu;
-const {RaModel} = imports.framework.model;
 
 const _ = Gettext.gettext;
 
@@ -19,11 +18,11 @@ var FrameworkLevel1 = GObject.registerClass({
         'infoColorButton', 'layoutButton', 'logoButton', 'logoColorButton',
         'mainColorButton', 'orderButton'],
 }, class FrameworkLevel1 extends Gtk.Grid {
-    _init(props = {}) {
+    _init(defaults, props = {}) {
         super._init(props);
 
         const fontList = Gtk.ListStore.new([GObject.TYPE_STRING]);
-        RaModel.FONT_LIST.forEach(fontFamily => {
+        defaults.fonts.forEach(fontFamily => {
             const iter = fontList.append();
             fontList.set(iter, [0], [fontFamily]);
         });
@@ -57,15 +56,6 @@ var FrameworkLevel1 = GObject.registerClass({
     }
 
     bindModel(model) {
-        // Sync some properties from the target to the source, to begin with.
-        // The default value of a Gdk.RGBA GObject property is null.
-        model.accent_color = this._accentColorButton.rgba;
-        model.border_color = this._borderColorButton.rgba;
-        model.info_color = this._infoColorButton.rgba;
-        model.logo_color = this._logoColorButton.rgba;
-        model.logo_graphic = this._logoGroup.value;
-        model.main_color = this._mainColorButton.rgba;
-
         const flags = GObject.BindingFlags.BIDIRECTIONAL;
         model.bind_property('accent-color', this._accentColorButton, 'rgba', flags);
         model.bind_property('border-color', this._borderColorButton, 'rgba', flags);

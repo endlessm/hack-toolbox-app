@@ -4,12 +4,10 @@ const {Gdk, GObject, Gtk} = imports.gi;
 
 const {Codeview} = imports.codeview;
 const {VALID_LOGOS} = imports.framework.logoImage;
-const {RaModel} = imports.framework.model;
 const Utils = imports.framework.utils;
 
 const VALID_ENUMS = {
     logo_graphic: VALID_LOGOS,
-    font: RaModel.FONT_LIST,
     text_transformation: ['bubbles', 'flipped', 'normal', 'scrambled', 'zalgo'],
     card_order: ['ordered', 'random', 'az', 'za'],
     card_layout: ['tiledGrid', 'windshield', 'piano', 'nest', 'overflow'],
@@ -21,15 +19,18 @@ const VALID_ENUMS = {
 
 const COLOR_PROPS = ['logo_color', 'main_color', 'accent_color', 'info_color',
     'border_color'];
-const ENUM_PROPS = ['font', 'text_transformation', 'card_order', 'card_layout',
+const ENUM_PROPS = ['text_transformation', 'card_order', 'card_layout',
     'image_filter', 'sounds_cursor_hover', 'sounds_cursor_click'];
 
 var FrameworkLevel3 = GObject.registerClass({
     GTypeName: 'FrameworkLevel3',
     Template: 'resource:///com/endlessm/HackToolbox/framework/level3.ui',
 }, class FrameworkLevel3 extends Gtk.Grid {
-    _init(props = {}) {
+    _init(defaults, props = {}) {
         super._init(props);
+
+        this._defaults = defaults;
+
         this._codeview = new Codeview({visible: true});
         this.add(this._codeview);
 
@@ -99,7 +100,7 @@ var FrameworkLevel3 = GObject.registerClass({
         try {
             if (scope.logo_graphic !== null)
                 this._model.logo_graphic = scope.logo_graphic;
-            ['border_width', 'font_size', 'hyperlinks'].forEach(prop => {
+            ['border_width', 'font', 'font_size', 'hyperlinks'].forEach(prop => {
                 if (scope[prop] !== null)
                     this._model[prop] = scope[prop];
             });
@@ -121,7 +122,7 @@ var FrameworkLevel3 = GObject.registerClass({
 
     _errorRecordAtAssignmentLocation(variable, message) {
         const {start, end} = this._codeview.findAssignmentLocation(variable);
-        return {start, end, message, fixme: String(RaModel.CODE_DEFAULTS[variable])};
+        return {start, end, message, fixme: String(this._defaults.code(variable))};
     }
 
     _searchCodeForErrors(scope) {
@@ -132,6 +133,12 @@ var FrameworkLevel3 = GObject.registerClass({
             errors.push(this._errorRecordAtAssignmentLocation('logo_graphic',
                 `Unknown value ${scope.logo_graphic}: value must be one ` +
                 `of ${VALID_ENUMS.logo_graphic.join(', ')}`));
+        }
+
+        const {fonts} = this._defaults;
+        if (scope.font !== null && !fonts.includes(scope.font)) {
+            errors.push(this._errorRecordAtAssignmentLocation('font',
+                `Unknown value ${scope.font}: value must be one of ${fonts.join(', ')}`));
         }
 
         ['border_width', 'font_size'].forEach(prop => {
