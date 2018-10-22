@@ -14,9 +14,6 @@ var ToolboxWindow = GObject.registerClass({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
     },
-    Signals: {
-        'unlock-state-changed': {},
-    },
 }, class ToolboxWindow extends Gtk.ApplicationWindow {
     _init(params) {
         Object.assign(params, {expand: true});
@@ -57,20 +54,10 @@ var ToolboxWindow = GObject.registerClass({
         const context = this.get_style_context();
         context.add_class('toolbox-surrounding-window');
 
-        const cheatcode = new Gio.SimpleAction({
-            name: 'unlock-cheat',
-            enabled: true,
-        });
-        this.add_action(cheatcode);
-        cheatcode.connect('activate', () => this.unlock());
-
         this.connect('destroy', () => {
             if (this._toolbox)
                 this._toolbox.shutdown();
         });
-
-        // FIXME For playtest only. Remove this later.
-        this._lockscreen.connect('overlay-clicked', this.unlock.bind(this));
     }
 
     _onFlipBack() {
@@ -82,30 +69,14 @@ var ToolboxWindow = GObject.registerClass({
         });
     }
 
-    getUnlockState() {
-        return this.toolbox.getUnlockState();
-    }
-
-    setUnlockState(index, v) {
-        this.toolbox.setUnlockState(index, v);
-    }
-
-    unlock() {
-        const unlockState = this.getUnlockState();
-        const index = unlockState.findIndex(state => !state);
-        this.setUnlockState(index, true);
-        this.emit('unlock-state-changed');
-
-        // Update state of the common lockscreen in this window
-        this._lockscreen.locked = !this.getUnlockState()[0];
+    get lockscreen() {
+        return this._lockscreen;
     }
 
     // Override Gtk.Container.add()
     add(widget) {
         this._toolbox = widget;
         this._toolbox_frame.add(widget);
-
-        this._toolbox.locked = !this.getUnlockState()[0];
     }
 
     get toolbox() {

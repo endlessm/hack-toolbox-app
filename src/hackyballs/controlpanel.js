@@ -20,7 +20,6 @@ var HBControlPanel = GObject.registerClass({
         this._level2 = new HBLevel2({visible: true});
         this._level2lock = new Lockscreen({visible: false});
 
-
         this._level2lock.add(this._level2);
         this._panelLevel1.add(this._level1);
         this._panelLevel2.add(this._level2lock);
@@ -33,17 +32,8 @@ var HBControlPanel = GObject.registerClass({
         this._model = model;
     }
 
-    _onUnlockStateChanged(win) {
-        const [, l2] = win.getUnlockState();
-        if (l2)
-            this._level2lock.locked = false;
-    }
-
     bindWindow(win) {
-        win.connect('unlock-state-changed', this._onUnlockStateChanged.bind(this));
-        this._onUnlockStateChanged(win);
-
-        // FIXME For playtest only. Remove this later.
-        this._level2lock.connect('overlay-clicked', () => win.unlock());
+        win.lockscreen.key = 'item.key.fizzics.1';
+        this._level2lock.key = 'item.key.fizzics.2';
     }
 });

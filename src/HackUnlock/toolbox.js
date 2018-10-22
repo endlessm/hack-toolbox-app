@@ -13,7 +13,6 @@ var HUToolbox = GObject.registerClass(class HUToolbox extends Toolbox {
     _init(props = {}) {
         props.title = _('Hack Modules');
         super._init(props);
-        this._unlockState = [false];
         this._model = new HUModelGlobal();
         this._controlPanel = new HUControlPanel({visible: true});
         this._controlPanel.bindModel(this._model);
@@ -27,6 +26,7 @@ var HUToolbox = GObject.registerClass(class HUToolbox extends Toolbox {
 
     bindWindow(win) {
         win.get_style_context().add_class('HackUnlock');
+        win.lockscreen.locked = false;
         this._win = win;
     }
 });

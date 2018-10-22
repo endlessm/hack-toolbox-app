@@ -1,6 +1,7 @@
 /* exported Lockscreen */
 
 const {Gdk, GLib, GObject, Gtk} = imports.gi;
+const {LocksManager} = imports.locksManager;
 
 const FADE_OUT_TIME_MS = 750;
 
@@ -9,6 +10,8 @@ var Lockscreen = GObject.registerClass({
         locked: GObject.ParamSpec.boolean('locked', 'Locked', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             true),
+        key: GObject.ParamSpec.string('key', 'Key', '',
+            GObject.ParamFlags.READWRITE, ''),
     },
     Signals: {
         'overlay-clicked': {},
@@ -28,6 +31,10 @@ var Lockscreen = GObject.registerClass({
             this.emit('overlay-clicked');
             return Gdk.EVENT_PROPAGATE;
         });
+
+        this._manager = new LocksManager();
+        this._managerChangedId = 0;
+        this.connect('overlay-clicked', this._onClicked.bind(this));
     }
 
     get locked() {
@@ -40,6 +47,43 @@ var Lockscreen = GObject.registerClass({
         this._locked = value;
         this._updateUI();
         this.notify('locked');
+    }
+
+    get key() {
+        return this._key;
+    }
+
+    set key(key) {
+        if ('_key' in this && this._key === key)
+            return;
+        if (this._managerChangedId !== 0)
+            this._manager.disconnect(this._managerChangedId);
+        this._managerChangedId = this._manager.connect(
+            `changed::${key}`, this._onChanged.bind(this));
+        this._key = key;
+        this._updateLockState();
+    }
+
+    _onChanged() {
+        this._updateLockState();
+
+        /* TODO check for key and display can-be-opened graphics */
+    }
+
+    _updateLockState() {
+        if (!this._key)
+            return;
+        if (!this._manager.isUnlocked(this._key))
+            return;
+        this.locked = false;
+    }
+
+    _onClicked() {
+        if (!this._key)
+            return;
+        if (!this._manager.hasKey(this._key))
+            return;
+        this._manager.setUnlocked(this._key);
     }
 
     _updateUI() {
