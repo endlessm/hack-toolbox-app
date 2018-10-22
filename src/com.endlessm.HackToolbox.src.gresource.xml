@@ -27,6 +27,7 @@
     <file>OperatingSystemApp/controlpanel.js</file>
     <file>OperatingSystemApp/toolbox.js</file>
     <file>lockscreen.js</file>
+    <file>locksManager.js</file>
     <file>main.js</file>
     <file>popupMenu.js</file>
     <file>toolbox.js</file>
