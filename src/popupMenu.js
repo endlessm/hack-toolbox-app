@@ -1,16 +1,29 @@
 /* exported PopupMenu */
-const {GObject, Gtk} = imports.gi;
+const {GLib, GObject, Gtk} = imports.gi;
 
 var PopupMenu = GObject.registerClass({
     Properties: {
         value: GObject.ParamSpec.string('value', 'Value', '',
             GObject.ParamFlags.READWRITE, ''),
+        index: GObject.ParamSpec.uint('index', 'Index', '',
+            GObject.ParamFlags.READWRITE, 0, GLib.MAXUINT32, 0),
     },
 }, class PopupMenu extends GObject.Object {
     _init(button, groupDef, ItemClass, itemProp, itemExtraProps, props = {}) {
-        const entries = Object.entries(groupDef);
-        this._enumMap = new Map(entries);
-        const [[defaultKey, defaultValue]] = entries;
+        let defaultKey, defaultValue;
+        // Special case when groupDef is an array with integer indices, because
+        // Object.keys() and Object.entries() would convert them to strings
+        if (groupDef instanceof Array) {
+            this._enumMap = new Map();
+            groupDef.forEach((value, ix) => this._enumMap.set(ix, value));
+            defaultKey = 0;
+            defaultValue = groupDef[defaultKey];
+        } else {
+            const entries = Object.entries(groupDef);
+            this._enumMap = new Map(entries);
+            [[defaultKey, defaultValue]] = entries;
+        }
+        this._indexMap = Object.values(groupDef);
         this._value = defaultKey;
 
         this._button = button;
@@ -34,7 +47,7 @@ var PopupMenu = GObject.registerClass({
         this._button.popover = this._menu;
 
         this._menu.add(this._choices);
-        entries.forEach(([enumValue, propValue]) => {
+        [...this._enumMap.entries()].forEach(([enumValue, propValue]) => {
             const choiceProps = {[itemProp]: propValue, visible: true};
             Object.assign(choiceProps, itemExtraProps);
             const choice = new ItemClass(choiceProps);
@@ -58,6 +71,15 @@ var PopupMenu = GObject.registerClass({
         this._selected[this._itemProp] = this._enumMap.get(value);
         this._value = value;
         this.notify('value');
+        this.notify('index');
+    }
+
+    get index() {
+        return this._indexMap.findIndex(value => value === this._value);
+    }
+
+    set index(value) {
+        this.value = this._indexMap[value];
     }
 
     get validIds() {

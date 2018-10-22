@@ -2,6 +2,7 @@
 
 const {GObject, Gtk} = imports.gi;
 const {HBSkinImage, HBSkinMaxIndex} = imports.hackyballs.skinImage;
+const {PopupMenu} = imports.popupMenu;
 
 var HBObjectEditor = GObject.registerClass({
     GTypeName: 'HBObjectEditor',
@@ -16,26 +17,17 @@ var HBObjectEditor = GObject.registerClass({
         'adjustmentSocial2',
         'buttonPhysics',
         'buttonSkin',
-        'choicesSkin',
         'imageObject0',
         'imageObject1',
         'imageObject2',
-        'menuSkin',
     ],
 }, class HBObjectEditor extends Gtk.Grid {
     _init(props = {}) {
         super._init(props);
 
-        const indexes = Array(HBSkinMaxIndex + 1).fill();
-        indexes.forEach((value, index) => {
-            const widget = new HBSkinImage({index: index, visible: true});
-            this._choicesSkin.add(widget);
-        });
-
-        this._imageSkin = new HBSkinImage({visible: true});
-        this._buttonSkin.add(this._imageSkin);
-        this._choicesSkin.connect('child-activated',
-            this._onChoicesActivated.bind(this));
+        const indices = Array.from({length: HBSkinMaxIndex + 1}, (v, i) => i);
+        this._menuSkin = new PopupMenu(this._buttonSkin, indices, HBSkinImage,
+            'index', {});
 
         this._imageSkin0 = new HBSkinImage({visible: true, pixels: 32});
         this._imageObject0.add(this._imageSkin0);
@@ -55,15 +47,9 @@ var HBObjectEditor = GObject.registerClass({
         model.bind_property(map['social0'], this._adjustmentSocial0, 'value', flags);
         model.bind_property(map['social1'], this._adjustmentSocial1, 'value', flags);
         model.bind_property(map['social2'], this._adjustmentSocial2, 'value', flags);
-        model.bind_property(map['skin'], this._imageSkin, 'index', flags);
+        model.bind_property(map['skin'], this._menuSkin, 'index', flags);
         model.bind_property(map['skin0'], this._imageSkin0, 'index', flags);
         model.bind_property(map['skin1'], this._imageSkin1, 'index', flags);
         model.bind_property(map['skin2'], this._imageSkin2, 'index', flags);
-    }
-
-    _onChoicesActivated(widget, child) {
-        const choice = child.get_child();
-        this._imageSkin.index = choice.index;
-        this._menuSkin.popdown();
     }
 });
