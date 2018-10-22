@@ -49,22 +49,14 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         this._level3.bindModel(model);
     }
 
-    _onUnlockStateChanged(win) {
-        const [, l2, l3] = win.getUnlockState();
-        if (l2) {
-            this._level2lock.locked = false;
-            this._level3lock.show_all();
-        }
-        if (l3)
-            this._level3lock.locked = false;
-    }
-
     bindWindow(win) {
-        win.connect('unlock-state-changed', this._onUnlockStateChanged.bind(this));
-        this._onUnlockStateChanged(win);
+        this._level2lock.connect('notify::locked', () => {
+            if (!this._level2lock.locked)
+                this._level3lock.show_all();
+        });
 
-        // FIXME For playtest only. Remove this later.
-        this._level2lock.connect('overlay-clicked', () => win.unlock());
-        this._level3lock.connect('overlay-clicked', () => win.unlock());
+        win.lockscreen.key = 'item.key.framework.1';
+        this._level2lock.key = 'item.key.framework.2';
+        this._level3lock.key = 'item.key.framework.3';
     }
 });

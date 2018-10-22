@@ -25,7 +25,6 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
 
         this._controlPanel.bindModel(this._model);
 
-        this._unlockState = [false, false, false];
         this.setBusy(false);
 
         this._model.snapshot();  // ignore any initial syncing
