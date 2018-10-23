@@ -27,6 +27,6 @@ var HUToolbox = GObject.registerClass(class HUToolbox extends Toolbox {
     bindWindow(win) {
         win.get_style_context().add_class('HackUnlock');
         win.lockscreen.locked = false;
-        this._win = win;
+        void this;
     }
 });
