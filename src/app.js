@@ -69,8 +69,6 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         const iconTheme = Gtk.IconTheme.get_default();
         iconTheme.add_resource_path('/com/endlessm/HackToolbox/framework/icons');
 
-        this.set_accels_for_action('win.unlock-cheat', ['<control><shift>R']);
-
         this._locksManager = new LocksManager();
     }
 
