@@ -6,6 +6,7 @@ const {LocksManager} = imports.locksManager;
 const FADE_OUT_TIME_MS = 750;
 
 var Lockscreen = GObject.registerClass({
+    GTypeName: 'Lockscreen',
     Properties: {
         locked: GObject.ParamSpec.boolean('locked', 'Locked', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,

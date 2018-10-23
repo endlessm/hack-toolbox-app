@@ -14,6 +14,7 @@ var OSToolbox = GObject.registerClass(class OSToolbox extends Toolbox {
 
     bindWindow(win) {
         void (this, win);
+        win.get_style_context().add_class('OperatingSystemApp');
     }
 });
 
