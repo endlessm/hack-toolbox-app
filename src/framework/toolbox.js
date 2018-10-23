@@ -3,8 +3,9 @@
 const {GLib, GObject} = imports.gi;
 const Gettext = imports.gettext;
 
+const {Defaults} = imports.framework.defaults;
+const Model = imports.framework.model;
 const {RaControlPanel} = imports.framework.controlPanel;
-const {RaModel} = imports.framework.model;
 const {Toolbox} = imports.toolbox;
 
 const _ = Gettext.gettext;
@@ -16,18 +17,6 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
         props.title = _('Hack Modules');
         super._init(props);
         this.show_all();
-
-        this._controlPanel = new RaControlPanel({visible: true});
-        this.add(this._controlPanel);
-
-        this._model = new RaModel();
-        this.connect('reset', () => this._model.reset());
-
-        this._controlPanel.bindModel(this._model);
-
-        this.setBusy(false);
-
-        this._model.snapshot();  // ignore any initial syncing
     }
 
     // See DefaultHackToolbox
@@ -43,10 +32,24 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
 
     bindWindow(win) {
         win.get_style_context().add_class('framework');
-        this._controlPanel.bindWindow(win);
+
+        const busName = win.target_bus_name;
+        const defaults = new Defaults(busName);
+
+        const ModelClass = Model.ensureModelClass(busName, defaults);
+        this._model = new ModelClass();
+        this.connect('reset', () => this._model.reset());
         this._model.connect('notify::changed', () => {
             win.enableFlipBack = this._model.changed;
         });
+        this._model.snapshot();  // ignore any initial syncing
+
+        this._controlPanel = new RaControlPanel(defaults, {visible: true});
+        this._controlPanel.bindModel(this._model);
+        this._controlPanel.bindWindow(win);
+        this.add(this._controlPanel);
+
+        this.setBusy(false);
     }
 
     // parent class override

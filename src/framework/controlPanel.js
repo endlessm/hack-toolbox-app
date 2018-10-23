@@ -8,10 +8,10 @@ const {FrameworkLevel3} = imports.framework.level3;
 const {Lockscreen} = imports.lockscreen;
 
 var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid {
-    _init(props = {}) {
+    _init(defaults, props = {}) {
         super._init(props);
 
-        this._level1 = new FrameworkLevel1({visible: true});
+        this._level1 = new FrameworkLevel1(defaults, {visible: true});
         this.attach(this._level1, 0, 0, 1, 1);
 
         this._level2lock = new Lockscreen({visible: true, hexpand: true});
@@ -20,7 +20,7 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         this.attach(this._level2lock, 0, 1, 1, 1);
 
         this._level3lock = new Lockscreen({visible: false});
-        this._level3 = new FrameworkLevel3({visible: true});
+        this._level3 = new FrameworkLevel3(defaults, {visible: true});
         this._level3lock.add(this._level3);
         this.attach(this._level3lock, 1, 0, 1, 2);
 

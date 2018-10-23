@@ -482,7 +482,9 @@ function generateYAML(model) {
         dynamicBanner = 'Banner.HackableDynamic';
         searchBanner = 'Banner.HackableSearch';
     }
-    return `---
+    switch (model.constructor.busName) {
+    case 'com.endlessm.dinosaurs.en':
+        return `---
 overrides:
   app-banner:
     type: ${dynamicBanner}
@@ -532,4 +534,7 @@ overrides:
 ---
 !import 'thematic'
 `;
+    default:
+        return '!import "library"';
+    }
 }

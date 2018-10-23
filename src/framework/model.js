@@ -1,4 +1,4 @@
-/* exported RaModel */
+/* exported ensureModelClass */
 /* global pkg */
 
 const {Gdk, Gio, GLib, GObject, HackToolbox} = imports.gi;
@@ -24,71 +24,26 @@ const KnowledgeControlIface = `
 
 const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 
-// FIXME: these are only valid for the dinosaurs app
-// FIXME: Determine one source of truth for paramspec defaults, default values,
-// and code defaults
-const _DEFAULTS = {
-    'logo-graphic': 'dinosaur',
-    'logo-color': new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0}),
-    'main-color': new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0}),
-    'accent-color': new Gdk.RGBA({red: 0.8, green: 0.3255, blue: 0.1686, alpha: 1.0}),
-    'info-color': new Gdk.RGBA({red: 0.9569, green: 0.851, blue: 0.3098, alpha: 1.0}),
-    font: 'Skranji',
-    'font-size': 10,
-    'border-width': 0,
-    'border-color': new Gdk.RGBA({red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0}),
-    'text-transformation': 'normal',
-    'card-order': 'ordered',
-    'card-layout': 'tiledGrid',
-    'image-filter': 'none',
-    'sounds-cursor-hover': 'none',
-    'sounds-cursor-click': 'none',
-    hyperlinks: true,
-};
+const HACKABLE_PROPERTIES = ['logo-graphic', 'logo-color', 'main-color',
+    'accent-color', 'font', 'font-size', 'border-width', 'border-color',
+    'text-transformation', 'card-order', 'card-layout', 'image-filter',
+    'sounds-cursor-hover', 'sounds-cursor-click', 'text-cipher', 'hyperlinks'];
 
-var RaModel = GObject.registerClass({
-    Properties: {
-        changed: GObject.ParamSpec.boolean('changed', 'Changed', '',
-            GObject.ParamFlags.READABLE, false),
-        'logo-graphic': GObject.ParamSpec.string('logo-graphic', 'Logo Graphic', '',
-            _propFlags, 'dinosaur'),
-        'logo-color': GObject.ParamSpec.boxed('logo-color', 'Logo Color', '',
-            _propFlags, Gdk.RGBA),
-        'main-color': GObject.ParamSpec.boxed('main-color', 'Main Color', '',
-            _propFlags, Gdk.RGBA),
-        'accent-color': GObject.ParamSpec.boxed('accent-color', 'Accent Color', '',
-            _propFlags, Gdk.RGBA),
-        'info-color': GObject.ParamSpec.boxed('info-color', 'Info Color', '',
-            _propFlags, Gdk.RGBA),
-        font: GObject.ParamSpec.string('font', 'Font', '', _propFlags, 'Skranji'),
-        'font-size': GObject.ParamSpec.uint('font-size', 'Font Size', '',
-            _propFlags, 0, GLib.MAXUINT32, 10),
-        'border-width': GObject.ParamSpec.uint('border-width', 'Border Width', '',
-            _propFlags, 0, GLib.MAXUINT32, 0),
-        'border-color': GObject.ParamSpec.boxed('border-color', 'Border Color', '',
-            _propFlags, Gdk.RGBA),
-        'text-transformation': GObject.ParamSpec.string('text-transformation',
-            'Text Transformation', '', _propFlags, 'normal'),
-        'card-order': GObject.ParamSpec.string('card-order', 'Card Order', '',
-            _propFlags, 'ordered'),
-        'card-layout': GObject.ParamSpec.string('card-layout', 'Card Layout', '',
-            _propFlags, 'tiledGrid'),
-        'image-filter': GObject.ParamSpec.string('image-filter', 'Image Filter', '',
-            _propFlags, 'none'),
-        'sounds-cursor-hover': GObject.ParamSpec.string('sounds-cursor-hover',
-            'Sounds on Cursor Hover', '',
-            _propFlags, 'none'),
-        'sounds-cursor-click': GObject.ParamSpec.string('sounds-cursor-click',
-            'Sounds on Cursor Click', '',
-            _propFlags, 'none'),
-        'text-cipher': GObject.ParamSpec.uint('text-cipher', 'Text Cipher', '',
-            _propFlags, 0, 25, 0),
-        hyperlinks: GObject.ParamSpec.boolean('hyperlinks', 'Hyperlinks', '',
-            _propFlags, true),
-    },
-}, class RaModel extends GObject.Object {
+const _createdClasses = new Map();
+
+class RaModelBase extends GObject.Object {
     _init(props = {}) {
         super._init(props);
+
+        // Sync some properties to begin with.
+        // The default value of a Gdk.RGBA GObject property is null.
+        const defaults = this.constructor._defaults;
+        this.accent_color = defaults.value('accent-color');
+        this.border_color = defaults.value('border-color');
+        this.info_color = defaults.value('info-color');
+        this.logo_color = defaults.value('logo-color');
+        this.main_color = defaults.value('main-color');
+
         this.connect('notify', (obj, pspec) => {
             if (pspec.name === 'changed' || this.changed)
                 return;
@@ -390,8 +345,8 @@ var RaModel = GObject.registerClass({
     }
 
     reset() {
-        Object.entries(_DEFAULTS).forEach(([prop, value]) => {
-            this[prop.replace(/-/g, '_')] = value;
+        HACKABLE_PROPERTIES.forEach(prop => {
+            this[prop.replace(/-/g, '_')] = this.constructor._defaults.value(prop);
         });
     }
 
@@ -399,36 +354,60 @@ var RaModel = GObject.registerClass({
         this._changed = false;
         this.notify('changed');
     }
-});
+}
 
-RaModel.CODE_DEFAULTS = {
-    logo_graphic: "'dinosaur'",
-    logo_color: "'white'",
-    main_color: "'white'",
-    accent_color: "'rgb(204,83,43)'",
-    info_color: "'rgb(244,217,79)'",
-    font: "'Skranji'",
-    font_size: '10',
-    border_width: '0',
-    border_color: "'black'",
-    text_transformation: "'normal'",
-    card_order: "'ordered'",
-    card_layout: "'tiledGrid'",
-    image_filter: "'none'",
-    sounds_cursor_hover: "'none'",
-    sounds_cursor_click: "'none'",
-    hyperlinks: 'yes',
-};
+function ensureModelClass(busName, defaults) {
+    if (_createdClasses.has(busName))
+        return _createdClasses.get(busName);
 
-// FIXME This should turn into a function that provides available fonts in each
-// flatpak app's sandbox, possibly hardcoded
-RaModel.FONT_LIST = [
-    'Fira Sans',
-    'HammersmithOne',
-    'Lato',
-    'Marcellus SC',
-    'Pathway Gothic One',
-    'Podkova',
-    'Raleway',
-    'Skranji',
-];
+    const ModelClass = GObject.registerClass({
+        GTypeName: `RaModel_for_${busName.replace(/./g, '_')}`,
+        Properties: {
+            changed: GObject.ParamSpec.boolean('changed', 'Changed', '',
+                GObject.ParamFlags.READABLE, false),
+
+            'logo-graphic': GObject.ParamSpec.string('logo-graphic', 'Logo Graphic', '',
+                _propFlags, defaults.value('logo-graphic')),
+            'logo-color': GObject.ParamSpec.boxed('logo-color', 'Logo Color', '',
+                _propFlags, Gdk.RGBA),
+            'main-color': GObject.ParamSpec.boxed('main-color', 'Main Color', '',
+                _propFlags, Gdk.RGBA),
+            'accent-color': GObject.ParamSpec.boxed('accent-color', 'Accent Color', '',
+                _propFlags, Gdk.RGBA),
+            'info-color': GObject.ParamSpec.boxed('info-color', 'Info Color', '',
+                _propFlags, Gdk.RGBA),
+            font: GObject.ParamSpec.string('font', 'Font', '',
+                _propFlags, defaults.value('font')),
+            'font-size': GObject.ParamSpec.uint('font-size', 'Font Size', '',
+                _propFlags, 0, GLib.MAXUINT32, defaults.value('font-size')),
+            'border-width': GObject.ParamSpec.uint('border-width', 'Border Width', '',
+                _propFlags, 0, GLib.MAXUINT32, defaults.value('border-width')),
+            'border-color': GObject.ParamSpec.boxed('border-color', 'Border Color', '',
+                _propFlags, Gdk.RGBA),
+            'text-transformation': GObject.ParamSpec.string('text-transformation',
+                'Text Transformation', '', _propFlags,
+                defaults.value('text-transformation')),
+            'card-order': GObject.ParamSpec.string('card-order', 'Card Order', '',
+                _propFlags, defaults.value('card-order')),
+            'card-layout': GObject.ParamSpec.string('card-layout', 'Card Layout', '',
+                _propFlags, defaults.value('card-layout')),
+            'image-filter': GObject.ParamSpec.string('image-filter', 'Image Filter', '',
+                _propFlags, defaults.value('image-filter')),
+            'sounds-cursor-hover': GObject.ParamSpec.string('sounds-cursor-hover',
+                'Sounds on Cursor Hover', '',
+                _propFlags, defaults.value('sounds-cursor-hover')),
+            'sounds-cursor-click': GObject.ParamSpec.string('sounds-cursor-click',
+                'Sounds on Cursor Click', '',
+                _propFlags, defaults.value('sounds-cursor-click')),
+            'text-cipher': GObject.ParamSpec.uint('text-cipher', 'Text Cipher', '',
+                _propFlags, 0, 25, defaults.value('text-cipher')),
+            hyperlinks: GObject.ParamSpec.boolean('hyperlinks', 'Hyperlinks', '',
+                _propFlags, defaults.value('hyperlinks')),
+        },
+    }, RaModelBase);
+
+    ModelClass._defaults = defaults;
+    ModelClass.busName = busName;
+    _createdClasses.set(busName, ModelClass);
+    return ModelClass;
+}
