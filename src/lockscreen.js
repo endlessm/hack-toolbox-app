@@ -79,6 +79,10 @@ var Lockscreen = GObject.registerClass({
     }
 
     _onClicked() {
+        if (this._manager.hasKey('item.key.master')) {
+            this.locked = false;
+            return;
+        }
         if (!this._key)
             return;
         if (!this._manager.hasKey(this._key))
