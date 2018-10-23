@@ -14,6 +14,50 @@
             <type>GParamBoolean</type>
           </parameter-spec>
         </property>
+        <property id="key" name="Key">
+          <parameter-spec>
+            <type>GParamString</type>
+          </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="CheckInput"
+                        generic-name="CheckInput"
+                        template="../checkinput.ui"
+                        title="Check Input">
+    <properties>
+        <property id="size" default="2"/>
+        <property id="label" name="Label" default="label">
+          <parameter-spec>
+            <type>GParamString</type>
+          </parameter-spec>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="SpinInput"
+                        generic-name="spinInput"
+                        template="../spininput.ui"
+                        title="Spin Input">
+    <properties>
+        <property id="size" default="2"/>
+        <property id="label" name="Label" default="label">
+          <parameter-spec>
+            <type>GParamString</type>
+          </parameter-spec>
+        </property>
+        <property id="digits" name="Digits" default="digits">
+          <parameter-spec>
+            <type>GParamInt</type>
+          </parameter-spec>
+        </property>
+        <property id="adjustment" name="Adjustment" default="adjustment">
+          <parameter-spec>
+            <type>GParamObject</type>
+            <value-type>GtkAdjustment</value-type>
+          </parameter-spec>
+        </property>
       </properties>
     </glade-widget-class>
 
@@ -22,6 +66,8 @@
   <glade-widget-group name="hack-toolbox" title="Hack Toolbox">
     <glade-widget-class-ref name="Codeview"/>
     <glade-widget-class-ref name="Lockscreen"/>
+    <glade-widget-class-ref name="CheckInput"/>
+    <glade-widget-class-ref name="SpinInput"/>
   </glade-widget-group>
 
 </glade-catalog>

@@ -1,88 +1,92 @@
-/* exported OSControlPanel, OSModel */
+/* exported OSControlPanel */
 
-const {Gio, GObject, Gtk} = imports.gi;
+const {GObject, Gtk} = imports.gi;
 const {Codeview} = imports.codeview;
 const {Lockscreen} = imports.lockscreen;
+const {OSCursorModel} = imports.OperatingSystemApp.oscursormodel;
+const {OSWobblyModel} = imports.OperatingSystemApp.oswobblymodel;
+const {SpinInput} = imports.spinInput;
 
 GObject.type_ensure(Codeview.$gtype);
 GObject.type_ensure(Lockscreen.$gtype);
-
-var _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
-
-var OSModel = GObject.registerClass({
-    Properties: {
-        wobblyEffect: GObject.ParamSpec.boolean(
-            'wobblyEffect', 'Wobbly Effect', '',
-            _propFlags, false),
-        wobblyObjectMovementRange: GObject.ParamSpec.double(
-            'wobblyObjectMovementRange', 'Wobbly Object Movement Range', '',
-            _propFlags, 10.0, 500.0, 100.0),
-        wobblySlowdownFactor: GObject.ParamSpec.double(
-            'wobblySlowdownFactor', 'Wobbly Slowdown Factor', '',
-            _propFlags, 1.0, 5.0, 1.0),
-        wobblySpringFriction: GObject.ParamSpec.double(
-            'wobblySpringFriction', 'Wobbly Spring Friction', '',
-            _propFlags, 2.0, 10.0, 3.0),
-        wobblySpringK: GObject.ParamSpec.double(
-            'wobblySpringK', 'Wobbly Spring K', '',
-            _propFlags, 2.0, 10.0, 8.0),
-    },
-}, class OSModel extends GObject.Object {
-    _init(props = {}) {
-        super._init(props);
-
-        this._settings = new Gio.Settings({
-            schemaId: 'org.gnome.shell',
-            path: '/org/gnome/shell/',
-        });
-
-        this._keys = this._settings.settings_schema.list_keys();
-
-        this._bindSetting('wobbly-effect', 'wobblyEffect');
-        this._bindSetting('wobbly-object-movement-range', 'wobblyObjectMovementRange');
-        this._bindSetting('wobbly-slowdown-factor', 'wobblySlowdownFactor');
-        this._bindSetting('wobbly-spring-friction', 'wobblySpringFriction');
-        this._bindSetting('wobbly-spring-k', 'wobblySpringK');
-    }
-
-    _bindSetting(setting, property) {
-        if (this._keys && this._keys.includes(setting))
-            this._settings.bind(setting, this, property, Gio.SettingsBindFlags.DEFAULT);
-    }
-});
+GObject.type_ensure(SpinInput.$gtype);
 
 var OSControlPanel = GObject.registerClass({
     GTypeName: 'OSControlPanel',
-    Properties: {
-        model: GObject.ParamSpec.object('model', 'Model', '',
-            GObject.ParamFlags.READABLE,
-            OSModel),
-    },
     Template: 'resource:///com/endlessm/HackToolbox/OperatingSystemApp/controlpanel.ui',
+    Children: [
+        'codeLock',
+        'wobblyLock',
+    ],
     InternalChildren: [
-        'wobblyCheck',
+        'codeview',
+        'cursorRadiobutton',
+        'cursorImage',
+        'cursorSizeAdjustment',
+        'cursorSpeedAdjustment',
+        'frictionAdjustment',
         'movementAdjustment',
         'slowdownAdjustment',
-        'frictionAdjustment',
         'springAdjustment',
-        'codeview',
+        'wobblyCheck',
     ],
 }, class OSControlPanel extends Gtk.Box {
     _init(props = {}) {
+        const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
+
+        /* Setup icons path */
+        var theme = Gtk.IconTheme.get_default();
+        theme.add_resource_path('/com/endlessm/HackToolbox/OperatingSystemApp/icons');
+
         super._init(props);
 
-        this.model = new OSModel();
-        const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
-        this.model.bind_property('wobblyEffect', this._wobblyCheck,
-            'active', flags);
-        this.model.bind_property('wobblyObjectMovementRange', this._movementAdjustment,
+        /* Create data models for editable properties */
+        this._cursor = new OSCursorModel();
+        this._wobbly = new OSWobblyModel();
+
+        /* Bind model properties with UI elements */
+        this._cursor.bind_property('theme', this._cursorImage, 'icon_name', flags);
+        this._cursor.bind_property('size', this._cursorSizeAdjustment, 'value', flags);
+        this._cursor.bind_property('size', this._cursorImage, 'pixel-size', flags);
+        this._cursor.bind_property('speed', this._cursorSpeedAdjustment, 'value', flags);
+
+        this._wobbly.bind_property('wobblyEffect', this._wobblyCheck, 'active', flags);
+        this._wobbly.bind_property('wobblyObjectMovementRange', this._movementAdjustment,
             'value', flags);
-        this.model.bind_property('wobblySlowdownFactor', this._slowdownAdjustment,
+        this._wobbly.bind_property('wobblySlowdownFactor', this._slowdownAdjustment,
             'value', flags);
-        this.model.bind_property('wobblySpringFriction', this._frictionAdjustment,
+        this._wobbly.bind_property('wobblySpringFriction', this._frictionAdjustment,
             'value', flags);
-        this.model.bind_property('wobblySpringK', this._springAdjustment,
+        this._wobbly.bind_property('wobblySpringK', this._springAdjustment,
             'value', flags);
+
+        /* Connect to cursor radio buttons toggled signals */
+        this._cursorRadiobutton.get_group().forEach(button => {
+            button.connect('toggled', () => {
+                if (!button.active)
+                    return;
+
+                this._cursor.theme = button.get_child().icon_name;
+            });
+        });
+
+        this._cursor.connect('notify::theme', this._refreshRadioGroup.bind(this));
+    }
+
+    reset () {
+        this._cursor.reset();
+        this._wobbly.reset();
+    }
+
+    _refreshRadioGroup() {
+        var group = this._cursorRadiobutton.get_group();
+
+        for (var button of group) {
+            if (button.get_child().icon_name === this._cursor.theme) {
+                button.set_active(true);
+                break;
+            }
+        }
     }
 });
 
