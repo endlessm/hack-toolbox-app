@@ -1,7 +1,6 @@
 /* exported Lockscreen */
 
-const {Gdk, GLib, GObject, Gtk} = imports.gi;
-const {LocksManager} = imports.locksManager;
+const {Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
 
 const FADE_OUT_TIME_MS = 750;
 
@@ -32,7 +31,7 @@ var Lockscreen = GObject.registerClass({
             return Gdk.EVENT_PROPAGATE;
         });
 
-        this._manager = new LocksManager();
+        this._manager = Gio.Application.get_default().locksManager;
         this._managerChangedId = 0;
         this.connect('overlay-clicked', this._onClicked.bind(this));
     }
