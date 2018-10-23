@@ -3,6 +3,7 @@
 
 const {Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
 
+const {LocksManager} = imports.locksManager;
 const {ToolboxWindow} = imports.window;
 
 function _loadStyleSheet(resourcePath) {
@@ -69,6 +70,8 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         iconTheme.add_resource_path('/com/endlessm/HackToolbox/framework/icons');
 
         this.set_accels_for_action('win.unlock-cheat', ['<control><shift>R']);
+
+        this._locksManager = new LocksManager();
     }
 
     _onFlip(action, parameterVariant) {
@@ -103,5 +106,9 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
 
         this._windows[busName][objectPath].present();
         this.release();
+    }
+
+    get locksManager() {
+        return this._locksManager;
     }
 });
