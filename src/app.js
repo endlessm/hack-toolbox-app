@@ -28,18 +28,6 @@ function _toolboxClassForBusName(targetBusName) {
     }
 }
 
-function _shouldUseDarkTheme(targetBusName) {
-    switch (targetBusName) {
-    case 'com.endlessm.dinosaurs.en':
-    case 'com.endlessm.hackyballs':
-    case 'com.endlessm.HackUnlock':
-    case 'com.endlessm.OperatingSystemApp':
-        return false;
-    default:
-        return true;
-    }
-}
-
 const AUTO_CLOSE_MILLISECONDS_TIMEOUT = 12000;
 
 var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application {
@@ -91,10 +79,6 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
             });
             win.add(toolbox);
             toolbox.bindWindow(win);
-
-            const settings = Gtk.Settings.get_default();
-            const darkTheme = _shouldUseDarkTheme(busName);
-            settings.gtk_application_prefer_dark_theme = darkTheme;
 
             this._windows[busName][objectPath] = win;
             win.connect('destroy', () => {
