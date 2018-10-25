@@ -119,7 +119,23 @@ background-repeat: no-repeat;
         throw new Error(`${model.image_filter}, oops`);
     }
 
-    return `
+    const commonRules = `
+@keyframes animatedgradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+};
+`;
+
+    switch (model.constructor.busName) {
+    case 'com.endlessm.dinosaurs.en':
+        return `
 $primary-light-color: ${infoColor};
 $primary-medium-color: ${mainColor};
 $primary-dark-color: darken(${mainColor}, 30%);
@@ -208,18 +224,6 @@ $logo-font: 'Patrick Hand SC';
 .CardHackableDefault__filter_overlay {
     ${overlayFilterProperties}
 }
-
-@keyframes animatedgradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-};
 
 // These basically override every font size in the theme
 
@@ -401,7 +405,12 @@ $logo-font: 'Patrick Hand SC';
 .BannerDynamic {
     font-size: ${model.font_size * 2}px;
 }
+
+${commonRules}
 `;
+    default:
+        return '!import "default"';
+    }
 }
 
 function generateGResource(model) {
