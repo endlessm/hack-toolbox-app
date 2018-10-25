@@ -37,11 +37,11 @@ const AVAILABLE_FONTS = {
 };
 
 function _valueToCode(value) {
-    if (value instanceof Boolean)
+    if (typeof value === 'boolean')
         return value ? 'yes' : 'no';
-    if (value instanceof Number)
+    if (typeof value === 'number')
         return `${value}`;
-    if (value instanceof String)
+    if (typeof value === 'string')
         return `'${value.replace(/'/g, "\\'")}'`;
     return value.toSource();
 }
