@@ -45,7 +45,6 @@ var FrameworkLevel1 = GObject.registerClass({
         });
         this._logoGroup = new PopupMenu(this._logoButton, logoChoices,
             LogoImage, 'resource', {});
-        this._logoGroup.value = 'dinosaur';
 
         this._orderGroup = new PopupMenu(this._orderButton, {
             ordered: _('Ordered'),
@@ -56,14 +55,13 @@ var FrameworkLevel1 = GObject.registerClass({
     }
 
     bindModel(model) {
-        const flags = GObject.BindingFlags.BIDIRECTIONAL;
+        const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
         model.bind_property('accent-color', this._accentColorButton, 'rgba', flags);
         model.bind_property('border-color', this._borderColorButton, 'rgba', flags);
         model.bind_property('border-width', this._borderWidthAdjustment, 'value', flags);
         model.bind_property('card-layout', this._layoutGroup, 'value', flags);
         model.bind_property('card-order', this._orderGroup, 'value', flags);
-        model.bind_property('font', this._fontChooser, 'active-id',
-            flags | GObject.BindingFlags.SYNC_CREATE);
+        model.bind_property('font', this._fontChooser, 'active-id', flags);
         model.bind_property('font-size', this._fontSizeAdjustment, 'value', flags);
         model.bind_property('info-color', this._infoColorButton, 'rgba', flags);
         model.bind_property('logo-color', this._logoColorButton, 'rgba', flags);

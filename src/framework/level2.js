@@ -38,7 +38,7 @@ var FrameworkLevel2 = GObject.registerClass({
     }
 
     bindModel(model) {
-        const flags = GObject.BindingFlags.BIDIRECTIONAL;
+        const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
         model.bind_property('text-transformation', this._effectGroup, 'value', flags);
         model.bind_property('image-filter', this._filterGroup, 'value', flags);
         model.bind_property('text-cipher', this._cipherAdjustment, 'value', flags);
