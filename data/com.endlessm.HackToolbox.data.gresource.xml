@@ -11,6 +11,7 @@
     <file preprocess="xml-stripblanks">framework/astronomy.svg</file>
     <file preprocess="xml-stripblanks">framework/biology.svg</file>
     <file preprocess="xml-stripblanks">framework/celebrities.svg</file>
+    <file preprocess="xml-stripblanks">framework/clubhouse.svg</file>
     <file preprocess="xml-stripblanks">framework/dinosaur.svg</file>
     <file preprocess="xml-stripblanks">framework/encyclopedia.svg</file>
     <file preprocess="xml-stripblanks">framework/farming.svg</file>

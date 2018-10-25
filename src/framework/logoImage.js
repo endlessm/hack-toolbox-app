@@ -3,8 +3,8 @@
 const {GdkPixbuf, GObject, Gtk} = imports.gi;
 
 var VALID_LOGOS = ['animals', 'art', 'astronomy', 'biology', 'celebrities',
-    'dinosaur', 'encyclopedia', 'farming', 'geography', 'history', 'math',
-    'nature', 'physics', 'soccer', 'socialsciences', 'travel'];
+    'clubhouse', 'dinosaur', 'encyclopedia', 'farming', 'geography', 'history',
+    'math', 'nature', 'physics', 'soccer', 'socialsciences', 'travel'];
 
 function logoIDToResource(id) {
     return `/com/endlessm/HackToolbox/framework/${id}.svg`;
