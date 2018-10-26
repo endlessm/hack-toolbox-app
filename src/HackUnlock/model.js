@@ -20,6 +20,6 @@ var HUModelGlobal = GObject.registerClass({
 }, class HUModelGlobal extends HBModelBase {
     _init(props = {}) {
         super._init(props);
-        this.bindProperties('com.endlessm.HackUnlock', '/com/endlessm/HackUnlock', {});
+        this.bindProperties('com.endlessm.HackUnlock', {});
     }
 });
