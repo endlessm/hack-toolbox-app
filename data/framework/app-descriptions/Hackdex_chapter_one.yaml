@@ -1,0 +1,130 @@
+---
+# Keep in sync with the app.yaml from com.endlessm.Hackdex_chapter_one
+vars:
+  home-button:
+    type: Banner.HomeButton
+    properties:
+      text: 'HACKDEX : CHAPTER 1'
+
+  app-banner:
+    type: Banner.Dynamic
+    properties:
+      mode: full
+      format-string: 'Clubhouse Directory'
+      valign: center
+      halign: start
+
+  home-articles-card:
+    type: Card.Hackdex
+
+  home-articles-order:
+    type: Order.Sequence
+
+  home-articles-arrangement:
+    type: Arrangement.Grid
+    properties:
+      homogeneous: true
+      column-spacing: 33
+      row-spacing: 90
+      halign: center
+      valign: start
+
+defines:
+
+  # Pages
+  - &home-page
+    type: Layout.Scrolling
+    slots:
+      content:
+        type: Layout.Overlay
+        properties:
+          hexpand: true
+        slots:
+          overlays:
+            - type: Layout.Box
+              properties:
+                orientation: horizontal
+                valign: start
+                hexpand: true
+                vexpand: false
+              styles:
+                - overlayHead
+              slots:
+                contents:
+                  - refvar: $home-button
+                    styles:
+                      - bannerHead
+          content:
+            type: 'Layout.Box'
+            styles:
+              - LayoutScrolling--maincontainer
+            properties:
+              orientation: vertical
+            slots:
+              contents:
+                - refvar: $app-banner
+                - type: ContentGroup.ContentGroup
+                  properties:
+                    cards-per-page: 20
+                  styles:
+                    - ContentGroup--maincontent
+                  slots:
+                    arrangement:
+                      refvar: $home-articles-arrangement
+                      slots:
+                        card: $home-articles-card
+                    selection:
+                      type: Selection.FeaturedFirst
+                      id: home-articles
+                      slots:
+                        order: $home-articles-order
+                        filter:
+                          type: Filter.Articles
+
+  - &article-page
+    type: Layout.Overlay
+    properties:
+      hexpand: true
+    slots:
+      overlays:
+        - type: Layout.Box
+          properties:
+            orientation: horizontal
+            valign: start
+            hexpand: true
+          styles:
+            - overlayHead
+          slots:
+            contents:
+              - refvar: $home-button
+                styles:
+                  - bannerHead
+      content:
+        type: 'Layout.Box'
+        styles:
+          - LayoutScrolling--maincontainer
+        properties:
+          expand: true
+          orientation: vertical
+        slots:
+          contents:
+            - type: Layout.ArticleStack
+              slots:
+                article: 'View.Document(show_titles: false, show_toc: false)'
+
+# App
+root:
+  type: Controller.MeshDev
+  slots:
+    window:
+      type: Window.Simple
+      slots:
+        content:
+          type: ContentGroup.MediaLightbox
+          slots:
+            view: View.Media
+            content:
+              type: Pager.Simple
+              slots:
+                home-page: *home-page
+                article-page: *article-page

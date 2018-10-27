@@ -16,6 +16,7 @@ function _loadStyleSheet(resourcePath) {
 function _toolboxClassForBusName(targetBusName) {
     switch (targetBusName) {
     case 'com.endlessm.dinosaurs.en':
+    case 'com.endlessm.Hackdex_chapter_one':
         return imports.framework.toolbox.FrameworkToolbox;
     case 'com.endlessm.hackyballs':
         return imports.hackyballs.toolbox.HBToolbox;

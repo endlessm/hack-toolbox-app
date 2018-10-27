@@ -408,6 +408,90 @@ $logo-font: 'Patrick Hand SC';
 
 ${commonRules}
 `;
+
+    case 'com.endlessm.Hackdex_chapter_one':
+        return `
+$primary-light-color: ${mainColor};
+$background-transparent-dark-color: rgba(0,0,0,.3);
+$background-medium-color: #e2e2e2;
+$background-light-color: transparent;
+$logo-color: ${logoColor};
+
+$title-font: 'Hack';
+$logo-font: ${model.font};
+$body-font: ${model.font};
+
+@import 'default';
+
+// com.endlessm.Hackdex_chapter_one existing overrides:
+
+.overlayHead {
+    background-color: $background-transparent-dark-color;
+    min-height: 60px;
+    font-family: $title-font;
+    padding: 40px 140px 0;
+    margin-bottom: 96px;
+}
+
+.CardHackdex {
+    min-height: 462px;
+    min-width: 300px;
+    margin: 0;
+
+    &__title {
+        color: $primary-light-color;
+        font-family: $body-font;
+        font-size: ${model.font_size * 4.5}px;
+        margin: 25px 37px;
+    }
+}
+
+.BannerDynamic {
+    padding-top: 100px;
+
+    &__logo {
+        color: $logo-color;
+        font-family: $logo-font;
+        font-weight: normal;
+        min-height: 200px;
+        min-width: 1000px;
+        margin-left: -100px;
+    }
+}
+
+.bannerHead {
+    font-size: ${model.font_size * 2.5}px;
+    color: $primary-light-color;
+}
+
+.home-page {
+    .LayoutScrolling--maincontainer {
+        padding: 0 140px;
+    }
+
+    .ContentGroup--maincontent {
+        padding-bottom: 90px;
+    }
+}
+
+.article-page {
+    .LayoutScrolling--maincontainer {
+        background-color: $background-medium-color;
+    }
+}
+
+// Special overrides for hacking toolbox
+
+.CardHackdex {
+    border: ${model.border_width}px solid ${borderColor};
+
+    &__filterOverlay {
+        ${overlayFilterProperties}
+    }
+}
+
+${commonRules}
+`;
     default:
         return '!import "default"';
     }
@@ -545,6 +629,46 @@ overrides:
     shortdef: '${titleCard}(${shorthandProperties})'
 ---
 !import 'thematic'
+`;
+    case 'com.endlessm.Hackdex_chapter_one':
+        return `---
+overrides:
+  home-button:
+    type: Banner.HomeButton
+    properties:
+      text: 'HACKDEX : CHAPTER 1'
+      ${textFilterProperty}
+      ${rotationProperty}
+
+  app-banner:
+    type: ${dynamicBanner}
+    properties:
+      mode: full
+      format-string: 'Clubhouse Directory'
+      valign: center
+      halign: start
+      ${textFilterProperty}
+      ${rotationProperty}
+
+  home-articles-order:
+    shortdef: ${order}
+
+  home-articles-arrangement:
+    type: ${layout}
+    properties:
+      homogeneous: true
+      column-spacing: 33
+      row-spacing: 90
+      halign: center
+      valign: start
+      allow_navigation: ${model.hyperlinks}
+      click: ${model.sounds_cursor_click !== 'none'}
+      ${soundpackProperty}
+
+  home-articles-card:
+    shortdef: 'Card.Hackdex(${shorthandProperties})'
+---
+!import 'Hackdex_chapter_one'
 `;
     default:
         return '!import "library"';

@@ -262,7 +262,8 @@ class RaModelBase extends GObject.Object {
     _createJSON() {
         const yaml = Gen.generateYAML(this);
         return Utils.transformStringToFD(yaml,
-            ['autobahn', '-I', '/usr/share/eos-knowledge/preset']);
+            ['autobahn', '-I', '/usr/share/eos-knowledge/preset', '-I',
+                '/app/share/com.endlessm.HackToolbox/app-descriptions']);
     }
 
     async _createGResource() {
