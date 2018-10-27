@@ -9,7 +9,7 @@ var AudioPlayer = GObject.registerClass({
     Properties: {
         channels: GObject.ParamSpec.uint('channels', 'Channels', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            0, 6, 1),
+            0, 100, 1),
         soundpack: GObject.ParamSpec.string('soundpack', 'Sound Pack', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             'wacky'),
@@ -21,7 +21,7 @@ var AudioPlayer = GObject.registerClass({
         this._pipelines = [];
         for (let ch = 0; ch < this._channels; ch++) {
             const playbin = Gst.ElementFactory.make('playbin', `play${ch}`);
-            playbin.uri = `${RESOURCE_URI}/${this._soundpack}/${ch}`;
+            playbin.uri = `${RESOURCE_URI}/${this._soundpack}/${ch % 6}`;
             const pipeline = new Gst.Pipeline({name: `pipeline${ch}`});
             pipeline.add(playbin);
 
