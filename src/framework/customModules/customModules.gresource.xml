@@ -7,6 +7,7 @@
     <file compressed="true" preprocess="xml-stripblanks">card/hackableTitle.ui</file>
   </gresource>
   <gresource prefix="/app/js">
+    <file compressed="true">arrangement/gridNoise.js</file>
     <file compressed="true">arrangement/nest.js</file>
     <file compressed="true">arrangement/nestNoise.js</file>
     <file compressed="true">arrangement/overflowNoise.js</file>

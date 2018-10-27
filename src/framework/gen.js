@@ -464,6 +464,9 @@ function generateYAML(model) {
     case 'overflow':
         layout = 'Arrangement.OverflowNoise';
         break;
+    case 'grid':
+        layout = 'Arrangement.GridNoise';
+        break;
     default:
         throw new Error(`${model.card_layout}, oops`);
     }

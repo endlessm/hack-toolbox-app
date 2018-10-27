@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 4.2333333 4.2333333"
+   height="16"
+   width="16">
+  <defs
+     id="defs2" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(0,-292.76667)"
+     id="layer1">
+    <rect
+       y="294.88333"
+       x="1.0583334"
+       height="1.0583333"
+       width="0.9921875"
+       id="rect852"
+       style="opacity:1;fill:#bebebe;fill-opacity:1;stroke:none;stroke-width:1.10656464;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       style="opacity:1;fill:#bebebe;fill-opacity:1;stroke:none;stroke-width:1.06904256;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect894"
+       width="0.92604166"
+       height="1.058341"
+       x="0"
+       y="294.88333" />
+    <rect
+       y="293.69272"
+       x="1.0583334"
+       height="1.0583333"
+       width="0.9921875"
+       id="rect896"
+       style="opacity:1;fill:#bebebe;fill-opacity:1;stroke:none;stroke-width:1.01015544;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       style="opacity:1;fill:#bebebe;fill-opacity:1;stroke:none;stroke-width:1.30930853;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect898"
+       width="0.9921875"
+       height="1.0583333"
+       x="2.1828127"
+       y="293.69272" />
+    <rect
+       y="293.69272"
+       x="3.3072915"
+       height="1.0583333"
+       width="0.92604196"
+       id="rect900"
+       style="opacity:1;fill:#bebebe;fill-opacity:1;stroke:none;stroke-width:0.94281173;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       style="opacity:1;fill:#bebebe;fill-opacity:1;stroke:none;stroke-width:0.94279969;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect889"
+       width="0.92604166"
+       height="1.0583333"
+       x="0"
+       y="293.69272" />
+  </g>
+</svg>
