@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/com/endlessm/HackToolbox/js">
     <file>app.js</file>
+    <file>clippyWrapper.js</file>
     <file>codeview.js</file>
     <file>framework/buttonGroup.js</file>
     <file>framework/controlPanel.js</file>
