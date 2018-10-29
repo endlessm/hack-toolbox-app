@@ -17,6 +17,18 @@ const DEFAULTS = {
             border: 'black',
         },
     },
+    'com.endlessm.Hackdex_chapter_one': {
+        'logo-graphic': 'clubhouse',
+        font: 'Orator',
+        'card-layout': 'grid',
+        [COLORS]: {
+            logo: 'white',
+            main: 'white',
+            accent: 'white',
+            info: 'white',
+            border: 'black',
+        },
+    },
 };
 
 const COMMON_DEFAULTS = {
@@ -34,6 +46,9 @@ const COMMON_DEFAULTS = {
 const AVAILABLE_FONTS = {
     'com.endlessm.dinosaurs.en': ['Fira Sans', 'HammersmithOne', 'Lato',
         'Marcellus SC', 'Pathway Gothic One', 'Podkova', 'Raleway', 'Skranji'],
+    'com.endlessm.Hackdex_chapter_one': ['Fira Sans', 'Hack', 'HammersmithOne',
+        'Lato', 'Marcellus SC', 'Pathway Gothic One', 'Orator', 'Podkova',
+        'Raleway', 'Skranji'],
 };
 
 function _valueToCode(value) {
