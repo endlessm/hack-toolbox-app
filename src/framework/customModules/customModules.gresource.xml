@@ -14,7 +14,6 @@
     <file compressed="true">arrangement/pianoNoise.js</file>
     <file compressed="true">arrangement/tiledGridNoise.js</file>
     <file compressed="true">arrangement/windshieldNoise.js</file>
-    <file compressed="true">audioPlayer.js</file>
     <file compressed="true">banner/hackableDynamic.js</file>
     <file compressed="true">banner/hackableSearch.js</file>
     <file compressed="true">card/hackableDefault.js</file>
