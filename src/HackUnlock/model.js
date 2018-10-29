@@ -1,7 +1,7 @@
 /* exported HUModelGlobal */
 
 const {GObject} = imports.gi;
-const {HBModelBase} = imports.hackyballs.model;
+const {ClippyWrapper} = imports.clippyWrapper;
 
 const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 
@@ -17,9 +17,9 @@ var HUModelGlobal = GObject.registerClass({
             'phase', 'phase', '',
             _propFlags, -3.0, 3.0, 0.0),
     },
-}, class HUModelGlobal extends HBModelBase {
+}, class HUModelGlobal extends ClippyWrapper {
     _init(props = {}) {
+        props.busName = 'com.endlessm.HackUnlock';
         super._init(props);
-        this.bindProperties('com.endlessm.HackUnlock', {});
     }
 });
