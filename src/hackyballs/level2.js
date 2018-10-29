@@ -19,6 +19,14 @@ var HBLevel2 = GObject.registerClass({
         this._content.add(this._codeview);
     }
 
+    static _toScopeName(name) {
+        return name.replace(/-/g, '_');
+    }
+
+    static _toModelName(name) {
+        return name.replace(/_/g, '-');
+    }
+
     _getModelProps() {
         return GObject.Object.list_properties.call(this._model.constructor.$gtype);
     }
@@ -31,7 +39,7 @@ var HBLevel2 = GObject.registerClass({
 
         const scope = {};
         this._getModelProps().forEach(pspec => {
-            scope[pspec.get_name()] = null;
+            scope[this._toScopeName(pspec.get_name())] = null;
         });
 
         try {
@@ -66,9 +74,10 @@ var HBLevel2 = GObject.registerClass({
 
         try {
             Object.getOwnPropertyNames(scope).forEach(prop => {
-                if (!(prop in scope) || scope[prop] === this._model[prop])
+                const property = this._toModelName(prop);
+                if (!(prop in scope) || scope[prop] === this._model[property])
                     return;
-                this._model.set_property(prop, scope[prop]);
+                this._model[property] = scope[prop];
             });
         } finally {
             GObject.signal_handler_unblock(this._model, this._notifyHandler);
@@ -84,7 +93,7 @@ var HBLevel2 = GObject.registerClass({
         const errors = [];
 
         this._getModelProps().forEach(pspec => {
-            const propName = pspec.get_name();
+            const propName = this._toScopeName(pspec.get_name());
             const propType = typeof pspec.default_value;
             if (!scope[propName])
                 return;
@@ -114,39 +123,39 @@ backgroundImageIndex = ${this._model.backgroundImageIndex}
 
 // Balls 0
 
-radius0 = ${this._model.radius0}
-gravity0 = ${this._model.gravity0}
-collision0 = ${this._model.collision0}
-friction0 = ${this._model.friction0}
-usePhysics0 = ${this._model.usePhysics0}
-socialForce00 = ${this._model.socialForce00}
-socialForce01 = ${this._model.socialForce01}
-socialForce02 = ${this._model.socialForce02}
-imageIndex0 = ${this._model.imageIndex0}
+radius_0 = ${this._model['radius-0']}
+gravity_0 = ${this._model['gravity-0']}
+collision_0 = ${this._model['collision-0']}
+friction_0 = ${this._model['friction-0']}
+usePhysics_0 = ${this._model['usePhysics-0']}
+socialForce_0_0 = ${this._model['socialForce-0-0']}
+socialForce_0_1 = ${this._model['socialForce-0-1']}
+socialForce_0_2 = ${this._model['socialForce-0-2']}
+imageIndex_0 = ${this._model['imageIndex-0']}
 
 // Balls 1
 
-radius1 = ${this._model.radius1}
-gravity1 = ${this._model.gravity1}
-collision1 = ${this._model.collision1}
-friction1 = ${this._model.friction1}
-usePhysics1 = ${this._model.usePhysics1}
-socialForce10 = ${this._model.socialForce10}
-socialForce11 = ${this._model.socialForce11}
-socialForce12 = ${this._model.socialForce12}
-imageIndex1 = ${this._model.imageIndex1}
+radius_1 = ${this._model['radius-1']}
+gravity_1 = ${this._model['gravity-1']}
+collision_1 = ${this._model['collision-1']}
+friction_1 = ${this._model['friction-1']}
+usePhysics_1 = ${this._model['usePhysics-1']}
+socialForce_1_0 = ${this._model['socialForce-1-0']}
+socialForce_1_1 = ${this._model['socialForce-1-1']}
+socialForce_1_2 = ${this._model['socialForce-1-2']}
+imageIndex_1 = ${this._model['imageIndex-1']}
 
 // Balls 2
 
-radius2 = ${this._model.radius2}
-gravity2 = ${this._model.gravity2}
-collision2 = ${this._model.collision2}
-friction2 = ${this._model.friction2}
-usePhysics2 = ${this._model.usePhysics2}
-socialForce20 = ${this._model.socialForce20}
-socialForce21 = ${this._model.socialForce21}
-socialForce22 = ${this._model.socialForce22}
-imageIndex2 = ${this._model.imageIndex2}
+radius_2 = ${this._model['radius-2']}
+gravity_2 = ${this._model['gravity-2']}
+collision_2 = ${this._model['collision-2']}
+friction_2 = ${this._model['friction-2']}
+usePhysics_2 = ${this._model['usePhysics-2']}
+socialForce_2_0 = ${this._model['socialForce-2-0']}
+socialForce_2_1 = ${this._model['socialForce-2-1']}
+socialForce_2_2 = ${this._model['socialForce-2-2']}
+imageIndex_2 = ${this._model['imageIndex-2']}
 `;
     }
 

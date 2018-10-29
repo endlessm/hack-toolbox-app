@@ -48,56 +48,56 @@ var HBLevel1 = GObject.registerClass({
     bindModel(model) {
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
         model.bind_property('backgroundImageIndex', this._backgroundGroup, 'index', flags);
-        model.bind_property('imageIndex0', this._image0, 'index', flags);
-        model.bind_property('imageIndex1', this._image1, 'index', flags);
-        model.bind_property('imageIndex2', this._image2, 'index', flags);
+        model.bind_property('imageIndex-0', this._image0, 'index', flags);
+        model.bind_property('imageIndex-1', this._image1, 'index', flags);
+        model.bind_property('imageIndex-2', this._image2, 'index', flags);
 
         this._editor0.bindModel(
             model, {
-                radius: 'radius0',
-                gravity: 'gravity0',
-                collision: 'collision0',
-                friction: 'friction0',
-                physics: 'usePhysics0',
-                social0: 'socialForce00',
-                social1: 'socialForce01',
-                social2: 'socialForce02',
-                skin: 'imageIndex0',
-                skin0: 'imageIndex0',
-                skin1: 'imageIndex1',
-                skin2: 'imageIndex2',
+                radius: 'radius-0',
+                gravity: 'gravity-0',
+                collision: 'collision-0',
+                friction: 'friction-0',
+                physics: 'usePhysics-0',
+                social0: 'socialForce-0-0',
+                social1: 'socialForce-0-1',
+                social2: 'socialForce-0-2',
+                skin: 'imageIndex-0',
+                skin0: 'imageIndex-0',
+                skin1: 'imageIndex-1',
+                skin2: 'imageIndex-2',
             }
         );
         this._editor1.bindModel(
             model, {
-                radius: 'radius1',
-                gravity: 'gravity1',
-                collision: 'collision1',
-                friction: 'friction1',
-                physics: 'usePhysics1',
-                social0: 'socialForce10',
-                social1: 'socialForce11',
-                social2: 'socialForce12',
-                skin: 'imageIndex1',
-                skin0: 'imageIndex0',
-                skin1: 'imageIndex1',
-                skin2: 'imageIndex2',
+                radius: 'radius-1',
+                gravity: 'gravity-1',
+                collision: 'collision-1',
+                friction: 'friction-1',
+                physics: 'usePhysics-1',
+                social0: 'socialForce-1-0',
+                social1: 'socialForce-1-1',
+                social2: 'socialForce-1-2',
+                skin: 'imageIndex-1',
+                skin0: 'imageIndex-0',
+                skin1: 'imageIndex-1',
+                skin2: 'imageIndex-2',
             }
         );
         this._editor2.bindModel(
             model, {
-                radius: 'radius2',
-                gravity: 'gravity2',
-                collision: 'collision2',
-                friction: 'friction2',
-                physics: 'usePhysics2',
-                social0: 'socialForce20',
-                social1: 'socialForce21',
-                social2: 'socialForce22',
-                skin: 'imageIndex2',
-                skin0: 'imageIndex0',
-                skin1: 'imageIndex1',
-                skin2: 'imageIndex2',
+                radius: 'radius-2',
+                gravity: 'gravity-2',
+                collision: 'collision-2',
+                friction: 'friction-2',
+                physics: 'usePhysics-2',
+                social0: 'socialForce-2-0',
+                social1: 'socialForce-2-1',
+                social2: 'socialForce-2-2',
+                skin: 'imageIndex-2',
+                skin0: 'imageIndex-0',
+                skin1: 'imageIndex-1',
+                skin2: 'imageIndex-2',
             }
         );
     }
