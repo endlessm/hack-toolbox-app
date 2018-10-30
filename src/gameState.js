@@ -31,6 +31,27 @@ var getDefault = (function () {
         if (!defaultGameStateProxy) {
             defaultGameStateProxy = new GameStateProxy(Gio.DBus.session,
                 BusName, BusPath);
+            // Promisify methods
+            defaultGameStateProxy.Get = function(key) {
+                return new Promise((resolve, reject) => {
+                    this.GetRemote(key, ([value], err) => {
+                        if (err)
+                            reject(err);
+                        else
+                            resolve(value);
+                    });
+                });
+            };
+            defaultGameStateProxy.Set = function(key, value) {
+                return new Promise((resolve, reject) => {
+                    this.SetRemote(key, value, (ret, err) => {
+                        if (err)
+                            reject(err);
+                        else
+                            resolve();
+                    });
+                });
+            };
         }
         return defaultGameStateProxy;
     };
