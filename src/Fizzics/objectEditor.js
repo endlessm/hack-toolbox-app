@@ -1,12 +1,12 @@
-/* exported HBObjectEditor */
+/* exported FizzicsObjectEditor */
 
 const {GObject, Gtk} = imports.gi;
-const {HBSkinImage, HBSkinMaxIndex} = imports.hackyballs.skinImage;
+const {FizzicsSkinImage, FizzicsSkinMaxIndex} = imports.Fizzics.skinImage;
 const {PopupMenu} = imports.popupMenu;
 
-var HBObjectEditor = GObject.registerClass({
-    GTypeName: 'HBObjectEditor',
-    Template: 'resource:///com/endlessm/HackToolbox/hackyballs/objectEditor.ui',
+var FizzicsObjectEditor = GObject.registerClass({
+    GTypeName: 'FizzicsObjectEditor',
+    Template: 'resource:///com/endlessm/HackToolbox/Fizzics/objectEditor.ui',
     InternalChildren: [
         'adjustmentRadius',
         'adjustmentGravity',
@@ -21,19 +21,19 @@ var HBObjectEditor = GObject.registerClass({
         'imageObject1',
         'imageObject2',
     ],
-}, class HBObjectEditor extends Gtk.Grid {
+}, class FizzicsObjectEditor extends Gtk.Grid {
     _init(props = {}) {
         super._init(props);
 
-        const indices = Array.from({length: HBSkinMaxIndex + 1}, (v, i) => i);
-        this._menuSkin = new PopupMenu(this._buttonSkin, indices, HBSkinImage,
+        const indices = Array.from({length: FizzicsSkinMaxIndex + 1}, (v, i) => i);
+        this._menuSkin = new PopupMenu(this._buttonSkin, indices, FizzicsSkinImage,
             'index', {});
 
-        this._imageSkin0 = new HBSkinImage({visible: true, pixels: 32});
+        this._imageSkin0 = new FizzicsSkinImage({visible: true, pixels: 32});
         this._imageObject0.add(this._imageSkin0);
-        this._imageSkin1 = new HBSkinImage({visible: true, pixels: 32});
+        this._imageSkin1 = new FizzicsSkinImage({visible: true, pixels: 32});
         this._imageObject1.add(this._imageSkin1);
-        this._imageSkin2 = new HBSkinImage({visible: true, pixels: 32});
+        this._imageSkin2 = new FizzicsSkinImage({visible: true, pixels: 32});
         this._imageObject2.add(this._imageSkin2);
     }
 

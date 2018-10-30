@@ -31,22 +31,22 @@
     <file preprocess="xml-stripblanks">framework/travel.svg</file>
     <file>hacktoolbox/lockscreen.png</file>
     <file compressed="true" preprocess="xml-stripblanks">hacktoolbox/toolbox.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">hackyballs/controlpanel.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">hackyballs/level1.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">hackyballs/level2.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">hackyballs/objectEditor.ui</file>
-    <file>hackyballs/backgrounds/0.png</file>
-    <file>hackyballs/backgrounds/1.png</file>
-    <file>hackyballs/backgrounds/2.png</file>
-    <file>hackyballs/skins/0.png</file>
-    <file>hackyballs/skins/1.png</file>
-    <file>hackyballs/skins/2.png</file>
-    <file>hackyballs/skins/3.png</file>
-    <file>hackyballs/skins/4.png</file>
-    <file>hackyballs/skins/5.png</file>
-    <file>hackyballs/skins/6.png</file>
-    <file>hackyballs/skins/7.png</file>
-    <file>hackyballs/skins/8.png</file>
+    <file compressed="true" preprocess="xml-stripblanks">Fizzics/controlpanel.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">Fizzics/level1.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">Fizzics/level2.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">Fizzics/objectEditor.ui</file>
+    <file>Fizzics/backgrounds/0.png</file>
+    <file>Fizzics/backgrounds/1.png</file>
+    <file>Fizzics/backgrounds/2.png</file>
+    <file>Fizzics/skins/0.png</file>
+    <file>Fizzics/skins/1.png</file>
+    <file>Fizzics/skins/2.png</file>
+    <file>Fizzics/skins/3.png</file>
+    <file>Fizzics/skins/4.png</file>
+    <file>Fizzics/skins/5.png</file>
+    <file>Fizzics/skins/6.png</file>
+    <file>Fizzics/skins/7.png</file>
+    <file>Fizzics/skins/8.png</file>
     <file>HackUnlock/controlpanel.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">OperatingSystemApp/controlpanel.ui</file>
   </gresource>

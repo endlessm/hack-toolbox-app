@@ -16,13 +16,13 @@
     <file>framework/toolbox.js</file>
     <file>framework/utils.js</file>
     <file>hacktoolbox/hacktoolbox.js</file>
-    <file>hackyballs/controlpanel.js</file>
-    <file>hackyballs/model.js</file>
-    <file>hackyballs/toolbox.js</file>
-    <file>hackyballs/level1.js</file>
-    <file>hackyballs/level2.js</file>
-    <file>hackyballs/objectEditor.js</file>
-    <file>hackyballs/skinImage.js</file>
+    <file>Fizzics/controlpanel.js</file>
+    <file>Fizzics/model.js</file>
+    <file>Fizzics/toolbox.js</file>
+    <file>Fizzics/level1.js</file>
+    <file>Fizzics/level2.js</file>
+    <file>Fizzics/objectEditor.js</file>
+    <file>Fizzics/skinImage.js</file>
     <file>HackUnlock/controlpanel.js</file>
     <file>HackUnlock/model.js</file>
     <file>HackUnlock/toolbox.js</file>

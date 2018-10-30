@@ -1,14 +1,14 @@
-/* exported HBLevel1 */
+/* exported FizzicsLevel1 */
 
 const {GObject, Gtk} = imports.gi;
 
 const {ButtonGroup} = imports.framework.buttonGroup;
-const {HBSkinImage} = imports.hackyballs.skinImage;
-const {HBObjectEditor} = imports.hackyballs.objectEditor;
+const {FizzicsSkinImage} = imports.Fizzics.skinImage;
+const {FizzicsObjectEditor} = imports.Fizzics.objectEditor;
 
-var HBLevel1 = GObject.registerClass({
-    GTypeName: 'HBLevel1',
-    Template: 'resource:///com/endlessm/HackToolbox/hackyballs/level1.ui',
+var FizzicsLevel1 = GObject.registerClass({
+    GTypeName: 'FizzicsLevel1',
+    Template: 'resource:///com/endlessm/HackToolbox/Fizzics/level1.ui',
     InternalChildren: [
         'buttonBackground0',
         'buttonBackground1',
@@ -20,7 +20,7 @@ var HBLevel1 = GObject.registerClass({
         'tab2',
         'tab2Image',
     ],
-}, class HBLevel1 extends Gtk.Grid {
+}, class FizzicsLevel1 extends Gtk.Grid {
     _init(props = {}) {
         super._init(props);
         this._backgroundGroup = new ButtonGroup({
@@ -29,18 +29,18 @@ var HBLevel1 = GObject.registerClass({
             buttonBackground2: this._buttonBackground2,
         });
 
-        this._editor0 = new HBObjectEditor({visible: true});
-        this._image0 = new HBSkinImage({visible: true, pixels: 32});
+        this._editor0 = new FizzicsObjectEditor({visible: true});
+        this._image0 = new FizzicsSkinImage({visible: true, pixels: 32});
         this._tab0.add(this._editor0);
         this._tab0Image.add(this._image0);
 
-        this._editor1 = new HBObjectEditor({visible: true});
-        this._image1 = new HBSkinImage({visible: true, pixels: 32});
+        this._editor1 = new FizzicsObjectEditor({visible: true});
+        this._image1 = new FizzicsSkinImage({visible: true, pixels: 32});
         this._tab1.add(this._editor1);
         this._tab1Image.add(this._image1);
 
-        this._editor2 = new HBObjectEditor({visible: true});
-        this._image2 = new HBSkinImage({visible: true, pixels: 32});
+        this._editor2 = new FizzicsObjectEditor({visible: true});
+        this._image2 = new FizzicsSkinImage({visible: true, pixels: 32});
         this._tab2.add(this._editor2);
         this._tab2Image.add(this._image2);
     }

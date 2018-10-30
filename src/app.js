@@ -18,8 +18,8 @@ function _toolboxClassForBusName(targetBusName) {
     case 'com.endlessm.dinosaurs.en':
     case 'com.endlessm.Hackdex_chapter_one':
         return imports.framework.toolbox.FrameworkToolbox;
-    case 'com.endlessm.hackyballs':
-        return imports.hackyballs.toolbox.HBToolbox;
+    case 'com.endlessm.Fizzics':
+        return imports.Fizzics.toolbox.FizzicsToolbox;
     case 'com.endlessm.HackUnlock':
         return imports.HackUnlock.toolbox.HUToolbox;
     case 'com.endlessm.OperatingSystemApp':
