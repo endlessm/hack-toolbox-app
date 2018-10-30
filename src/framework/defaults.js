@@ -2,6 +2,8 @@
 
 const {Gdk} = imports.gi;
 
+const GameState = imports.gameState;
+
 const COLORS = Symbol('colors');
 
 const DEFAULTS = {
@@ -65,6 +67,30 @@ var Defaults = class Defaults {
     constructor(busName) {
         this._busName = busName;
         this._defaults = DEFAULTS[busName];
+        this._applyQuestOverridesSync();
+    }
+
+    _applyQuestOverridesSync() {
+        if (this._busName === 'com.endlessm.Hackdex_chapter_one') {
+            // Override for the "corrupted hackdex chapter 1" quest
+            const gameState = GameState.getDefault();
+            const key = 'app.com_endlessm_Hackdex_chapter_one.corruption';
+            let corruption;
+            try {
+                corruption = gameState.GetSync(key);
+            } catch (e) {
+                void e;  // key not yet present; do nothing
+                return;
+            }
+            if (corruption.state) {
+                const state = corruption.state.deep_unpack();
+                const color = corruption.color.deep_unpack();
+                if (state === 'corrupted')
+                    this._defaults[COLORS]['main'] = 'rgba(255, 255, 255, 0)';
+                else if (state === 'fixed')
+                    this._defaults[COLORS]['main'] = color;
+            }
+        }
     }
 
     _getColor(propertyName) {
