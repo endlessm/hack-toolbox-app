@@ -4,7 +4,7 @@ const {Gio, GLib, GObject} = imports.gi;
 
 const ViewName = 'view.JSContext.globalParameters';
 const AppBusName = 'com.endlessm.hackyballs';
-const AppObjectPath = '/com/endlessm/hackyballs';
+const ClippyObjectPath = '/com/endlessm/Clippy';
 const ClippyIface = `
 <node xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
   <interface name='com.endlessm.Clippy'>
@@ -43,9 +43,9 @@ var HBModelBase = GObject.registerClass({
         });
     }
 
-    bindProperties(busName, objectPath, map = {}) {
+    bindProperties(busName, map = {}) {
         const Proxy = Gio.DBusProxy.makeProxyWrapper(ClippyIface);
-        this._proxy = new Proxy(Gio.DBus.session, busName, objectPath);
+        this._proxy = new Proxy(Gio.DBus.session, busName, ClippyObjectPath);
         const invertMap = {};
 
         const props = GObject.Object.list_properties.call(this.constructor.$gtype);
@@ -184,7 +184,7 @@ var HBModelGlobal = GObject.registerClass({
 }, class HBModelGlobal extends HBModelBase {
     _init(props = {}) {
         super._init(props);
-        this.bindProperties(AppBusName, AppObjectPath, {
+        this.bindProperties(AppBusName, {
             backgroundImageIndex: 'backgroundImageIndex',
 
             radius0: 'radius-0',
