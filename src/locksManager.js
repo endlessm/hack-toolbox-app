@@ -1,27 +1,8 @@
 /* exported LocksManager */
 
-const {Gio, GLib, GObject} = imports.gi;
+const {GLib, GObject} = imports.gi;
 
-const BusName = 'com.endlessm.GameStateService';
-const BusPath = '/com/endlessm/GameStateService';
-const BusIface = `
-    <node>
-      <interface name='com.endlessm.GameStateService'>
-        <method name='Get'>
-          <arg type='s' name='key' direction='in'/>
-          <arg type='v' name='value' direction='out'/>
-        </method>
-        <method name='Set'>
-          <arg type='s' name='key' direction='in'/>
-          <arg type='v' name='value' direction='in'/>
-        </method>
-        <signal name='changed'>
-          <arg type='s' name='key'/>
-          <arg type='v' name='value'/>
-        </signal>
-      </interface>
-    </node>
-`;
+const GameState = imports.gameState;
 
 var LocksManager = GObject.registerClass({
     Signals: {
@@ -32,8 +13,7 @@ var LocksManager = GObject.registerClass({
 }, class LocksManager extends GObject.Object {
     _init(props = {}) {
         super._init(props);
-        const Proxy = Gio.DBusProxy.makeProxyWrapper(BusIface);
-        this._proxy = new Proxy(Gio.DBus.session, BusName, BusPath);
+        this._proxy = GameState.getDefault();
         this._proxy.connect('g-signal', this._onChanged.bind(this));
     }
 
