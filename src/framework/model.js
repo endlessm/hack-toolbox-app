@@ -4,6 +4,7 @@
 const {Gdk, Gio, GLib, GObject, HackToolbox} = imports.gi;
 const ByteArray = imports.byteArray;
 
+const GameState = imports.gameState;
 const Gen = imports.framework.gen;
 const Utils = imports.framework.utils;
 
@@ -253,6 +254,32 @@ class RaModelBase extends GObject.Object {
         this.notify('hyperlinks');
     }
 
+    async _checkQuestStatus() {
+        // Check hackdex chapter 1 quest
+        if (this.constructor.busName === 'com.endlessm.Hackdex_chapter_one') {
+            const gameState = GameState.getDefault();
+            const key = 'app.com_endlessm_Hackdex_chapter_one.corruption';
+            let corruption;
+            try {
+                corruption = (await gameState.Get(key)).deep_unpack();
+            } catch (e) {
+                void e;
+                return;  // key not yet present, nothing to do
+            }
+            const corruptedColor = new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 0});
+            const state = corruption.state.deep_unpack();
+            if (state === 'corrupted' && !this.main_color.equal(corruptedColor) ||
+                state === 'fixed') {
+                // Quest was solved, player set main color to another color; or
+                // quest was already solved and we just update the stored color
+                await gameState.Set(key, new GLib.Variant('a{ss}', {
+                    state: 'fixed',
+                    color: Utils.rgbaToString(this.main_color),
+                }));
+            }
+        }
+    }
+
     _createCSS() {
         const scss = Gen.generateSCSS(this);
         return Utils.transformStringToFD(scss,
@@ -293,6 +320,8 @@ class RaModelBase extends GObject.Object {
 
     async launch(busName) {
         this.snapshot();  // now, "changed" is relative to this snapshot
+
+        await this._checkQuestStatus();
 
         const css = await this._createCSS();
         const json = await this._createJSON();
