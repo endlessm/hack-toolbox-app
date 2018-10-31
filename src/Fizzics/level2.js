@@ -1,15 +1,15 @@
-/* exported HBLevel2 */
+/* exported FizzicsLevel2 */
 
 const {GObject, Gtk} = imports.gi;
 const {Codeview} = imports.codeview;
 
-var HBLevel2 = GObject.registerClass({
-    GTypeName: 'HBLevel2',
-    Template: 'resource:///com/endlessm/HackToolbox/hackyballs/level2.ui',
+var FizzicsLevel2 = GObject.registerClass({
+    GTypeName: 'FizzicsLevel2',
+    Template: 'resource:///com/endlessm/HackToolbox/Fizzics/level2.ui',
     InternalChildren: [
         'content',
     ],
-}, class HBLevel2 extends Gtk.Box {
+}, class FizzicsLevel2 extends Gtk.Box {
     _init(props = {}) {
         super._init(props);
         this._codeview = new Codeview();

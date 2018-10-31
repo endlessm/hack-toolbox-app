@@ -1,11 +1,11 @@
-/* exported HBModelGlobal */
+/* exported FizzicsModelGlobal */
 
 const {GLib, GObject} = imports.gi;
 const {ClippyWrapper} = imports.clippyWrapper;
 
 const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 
-var HBModelGlobal = GObject.registerClass({
+var FizzicsModelGlobal = GObject.registerClass({
     Properties: {
         backgroundImageIndex: GObject.ParamSpec.uint(
             'backgroundImageIndex', 'backgroundImageIndex', '',
@@ -95,9 +95,9 @@ var HBModelGlobal = GObject.registerClass({
             'imageIndex-2', 'imageIndex-2', '',
             _propFlags, 0, 8, 2),
     },
-}, class HBModelGlobal extends ClippyWrapper {
+}, class FizzicsModelGlobal extends ClippyWrapper {
     _init(props = {}) {
-        props.busName = 'com.endlessm.hackyballs';
+        props.busName = 'com.endlessm.Fizzics';
         super._init(props);
     }
 });

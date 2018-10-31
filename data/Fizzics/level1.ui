@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <template class="HBLevel1" parent="GtkGrid">
+  <template class="FizzicsLevel1" parent="GtkGrid">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
@@ -48,7 +48,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="pixel_size">36</property>
-                <property name="resource">/com/endlessm/HackToolbox/hackyballs/backgrounds/0.png</property>
+                <property name="resource">/com/endlessm/HackToolbox/Fizzics/backgrounds/0.png</property>
                 <property name="icon_size">6</property>
               </object>
             </child>
@@ -71,7 +71,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="pixel_size">36</property>
-                <property name="resource">/com/endlessm/HackToolbox/hackyballs/backgrounds/1.png</property>
+                <property name="resource">/com/endlessm/HackToolbox/Fizzics/backgrounds/1.png</property>
                 <property name="icon_size">6</property>
               </object>
             </child>
@@ -94,7 +94,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="pixel_size">36</property>
-                <property name="resource">/com/endlessm/HackToolbox/hackyballs/backgrounds/2.png</property>
+                <property name="resource">/com/endlessm/HackToolbox/Fizzics/backgrounds/2.png</property>
                 <property name="icon_size">6</property>
               </object>
             </child>
