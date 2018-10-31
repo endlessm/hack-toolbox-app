@@ -10,7 +10,7 @@ const VALID_ENUMS = {
     logo_graphic: VALID_LOGOS,
     text_transformation: ['bubbles', 'flipped', 'normal', 'scrambled', 'zalgo'],
     card_order: ['ordered', 'random', 'az', 'za'],
-    card_layout: ['tiledGrid', 'windshield', 'piano', 'nest', 'overflow'],
+    card_layout: ['grid', 'tiledGrid', 'windshield', 'piano', 'nest', 'overflow'],
     // FIXME what to call the card layouts
     image_filter: ['none', 'disco', 'corduroy', 'blueprint', 'lensFlare'],
     sounds_cursor_hover: ['none', 'scifi'],
