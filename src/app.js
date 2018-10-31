@@ -29,6 +29,15 @@ function _toolboxClassForBusName(targetBusName) {
     }
 }
 
+function _toolboxIsDecorated(targetBusName) {
+    switch (targetBusName) {
+    case 'com.endlessm.HackUnlock':
+        return false;
+    default:
+        return true;
+    }
+}
+
 const AUTO_CLOSE_MILLISECONDS_TIMEOUT = 12000;
 
 var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application {
@@ -75,6 +84,7 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
             const toolbox = new ToolboxClass({visible: true});
             const win = new ToolboxWindow({
                 application: this,
+                decorated: _toolboxIsDecorated(busName),
                 target_bus_name: busName,
                 target_object_path: objectPath,
             });
