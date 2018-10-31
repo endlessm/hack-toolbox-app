@@ -29,6 +29,8 @@ const HACKABLE_PROPERTIES = ['logo-graphic', 'logo-color', 'main-color',
     'text-transformation', 'card-order', 'card-layout', 'image-filter',
     'sounds-cursor-hover', 'sounds-cursor-click', 'text-cipher', 'hyperlinks'];
 
+const NONSTANDARD_PRESET_APPS = ['com.endlessm.Hackdex_chapter_one'];
+
 const _createdClasses = new Map();
 
 class RaModelBase extends GObject.Object {
@@ -261,9 +263,14 @@ class RaModelBase extends GObject.Object {
 
     _createJSON() {
         const yaml = Gen.generateYAML(this);
-        return Utils.transformStringToFD(yaml,
-            ['autobahn', '-I', '/usr/share/eos-knowledge/preset', '-I',
-                '/app/share/com.endlessm.HackToolbox/app-descriptions']);
+
+        let includePath = '/usr/share/eos-knowledge/preset';
+        // A few apps must deviate from the standard SDK include path as they
+        // don't use standard presets
+        if (NONSTANDARD_PRESET_APPS.includes(this.constructor.busName))
+            includePath = '/app/share/com.endlessm.HackToolbox/app-descriptions';
+
+        return Utils.transformStringToFD(yaml, ['autobahn', '-I', includePath]);
     }
 
     async _createGResource() {
