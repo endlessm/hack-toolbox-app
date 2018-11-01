@@ -3,6 +3,7 @@
   <gresource prefix="/com/endlessm/HackToolbox">
     <file compressed="true">application.css</file>
     <file compressed="true">codeview.ui</file>
+    <file compressed="true">spininput.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">framework/level1.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">framework/level2.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">framework/level3.ui</file>
@@ -49,5 +50,23 @@
     <file>Fizzics/skins/8.png</file>
     <file>HackUnlock/controlpanel.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">OperatingSystemApp/controlpanel.ui</file>
+    <file compressed="true">OperatingSystemApp/cursors/cursor-cheese.xmc</file>
+    <file compressed="true">OperatingSystemApp/cursors/cursor-daemon.xmc</file>
+    <file compressed="true">OperatingSystemApp/cursors/cursor-default.xmc</file>
+    <file compressed="true">OperatingSystemApp/cursors/cursor-disco.xmc</file>
+    <file compressed="true">OperatingSystemApp/cursors/cursor-glitchy.xmc</file>
+    <file compressed="true">OperatingSystemApp/cursors/cursor-ice-cream.xmc</file>
+    <file compressed="true">OperatingSystemApp/cursors/cursor-magic-wand.xmc</file>
+    <file compressed="true">OperatingSystemApp/cursors/cursor-poop.xmc</file>
+    <file compressed="true">OperatingSystemApp/cursors/cursor-rainbow-unicorn.xmc</file>
+    <file>OperatingSystemApp/icons/cursor-cheese.png</file>
+    <file>OperatingSystemApp/icons/cursor-daemon.png</file>
+    <file>OperatingSystemApp/icons/cursor-default.png</file>
+    <file>OperatingSystemApp/icons/cursor-disco.png</file>
+    <file>OperatingSystemApp/icons/cursor-glitchy.png</file>
+    <file>OperatingSystemApp/icons/cursor-ice-cream.png</file>
+    <file>OperatingSystemApp/icons/cursor-magic-wand.png</file>
+    <file>OperatingSystemApp/icons/cursor-poop.png</file>
+    <file>OperatingSystemApp/icons/cursor-rainbow-unicorn.png</file>
   </gresource>
 </gresources>

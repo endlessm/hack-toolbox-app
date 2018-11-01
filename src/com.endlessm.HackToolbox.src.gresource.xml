@@ -27,11 +27,15 @@
     <file>HackUnlock/model.js</file>
     <file>HackUnlock/toolbox.js</file>
     <file>OperatingSystemApp/controlpanel.js</file>
+    <file>OperatingSystemApp/osmodel.js</file>
+    <file>OperatingSystemApp/oscursormodel.js</file>
+    <file>OperatingSystemApp/oswobblymodel.js</file>
     <file>OperatingSystemApp/toolbox.js</file>
     <file>lockscreen.js</file>
     <file>locksManager.js</file>
     <file>main.js</file>
     <file>popupMenu.js</file>
+    <file>spinInput.js</file>
     <file>toolbox.js</file>
     <file>window.js</file>
   </gresource>
