@@ -36,10 +36,6 @@ widget.lockscreen.locked {
 }
 
 toolbox {
-    background-color: #e8e8e7;  /* Adwaita background color */
-}
-
-toolbox.dark {
     background-color: #33393b;  /* Adwaita-dark background color */
 }
 
