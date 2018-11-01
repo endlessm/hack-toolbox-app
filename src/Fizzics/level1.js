@@ -2,17 +2,22 @@
 
 const {GObject, Gtk} = imports.gi;
 
-const {ButtonGroup} = imports.framework.buttonGroup;
 const {FizzicsSkinImage} = imports.Fizzics.skinImage;
 const {FizzicsObjectEditor} = imports.Fizzics.objectEditor;
+const {PopupMenu} = imports.popupMenu;
+const {Section} = imports.section;
+
+GObject.type_ensure(Section.$gtype);
 
 var FizzicsLevel1 = GObject.registerClass({
     GTypeName: 'FizzicsLevel1',
     Template: 'resource:///com/endlessm/HackToolbox/Fizzics/level1.ui',
     InternalChildren: [
-        'buttonBackground0',
-        'buttonBackground1',
-        'buttonBackground2',
+        'buttonBackground',
+        'buttonDrag',
+        'buttonShoot',
+        'buttonAdd',
+        'buttonDelete',
         'tab0',
         'tab0Image',
         'tab1',
@@ -27,36 +32,23 @@ var FizzicsLevel1 = GObject.registerClass({
 }, class FizzicsLevel1 extends Gtk.Grid {
     _init(props = {}) {
         super._init(props);
-        this._backgroundGroup = new ButtonGroup({
-            buttonBackground0: this._buttonBackground0,
-            buttonBackground1: this._buttonBackground1,
-            buttonBackground2: this._buttonBackground2,
-        });
 
-        this._editor0 = new FizzicsObjectEditor({visible: true});
-        this._image0 = new FizzicsSkinImage({visible: true, pixels: 32});
-        this._tab0.add(this._editor0);
-        this._tab0Image.add(this._image0);
+        const indices = Array.from({length: 3}, (v, i) => i);
+        this._menuBackground = new PopupMenu(this._buttonBackground, indices,
+            FizzicsSkinImage, 'index',
+            {'resource-path': '/com/endlessm/HackToolbox/Fizzics/backgrounds'});
+        this._addTabForIndex(0);
+        this._addTabForIndex(1);
+        this._addTabForIndex(2);
+        this._addTabForIndex(3);
+        this._addTabForIndex(4);
+    }
 
-        this._editor1 = new FizzicsObjectEditor({visible: true});
-        this._image1 = new FizzicsSkinImage({visible: true, pixels: 32});
-        this._tab1.add(this._editor1);
-        this._tab1Image.add(this._image1);
-
-        this._editor2 = new FizzicsObjectEditor({visible: true});
-        this._image2 = new FizzicsSkinImage({visible: true, pixels: 32});
-        this._tab2.add(this._editor2);
-        this._tab2Image.add(this._image2);
-
-        this._editor3 = new FizzicsObjectEditor({visible: true});
-        this._image3 = new FizzicsSkinImage({visible: true, pixels: 32});
-        this._tab3.add(this._editor3);
-        this._tab3Image.add(this._image3);
-
-        this._editor4 = new FizzicsObjectEditor({visible: true});
-        this._image4 = new FizzicsSkinImage({visible: true, pixels: 32});
-        this._tab4.add(this._editor4);
-        this._tab4Image.add(this._image4);
+    _addTabForIndex(index) {
+        this[`_editor${index}`] = new FizzicsObjectEditor({visible: true});
+        this[`_image${index}`] = new FizzicsSkinImage({visible: true, pixels: 32});
+        this[`_tab${index}`].add(this[`_editor${index}`]);
+        this[`_tab${index}Image`].add(this[`_image${index}`]);
     }
 
     _bindModelToEditor(model, index) {
@@ -72,6 +64,10 @@ var FizzicsLevel1 = GObject.registerClass({
                 social2: `socialForce-${index}-2`,
                 social3: `socialForce-${index}-3`,
                 social4: `socialForce-${index}-4`,
+                badSFX: `deathSoundBad-${index}`,
+                badVFX: `deathVisualBad-${index}`,
+                goodSFX: `deathSoundGood-${index}`,
+                goodVFX: `deathVisualGood-${index}`,
                 skin: `imageIndex-${index}`,
                 skin0: 'imageIndex-0',
                 skin1: 'imageIndex-1',
@@ -84,7 +80,11 @@ var FizzicsLevel1 = GObject.registerClass({
 
     bindModel(model) {
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
-        model.bind_property('backgroundImageIndex', this._backgroundGroup, 'index', flags);
+        model.bind_property('backgroundImageIndex', this._menuBackground, 'index', flags);
+        model.bind_property('moveToolActive', this._buttonDrag, 'active', flags);
+        model.bind_property('flingToolActive', this._buttonShoot, 'active', flags);
+        model.bind_property('createToolActive', this._buttonAdd, 'active', flags);
+        model.bind_property('deleteToolActive', this._buttonDelete, 'active', flags);
         model.bind_property('imageIndex-0', this._image0, 'index', flags);
         model.bind_property('imageIndex-1', this._image1, 'index', flags);
         model.bind_property('imageIndex-2', this._image2, 'index', flags);

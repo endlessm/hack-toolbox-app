@@ -14,6 +14,10 @@ var FizzicsSkinImage = GObject.registerClass({
             'pixels', 'pixels', 'pixels',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             0, 64, 64),
+        'resource-path': GObject.ParamSpec.string(
+            'resource-path', 'resource-path', 'resource-path',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            '/com/endlessm/HackToolbox/Fizzics/skins'),
     },
 }, class FizzicsSkinImage extends Gtk.Image {
     get index() {
@@ -24,7 +28,7 @@ var FizzicsSkinImage = GObject.registerClass({
         if ('_index' in this && this._index === value)
             return;
         this._index = value;
-        const resource = `/com/endlessm/HackToolbox/Fizzics/skins/${value}.png`;
+        const resource = `${this.resource_path}/${value}.png`;
         this.pixbuf = GdkPixbuf.Pixbuf.new_from_resource_at_scale(
             resource, this.pixels, this.pixels, true);
         this.notify('index');

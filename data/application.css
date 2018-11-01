@@ -124,6 +124,20 @@ button.popup {
     padding: 5px 8px;
 }
 
+/* Notebook and tabs */
+notebook {
+    background-color: rgba(6, 20, 39, 0.24);
+}
+
+notebook header {
+    background-color: rgba(6, 20, 39, 0.48);
+}
+
+notebook tabs,
+notebook stack {
+    background-color: transparent;
+}
+
 .codeview {
     font-family: monospace;
 }
