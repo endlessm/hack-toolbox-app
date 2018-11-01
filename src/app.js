@@ -91,6 +91,9 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
             win.add(toolbox);
             toolbox.bindWindow(win);
 
+            const settings = Gtk.Settings.get_default();
+            settings.gtk_application_prefer_dark_theme = true;
+
             this._windows[busName][objectPath] = win;
             win.connect('destroy', () => {
                 delete this._windows[busName][objectPath];

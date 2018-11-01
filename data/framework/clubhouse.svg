@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"
    viewBox="0 0 100 100" version="1.1">
   <g
-     style="fill:black;fill-rule:evenodd;stroke:none"
+     style="fill:#bebebe;fill-rule:evenodd;stroke:none"
      transform="matrix(0.62203222,0,0,0.62203363,4.4213018,-0.09844252) translate(-140,-210) rotate(-9,1531.3294,-759.25915)">
     <path d="M 128.14756,122.76303 V 143 H 3.344 V 0 H 128.14756 Z M 118.12044,9.8679957 H 13.366222 V 107.03303 H 118.12044 Z"/>
   </g>
