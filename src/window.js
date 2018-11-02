@@ -1,6 +1,6 @@
 /* exported ToolboxWindow */
 
-const {Gio, GLib, GObject, Gtk, Hackable, HackToolbox} = imports.gi;
+const {Gio, GLib, GObject, Gtk, HackToolbox} = imports.gi;
 const {Lockscreen} = imports.lockscreen;
 
 var ToolboxWindow = GObject.registerClass({
@@ -24,7 +24,6 @@ var ToolboxWindow = GObject.registerClass({
         const objectPath =
             `${this.application.get_dbus_object_path()}/window/${this.get_id()}`;
         this.hack_toolbox_skeleton = this._createHackToolboxSkeletonOnPath(objectPath);
-        this.hackable_proxy = this._maybeGetHackableProxySync();
 
         this._flipBack = new Gio.SimpleAction({
             name: 'flip-back',
@@ -97,19 +96,5 @@ var ToolboxWindow = GObject.registerClass({
         });
         skeleton.export(this.application.get_dbus_connection(), objectPath);
         return skeleton;
-    }
-
-    // Try to get a Hackable Proxy object for the objectPath on
-    // busName, but if one does not exist, just return null
-    _maybeGetHackableProxySync() {
-        try {
-            return Hackable.HackableProxy.new_sync(this.application.get_dbus_connection(),
-                Gio.DBusProxyFlags.NONE, this.target_bus_name,
-                this.target_object_path, null);
-        } catch (e) {
-            logError(e, `${this.target_bus_name}:${this.target_object_path} does ` +
-                'not export the Hackable interface, using default toolbox');
-            return null;
-        }
     }
 });
