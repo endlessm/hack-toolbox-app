@@ -97,7 +97,7 @@ var FizzicsModelGlobal = GObject.registerClass({
     },
 }, class FizzicsModelGlobal extends ClippyWrapper {
     _init(props = {}) {
-        props.busName = 'com.endlessm.Fizzics';
+        props.appId = 'com.endlessm.Fizzics';
         super._init(props);
     }
 });

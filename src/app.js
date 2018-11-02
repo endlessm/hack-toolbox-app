@@ -13,8 +13,8 @@ function _loadStyleSheet(resourcePath) {
         provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
-function _toolboxClassForBusName(targetBusName) {
-    switch (targetBusName) {
+function _toolboxClassForAppId(targetAppId) {
+    switch (targetAppId) {
     case 'com.endlessm.dinosaurs.en':
     case 'com.endlessm.Hackdex_chapter_one':
         return imports.framework.toolbox.FrameworkToolbox;
@@ -29,8 +29,8 @@ function _toolboxClassForBusName(targetBusName) {
     }
 }
 
-function _toolboxIsDecorated(targetBusName) {
-    switch (targetBusName) {
+function _toolboxIsDecorated(targetAppId) {
+    switch (targetAppId) {
     case 'com.endlessm.HackUnlock':
         return false;
     default:
@@ -73,20 +73,20 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
     _onFlip(action, parameterVariant) {
         this.hold();
         const unpacked = parameterVariant.deep_unpack();
-        const [busName, objectPath] = unpacked;
+        const [appId, windowId] = unpacked;
         log(`Call flip with ${JSON.stringify(unpacked)}`);
 
-        if (!this._windows[busName])
-            this._windows[busName] = {};
+        if (!this._windows[appId])
+            this._windows[appId] = {};
 
-        if (!this._windows[busName][objectPath]) {
-            const ToolboxClass = _toolboxClassForBusName(busName);
+        if (!this._windows[appId][windowId]) {
+            const ToolboxClass = _toolboxClassForAppId(appId);
             const toolbox = new ToolboxClass({visible: true});
             const win = new ToolboxWindow({
                 application: this,
-                decorated: _toolboxIsDecorated(busName),
-                target_bus_name: busName,
-                target_object_path: objectPath,
+                decorated: _toolboxIsDecorated(appId),
+                target_app_id: appId,
+                target_window_id: windowId,
             });
             win.add(toolbox);
             toolbox.bindWindow(win);
@@ -94,13 +94,13 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
             const settings = Gtk.Settings.get_default();
             settings.gtk_application_prefer_dark_theme = true;
 
-            this._windows[busName][objectPath] = win;
+            this._windows[appId][windowId] = win;
             win.connect('destroy', () => {
-                delete this._windows[busName][objectPath];
+                delete this._windows[appId][windowId];
             });
         }
 
-        this._windows[busName][objectPath].present();
+        this._windows[appId][windowId].present();
         this.release();
     }
 

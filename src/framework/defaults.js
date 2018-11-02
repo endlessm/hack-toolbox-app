@@ -64,14 +64,14 @@ function _valueToCode(value) {
 }
 
 var Defaults = class Defaults {
-    constructor(busName) {
-        this._busName = busName;
-        this._defaults = DEFAULTS[busName];
+    constructor(appId) {
+        this._appId = appId;
+        this._defaults = DEFAULTS[appId];
         this._applyQuestOverridesSync();
     }
 
     _applyQuestOverridesSync() {
-        if (this._busName === 'com.endlessm.Hackdex_chapter_one') {
+        if (this._appId === 'com.endlessm.Hackdex_chapter_one') {
             // Override for the "corrupted hackdex chapter 1" quest
             const gameState = GameState.getDefault();
             const key = 'app.com_endlessm_Hackdex_chapter_one.corruption';
@@ -122,6 +122,6 @@ var Defaults = class Defaults {
     }
 
     get fonts() {
-        return AVAILABLE_FONTS[this._busName];
+        return AVAILABLE_FONTS[this._appId];
     }
 };

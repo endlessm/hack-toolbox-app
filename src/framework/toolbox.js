@@ -20,23 +20,23 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
     }
 
     // See DefaultHackToolbox
-    applyChanges(busName, objectPath) {
+    applyChanges(appId, objectPath) {
         this.setBusy(true);
         this._timeout = GLib.timeout_add_seconds(GLib.PRIORITY_LOW, 5, () => {
             this.setBusy(false);
             this._timeout = null;
             return GLib.SOURCE_REMOVE;
         });
-        return this._model.launch(busName, objectPath);
+        return this._model.launch(appId, objectPath);
     }
 
     bindWindow(win) {
         win.get_style_context().add_class('framework');
 
-        const busName = win.target_bus_name;
-        const defaults = new Defaults(busName);
+        const appId = win.target_app_id;
+        const defaults = new Defaults(appId);
 
-        const ModelClass = Model.ensureModelClass(busName, defaults);
+        const ModelClass = Model.ensureModelClass(appId, defaults);
         this._model = new ModelClass();
         this.connect('reset', () => this._model.reset());
         this._model.connect('notify::changed', () => {

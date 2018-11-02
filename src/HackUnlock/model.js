@@ -19,7 +19,7 @@ var HUModelGlobal = GObject.registerClass({
     },
 }, class HUModelGlobal extends ClippyWrapper {
     _init(props = {}) {
-        props.busName = 'com.endlessm.HackUnlock';
+        props.appId = 'com.endlessm.HackUnlock';
         super._init(props);
     }
 });

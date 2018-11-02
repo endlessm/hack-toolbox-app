@@ -257,7 +257,7 @@ class RaModelBase extends GObject.Object {
 
     async _checkQuestStatus() {
         // Check hackdex chapter 1 quest
-        if (this.constructor.busName === 'com.endlessm.Hackdex_chapter_one') {
+        if (this.constructor.appId === 'com.endlessm.Hackdex_chapter_one') {
             const gameState = GameState.getDefault();
             const key = 'app.com_endlessm_Hackdex_chapter_one.corruption';
             let corruption;
@@ -293,7 +293,7 @@ class RaModelBase extends GObject.Object {
         let includePath = '/usr/share/eos-knowledge/preset';
         // A few apps must deviate from the standard SDK include path as they
         // don't use standard presets
-        if (NONSTANDARD_PRESET_APPS.includes(this.constructor.busName))
+        if (NONSTANDARD_PRESET_APPS.includes(this.constructor.appId))
             includePath = '/app/share/com.endlessm.HackToolbox/app-descriptions';
 
         return Utils.transformStringToFD(yaml, ['autobahn', '-I', includePath]);
@@ -324,7 +324,7 @@ class RaModelBase extends GObject.Object {
         return HackToolbox.open_fd_readonly(gresource);
     }
 
-    async launch(busName) {
+    async launch(appId) {
         this.snapshot();  // now, "changed" is relative to this snapshot
 
         await this._checkQuestStatus();
@@ -339,8 +339,8 @@ class RaModelBase extends GObject.Object {
         // Here we need to talk to the framework app itself, instead of its
         // window. In eos-knowledge-lib the path of the app object is equal to
         // the app ID but with slashes instead of dots.
-        const appObjectPath = `/${busName.replace(/\./g, '/')}`;
-        const app = new AppProxy(Gio.DBus.session, busName, appObjectPath);
+        const appObjectPath = `/${appId.replace(/\./g, '/')}`;
+        const app = new AppProxy(Gio.DBus.session, appId, appObjectPath);
 
         const fdsToPass = [css, json, gresource, modules];
 
@@ -376,12 +376,12 @@ class RaModelBase extends GObject.Object {
     }
 }
 
-function ensureModelClass(busName, defaults) {
-    if (_createdClasses.has(busName))
-        return _createdClasses.get(busName);
+function ensureModelClass(appId, defaults) {
+    if (_createdClasses.has(appId))
+        return _createdClasses.get(appId);
 
     const ModelClass = GObject.registerClass({
-        GTypeName: `RaModel_for_${busName.replace(/./g, '_')}`,
+        GTypeName: `RaModel_for_${appId.replace(/./g, '_')}`,
         Properties: {
             changed: GObject.ParamSpec.boolean('changed', 'Changed', '',
                 GObject.ParamFlags.READABLE, false),
@@ -427,7 +427,7 @@ function ensureModelClass(busName, defaults) {
     }, RaModelBase);
 
     ModelClass._defaults = defaults;
-    ModelClass.busName = busName;
-    _createdClasses.set(busName, ModelClass);
+    ModelClass.appId = appId;
+    _createdClasses.set(appId, ModelClass);
     return ModelClass;
 }
