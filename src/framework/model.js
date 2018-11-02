@@ -1,5 +1,4 @@
 /* exported ensureModelClass */
-/* global pkg */
 
 const {Gdk, Gio, GLib, GObject, HackToolbox} = imports.gi;
 const ByteArray = imports.byteArray;
@@ -305,17 +304,6 @@ class RaModelBase extends GObject.Object {
         const json = await this._createJSON();
         const gresource = await this._createGResource();
         const modules = await Utils.getModulesGResource();
-        let soundpack = null;
-        let packname;
-        if (this.sounds_cursor_hover !== 'none')
-            packname = this.sounds_cursor_hover;
-        if (this.sounds_cursor_click !== 'none')
-            packname = this.sounds_cursor_click;
-        if (packname) {
-            const pkgdatadir = Gio.File.new_for_path(pkg.pkgdatadir);
-            const soundpackResource = pkgdatadir.get_child(`soundpack-${packname}.gresource`);
-            soundpack = HackToolbox.open_fd_readonly(soundpackResource);
-        }
 
         const AppProxy = Gio.DBusProxy.makeProxyWrapper(KnowledgeControlIface);
 
@@ -326,11 +314,6 @@ class RaModelBase extends GObject.Object {
         const app = new AppProxy(Gio.DBus.session, busName, appObjectPath);
 
         const fdsToPass = [css, json, gresource, modules];
-        const gresourceIndices = [2, 3];
-        if (soundpack !== null) {
-            fdsToPass.push(soundpack);
-            gresourceIndices.push(4);
-        }
 
         // Work around the Gio.DBus overrides not supporting Gio.UnixFDList
         // https://gitlab.gnome.org/GNOME/gjs/issues/204
@@ -342,7 +325,7 @@ class RaModelBase extends GObject.Object {
                     theme: 0,
                     ui: 1,
                 },
-                gresourceIndices, [], {}, fdlist,
+                [2, 3], [], {}, fdlist,
                 (out, err) => {
                     if (err)
                         reject(err);

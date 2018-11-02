@@ -1,13 +1,36 @@
 /* exported generateProto */
-/* global custom_modules */
 
-const {Gdk, GLib, GObject, Gtk} = imports.gi;
+const {Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
 
-const {AudioPlayer} = custom_modules.audioPlayer;
 const Dispatcher = imports.framework.dispatcher;
 
-function generateProto(Name, Extends, nchannels) {
-    var _nchannels = nchannels;  // capture in closure
+const SoundServerIface = `
+<node>
+  <interface name='com.endlessm.HackSoundServer'>
+    <method name='PlaySound'>
+      <arg type='s' name='sound_event' direction='in'/>
+      <arg type='s' name='uuid' direction='out'/>
+    </method>
+    <method name='StopSound'>
+      <arg type='s' name='uuid' direction='in'/>
+    </method>
+    <signal name='Error'>
+      <arg type='s' name='uuid'/>
+      <arg type='s' name='error_message'/>
+      <arg type='s' name='error_domain'/>
+      <arg type='i' name='error_code'/>
+      <arg type='s' name='debug'/>
+    </signal>
+  </interface>
+</node>
+`;
+
+function _logResponse(out, err) {
+    if (err)
+        logError(err, 'DBus method returned an error');
+}
+
+function generateProto(Name, Extends) {
     return {
         Name,
         Extends,
@@ -30,10 +53,10 @@ function generateProto(Name, Extends, nchannels) {
             this._ncards = 0;
             // eslint-disable-next-line no-restricted-syntax
             this.parent(props);
-            this._audioPlayer = new AudioPlayer({
-                channels: _nchannels,
-                soundpack: this._soundpack,
-            });
+            const SoundServerProxy = Gio.DBusProxy.makeProxyWrapper(SoundServerIface);
+
+            this._audioPlayer = new SoundServerProxy(Gio.DBus.session,
+                'com.endlessm.HackSoundServer', '/com/endlessm/HackSoundServer');
 
             if (!this._allowNavigation) {
                 // Prevent clicks on cards from actually going anywhere
@@ -77,16 +100,26 @@ function generateProto(Name, Extends, nchannels) {
         // Override of the original Arrangement class
         pack_card(card) {
             const id = this._ncards++;
+            const key = `framework/${this._soundpack}/${id}`;
             if (this._soundpack) {
                 if (this._click) {
-                    card.connect('clicked', () => this._audioPlayer.play(id));
+                    card.connect('clicked', () => {
+                        this._audioPlayer.PlaySoundRemote(key, _logResponse);
+                    });
                 } else {
                     card.connect('enter-notify-event', () => {
-                        this._audioPlayer.play(id);
+                        // Call method sync, to avoid starting more than one
+                        // copy of the sound
+                        if (!this._currentSound)
+                            [this._currentSound] = this._audioPlayer.PlaySoundSync(key);
                         return Gdk.EVENT_PROPAGATE;
                     });
                     card.connect('leave-notify-event', () => {
-                        this._audioPlayer.stop(id);
+                        if (this._currentSound) {
+                            this._audioPlayer.StopSoundRemote(this._currentSound,
+                                _logResponse);
+                            this._currentSound = null;
+                        }
                         return Gdk.EVENT_PROPAGATE;
                     });
                 }
