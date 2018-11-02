@@ -321,11 +321,16 @@ var Codeview = GObject.registerClass({
     }
 
     findAssignmentLocation(variable) {
-        const node = this.ast.body
+        const expressions = this.ast.body
             .filter(({type, expression}) => type === 'ExpressionStatement' &&
                     expression.type === 'AssignmentExpression')
-            .map(({expression}) => expression)
-            .find(({left}) => left.type === 'Identifier' && left.name === variable);
+            .map(({expression}) => expression);
+        let node = expressions.find(({left}) => left.type === 'Identifier' &&
+                                    left.name === variable);
+        if (!node) {
+            node = expressions.find(({left}) => left.type === 'MemberExpression' &&
+`${left.object.object.name}[${left.object.property.value}].${left.property.name}` === variable);
+        }
         return node ? node.right.loc : null;
     }
 });

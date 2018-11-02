@@ -4,6 +4,8 @@ const {GLib, GObject, Gtk} = imports.gi;
 
 const {Codeview} = imports.codeview;
 const SoundServer = imports.soundServer;
+const {SPECIES, BACKGROUNDS, SKINS, VFX_BAD,
+    VFX_GOOD, SFX_BAD, SFX_GOOD} = imports.Fizzics.model;
 
 var FizzicsLevel2 = GObject.registerClass({
     GTypeName: 'FizzicsLevel2',
@@ -42,16 +44,121 @@ var FizzicsLevel2 = GObject.registerClass({
         this.notify('update-sound-enabled');
     }
 
-    static _toScopeName(name) {
-        return name.replace(/-/g, '_');
+    _getPropsForGlobals() {
+        void this;
+        return {
+            background: 'backgroundImageIndex',
+            showDragTool: 'moveToolActive',
+            showShootTool: 'flingToolActive',
+            showAddTool: 'createToolActive',
+            showDeleteTool: 'deleteToolActive',
+        };
     }
 
-    static _toModelName(name) {
-        return name.replace(/_/g, '-');
+    _getPropsForIndex(index) {
+        void this;
+        return {
+            size: `radius_${index}`,
+            gravity: `gravity_${index}`,
+            bounce: `collision_${index}`,
+            drag: `friction_${index}`,
+            lock: `usePhysics_${index}`,
+            attraction0: `socialForce_${index}_0`,
+            attraction1: `socialForce_${index}_1`,
+            attraction2: `socialForce_${index}_2`,
+            attraction3: `socialForce_${index}_3`,
+            attraction4: `socialForce_${index}_4`,
+            skin: `imageIndex_${index}`,
+            vfxBad: `deathVisualBad_${index}`,
+            sfxBad: `deathSoundBad_${index}`,
+            vfxGood: `deathVisualGood_${index}`,
+            sfxGood: `deathSoundGood_${index}`,
+        };
     }
 
-    _getModelProps() {
-        return GObject.Object.list_properties.call(this._model.constructor.$gtype);
+    _getValueForScope(scopeProp, modelProp) {
+        if (scopeProp === 'background')
+            return `"${BACKGROUNDS[this._model[modelProp]]}"`;
+        if (scopeProp === 'skin')
+            return `"${SKINS[this._model[modelProp]]}"`;
+        if (scopeProp === 'vfxBad')
+            return `"${VFX_BAD[this._model[modelProp]]}"`;
+        if (scopeProp === 'sfxBad')
+            return `"${SFX_BAD[this._model[modelProp]]}"`;
+        if (scopeProp === 'vfxGood')
+            return `"${VFX_GOOD[this._model[modelProp]]}"`;
+        if (scopeProp === 'sfxGood')
+            return `"${SFX_GOOD[this._model[modelProp]]}"`;
+        if (scopeProp === 'lock')
+            return !this._model[modelProp];
+        return this._model[modelProp];
+    }
+
+    _getValueForModel(scope, scopeProp) {
+        void this;
+        if (scopeProp === 'background')
+            return BACKGROUNDS.indexOf(scope[scopeProp]);
+        if (scopeProp === 'skin')
+            return SKINS.indexOf(scope[scopeProp]);
+        if (scopeProp === 'vfxBad')
+            return VFX_BAD.indexOf(scope[scopeProp]);
+        if (scopeProp === 'sfxBad')
+            return SFX_BAD.indexOf(scope[scopeProp]);
+        if (scopeProp === 'vfxGood')
+            return VFX_GOOD.indexOf(scope[scopeProp]);
+        if (scopeProp === 'sfxGood')
+            return SFX_GOOD.indexOf(scope[scopeProp]);
+        if (scopeProp === 'lock')
+            return !scope[scopeProp];
+        return scope[scopeProp];
+    }
+
+    _createScopeWithProps(props) {
+        void this;
+        const scope = {};
+        Object.keys(props).forEach(prop => {
+            scope[prop] = null;
+        });
+        return scope;
+    }
+
+    _createScopeForObject(index) {
+        const props = this._getPropsForIndex(index);
+        return this._createScopeWithProps(props);
+    }
+
+    _createScope() {
+        const props = this._getPropsForGlobals();
+        const scope = this._createScopeWithProps(props);
+        scope.species = Array.from({length: SPECIES}).map((value, index) => {
+            return this._createScopeForObject(index);
+        });
+        return scope;
+    }
+
+    _updateModel(scope, props) {
+        Object.keys(props).forEach(prop => {
+            if (scope[prop] === null)
+                return;
+            const modelProp = props[prop];
+            const value = this._getValueForModel(scope, prop);
+            if (value === this._model[modelProp])
+                return;
+            this._model[modelProp] = value;
+        });
+    }
+
+    _updateModelFromObject(object, index) {
+        const props = this._getPropsForIndex(index);
+        this._updateModel(object, props);
+    }
+
+    _updateModelFromScope(scope) {
+        const props = this._getPropsForGlobals();
+        this._updateModel(scope, props);
+        Array.from({length: SPECIES}).forEach((value, index) => {
+            this._updateModelFromObject(scope.species[index], index);
+        });
     }
 
     _compile() {
@@ -60,11 +167,7 @@ var FizzicsLevel2 = GObject.registerClass({
         if (code === '')
             return;
 
-        const scope = {};
-        this._getModelProps().forEach(pspec => {
-            scope[this.constructor._toScopeName(pspec.get_name())] = null;
-        });
-
+        const scope = this._createScope();
         try {
             // eslint-disable-next-line no-new-func
             const func = new Function('scope', `with(scope){\n${code}\n;}`);
@@ -85,7 +188,7 @@ var FizzicsLevel2 = GObject.registerClass({
         if (Object.getOwnPropertyNames(scope).every(prop => prop === null))
             return;
 
-        const errors = this._searchCodeForErrors(scope);
+        const errors = this._searchForErrors(scope);
         if (errors.length > 0) {
             this._codeview.setCompileResults(errors);
             return;
@@ -105,12 +208,7 @@ var FizzicsLevel2 = GObject.registerClass({
         });
 
         try {
-            Object.getOwnPropertyNames(scope).forEach(prop => {
-                const property = this.constructor._toModelName(prop);
-                if (!(prop in scope) || scope[prop] === this._model[property])
-                    return;
-                this._model[property] = scope[prop];
-            });
+            this._updateModelFromScope(scope);
         } finally {
             this._model.disconnect(tempHandler);
             GObject.signal_handler_unblock(this._model, this._notifyHandler);
@@ -120,79 +218,86 @@ var FizzicsLevel2 = GObject.registerClass({
             SoundServer.getDefault().play('hack-toolbox/update-gui');
     }
 
-    _errorRecordAtAssignmentLocation(variable, message, default_value) {
+    _errorRecordAtAssignmentLocation(variable, message, value) {
         const {start, end} = this._codeview.findAssignmentLocation(variable);
-        return {start, end, message, fixme: String(default_value)};
+        return {start, end, message, fixme: String(value)};
     }
 
-    _searchCodeForErrors(scope) {
-        const errors = [];
-
-        this._getModelProps().forEach(pspec => {
-            const propName = this.constructor._toScopeName(pspec.get_name());
-            const propType = typeof pspec.default_value;
-            if (!scope[propName])
+    _searchForErrorWithProps(errors, scope, props, prefix) {
+        Object.keys(props).forEach(prop => {
+            if (scope[prop] === null)
                 return;
-            if (scope[propName] !== null && typeof scope[propName] !== propType) {
+            const modelProp = props[prop];
+            const value = this._getValueForScope(prop, modelProp);
+            const type = typeof value;
+            if (typeof scope[prop] !== type) {
                 errors.push(this._errorRecordAtAssignmentLocation(
-                    propName,
-                    `Unknown value ${scope[propName]}: value must be a ${propType}`,
-                    pspec.default_value
+                    prefix ? `${prefix}${prop}` : prop,
+                    `Unknown value ${scope[prop]} for ${prop}: value must be a ${type}`,
+                    value
                 ));
             }
         });
+    }
 
+    _searchForErrors(scope) {
+        const errors = [];
+        const props = this._getPropsForGlobals();
+        this._searchForErrorWithProps(errors, scope, props, null);
+        Array.from({length: SPECIES}).forEach((value, index) => {
+            const objProps = this._getPropsForIndex(index);
+            this._searchForErrorWithProps(
+                errors, scope.species[index], objProps, `species[${index}].`);
+        });
         return errors;
     }
 
-    _regenerateCode() {
-        this._codeview.text = `\
-/////////////////////
-// Select Background
-/////////////////////
+    _generateCodeForOptions(options) {
+        void this;
+        return options.join(', ');
+    }
 
-backgroundImageIndex = ${this._model.backgroundImageIndex}
-
-/////////////////////
-// Parameters
-/////////////////////
-
-// Balls 0
-
-radius_0 = ${this._model['radius-0']}
-gravity_0 = ${this._model['gravity-0']}
-collision_0 = ${this._model['collision-0']}
-friction_0 = ${this._model['friction-0']}
-usePhysics_0 = ${this._model['usePhysics-0']}
-socialForce_0_0 = ${this._model['socialForce-0-0']}
-socialForce_0_1 = ${this._model['socialForce-0-1']}
-socialForce_0_2 = ${this._model['socialForce-0-2']}
-imageIndex_0 = ${this._model['imageIndex-0']}
-
-// Balls 1
-
-radius_1 = ${this._model['radius-1']}
-gravity_1 = ${this._model['gravity-1']}
-collision_1 = ${this._model['collision-1']}
-friction_1 = ${this._model['friction-1']}
-usePhysics_1 = ${this._model['usePhysics-1']}
-socialForce_1_0 = ${this._model['socialForce-1-0']}
-socialForce_1_1 = ${this._model['socialForce-1-1']}
-socialForce_1_2 = ${this._model['socialForce-1-2']}
-imageIndex_1 = ${this._model['imageIndex-1']}
-
-// Balls 2
-
-radius_2 = ${this._model['radius-2']}
-gravity_2 = ${this._model['gravity-2']}
-collision_2 = ${this._model['collision-2']}
-friction_2 = ${this._model['friction-2']}
-usePhysics_2 = ${this._model['usePhysics-2']}
-socialForce_2_0 = ${this._model['socialForce-2-0']}
-socialForce_2_1 = ${this._model['socialForce-2-1']}
-socialForce_2_2 = ${this._model['socialForce-2-2']}
-imageIndex_2 = ${this._model['imageIndex-2']}
+    _generateCodeForIndex(index) {
+        let code = `
+// ${index}
 `;
+        const props = this._getPropsForIndex(index);
+        Object.keys(props).forEach(prop => {
+            const value = this._getValueForScope(prop, props[prop]);
+            code += `species[${index}].${prop} = ${value}\n`;
+        });
+        return code;
+    }
+
+    _regenerateCode() {
+        let code = `
+////////////////////////////
+// Globals
+////////////////////////////
+
+// background options: ${this._generateCodeForOptions(BACKGROUNDS)}\n
+`;
+        const props = this._getPropsForGlobals();
+        Object.keys(props).forEach(prop => {
+            const value = this._getValueForScope(prop, props[prop]);
+            code += `${prop} = ${value}\n`;
+        });
+        code += `
+////////////////////////////
+// Species
+////////////////////////////
+
+// skin options: ${this._generateCodeForOptions(SKINS)}
+// vfxBad options: ${this._generateCodeForOptions(VFX_BAD)}
+// sfxBad options: ${this._generateCodeForOptions(SFX_BAD)}
+// vfxGood options: ${this._generateCodeForOptions(VFX_GOOD)}
+// sfxGood options: ${this._generateCodeForOptions(SFX_GOOD)}
+`;
+
+        Array.from({length: SPECIES}).forEach((value, index) => {
+            code += `${this._generateCodeForIndex(index)}`;
+        });
+        this._codeview.text = code;
     }
 
     _onNotify() {
