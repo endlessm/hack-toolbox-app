@@ -11,8 +11,8 @@ var DefaultHackToolbox = GObject.registerClass({
 }, class DefaultHackToolbox extends Toolbox {
     // Intended to be implemented by other toolbox classes, if they need to
     // implement any behaviour before flipping back to the app
-    applyChanges(busName, objectPath) {
-        void (this, busName, objectPath);
+    applyChanges(appId, objectPath) {
+        void (this, appId, objectPath);
         return Promise.resolve();
     }
 

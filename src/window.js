@@ -1,16 +1,16 @@
 /* exported ToolboxWindow */
 
-const {Gio, GLib, GObject, Gtk, Hackable, HackToolbox} = imports.gi;
+const {Gio, GLib, GObject, Gtk, HackToolbox} = imports.gi;
 const {Lockscreen} = imports.lockscreen;
 
 var ToolboxWindow = GObject.registerClass({
     Properties: {
-        'target-bus-name': GObject.ParamSpec.string('target-bus-name',
-            'Target Bus Name', 'The Bus Name that this toolbox is "hacking"',
+        'target-app-id': GObject.ParamSpec.string('target-app-id',
+            'Target App ID', 'The App ID that this toolbox is "hacking"',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
-        'target-object-path': GObject.ParamSpec.string('target-object-path',
-            'Target Object Path', 'The Object Path that this toolbox is "hacking"',
+        'target-window-id': GObject.ParamSpec.string('target-window-id',
+            'Target Window ID', 'The Window ID that this toolbox is "hacking"',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             ''),
     },
@@ -24,7 +24,6 @@ var ToolboxWindow = GObject.registerClass({
         const objectPath =
             `${this.application.get_dbus_object_path()}/window/${this.get_id()}`;
         this.hack_toolbox_skeleton = this._createHackToolboxSkeletonOnPath(objectPath);
-        this.hackable_proxy = this._maybeGetHackableProxySync();
 
         this._flipBack = new Gio.SimpleAction({
             name: 'flip-back',
@@ -61,9 +60,9 @@ var ToolboxWindow = GObject.registerClass({
     }
 
     _onFlipBack() {
-        log(`Call flip-back for ${this.target_bus_name}, ${this.target_object_path}`);
+        log(`Call flip-back for ${this.target_app_id}, ${this.target_window_id}`);
 
-        this.toolbox.applyChanges(this.target_bus_name, this.target_object_path)
+        this.toolbox.applyChanges(this.target_app_id, this.target_window_id)
         .catch(e => {
             logError(e);
         });
@@ -91,25 +90,11 @@ var ToolboxWindow = GObject.registerClass({
     }
 
     _createHackToolboxSkeletonOnPath(objectPath) {
-        log(`Creating toolbox for ${this.target_bus_name}:${this.target_object_path}`);
+        log(`Creating toolbox for ${this.target_app_id}:${this.target_window_id}`);
         const skeleton = new HackToolbox.ToolboxSkeleton({
-            target: new GLib.Variant('(ss)', [this.target_bus_name, this.target_object_path]),
+            target: new GLib.Variant('(ss)', [this.target_app_id, this.target_window_id]),
         });
         skeleton.export(this.application.get_dbus_connection(), objectPath);
         return skeleton;
-    }
-
-    // Try to get a Hackable Proxy object for the objectPath on
-    // busName, but if one does not exist, just return null
-    _maybeGetHackableProxySync() {
-        try {
-            return Hackable.HackableProxy.new_sync(this.application.get_dbus_connection(),
-                Gio.DBusProxyFlags.NONE, this.target_bus_name,
-                this.target_object_path, null);
-        } catch (e) {
-            logError(e, `${this.target_bus_name}:${this.target_object_path} does ` +
-                'not export the Hackable interface, using default toolbox');
-            return null;
-        }
     }
 });

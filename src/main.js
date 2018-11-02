@@ -16,7 +16,6 @@ pkg.require({
     Gio: '2.0',
     GLib: '2.0',
     GObject: '2.0',
-    Hackable: '0',
     HackToolbox: '0',
 });
 

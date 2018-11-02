@@ -133,7 +133,7 @@ background-repeat: no-repeat;
 };
 `;
 
-    switch (model.constructor.busName) {
+    switch (model.constructor.appId) {
     case 'com.endlessm.dinosaurs.en':
         return `
 $primary-light-color: ${infoColor};
@@ -578,7 +578,7 @@ function generateYAML(model) {
         dynamicBanner = 'Banner.HackableDynamic';
         searchBanner = 'Banner.HackableSearch';
     }
-    switch (model.constructor.busName) {
+    switch (model.constructor.appId) {
     case 'com.endlessm.dinosaurs.en':
         return `---
 overrides:

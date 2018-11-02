@@ -19,8 +19,8 @@ const ClippyIface = `
 var ClippyWrapper = GObject.registerClass({
 }, class ClippyWrapper extends GObject.Object {
     _init(props = {}) {
-        this._busName = props.busName;
-        delete props['busName'];
+        this._appId = props.appId;
+        delete props['appId'];
         super._init(props);
         this._setupRemote();
         this._setupLocal();
@@ -28,11 +28,11 @@ var ClippyWrapper = GObject.registerClass({
 
     _setupRemote() {
         const Proxy = Gio.DBusProxy.makeProxyWrapper(ClippyIface);
-        const proxy = new Proxy(Gio.DBus.session, this._busName, ClippyObjectPath);
+        const proxy = new Proxy(Gio.DBus.session, this._appId, ClippyObjectPath);
         const [path, iface] = proxy.ExportSync(ClippyViewName);
 
         const ProxyObj = Gio.DBusProxy.makeProxyWrapper(iface);
-        this._proxyObj = new ProxyObj(Gio.DBus.session, this._busName, path);
+        this._proxyObj = new ProxyObj(Gio.DBus.session, this._appId, path);
         this._proxyObj.connect('g-properties-changed', this._onRemoteChanged.bind(this));
     }
 
