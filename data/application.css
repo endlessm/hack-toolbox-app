@@ -45,6 +45,23 @@ toolbox {
                       image(rgba(14, 35, 65, 0.85));
 }
 
+toolbox headerbar {
+    background: rgba(6, 20, 39, 0.80);
+    opacity: 0.9;
+}
+
+.sourceview {
+    background: transparent;
+}
+
+.sourceview text {
+    background: rgba(6, 20, 39, 0.48);
+    /* spec was opacity: 0.6 and background alpha 0.8, but it does *not* look
+    like the text was meant to be 60% opaque. Instead I've multiplied the
+    background alpha by 0.6 */
+    color: #fdfdfd;
+}
+
 /* Toolbox HeaderBar */
 frame.toolbox > border,
 frame.toolbox > toolbox,
