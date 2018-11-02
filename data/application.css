@@ -36,7 +36,30 @@ widget.lockscreen.locked {
 }
 
 toolbox {
-    background-color: #33393b;  /* Adwaita-dark background color */
+    background-image: url('resource:///com/endlessm/HackToolbox/hacktoolbox/background.png'),
+                      radial-gradient(at -47% 158%,
+                                      rgba(197, 163, 93, 0.81) 0%,
+                                      rgba(208, 95, 52, 0.80) 14%,
+                                      rgba(32, 69, 108, 0.63) 66%,
+                                      #1C3753 100%),
+                      image(rgba(14, 35, 65, 0.85));
+}
+
+toolbox headerbar {
+    background: rgba(6, 20, 39, 0.80);
+    opacity: 0.9;
+}
+
+.sourceview {
+    background: transparent;
+}
+
+.sourceview text {
+    background: rgba(6, 20, 39, 0.48);
+    /* spec was opacity: 0.6 and background alpha 0.8, but it does *not* look
+    like the text was meant to be 60% opaque. Instead I've multiplied the
+    background alpha by 0.6 */
+    color: #fdfdfd;
 }
 
 /* Toolbox HeaderBar */

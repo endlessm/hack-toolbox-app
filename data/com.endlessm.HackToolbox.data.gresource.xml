@@ -30,6 +30,7 @@
     <file preprocess="xml-stripblanks">framework/soccer.svg</file>
     <file preprocess="xml-stripblanks">framework/socialsciences.svg</file>
     <file preprocess="xml-stripblanks">framework/travel.svg</file>
+    <file>hacktoolbox/background.png</file>
     <file>hacktoolbox/lockscreen.png</file>
     <file compressed="true" preprocess="xml-stripblanks">hacktoolbox/toolbox.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">Fizzics/controlpanel.ui</file>
