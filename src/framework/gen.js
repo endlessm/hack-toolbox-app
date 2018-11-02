@@ -411,6 +411,7 @@ ${commonRules}
 
     case 'com.endlessm.Hackdex_chapter_one':
         return `
+$accent-light-color: ${accentColor};
 $primary-light-color: ${mainColor};
 $background-transparent-dark-color: rgba(0,0,0,.3);
 $background-medium-color: #e2e2e2;
@@ -461,7 +462,7 @@ $body-font: ${model.font};
 
 .bannerHead {
     font-size: ${model.font_size * 2.5}px;
-    color: $primary-light-color;
+    color: $accent-light-color;
 }
 
 .home-page {
