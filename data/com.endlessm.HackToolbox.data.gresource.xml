@@ -7,7 +7,6 @@
     <file compressed="true">spininput.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">framework/level1.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">framework/level2.ui</file>
-    <file compressed="true" preprocess="xml-stripblanks">framework/level3.ui</file>
     <file preprocess="xml-stripblanks">framework/animals.svg</file>
     <file preprocess="xml-stripblanks">framework/art.svg</file>
     <file preprocess="xml-stripblanks">framework/astronomy.svg</file>

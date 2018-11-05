@@ -9,6 +9,11 @@ const {Lockscreen} = imports.lockscreen;
 
 var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid {
     _init(defaults, props = {}) {
+        Object.assign(props, {
+            borderWidth: 24,
+            rowSpacing: 24,
+            columnSpacing: 24,
+        });
         super._init(props);
 
         this._level1 = new FrameworkLevel1(defaults, {visible: true});
@@ -23,24 +28,6 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         this._level3 = new FrameworkLevel3(defaults, {visible: true});
         this._level3lock.add(this._level3);
         this.attach(this._level3lock, 1, 0, 1, 2);
-
-        // Visually align the widths of the labels in each column of the top and
-        // bottom panels.
-        const topColumn1Label = this._level1.leftInnerGrid.get_child_at(0, 0);
-        const bottomColumn1Label = this._level2.leftInnerGrid.get_child_at(0, 0);
-        const column1Group = new Gtk.SizeGroup({
-            mode: Gtk.SizeGroupMode.HORIZONTAL,
-        });
-        column1Group.add_widget(topColumn1Label);
-        column1Group.add_widget(bottomColumn1Label);
-
-        const topColumn2Label = this._level1.rightInnerGrid.get_child_at(0, 0);
-        const bottomColumn2Label = this._level2.rightInnerGrid.get_child_at(0, 0);
-        const column2Group = new Gtk.SizeGroup({
-            mode: Gtk.SizeGroupMode.HORIZONTAL,
-        });
-        column2Group.add_widget(topColumn2Label);
-        column2Group.add_widget(bottomColumn2Label);
     }
 
     bindModel(model) {

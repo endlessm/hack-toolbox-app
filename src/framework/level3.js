@@ -22,10 +22,7 @@ const COLOR_PROPS = ['logo_color', 'main_color', 'accent_color', 'info_color',
 const ENUM_PROPS = ['text_transformation', 'card_order', 'card_layout',
     'image_filter', 'sounds_cursor_hover', 'sounds_cursor_click'];
 
-var FrameworkLevel3 = GObject.registerClass({
-    GTypeName: 'FrameworkLevel3',
-    Template: 'resource:///com/endlessm/HackToolbox/framework/level3.ui',
-}, class FrameworkLevel3 extends Gtk.Grid {
+var FrameworkLevel3 = GObject.registerClass(class FrameworkLevel3 extends Gtk.Frame {
     _init(defaults, props = {}) {
         super._init(props);
 
