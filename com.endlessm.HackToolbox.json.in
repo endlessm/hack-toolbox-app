@@ -21,25 +21,19 @@
   ],
   "modules": [
     {
-      "name": "meson",
-      "cleanup": ["*"],
+      "name": "Metropolis-font",
       "buildsystem": "simple",
-      "ensure-writable": [
-        "/lib/python3.6/site-packages/easy-install.pth",
-        "/lib/python3.6/site-packages/setuptools.pth"
-      ],
       "build-commands": [
-        "python3 setup.py install --prefix=$FLATPAK_DEST"
+        "install -D -m644 *.otf -t /app/share/fonts"
+      ],
+      "post-install": [
+        "fc-cache -f /app/share/fonts/"
       ],
       "sources": [
         {
           "type": "archive",
-          "url": "https://github.com/mesonbuild/meson/releases/download/0.47.1/meson-0.47.1.tar.gz",
-          "sha256": "d673de79f7bab064190a5ea06140eaa8415efb386d0121ba549f6d66c555ada6"
-        },
-        {
-          "type": "patch",
-          "path": "patches/meson-no-lib64.patch"
+          "url": "https://github.com/chrismsimpson/Metropolis/archive/r9.tar.gz",
+          "sha256": "283d1f51d96777c648dc1c0899b986fc99f14bfb709732428c14881c075c356b"
         }
       ]
     },
