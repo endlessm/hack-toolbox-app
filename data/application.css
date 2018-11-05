@@ -50,6 +50,11 @@ toolbox headerbar {
     opacity: 0.9;
 }
 
+toolbox revealer {
+    /* This rule covers everything except the top header bar */
+    font-family: 'Metropolis Medium';
+}
+
 .sourceview {
     background: transparent;
 }

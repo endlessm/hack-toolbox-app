@@ -21,6 +21,23 @@
   ],
   "modules": [
     {
+      "name": "Metropolis-font",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -D -m644 *.otf -t /app/share/fonts"
+      ],
+      "post-install": [
+        "fc-cache -f /app/share/fonts/"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/chrismsimpson/Metropolis/archive/r9.tar.gz",
+          "sha256": "283d1f51d96777c648dc1c0899b986fc99f14bfb709732428c14881c075c356b"
+        }
+      ]
+    },
+    {
       "name": "gtksourceview",
       "config-opts": [
         "--disable-vala",
