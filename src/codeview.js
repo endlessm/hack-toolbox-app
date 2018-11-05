@@ -2,6 +2,8 @@
 
 const {Gdk, GLib, GObject, Gtk, GtkSource, Pango} = imports.gi;
 
+const SoundServer = imports.soundServer;
+
 // Can add more, e.g. WARNING, SUGGESTION
 const MarkType = {
     ERROR: 'com.endlessm.HackToolbox.codeview.error',
@@ -70,6 +72,7 @@ var Codeview = GObject.registerClass({
         renderer.connect('activate', this._onRendererActivate.bind(this));
 
         this._compileTimeout = null;
+        this._numErrors = 0;
     }
 
     get text() {
@@ -197,6 +200,14 @@ var Codeview = GObject.registerClass({
             if (fixme)
                 mark._fixme = fixme;
         });
+
+        if (this._numErrors !== results.length) {
+            this._numErrors = results.length;
+            if (this._numErrors)
+                SoundServer.getDefault().play('codeview/code-error-appearance');
+            else
+                SoundServer.getDefault().play('codeview/code-error-disappearance');
+        }
     }
 
     findAssignmentLocation(variable) {
