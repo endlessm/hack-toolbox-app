@@ -61,6 +61,20 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="Section" generic-name="section"
+                        template="../section.ui" title="Section">
+      <properties>
+        <property id="heading" name="Heading" default="section heading">
+          <parameter-spec>
+            <type>GParamString</type>
+          </parameter-spec>
+        </property>
+        <property id="n-rows" default="2"/>
+        <property id="n-columns" default="1"/>
+        <property name="orientation" default="vertical"/>
+      </properties>
+    </glade-widget-class>
+
   </glade-widget-classes>
 
   <glade-widget-group name="hack-toolbox" title="Hack Toolbox">
@@ -68,6 +82,7 @@
     <glade-widget-class-ref name="Lockscreen"/>
     <glade-widget-class-ref name="CheckInput"/>
     <glade-widget-class-ref name="SpinInput"/>
+    <glade-widget-class-ref name="Section"/>
   </glade-widget-group>
 
 </glade-catalog>

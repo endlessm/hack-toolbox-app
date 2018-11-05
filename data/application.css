@@ -80,6 +80,27 @@ button.radio {
     padding: 2px 4px;
 }
 
+.section {
+    background: rgba(6, 20, 39, 0.48);
+    /* spec was opacity: 0.6 and background alpha 0.8, but it does *not* look
+    like the text was meant to be 60% opaque. Instead I've multiplied the
+    background alpha by 0.6 */
+    border-radius: 5px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20);
+}
+
+.section > .section-heading {
+    background-image: linear-gradient(-129deg,
+                                      rgba(11, 24, 60, 0.54) 0%,
+                                      rgba(6, 20, 39, 0.40) 100%);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: white;
+    font-size: 18px;
+    opacity: 0.85;
+    padding: 5px 8px;
+}
+
 .codeview {
     font-family: monospace;
 }
