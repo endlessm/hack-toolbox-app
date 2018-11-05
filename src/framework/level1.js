@@ -30,7 +30,6 @@ var FrameworkLevel1 = GObject.registerClass({
         this._fontChooser.model = fontList;
         this._fontChooser.idColumn = 0;
         this._fontChooser.add_attribute(this._fontRenderer, 'text', 0);
-        this._fontChooser.add_attribute(this._fontRenderer, 'family', 0);
 
         this._layoutGroup = new PopupMenu(this._layoutButton, {
             tiledGrid: 'tiled-grid-symbolic',
