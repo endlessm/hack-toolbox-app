@@ -21,29 +21,6 @@
   ],
   "modules": [
     {
-      "name": "meson",
-      "cleanup": ["*"],
-      "buildsystem": "simple",
-      "ensure-writable": [
-        "/lib/python3.6/site-packages/easy-install.pth",
-        "/lib/python3.6/site-packages/setuptools.pth"
-      ],
-      "build-commands": [
-        "python3 setup.py install --prefix=$FLATPAK_DEST"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://github.com/mesonbuild/meson/releases/download/0.47.1/meson-0.47.1.tar.gz",
-          "sha256": "d673de79f7bab064190a5ea06140eaa8415efb386d0121ba549f6d66c555ada6"
-        },
-        {
-          "type": "patch",
-          "path": "patches/meson-no-lib64.patch"
-        }
-      ]
-    },
-    {
       "name": "gtksourceview",
       "config-opts": [
         "--disable-vala",
