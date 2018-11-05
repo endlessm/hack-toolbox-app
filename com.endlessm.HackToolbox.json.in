@@ -44,6 +44,23 @@
       ]
     },
     {
+      "name": "Hack-font",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -D -m644 *.ttf -t /app/share/fonts"
+      ],
+      "post-install": [
+        "fc-cache -f /app/share/fonts/"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.tar.xz",
+          "sha256": "d9ed5d0a07525c7e7bd587b4364e4bc41021dd668658d09864453d9bb374a78d"
+        }
+      ]
+    },
+    {
       "name": "gtksourceview",
       "config-opts": [
         "--disable-vala",
