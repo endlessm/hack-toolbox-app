@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style-scheme id="hack" name="Hack" version="1.0">
+  <author>Philip Chimento</author>
+  <description>Color scheme for Endless Hack</description>
+  <!-- based on Tango from GtkSourceView, licensed LGPLv2.1 -->
+
+  <!-- Tango Palette -->
+  <color name="butter1"                     value="#fce94f"/>
+  <color name="butter2"                     value="#edd400"/>
+  <color name="butter3"                     value="#c4a000"/>
+  <color name="chameleon1"                  value="#8ae234"/>
+  <color name="chameleon2"                  value="#73d216"/>
+  <color name="chameleon3"                  value="#4e9a06"/>
+  <color name="orange1"                     value="#fcaf3e"/>
+  <color name="orange2"                     value="#f57900"/>
+  <color name="orange3"                     value="#ce5c00"/>
+  <color name="skyblue1"                    value="#729fcf"/>
+  <color name="skyblue2"                    value="#3465a4"/>
+  <color name="skyblue3"                    value="#204a87"/>
+  <color name="plum1"                       value="#ad7fa8"/>
+  <color name="plum2"                       value="#75507b"/>
+  <color name="plum3"                       value="#5c3566"/>
+  <color name="chocolate1"                  value="#e9b96e"/>
+  <color name="chocolate2"                  value="#c17d11"/>
+  <color name="chocolate3"                  value="#8f5902"/>
+  <color name="scarletred1"                 value="#ef2929"/>
+  <color name="scarletred2"                 value="#cc0000"/>
+  <color name="scarletred3"                 value="#a40000"/>
+  <color name="aluminium1"                  value="#eeeeec"/>
+  <color name="aluminium2"                  value="#d3d7cf"/>
+  <color name="aluminium3"                  value="#babdb6"/>
+  <color name="aluminium4"                  value="#888a85"/>
+  <color name="aluminium5"                  value="#555753"/>
+  <color name="aluminium6"                  value="#2e3436"/>
+
+  <!-- Right Margin -->
+  <style name="right-margin" foreground="#207289"/>
+  <style name="line-numbers" foreground="#207289"/>
+
+  <!-- Comments -->
+  <style name="def:comment" foreground="#07afa7"/>
+  <style name="def:shebang" foreground="#07afa7" bold="true"/>
+
+  <!-- Constants -->
+  <style name="def:constant" foreground="#f15a22"/>
+  <style name="def:special-char" foreground="#297e52"/> <!-- darker(#f15a22) -->
+
+  <!-- Identifiers -->
+  <style name="def:identifier" foreground="#fdfdfd"/>
+
+  <!-- Below here is identical to Tango -->
+
+  <!-- Search Matching -->
+  <style name="search-match"                background="butter1"/>
+
+  <!-- Global Settings -->
+  <style name="current-line"                background="aluminium1"/>
+  <style name="current-line-number"         background="aluminium1"/>
+  <style name="draw-spaces"                 foreground="aluminium3"/>
+  <style name="background-pattern"          background="#f3f3f3"/>
+
+  <!-- Bracket Matching -->
+  <style name="bracket-match"               foreground="aluminium1" background="aluminium3"/>
+  <style name="bracket-mismatch"            foreground="aluminium1" background="scarletred3"/>
+
+  <!-- Comments -->
+  <style name="def:doc-comment-element" italic="true"/>
+
+  <!-- Statements -->
+  <style name="def:statement"               foreground="scarletred3" bold="true"/>
+
+  <!-- Types -->
+  <style name="def:type"                    foreground="chameleon3" bold="true"/>
+
+  <!-- Others -->
+  <style name="def:preprocessor"            foreground="chocolate3"/>
+  <style name="def:error"                   background="scarletred2" bold="true"/>
+  <style name="def:warning"                 background="plum1"/>
+  <style name="def:note"                    background="orange1" bold="true"/>
+  <style name="def:underlined"              italic="true" underline="single"/>
+
+  <style name="js:object"                   foreground="chameleon3" bold="true"/>
+  <style name="js:constructors"             foreground="chameleon3"/>
+
+</style-scheme>

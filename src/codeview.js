@@ -30,7 +30,7 @@ var Codeview = GObject.registerClass({
         const language = langManager.get_language('js');
 
         const schemeManager = GtkSource.StyleSchemeManager.get_default();
-        const styleScheme = schemeManager.get_scheme('tango');
+        const styleScheme = schemeManager.get_scheme('hack');
 
         this._buffer = new GtkSource.Buffer({language, styleScheme});
 
@@ -44,7 +44,7 @@ var Codeview = GObject.registerClass({
 
         this._view = new GtkSource.View({
             buffer: this._buffer,
-            showLineMarks: true,
+            showLineNumbers: true,
             visible: true,
         });
 
