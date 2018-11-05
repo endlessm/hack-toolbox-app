@@ -52,6 +52,7 @@ toolbox headerbar {
 
 .sourceview {
     background: transparent;
+    font-family: Hack;
 }
 
 .sourceview text {
@@ -60,6 +61,22 @@ toolbox headerbar {
     like the text was meant to be 60% opaque. Instead I've multiplied the
     background alpha by 0.6 */
     color: #fdfdfd;
+    font-size: 18px;
+}
+
+.sourceview .left {
+    /* Here also, the spec was opacity: 0.6 and background alpha 0.8, and
+    moreover it was supposed to be applied on top of the text background. Here
+    we premultiply it (0.48 + 0.48 * (1 - 0.48)) */
+    background: rgba(6, 20, 39, 0.7296);
+}
+
+.codeview-frame border, .codeview scrolledwindow {
+    border-width: 0;
+}
+
+.codeview-frame {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
 }
 
 /* Toolbox HeaderBar */

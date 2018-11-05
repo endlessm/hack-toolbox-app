@@ -16,3 +16,6 @@ configure_file(input: 'com.endlessm.HackToolbox.service.in',
     output: 'com.endlessm.HackToolbox.service',
     configuration: subst,
     install_dir: join_paths(get_option('datadir'), 'dbus-1', 'services'))
+
+stylesdir = join_paths(get_option('datadir'), 'gtksourceview-3.0', 'styles')
+install_data('gtksourceview-3.0/styles/hack.xml', install_dir: stylesdir)
