@@ -155,7 +155,14 @@ var FrameworkLevel3 = GObject.registerClass({
         COLOR_PROPS.forEach(prop => {
             if (scope[prop] !== null) {
                 const rgba = new Gdk.RGBA();
-                if (!rgba.parse(scope[prop])) {
+                let failed = false;
+                try {
+                    if (!rgba.parse(scope[prop]))
+                        failed = true;
+                } catch (e) {
+                    failed = true;
+                }
+                if (failed) {
                     errors.push(this._errorRecordAtAssignmentLocation(prop,
                         `Unknown value ${scope[prop]}: value must be a ` +
                         'color, like "red" or "#729fcf"'));

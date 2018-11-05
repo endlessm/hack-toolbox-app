@@ -37,6 +37,7 @@
     <file>main.js</file>
     <file>popupMenu.js</file>
     <file>section.js</file>
+    <file>soundServer.js</file>
     <file>spinInput.js</file>
     <file>toolbox.js</file>
     <file>window.js</file>
