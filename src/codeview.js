@@ -74,6 +74,8 @@ var Codeview = GObject.registerClass({
             this._onBufferChanged.bind(this));
         this._insertHandler = this._buffer.connect('insert-text',
             this.constructor._onInsertText);
+        this._deleteHandler = this._buffer.connect('delete-range',
+            this.constructor._onDeleteRange);
         this._helpButton.connect('clicked', this._onHelpClicked.bind(this));
         renderer.connect('query-data', this._onRendererQueryData.bind(this));
         renderer.connect('query-activatable', (r, iter) =>
@@ -95,6 +97,8 @@ var Codeview = GObject.registerClass({
             GObject.signal_handler_block(this._buffer, this._changedHandler);
         if (this._insertHandler)
             GObject.signal_handler_block(this._buffer, this._insertHandler);
+        if (this._deleteHandler)
+            GObject.signal_handler_block(this._buffer, this._deleteHandler);
         try {
             if (this._buffer)
                 this._buffer.text = value;
@@ -105,6 +109,8 @@ var Codeview = GObject.registerClass({
                 GObject.signal_handler_unblock(this._buffer, this._changedHandler);
             if (this._insertHandler)
                 GObject.signal_handler_unblock(this._buffer, this._insertHandler);
+            if (this._deleteHandler)
+                GObject.signal_handler_unblock(this._buffer, this._deleteHandler);
         }
     }
 
@@ -178,6 +184,16 @@ var Codeview = GObject.registerClass({
             const sound = SoundServer.getDefault();
             sound.play(KEYPRESS_SOUNDS[text]);
         }
+    }
+
+    static _onDeleteRange(buffer, start, end) {
+        const deletedLength = end.get_offset() - start.get_offset();
+
+        const sound = SoundServer.getDefault();
+        if (deletedLength === 1)
+            sound.play('codeview/keypress/delete');
+        else
+            sound.play('codeview/keypress/delete-selection');
     }
 
     _getOurSourceMarks(iter) {
