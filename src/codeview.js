@@ -16,6 +16,11 @@ const KEYPRESS_SOUNDS = {
     '/': 'codeview/keypress/slash',
 };
 
+function _actionSound(action) {
+    const sound = SoundServer.getDefault();
+    sound.play(`codeview/action/${action}`);
+}
+
 function _markHasFixmeInformation(mark) {
     return typeof mark._fixme !== 'undefined' &&
         typeof mark._endLine !== 'undefined' &&
@@ -81,12 +86,9 @@ var Codeview = GObject.registerClass({
         renderer.connect('query-activatable', (r, iter) =>
             this._getOurSourceMarks(iter).length > 0);
         renderer.connect('activate', this._onRendererActivate.bind(this));
-        this._view.connect_after('cut-clipboard',
-            this.constructor._onCutClipboard);
-        this._view.connect_after('copy-clipboard',
-            this.constructor._onCopyClipboard);
-        this._view.connect_after('paste-clipboard',
-            this.constructor._onPasteClipboard);
+        this._view.connect_after('cut-clipboard', () => _actionSound('cut'));
+        this._view.connect_after('copy-clipboard', () => _actionSound('copy'));
+        this._view.connect_after('paste-clipboard', () => _actionSound('paste'));
 
         this._compileTimeout = null;
         this._numErrors = 0;
@@ -200,21 +202,6 @@ var Codeview = GObject.registerClass({
             sound.play('codeview/keypress/delete');
         else
             sound.play('codeview/keypress/delete-selection');
-    }
-
-    static _onCutClipboard() {
-        const sound = SoundServer.getDefault();
-        sound.play('codeview/action/cut');
-    }
-
-    static _onCopyClipboard() {
-        const sound = SoundServer.getDefault();
-        sound.play('codeview/action/copy');
-    }
-
-    static _onPasteClipboard() {
-        const sound = SoundServer.getDefault();
-        sound.play('codeview/action/paste');
     }
 
     _getOurSourceMarks(iter) {
