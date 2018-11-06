@@ -28,6 +28,8 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         this._level3 = new FrameworkLevel3(defaults, {visible: true});
         this._level3lock.add(this._level3);
         this.attach(this._level3lock, 1, 0, 1, 2);
+
+        [this._key1, this._key2, this._key3] = defaults.keys;
     }
 
     bindModel(model) {
@@ -42,8 +44,8 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
                 this._level3lock.show_all();
         });
 
-        win.lockscreen.key = 'item.key.framework.1';
-        this._level2lock.key = 'item.key.framework.2';
-        this._level3lock.key = 'item.key.framework.3';
+        win.lockscreen.key = this._key1;
+        this._level2lock.key = this._key2;
+        this._level3lock.key = this._key3;
     }
 });

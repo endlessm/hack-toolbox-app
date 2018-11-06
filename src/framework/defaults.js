@@ -4,6 +4,20 @@ const {Gdk} = imports.gi;
 
 const GameState = imports.gameState;
 
+const KEYS_DEFAULT = [
+    'item.key.framework.1',
+    'item.key.framework.2',
+    'item.key.framework.3',
+];
+
+const KEYS = {
+    'com.endlessm.Hackdex_chapter_one': [
+        'item.key.hackdex1.1',
+        'item.key.hackdex1.2',
+        'item.key.hackdex1.3',
+    ],
+};
+
 const COLORS = Symbol('colors');
 
 const DEFAULTS = {
@@ -123,5 +137,11 @@ var Defaults = class Defaults {
 
     get fonts() {
         return AVAILABLE_FONTS[this._appId];
+    }
+
+    get keys() {
+        if (this._appId in KEYS)
+            return KEYS[this._appId];
+        return KEYS_DEFAULT;
     }
 };
