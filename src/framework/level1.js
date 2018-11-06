@@ -5,18 +5,19 @@ const Gettext = imports.gettext;
 
 const {logoIDToResource, LogoImage, VALID_LOGOS} = imports.framework.logoImage;
 const {PopupMenu} = imports.popupMenu;
+const {Section} = imports.section;
+
+GObject.type_ensure(Section.$gtype);
 
 const _ = Gettext.gettext;
 
 var FrameworkLevel1 = GObject.registerClass({
     GTypeName: 'FrameworkLevel1',
     Template: 'resource:///com/endlessm/HackToolbox/framework/level1.ui',
-    Children: ['leftInnerGrid', 'rightInnerGrid'],
     InternalChildren: ['accentColorButton', 'borderColorButton',
-        'borderWidthAdjustment', 'clickSoundChooser', 'fontChooser',
-        'fontRenderer', 'fontSizeAdjustment', 'hoverSoundChooser',
-        'infoColorButton', 'layoutButton', 'logoButton', 'logoColorButton',
-        'mainColorButton', 'orderButton'],
+        'borderWidthAdjustment', 'fontChooser', 'fontRenderer',
+        'fontSizeAdjustment', 'infoColorButton', 'layoutButton', 'logoButton',
+        'logoColorButton', 'mainColorButton', 'orderButton'],
 }, class FrameworkLevel1 extends Gtk.Grid {
     _init(defaults, props = {}) {
         super._init(props);
@@ -29,7 +30,6 @@ var FrameworkLevel1 = GObject.registerClass({
         this._fontChooser.model = fontList;
         this._fontChooser.idColumn = 0;
         this._fontChooser.add_attribute(this._fontRenderer, 'text', 0);
-        this._fontChooser.add_attribute(this._fontRenderer, 'family', 0);
 
         this._layoutGroup = new PopupMenu(this._layoutButton, {
             tiledGrid: 'tiled-grid-symbolic',
@@ -68,8 +68,6 @@ var FrameworkLevel1 = GObject.registerClass({
         model.bind_property('logo-color', this._logoColorButton, 'rgba', flags);
         model.bind_property('logo-graphic', this._logoGroup, 'value', flags);
         model.bind_property('main-color', this._mainColorButton, 'rgba', flags);
-        model.bind_property('sounds-cursor-click', this._clickSoundChooser, 'active-id', flags);
-        model.bind_property('sounds-cursor-hover', this._hoverSoundChooser, 'active-id', flags);
 
         this._model = model;
     }
