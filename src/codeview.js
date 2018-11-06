@@ -27,6 +27,68 @@ function _markHasFixmeInformation(mark) {
         typeof mark._endColumn !== 'undefined';
 }
 
+
+const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
+    // This custom buffer class exists because we need to override the default
+    // vfunc_undo() and vfunc_redo() behaviour, to block the emission of
+    // insert and delete signals while doing undo and redo. Otherwise, the
+    // insert and delete sounds will play simultaneously with the undo and redo
+    // sounds.
+
+    _init(props = {}) {
+        super._init(props);
+
+        this._insertHandler = this.connect('insert-text',
+            this.constructor._onInsertText);
+        this._deleteHandler = this.connect('delete-range',
+            this.constructor._onDeleteRange);
+    }
+
+    vfunc_undo() {
+        this._withSoundHandlersBlocked(() => super.vfunc_undo());
+        _actionSound('undo');
+    }
+
+    vfunc_redo() {
+        this._withSoundHandlersBlocked(() => super.vfunc_redo());
+        _actionSound('redo');
+    }
+
+    _withSoundHandlersBlocked(func, ...args) {
+        if (this._insertHandler)
+            GObject.signal_handler_block(this, this._insertHandler);
+        if (this._deleteHandler)
+            GObject.signal_handler_block(this, this._deleteHandler);
+        try {
+            func(...args);
+        } finally {
+            if (this._insertHandler)
+                GObject.signal_handler_unblock(this, this._insertHandler);
+            if (this._deleteHandler)
+                GObject.signal_handler_unblock(this, this._deleteHandler);
+        }
+    }
+
+    static _onInsertText(buffer, location, text) {
+        if (!text.length === 1)
+            return;
+        if (text in KEYPRESS_SOUNDS) {
+            const sound = SoundServer.getDefault();
+            sound.play(KEYPRESS_SOUNDS[text]);
+        }
+    }
+
+    static _onDeleteRange(buffer, start, end) {
+        const deletedLength = end.get_offset() - start.get_offset();
+
+        const sound = SoundServer.getDefault();
+        if (deletedLength === 1)
+            sound.play('codeview/keypress/delete');
+        else
+            sound.play('codeview/keypress/delete-selection');
+    }
+});
+
 var Codeview = GObject.registerClass({
     GTypeName: 'Codeview',
     Signals: {
@@ -46,7 +108,7 @@ var Codeview = GObject.registerClass({
         const schemeManager = GtkSource.StyleSchemeManager.get_default();
         const styleScheme = schemeManager.get_scheme('hack');
 
-        this._buffer = new GtkSource.Buffer({language, styleScheme});
+        this._buffer = new Buffer({language, styleScheme});
 
         const darkRed = new Gdk.RGBA({red: 0xa4});
         this._errorUnderline = new GtkSource.Tag({
@@ -77,10 +139,6 @@ var Codeview = GObject.registerClass({
 
         this._changedHandler = this._buffer.connect('changed',
             this._onBufferChanged.bind(this));
-        this._insertHandler = this._buffer.connect('insert-text',
-            this.constructor._onInsertText);
-        this._deleteHandler = this._buffer.connect('delete-range',
-            this.constructor._onDeleteRange);
         this._helpButton.connect('clicked', this._onHelpClicked.bind(this));
         renderer.connect('query-data', this._onRendererQueryData.bind(this));
         renderer.connect('query-activatable', (r, iter) =>
@@ -103,22 +161,16 @@ var Codeview = GObject.registerClass({
     set text(value) {
         if (this._changedHandler)
             GObject.signal_handler_block(this._buffer, this._changedHandler);
-        if (this._insertHandler)
-            GObject.signal_handler_block(this._buffer, this._insertHandler);
-        if (this._deleteHandler)
-            GObject.signal_handler_block(this._buffer, this._deleteHandler);
         try {
-            if (this._buffer)
-                this._buffer.text = value;
+            this._buffer._withSoundHandlersBlocked(() => {
+                if (this._buffer)
+                    this._buffer.text = value;
+            });
             this._cached_ast = null;
             this.setCompileResults([]);
         } finally {
             if (this._changedHandler)
                 GObject.signal_handler_unblock(this._buffer, this._changedHandler);
-            if (this._insertHandler)
-                GObject.signal_handler_unblock(this._buffer, this._insertHandler);
-            if (this._deleteHandler)
-                GObject.signal_handler_unblock(this._buffer, this._deleteHandler);
         }
     }
 
@@ -183,25 +235,6 @@ var Codeview = GObject.registerClass({
         }
 
         this._helpMessage.popup();
-    }
-
-    static _onInsertText(buffer, location, text) {
-        if (!text.length === 1)
-            return;
-        if (text in KEYPRESS_SOUNDS) {
-            const sound = SoundServer.getDefault();
-            sound.play(KEYPRESS_SOUNDS[text]);
-        }
-    }
-
-    static _onDeleteRange(buffer, start, end) {
-        const deletedLength = end.get_offset() - start.get_offset();
-
-        const sound = SoundServer.getDefault();
-        if (deletedLength === 1)
-            sound.play('codeview/keypress/delete');
-        else
-            sound.play('codeview/keypress/delete-selection');
     }
 
     _getOurSourceMarks(iter) {
