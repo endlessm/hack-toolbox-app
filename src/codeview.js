@@ -9,6 +9,13 @@ const MarkType = {
     ERROR: 'com.endlessm.HackToolbox.codeview.error',
 };
 
+const KEYPRESS_SOUNDS = {
+    ' ': 'codeview/keypress/space',
+    '\n': 'codeview/keypress/return',
+    '=': 'codeview/keypress/equals',
+    '/': 'codeview/keypress/slash',
+};
+
 function _markHasFixmeInformation(mark) {
     return typeof mark._fixme !== 'undefined' &&
         typeof mark._endLine !== 'undefined' &&
@@ -65,11 +72,21 @@ var Codeview = GObject.registerClass({
 
         this._changedHandler = this._buffer.connect('changed',
             this._onBufferChanged.bind(this));
+        this._insertHandler = this._buffer.connect('insert-text',
+            this.constructor._onInsertText);
+        this._deleteHandler = this._buffer.connect('delete-range',
+            this.constructor._onDeleteRange);
         this._helpButton.connect('clicked', this._onHelpClicked.bind(this));
         renderer.connect('query-data', this._onRendererQueryData.bind(this));
         renderer.connect('query-activatable', (r, iter) =>
             this._getOurSourceMarks(iter).length > 0);
         renderer.connect('activate', this._onRendererActivate.bind(this));
+        this._view.connect_after('cut-clipboard',
+            this.constructor._onCutClipboard);
+        this._view.connect_after('copy-clipboard',
+            this.constructor._onCopyClipboard);
+        this._view.connect_after('paste-clipboard',
+            this.constructor._onPasteClipboard);
 
         this._compileTimeout = null;
         this._numErrors = 0;
@@ -84,6 +101,10 @@ var Codeview = GObject.registerClass({
     set text(value) {
         if (this._changedHandler)
             GObject.signal_handler_block(this._buffer, this._changedHandler);
+        if (this._insertHandler)
+            GObject.signal_handler_block(this._buffer, this._insertHandler);
+        if (this._deleteHandler)
+            GObject.signal_handler_block(this._buffer, this._deleteHandler);
         try {
             if (this._buffer)
                 this._buffer.text = value;
@@ -92,6 +113,10 @@ var Codeview = GObject.registerClass({
         } finally {
             if (this._changedHandler)
                 GObject.signal_handler_unblock(this._buffer, this._changedHandler);
+            if (this._insertHandler)
+                GObject.signal_handler_unblock(this._buffer, this._insertHandler);
+            if (this._deleteHandler)
+                GObject.signal_handler_unblock(this._buffer, this._deleteHandler);
         }
     }
 
@@ -156,6 +181,40 @@ var Codeview = GObject.registerClass({
         }
 
         this._helpMessage.popup();
+    }
+
+    static _onInsertText(buffer, location, text) {
+        if (!text.length === 1)
+            return;
+        if (text in KEYPRESS_SOUNDS) {
+            const sound = SoundServer.getDefault();
+            sound.play(KEYPRESS_SOUNDS[text]);
+        }
+    }
+
+    static _onDeleteRange(buffer, start, end) {
+        const deletedLength = end.get_offset() - start.get_offset();
+
+        const sound = SoundServer.getDefault();
+        if (deletedLength === 1)
+            sound.play('codeview/keypress/delete');
+        else
+            sound.play('codeview/keypress/delete-selection');
+    }
+
+    static _onCutClipboard() {
+        const sound = SoundServer.getDefault();
+        sound.play('codeview/action/cut');
+    }
+
+    static _onCopyClipboard() {
+        const sound = SoundServer.getDefault();
+        sound.play('codeview/action/copy');
+    }
+
+    static _onPasteClipboard() {
+        const sound = SoundServer.getDefault();
+        sound.play('codeview/action/paste');
     }
 
     _getOurSourceMarks(iter) {
