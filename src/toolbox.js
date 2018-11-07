@@ -5,6 +5,8 @@ const Gettext = imports.gettext;
 
 const _ = Gettext.gettext;
 
+const SoundServer = imports.soundServer;
+
 var Toolbox = GObject.registerClass({
     CssName: 'toolbox',
     Properties: {
@@ -53,7 +55,7 @@ var Toolbox = GObject.registerClass({
         });
         this._realAdd(this._revealer);
 
-        buttonReset.connect('clicked', () => this.emit('reset'));
+        buttonReset.connect('clicked', this._onResetClicked.bind(this));
         buttonMinimize.connect('clicked', this._onMinimize.bind(this));
         this.setBusy(false);
     }
@@ -76,6 +78,12 @@ var Toolbox = GObject.registerClass({
 
     add(widget) {
         this._revealer.add(widget);
+    }
+
+    _onResetClicked() {
+        const sound = SoundServer.getDefault();
+        sound.play('hack-toolbox/reset/click');
+        this.emit('reset');
     }
 
     _onMinimize() {
