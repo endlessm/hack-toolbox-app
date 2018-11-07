@@ -96,9 +96,8 @@ var Codeview = GObject.registerClass({
     },
 
     Template: 'resource:///com/endlessm/HackToolbox/codeview.ui',
-    InternalChildren: ['fixButton', 'helpButton', 'helpHeading', 'helpLabel',
-        'helpMessage', 'scroll'],
-}, class Codeview extends Gtk.Overlay {
+    InternalChildren: ['fixButton', 'helpLabel', 'helpMessage'],
+}, class Codeview extends Gtk.ScrolledWindow {
     _init(props = {}) {
         super._init(props);
 
@@ -135,11 +134,10 @@ var Codeview = GObject.registerClass({
         });
         gutter.insert(renderer, 0);
 
-        this._scroll.add(this._view);
+        this.add(this._view);
 
         this._changedHandler = this._buffer.connect('changed',
             this._onBufferChanged.bind(this));
-        this._helpButton.connect('clicked', this._onHelpClicked.bind(this));
         renderer.connect('query-data', this._onRendererQueryData.bind(this));
         renderer.connect('query-activatable', (r, iter) =>
             this._getOurSourceMarks(iter).length > 0);
@@ -187,13 +185,6 @@ var Codeview = GObject.registerClass({
             this.compile.bind(this));
     }
 
-    _onHelpClicked() {
-        this.ensureNoTimeout();
-        this.compile();
-        this._helpMessage.get_style_class().remove_class('error');
-        this._helpMessage.popup();
-    }
-
     _onFixClicked(marks) {
         this._helpMessage.popdown();
         marks.forEach(mark => {
@@ -219,7 +210,6 @@ var Codeview = GObject.registerClass({
 
     _onRendererActivate(renderer, iter, area) {
         const marks = this._getOurSourceMarks(iter);
-        this._helpHeading.hide();
         this._helpLabel.label = marks.map(mark => mark._message).join('\n');
         this._helpMessage.pointingTo = area;
         this._helpMessage.relativeTo = this._view;
