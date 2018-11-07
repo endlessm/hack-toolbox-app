@@ -39,7 +39,7 @@ var FizzicsLevel2 = GObject.registerClass({
 
         const scope = {};
         this._getModelProps().forEach(pspec => {
-            scope[this._toScopeName(pspec.get_name())] = null;
+            scope[this.constructor._toScopeName(pspec.get_name())] = null;
         });
 
         try {
@@ -74,7 +74,7 @@ var FizzicsLevel2 = GObject.registerClass({
 
         try {
             Object.getOwnPropertyNames(scope).forEach(prop => {
-                const property = this._toModelName(prop);
+                const property = this.constructor._toModelName(prop);
                 if (!(prop in scope) || scope[prop] === this._model[property])
                     return;
                 this._model[property] = scope[prop];
@@ -93,7 +93,7 @@ var FizzicsLevel2 = GObject.registerClass({
         const errors = [];
 
         this._getModelProps().forEach(pspec => {
-            const propName = this._toScopeName(pspec.get_name());
+            const propName = this.constructor._toScopeName(pspec.get_name());
             const propType = typeof pspec.default_value;
             if (!scope[propName])
                 return;
