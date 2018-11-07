@@ -186,6 +186,10 @@ var Codeview = GObject.registerClass({
     }
 
     _onFixClicked(marks) {
+        if (this._helpMessageCloseId) {
+            this._helpMessage.disconnect(this._helpMessageCloseId);
+            this._helpMessageCloseId = null;
+        }
         this._helpMessage.popdown();
         marks.forEach(mark => {
             const start = this._buffer.get_iter_at_mark(mark);
@@ -193,12 +197,15 @@ var Codeview = GObject.registerClass({
                 mark._endColumn);
             this._buffer.begin_user_action();
             try {
-                this._buffer.delete(start, end);
-                this._buffer.insert(start, mark._fixme, -1);
+                this._buffer._withSoundHandlersBlocked(() => {
+                    this._buffer.delete(start, end);
+                    this._buffer.insert(start, mark._fixme, -1);
+                });
             } finally {
                 this._buffer.end_user_action();
             }
         });
+        SoundServer.getDefault().play('codeview/popup/fix');
     }
 
     _onRendererQueryData(renderer, start) {
@@ -225,6 +232,13 @@ var Codeview = GObject.registerClass({
         }
 
         this._helpMessage.popup();
+        this._helpMessageCloseId = this._helpMessage.connect_after('closed', () => {
+            // Popup is closed whenever user clicks outside of it
+            SoundServer.getDefault().play('codeview/popup/close');
+            this._helpMessage.disconnect(this._helpMessageCloseId);
+            this._helpMessageCloseId = null;
+        });
+        SoundServer.getDefault().play('codeview/popup/open');
     }
 
     _getOurSourceMarks(iter) {
