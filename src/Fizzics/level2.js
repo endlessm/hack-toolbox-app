@@ -7,6 +7,13 @@ const SoundServer = imports.soundServer;
 
 var FizzicsLevel2 = GObject.registerClass({
     GTypeName: 'FizzicsLevel2',
+
+    Properties: {
+        'update-sound-enabled': GObject.ParamSpec.boolean('update-sound-enabled',
+            'Update sound enabled', '',
+            GObject.ParamFlags.READWRITE, false),
+    },
+
     Template: 'resource:///com/endlessm/HackToolbox/Fizzics/level2.ui',
     InternalChildren: [
         'content',
@@ -15,12 +22,24 @@ var FizzicsLevel2 = GObject.registerClass({
     _init(props = {}) {
         super._init(props);
         this._lastCodeviewSoundMicrosec = 0;
+        this._updateSoundEnabled = false;
 
         this._codeview = new Codeview();
         this._codeview.connect('should-compile', () => {
             this._compile();
         });
         this._content.add(this._codeview);
+    }
+
+    get update_sound_enabled() {
+        return this._updateSoundEnabled;
+    }
+
+    set update_sound_enabled(value) {
+        if ('_updateSoundEnabled' in this && this._updateSoundEnabled === value)
+            return;
+        this._updateSoundEnabled = value;
+        this.notify('update-sound-enabled');
     }
 
     static _toScopeName(name) {
@@ -180,7 +199,8 @@ imageIndex_2 = ${this._model['imageIndex-2']}
         const oldText = this._codeview.text;
         this._regenerateCode();
         const timeMicrosec = GLib.get_monotonic_time();
-        if (!this._model.inReset && oldText !== this._codeview.text &&
+        if (this._updateSoundEnabled && !this._model.inReset &&
+            oldText !== this._codeview.text &&
             timeMicrosec - this._lastCodeviewSoundMicrosec >= 100e3) {
             SoundServer.getDefault().play('hack-toolbox/update-codeview');
             this._lastCodeviewSoundMicrosec = timeMicrosec;

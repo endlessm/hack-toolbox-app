@@ -23,9 +23,16 @@ const COLOR_PROPS = ['logo_color', 'main_color', 'accent_color', 'info_color',
 const ENUM_PROPS = ['text_transformation', 'card_order', 'card_layout',
     'image_filter', 'sounds_cursor_hover', 'sounds_cursor_click'];
 
-var FrameworkLevel3 = GObject.registerClass(class FrameworkLevel3 extends Gtk.Frame {
+var FrameworkLevel3 = GObject.registerClass({
+    Properties: {
+        'update-sound-enabled': GObject.ParamSpec.boolean('update-sound-enabled',
+            'Update sound enabled', '',
+            GObject.ParamFlags.READWRITE, false),
+    },
+}, class FrameworkLevel3 extends Gtk.Frame {
     _init(defaults, props = {}) {
         super._init(props);
+        this._updateSoundEnabled = false;
 
         this._defaults = defaults;
 
@@ -35,6 +42,17 @@ var FrameworkLevel3 = GObject.registerClass(class FrameworkLevel3 extends Gtk.Fr
         this.get_style_context().add_class('codeview-frame');
 
         this._codeview.connect('should-compile', this.compile.bind(this));
+    }
+
+    get update_sound_enabled() {
+        return this._updateSoundEnabled;
+    }
+
+    set update_sound_enabled(value) {
+        if ('_updateSoundEnabled' in this && this._updateSoundEnabled === value)
+            return;
+        this._updateSoundEnabled = value;
+        this.notify('update-sound-enabled');
     }
 
     compile() {
@@ -232,7 +250,8 @@ hyperlinks = ${this._model.hyperlinks ? 'yes' : 'no'}
     _onNotify() {
         const oldText = this._codeview.text;
         this._regenerateCode();
-        if (!this._model.inReset && oldText !== this._codeview.text)
+        if (this._updateSoundEnabled && !this._model.inReset &&
+            oldText !== this._codeview.text)
             SoundServer.getDefault().play('hack-toolbox/update-codeview');
     }
 

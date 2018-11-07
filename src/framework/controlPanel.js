@@ -30,6 +30,10 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         this.attach(this._level3lock, 1, 0, 1, 2);
 
         [this._key1, this._key2, this._key3] = defaults.keys;
+
+        this._level3lock.bind_property('locked',
+            this._level3, 'update-sound-enabled',
+            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
     }
 
     bindModel(model) {
