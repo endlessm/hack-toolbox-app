@@ -9,7 +9,7 @@ var HUModelGlobal = GObject.registerClass({
     Properties: {
         amplitude: GObject.ParamSpec.double(
             'amplitude', 'amplitude', '',
-            _propFlags, 0.0, 0.7, 0.2),
+            _propFlags, 0.0, 1.4, 0.2),
         frequency: GObject.ParamSpec.double(
             'frequency', 'frequency', '',
             _propFlags, 0.0, 50.0, 20.0),
