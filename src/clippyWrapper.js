@@ -26,6 +26,11 @@ var ClippyWrapper = GObject.registerClass({
         this._setupLocal();
     }
 
+    // Note: not a GObject property, notify not needed
+    get inReset() {
+        return !!this._inReset;
+    }
+
     _setupRemote() {
         const Proxy = Gio.DBusProxy.makeProxyWrapper(ClippyIface);
         const proxy = new Proxy(Gio.DBus.session, this._appId, ClippyObjectPath);
@@ -80,8 +85,13 @@ var ClippyWrapper = GObject.registerClass({
 
     reset() {
         const props = GObject.Object.list_properties.call(this.constructor.$gtype);
-        props.forEach(pspec => {
-            this[pspec.get_name()] = pspec.default_value;
-        });
+        this._inReset = true;
+        try {
+            props.forEach(pspec => {
+                this[pspec.get_name()] = pspec.default_value;
+            });
+        } finally {
+            this._inReset = false;
+        }
     }
 });
