@@ -37,11 +37,13 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
 
     _init(props = {}) {
         super._init(props);
+        this._lastSelectionLength = 0;
 
         this._insertHandler = this.connect('insert-text',
             this.constructor._onInsertText);
         this._deleteHandler = this.connect('delete-range',
             this.constructor._onDeleteRange);
+        this.connect('mark-set', this._onMarkSet.bind(this));
     }
 
     vfunc_undo() {
@@ -86,6 +88,20 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
             sound.play('codeview/keypress/delete');
         else
             sound.play('codeview/keypress/delete-selection');
+    }
+
+    _onMarkSet(buffer, location, mark) {
+        if (!['insert', 'selection_bound'].includes(mark.name))
+            return;
+        const [hasSelection, insert, selectionBound] = this.get_selection_bounds();
+        let length = 0;
+        if (hasSelection) {
+            length = selectionBound.get_offset() - insert.get_offset();
+            length *= selectionBound.compare(insert);
+        }
+        if (length !== 0 && length !== this._lastSelectionLength)
+            SoundServer.getDefault().play('codeview/action/selection-drag');
+        this._lastSelectionLength = length;
     }
 });
 
