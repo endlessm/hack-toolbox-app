@@ -90,6 +90,7 @@ var Toolbox = GObject.registerClass({
         const open = this._revealer.revealChild;
         this._minimizeImage.iconName = open ? 'go-up-symbolic' : 'go-down-symbolic';
         this._revealer.revealChild = !open;
+        SoundServer.getDefault().play(`hack-toolbox/${open ? '' : 'un'}minimize`);
     }
 
     setBusy(value) {
