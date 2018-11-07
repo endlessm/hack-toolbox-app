@@ -24,6 +24,10 @@ var FizzicsControlPanel = GObject.registerClass({
         this._panelLevel1.add(this._level1);
         this._panelLevel2.add(this._level2lock);
         this._level2lock.show_all();
+
+        this._level2lock.bind_property('locked',
+            this._level2, 'update-sound-enabled',
+            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
     }
 
     bindModel(model) {

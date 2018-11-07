@@ -4,6 +4,7 @@ const {Gdk, GObject, Gtk} = imports.gi;
 
 const {Codeview} = imports.codeview;
 const {VALID_LOGOS} = imports.framework.logoImage;
+const SoundServer = imports.soundServer;
 const Utils = imports.framework.utils;
 
 const VALID_ENUMS = {
@@ -22,9 +23,16 @@ const COLOR_PROPS = ['logo_color', 'main_color', 'accent_color', 'info_color',
 const ENUM_PROPS = ['text_transformation', 'card_order', 'card_layout',
     'image_filter', 'sounds_cursor_hover', 'sounds_cursor_click'];
 
-var FrameworkLevel3 = GObject.registerClass(class FrameworkLevel3 extends Gtk.Frame {
+var FrameworkLevel3 = GObject.registerClass({
+    Properties: {
+        'update-sound-enabled': GObject.ParamSpec.boolean('update-sound-enabled',
+            'Update sound enabled', '',
+            GObject.ParamFlags.READWRITE, false),
+    },
+}, class FrameworkLevel3 extends Gtk.Frame {
     _init(defaults, props = {}) {
         super._init(props);
+        this._updateSoundEnabled = false;
 
         this._defaults = defaults;
 
@@ -34,6 +42,17 @@ var FrameworkLevel3 = GObject.registerClass(class FrameworkLevel3 extends Gtk.Fr
         this.get_style_context().add_class('codeview-frame');
 
         this._codeview.connect('should-compile', this.compile.bind(this));
+    }
+
+    get update_sound_enabled() {
+        return this._updateSoundEnabled;
+    }
+
+    set update_sound_enabled(value) {
+        if ('_updateSoundEnabled' in this && this._updateSoundEnabled === value)
+            return;
+        this._updateSoundEnabled = value;
+        this.notify('update-sound-enabled');
     }
 
     compile() {
@@ -94,7 +113,16 @@ var FrameworkLevel3 = GObject.registerClass(class FrameworkLevel3 extends Gtk.Fr
 
         this._codeview.setCompileResults([]);
 
+        // Block the normal notify handler that updates the code view, since we
+        // are propagating updates from the codeview to the GUI. Instead,
+        // connect a temporary handler that lets us know if anything actually
+        // did change.
         GObject.signal_handler_block(this._model, this._notifyHandler);
+
+        let guiUpdated = false;
+        const tempHandler = this._model.connect('notify', () => {
+            guiUpdated = true;
+        });
 
         try {
             if (scope.logo_graphic !== null)
@@ -115,8 +143,12 @@ var FrameworkLevel3 = GObject.registerClass(class FrameworkLevel3 extends Gtk.Fr
                     this._model[prop] = scope[prop];
             });
         } finally {
+            this._model.disconnect(tempHandler);
             GObject.signal_handler_unblock(this._model, this._notifyHandler);
         }
+
+        if (guiUpdated)
+            SoundServer.getDefault().play('hack-toolbox/update-gui');
     }
 
     _errorRecordAtAssignmentLocation(variable, message) {
@@ -215,10 +247,18 @@ hyperlinks = ${this._model.hyperlinks ? 'yes' : 'no'}
 `;
     }
 
+    _onNotify() {
+        const oldText = this._codeview.text;
+        this._regenerateCode();
+        if (this._updateSoundEnabled && !this._model.inReset &&
+            oldText !== this._codeview.text)
+            SoundServer.getDefault().play('hack-toolbox/update-codeview');
+    }
+
     bindModel(model) {
         this._model = model;
         this._notifyHandler = this._model.connect('notify',
-            this._regenerateCode.bind(this));
+            this._onNotify.bind(this));
         this._regenerateCode();
     }
 });

@@ -1,10 +1,19 @@
 /* exported FizzicsLevel2 */
 
-const {GObject, Gtk} = imports.gi;
+const {GLib, GObject, Gtk} = imports.gi;
+
 const {Codeview} = imports.codeview;
+const SoundServer = imports.soundServer;
 
 var FizzicsLevel2 = GObject.registerClass({
     GTypeName: 'FizzicsLevel2',
+
+    Properties: {
+        'update-sound-enabled': GObject.ParamSpec.boolean('update-sound-enabled',
+            'Update sound enabled', '',
+            GObject.ParamFlags.READWRITE, false),
+    },
+
     Template: 'resource:///com/endlessm/HackToolbox/Fizzics/level2.ui',
     InternalChildren: [
         'content',
@@ -12,11 +21,25 @@ var FizzicsLevel2 = GObject.registerClass({
 }, class FizzicsLevel2 extends Gtk.Box {
     _init(props = {}) {
         super._init(props);
+        this._lastCodeviewSoundMicrosec = 0;
+        this._updateSoundEnabled = false;
+
         this._codeview = new Codeview();
         this._codeview.connect('should-compile', () => {
             this._compile();
         });
         this._content.add(this._codeview);
+    }
+
+    get update_sound_enabled() {
+        return this._updateSoundEnabled;
+    }
+
+    set update_sound_enabled(value) {
+        if ('_updateSoundEnabled' in this && this._updateSoundEnabled === value)
+            return;
+        this._updateSoundEnabled = value;
+        this.notify('update-sound-enabled');
     }
 
     static _toScopeName(name) {
@@ -39,7 +62,7 @@ var FizzicsLevel2 = GObject.registerClass({
 
         const scope = {};
         this._getModelProps().forEach(pspec => {
-            scope[this._toScopeName(pspec.get_name())] = null;
+            scope[this.constructor._toScopeName(pspec.get_name())] = null;
         });
 
         try {
@@ -70,18 +93,31 @@ var FizzicsLevel2 = GObject.registerClass({
 
         this._codeview.setCompileResults([]);
 
+        // Block the normal notify handler that updates the code view, since we
+        // are propagating updates from the codeview to the GUI. Instead,
+        // connect a temporary handler that lets us know if anything actually
+        // did change.
         GObject.signal_handler_block(this._model, this._notifyHandler);
+
+        let guiUpdated = false;
+        const tempHandler = this._model.connect('notify', () => {
+            guiUpdated = true;
+        });
 
         try {
             Object.getOwnPropertyNames(scope).forEach(prop => {
-                const property = this._toModelName(prop);
+                const property = this.constructor._toModelName(prop);
                 if (!(prop in scope) || scope[prop] === this._model[property])
                     return;
                 this._model[property] = scope[prop];
             });
         } finally {
+            this._model.disconnect(tempHandler);
             GObject.signal_handler_unblock(this._model, this._notifyHandler);
         }
+
+        if (guiUpdated)
+            SoundServer.getDefault().play('hack-toolbox/update-gui');
     }
 
     _errorRecordAtAssignmentLocation(variable, message, default_value) {
@@ -93,7 +129,7 @@ var FizzicsLevel2 = GObject.registerClass({
         const errors = [];
 
         this._getModelProps().forEach(pspec => {
-            const propName = this._toScopeName(pspec.get_name());
+            const propName = this.constructor._toScopeName(pspec.get_name());
             const propType = typeof pspec.default_value;
             if (!scope[propName])
                 return;
@@ -159,11 +195,22 @@ imageIndex_2 = ${this._model['imageIndex-2']}
 `;
     }
 
+    _onNotify() {
+        const oldText = this._codeview.text;
+        this._regenerateCode();
+        const timeMicrosec = GLib.get_monotonic_time();
+        if (this._updateSoundEnabled && !this._model.inReset &&
+            oldText !== this._codeview.text &&
+            timeMicrosec - this._lastCodeviewSoundMicrosec >= 100e3) {
+            SoundServer.getDefault().play('hack-toolbox/update-codeview');
+            this._lastCodeviewSoundMicrosec = timeMicrosec;
+        }
+    }
+
     bindModel(model) {
         this._model = model;
-        this._notifyHandler = this._model.connect('notify', () => {
-            this._regenerateCode();
-        });
+        this._notifyHandler = this._model.connect('notify',
+            this._onNotify.bind(this));
         this._regenerateCode();
     }
 });

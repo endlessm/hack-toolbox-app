@@ -58,6 +58,11 @@ class RaModelBase extends GObject.Object {
         return !!this._changed;
     }
 
+    // Note: not a GObject property, notify not needed
+    get inReset() {
+        return !!this._inReset;
+    }
+
     get logo_graphic() {
         return this._logoGraphic;
     }
@@ -365,9 +370,14 @@ class RaModelBase extends GObject.Object {
     }
 
     reset() {
-        HACKABLE_PROPERTIES.forEach(prop => {
-            this[prop.replace(/-/g, '_')] = this.constructor._defaults.value(prop);
-        });
+        this._inReset = true;
+        try {
+            HACKABLE_PROPERTIES.forEach(prop => {
+                this[prop.replace(/-/g, '_')] = this.constructor._defaults.value(prop);
+            });
+        } finally {
+            this._inReset = false;
+        }
     }
 
     snapshot() {
