@@ -37,11 +37,13 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
 
     _init(props = {}) {
         super._init(props);
+        this._lastSelectionLength = 0;
 
         this._insertHandler = this.connect('insert-text',
             this.constructor._onInsertText);
         this._deleteHandler = this.connect('delete-range',
             this.constructor._onDeleteRange);
+        this.connect('mark-set', this._onMarkSet.bind(this));
     }
 
     vfunc_undo() {
@@ -87,6 +89,20 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
         else
             sound.play('codeview/keypress/delete-selection');
     }
+
+    _onMarkSet(buffer, location, mark) {
+        if (!['insert', 'selection_bound'].includes(mark.name))
+            return;
+        const [hasSelection, insert, selectionBound] = this.get_selection_bounds();
+        let length = 0;
+        if (hasSelection) {
+            length = selectionBound.get_offset() - insert.get_offset();
+            length *= selectionBound.compare(insert);
+        }
+        if (length !== 0 && length !== this._lastSelectionLength)
+            SoundServer.getDefault().play('codeview/action/selection-drag');
+        this._lastSelectionLength = length;
+    }
 });
 
 var Codeview = GObject.registerClass({
@@ -96,9 +112,8 @@ var Codeview = GObject.registerClass({
     },
 
     Template: 'resource:///com/endlessm/HackToolbox/codeview.ui',
-    InternalChildren: ['fixButton', 'helpButton', 'helpHeading', 'helpLabel',
-        'helpMessage', 'scroll'],
-}, class Codeview extends Gtk.Overlay {
+    InternalChildren: ['fixButton', 'helpLabel', 'helpMessage'],
+}, class Codeview extends Gtk.ScrolledWindow {
     _init(props = {}) {
         super._init(props);
 
@@ -135,11 +150,10 @@ var Codeview = GObject.registerClass({
         });
         gutter.insert(renderer, 0);
 
-        this._scroll.add(this._view);
+        this.add(this._view);
 
         this._changedHandler = this._buffer.connect('changed',
             this._onBufferChanged.bind(this));
-        this._helpButton.connect('clicked', this._onHelpClicked.bind(this));
         renderer.connect('query-data', this._onRendererQueryData.bind(this));
         renderer.connect('query-activatable', (r, iter) =>
             this._getOurSourceMarks(iter).length > 0);
@@ -187,14 +201,11 @@ var Codeview = GObject.registerClass({
             this.compile.bind(this));
     }
 
-    _onHelpClicked() {
-        this.ensureNoTimeout();
-        this.compile();
-        this._helpMessage.get_style_class().remove_class('error');
-        this._helpMessage.popup();
-    }
-
     _onFixClicked(marks) {
+        if (this._helpMessageCloseId) {
+            this._helpMessage.disconnect(this._helpMessageCloseId);
+            this._helpMessageCloseId = null;
+        }
         this._helpMessage.popdown();
         marks.forEach(mark => {
             const start = this._buffer.get_iter_at_mark(mark);
@@ -202,12 +213,15 @@ var Codeview = GObject.registerClass({
                 mark._endColumn);
             this._buffer.begin_user_action();
             try {
-                this._buffer.delete(start, end);
-                this._buffer.insert(start, mark._fixme, -1);
+                this._buffer._withSoundHandlersBlocked(() => {
+                    this._buffer.delete(start, end);
+                    this._buffer.insert(start, mark._fixme, -1);
+                });
             } finally {
                 this._buffer.end_user_action();
             }
         });
+        SoundServer.getDefault().play('codeview/popup/fix');
     }
 
     _onRendererQueryData(renderer, start) {
@@ -219,7 +233,6 @@ var Codeview = GObject.registerClass({
 
     _onRendererActivate(renderer, iter, area) {
         const marks = this._getOurSourceMarks(iter);
-        this._helpHeading.hide();
         this._helpLabel.label = marks.map(mark => mark._message).join('\n');
         this._helpMessage.pointingTo = area;
         this._helpMessage.relativeTo = this._view;
@@ -235,6 +248,13 @@ var Codeview = GObject.registerClass({
         }
 
         this._helpMessage.popup();
+        this._helpMessageCloseId = this._helpMessage.connect_after('closed', () => {
+            // Popup is closed whenever user clicks outside of it
+            SoundServer.getDefault().play('codeview/popup/close');
+            this._helpMessage.disconnect(this._helpMessageCloseId);
+            this._helpMessageCloseId = null;
+        });
+        SoundServer.getDefault().play('codeview/popup/open');
     }
 
     _getOurSourceMarks(iter) {

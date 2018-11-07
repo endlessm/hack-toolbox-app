@@ -2,46 +2,15 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <template class="Codeview" parent="GtkOverlay">
+  <template class="Codeview" parent="GtkScrolledWindow">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can_focus">True</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="shadow_type">in</property>
+    <property name="min_content_width">400</property>
     <child>
-      <object class="GtkScrolledWindow" id="scroll">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="hexpand">True</property>
-        <property name="vexpand">True</property>
-        <property name="shadow_type">in</property>
-        <property name="min_content_width">400</property>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="index">-1</property>
-      </packing>
-    </child>
-    <child type="overlay">
-      <object class="GtkButton" id="helpButton">
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <property name="no_show_all">True</property>
-        <property name="halign">end</property>
-        <property name="valign">start</property>
-        <property name="margin_top">6</property>
-        <property name="hexpand">True</property>
-        <property name="vexpand">True</property>
-        <child>
-          <object class="GtkImage">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_top">3</property>
-            <property name="margin_bottom">3</property>
-            <property name="icon_name">help-faq-symbolic</property>
-            <property name="icon_size">3</property>
-          </object>
-        </child>
-      </object>
+      <placeholder/>
     </child>
     <style>
       <class name="codeview"/>
@@ -50,7 +19,6 @@
   <object class="GtkPopover" id="helpMessage">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
-    <property name="relative_to">helpButton</property>
     <property name="constrain_to">none</property>
     <child>
       <object class="GtkGrid">
