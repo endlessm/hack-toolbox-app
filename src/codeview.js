@@ -161,6 +161,7 @@ var Codeview = GObject.registerClass({
         this._view.connect_after('cut-clipboard', () => _actionSound('cut'));
         this._view.connect_after('copy-clipboard', () => _actionSound('copy'));
         this._view.connect_after('paste-clipboard', () => _actionSound('paste'));
+        this._view.connect('move-cursor', this.constructor._onMoveCursor);
 
         this._compileTimeout = null;
         this._numErrors = 0;
@@ -255,6 +256,16 @@ var Codeview = GObject.registerClass({
             this._helpMessageCloseId = null;
         });
         SoundServer.getDefault().play('codeview/popup/open');
+    }
+
+    static _onMoveCursor(view, step, count, extendSelection) {
+        if (!extendSelection && step === Gtk.MovementStep.DISPLAY_LINES ||
+            step === Gtk.MovementStep.PARAGRAPHS) {
+            if (count === 1)
+                SoundServer.getDefault().play('codeview/keypress/down');
+            else if (count === -1)
+                SoundServer.getDefault().play('codeview/keypress/up');
+        }
     }
 
     _getOurSourceMarks(iter) {
