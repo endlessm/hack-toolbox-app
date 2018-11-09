@@ -1,100 +1,127 @@
-/* exported FizzicsModelGlobal */
+/* exported FizzicsModelGlobal, SPECIES, BACKGROUNDS,
+SKINS, VFX_BAD, VFX_GOOD, SFX_BAD, SFX_GOOD */
 
-const {GLib, GObject} = imports.gi;
+const {GObject} = imports.gi;
 const {ClippyWrapper} = imports.clippyWrapper;
 
+var SPECIES = 5;
+var BACKGROUNDS = [
+    'grid',
+    'space',
+    'grass',
+];
+var SKINS = [
+    'green',
+    'spikes',
+    'amoeba',
+    'spaceship',
+    'rocky',
+    'earth',
+    'cricket',
+    'mole',
+    'star',
+];
+var VFX_BAD = [
+    'fireworks',
+    'splat',
+    'vaporized',
+    'singularity',
+];
+var VFX_GOOD = [
+    'fireworks',
+    'splat',
+    'vaporized',
+    'singularity',
+];
+var SFX_BAD = [
+    'pop',
+    'horn',
+    'drum',
+    'beam',
+];
+var SFX_GOOD = [
+    'pop',
+    'horn',
+    'drum',
+    'beam',
+];
+
+const _indexes = new Array(SPECIES).fill(0)
+                                    .map((elem, index) => index);
 const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 
+function _addPropsForIndex(props, index) {
+    props[`radius-${index}`] = GObject.ParamSpec.double(
+        `radius-${index}`, `radius-${index}`, '',
+        _propFlags, 10.0, 100.0, 45.0);
+    props[`gravity-${index}`] = GObject.ParamSpec.double(
+        `gravity-${index}`, `gravity-${index}`, '',
+        _propFlags, -50.0, 50.0, 0.0);
+    props[`collision-${index}`] = GObject.ParamSpec.double(
+        `collision-${index}`, `collision-${index}`, '',
+        _propFlags, 0.0, 0.2, 0.1);
+    props[`friction-${index}`] = GObject.ParamSpec.double(
+        `friction-${index}`, `friction-${index}`, '',
+        _propFlags, 0.0, 18.0, 9.0);
+    props[`usePhysics-${index}`] = GObject.ParamSpec.boolean(
+        `usePhysics-${index}`, `usePhysics-${index}`, '',
+        _propFlags, true);
+    props[`imageIndex-${index}`] = GObject.ParamSpec.uint(
+        `imageIndex-${index}`, `imageIndex-${index}`, '',
+        _propFlags, 0, 8, index);
+
+    _indexes.forEach(subIndex => {
+        props[`socialForce-${index}-${subIndex}`] = GObject.ParamSpec.double(
+            `socialForce-${index}-${subIndex}`, `socialForce-${index}-${subIndex}`, '',
+            _propFlags, -30.0, 30.0, 0.0);
+    });
+
+    _indexes.forEach(subIndex => {
+        props[`touchDeath-${index}-${subIndex}`] = GObject.ParamSpec.boolean(
+            `touchDeath-${index}-${subIndex}`, `touchDeath-${index}-${subIndex}`, '',
+            _propFlags, false);
+    });
+
+    props[`deathVisualBad-${index}`] = GObject.ParamSpec.uint(
+        `deathVisualBad-${index}`, `deathVisualBad-${index}`, '',
+        _propFlags, 0, 3, 0);
+    props[`deathSoundBad-${index}`] = GObject.ParamSpec.uint(
+        `deathSoundBad-${index}`, `deathSoundBad-${index}`, '',
+        _propFlags, 0, 3, 0);
+
+    props[`deathVisualGood-${index}`] = GObject.ParamSpec.uint(
+        `deathVisualGood-${index}`, `deathVisualGood-${index}`, '',
+        _propFlags, 0, 3, 0);
+    props[`deathSoundGood-${index}`] = GObject.ParamSpec.uint(
+        `deathSoundGood-${index}`, `deathSoundGood-${index}`, '',
+        _propFlags, 0, 3, 0);
+}
+
+function _generateProperties() {
+    const props = {};
+    props['backgroundImageIndex'] = GObject.ParamSpec.uint(
+        'backgroundImageIndex', 'backgroundImageIndex', '',
+        _propFlags, 0, 3, 0);
+    props['moveToolActive'] = GObject.ParamSpec.boolean(
+        'moveToolActive', 'moveToolActive', '',
+        _propFlags, false);
+    props['flingToolActive'] = GObject.ParamSpec.boolean(
+        'flingToolActive', 'flingToolActive', '',
+        _propFlags, false);
+    props['createToolActive'] = GObject.ParamSpec.boolean(
+        'createToolActive', 'createToolActive', '',
+        _propFlags, false);
+    props['deleteToolActive'] = GObject.ParamSpec.boolean(
+        'deleteToolActive', 'deleteToolActive', '',
+        _propFlags, false);
+    _indexes.forEach(index => {
+        _addPropsForIndex(props, index);
+    });
+    return props;
+}
+
 var FizzicsModelGlobal = GObject.registerClass({
-    Properties: {
-        backgroundImageIndex: GObject.ParamSpec.uint(
-            'backgroundImageIndex', 'backgroundImageIndex', '',
-            _propFlags, 0, GLib.MAXUINT32, 0),
-
-        'radius-0': GObject.ParamSpec.double(
-            'radius-0', 'radius-0', '',
-            _propFlags, 10.0, 100.0, 30.0),
-        'gravity-0': GObject.ParamSpec.double(
-            'gravity-0', 'gravity-0', '',
-            _propFlags, -50.0, 50.0, 20.0),
-        'collision-0': GObject.ParamSpec.double(
-            'collision-0', 'collision-0', '',
-            _propFlags, 0.0, 0.2, 0.2),
-        'friction-0': GObject.ParamSpec.double(
-            'friction-0', 'friction-0', '',
-            _propFlags, 0.0, 18.0, 2.0),
-        'usePhysics-0': GObject.ParamSpec.boolean(
-            'usePhysics-0', 'usePhysics-0', '',
-            _propFlags, true),
-        'socialForce-0-0': GObject.ParamSpec.double(
-            'socialForce-0-0', 'socialForce-0-0', '',
-            _propFlags, -30.0, 30.0, -8.0),
-        'socialForce-0-1': GObject.ParamSpec.double(
-            'socialForce-0-1', 'socialForce-0-1', '',
-            _propFlags, -30.0, 30.0, 0.0),
-        'socialForce-0-2': GObject.ParamSpec.double(
-            'socialForce-0-2', 'socialForce-0-2', '',
-            _propFlags, -30.0, 30.0, 0.0),
-        'imageIndex-0': GObject.ParamSpec.uint(
-            'imageIndex-0', 'imageIndex-0', '',
-            _propFlags, 0, 8, 0),
-
-        'radius-1': GObject.ParamSpec.double(
-            'radius-1', 'radius-1', '',
-            _propFlags, 10.0, 100.0, 50.0),
-        'gravity-1': GObject.ParamSpec.double(
-            'gravity-1', 'gravity-1', '',
-            _propFlags, -50.0, 50.0, 0.0),
-        'collision-1': GObject.ParamSpec.double(
-            'collision-1', 'collision-1', '',
-            _propFlags, 0.0, 0.2, 0.2),
-        'friction-1': GObject.ParamSpec.double(
-            'friction-1', 'friction-1', '',
-            _propFlags, 0.0, 18.0, 5.0),
-        'usePhysics-1': GObject.ParamSpec.boolean(
-            'usePhysics-1', 'usePhysics-1', '',
-            _propFlags, true),
-        'socialForce-1-0': GObject.ParamSpec.double(
-            'socialForce-1-0', 'socialForce-1-0', '',
-            _propFlags, -30.0, 30.0, -20.0),
-        'socialForce-1-1': GObject.ParamSpec.double(
-            'socialForce-1-1', 'socialForce-1-1', '',
-            _propFlags, -30.0, 30.0, 0.0),
-        'socialForce-1-2': GObject.ParamSpec.double(
-            'socialForce-1-2', 'socialForce-1-2', '',
-            _propFlags, -30.0, 30.0, 20.0),
-        'imageIndex-1': GObject.ParamSpec.uint(
-            'imageIndex-1', 'imageIndex-1', '',
-            _propFlags, 0, 8, 1),
-
-        'radius-2': GObject.ParamSpec.double(
-            'radius-2', 'radius-2', '',
-            _propFlags, 10.0, 100.0, 30.0),
-        'gravity-2': GObject.ParamSpec.double(
-            'gravity-2', 'gravity-2', '',
-            _propFlags, -50.0, 50.0, 8.0),
-        'collision-2': GObject.ParamSpec.double(
-            'collision-2', 'collision-2', '',
-            _propFlags, 0.0, 0.2, 0.2),
-        'friction-2': GObject.ParamSpec.double(
-            'friction-2', 'friction-2', '',
-            _propFlags, 0.0, 18.0, 10.0),
-        'usePhysics-2': GObject.ParamSpec.boolean(
-            'usePhysics-2', 'usePhysics-2', '',
-            _propFlags, true),
-        'socialForce-2-0': GObject.ParamSpec.double(
-            'socialForce-2-0', 'socialForce-2-0', '',
-            _propFlags, -30.0, 30.0, 0.0),
-        'socialForce-2-1': GObject.ParamSpec.double(
-            'socialForce-2-1', 'socialForce-2-1', '',
-            _propFlags, -30.0, 30.0, 0.0),
-        'socialForce-2-2': GObject.ParamSpec.double(
-            'socialForce-2-2', 'socialForce-2-2', '',
-            _propFlags, -30.0, 30.0, -10.0),
-        'imageIndex-2': GObject.ParamSpec.uint(
-            'imageIndex-2', 'imageIndex-2', '',
-            _propFlags, 0, 8, 2),
-    },
+    Properties: _generateProperties(),
 }, class FizzicsModelGlobal extends ClippyWrapper {
     _init(props = {}) {
         props.appId = 'com.endlessm.Fizzics';
