@@ -38,6 +38,8 @@ var FizzicsControlPanel = GObject.registerClass({
 
     bindWindow(win) {
         win.lockscreen.key = 'item.key.fizzics.1';
+        win.lockscreen.lock = 'lock.fizzics.1';
         this._level2lock.key = 'item.key.fizzics.2';
+        this._level2lock.lock = 'lock.fizzics.2';
     }
 });

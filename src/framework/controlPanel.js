@@ -30,6 +30,7 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         this.attach(this._level3lock, 1, 0, 1, 2);
 
         [this._key1, this._key2, this._key3] = defaults.keys;
+        [this._lock1, this._lock2, this._lock3] = defaults.locks;
 
         this._level3lock.bind_property('locked',
             this._level3, 'update-sound-enabled',
@@ -49,7 +50,10 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         });
 
         win.lockscreen.key = this._key1;
+        win.lockscreen.lock = this._lock1;
         this._level2lock.key = this._key2;
+        this._level2lock.lock = this._lock2;
         this._level3lock.key = this._key3;
+        this._level3lock.lock = this._lock3;
     }
 });
