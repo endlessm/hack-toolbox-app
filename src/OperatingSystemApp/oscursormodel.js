@@ -93,13 +93,14 @@ var OSCursorModel = GObject.registerClass({
          * FIXME: libXcursor does not follow icont theme specs as it only
          * searches for user cursors in $HOME/.icons
          */
-        var dir = Gio.File.new_for_path(GLib.build_filenamev(
-            [GLib.get_home_dir(), '.icons', this._theme, 'cursors']));
-        var cursor_file = dir.get_child('left_ptr');
+        var theme_dir = Gio.File.new_for_path(GLib.build_filenamev(
+            [GLib.get_home_dir(), '.icons', this._theme]));
+        var cursors_dir = theme_dir.get_child('cursors');
+        var cursor_file = cursors_dir.get_child('left_ptr');
 
         /* Ensure cursor theme directory exists */
         try {
-            dir.make_directory_with_parents(null);
+            cursors_dir.make_directory_with_parents(null);
         } catch (e) {
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
                 logError(e);
@@ -120,5 +121,16 @@ var OSCursorModel = GObject.registerClass({
                     logError(e);
                 }
             });
+
+        /* Install an index.theme file specifying we inherit from Adwaita,
+         * the default theme.
+         */
+        var keyfile = new GLib.KeyFile();
+        keyfile.set_string('Icon Theme', 'Inherits', 'Adwaita');
+        try {
+            keyfile.save_to_file(theme_dir.get_child('index.theme').get_path());
+        } catch (e) {
+            logError(e, 'Failed to save index.theme');
+        }
     }
 });
