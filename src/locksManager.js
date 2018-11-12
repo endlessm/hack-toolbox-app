@@ -21,7 +21,7 @@ var LocksManager = GObject.registerClass({
         if (signal !== 'changed')
             return;
         const key = params.get_child_value(0).deep_unpack();
-        if (!key.startsWith('item.key'))
+        if (!key.startsWith('item.key.') && !key.startsWith('lock.'))
             return;
         this.emit(`changed::${key}`);
     }
@@ -35,19 +35,30 @@ var LocksManager = GObject.registerClass({
         }
     }
 
-    isUnlocked(key) {
+    setUsed(key) {
         try {
             const [variant] = this._proxy.GetSync(key);
-            return variant.deep_unpack()
-                          .used
-                          .deep_unpack();
+            const dict = new GLib.VariantDict(variant);
+            dict.insert_value('used', new GLib.Variant('b', true));
+            this._proxy.SetSync(key, dict.end());
+        } catch (error) {
+            logError(error);
+        }
+    }
+
+    isUnlocked(lock) {
+        try {
+            const [variant] = this._proxy.GetSync(lock);
+            return !variant.deep_unpack()
+                           .locked
+                           .deep_unpack();
         } catch (error) {
             return false;
         }
     }
 
-    setUnlocked(key) {
-        const variant = new GLib.Variant('a{sb}', {used: true});
-        this._proxy.SetSync(key, variant);
+    setUnlocked(lock) {
+        const variant = new GLib.Variant('a{sb}', {locked: false});
+        this._proxy.SetSync(lock, variant);
     }
 });

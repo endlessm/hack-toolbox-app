@@ -17,5 +17,8 @@ const Proxy = Gio.DBusProxy.makeProxyWrapper(BusIface);
 const proxy = new Proxy(Gio.DBus.session, BusName, BusPath);
 
 const key = 'item.key.master';
-const variant = new GLib.Variant('a{sb}', {used: false});
+const variant = new GLib.Variant('a{sb}', {
+    consume_after_use: false,
+    used: false,
+});
 proxy.SetSync(key, variant);

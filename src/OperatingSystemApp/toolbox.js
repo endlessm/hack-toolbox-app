@@ -18,8 +18,11 @@ var OSToolbox = GObject.registerClass(class OSToolbox extends Toolbox {
 
     bindWindow(win) {
         win.lockscreen.key = 'item.key.OperatingSystemApp.1';
+        win.lockscreen.lock = 'lock.OperatingSystemApp.1';
         this._controlPanel.wobblyLock.key = 'item.key.OperatingSystemApp.2';
+        this._controlPanel.wobblyLock.lock = 'lock.OperatingSystemApp.2';
         this._controlPanel.codeLock.key = 'item.key.OperatingSystemApp.3';
+        this._controlPanel.codeLock.lock = 'lock.OperatingSystemApp.3';
         win.get_style_context().add_class('OperatingSystemApp');
     }
 });

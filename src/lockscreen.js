@@ -12,6 +12,8 @@ var Lockscreen = GObject.registerClass({
             true),
         key: GObject.ParamSpec.string('key', 'Key', '',
             GObject.ParamFlags.READWRITE, ''),
+        lock: GObject.ParamSpec.string('lock', 'lock', '',
+            GObject.ParamFlags.READWRITE, ''),
     },
     Signals: {
         'overlay-clicked': {},
@@ -33,7 +35,8 @@ var Lockscreen = GObject.registerClass({
         });
 
         this._manager = Gio.Application.get_default().locksManager;
-        this._managerChangedId = 0;
+        this._keyChangedId = 0;
+        this._lockChangedId = 0;
         this.connect('overlay-clicked', this._onClicked.bind(this));
     }
 
@@ -56,24 +59,42 @@ var Lockscreen = GObject.registerClass({
     set key(key) {
         if ('_key' in this && this._key === key)
             return;
-        if (this._managerChangedId !== 0)
-            this._manager.disconnect(this._managerChangedId);
-        this._managerChangedId = this._manager.connect(
-            `changed::${key}`, this._onChanged.bind(this));
+        if (this._keyChangedId !== 0)
+            this._manager.disconnect(this._keyChangedId);
+        this._keyChangedId = this._manager.connect(
+            `changed::${key}`, this._updateLockStateWithKey.bind(this));
         this._key = key;
-        this._updateLockState();
+        this._updateLockStateWithKey();
     }
 
-    _onChanged() {
-        this._updateLockState();
-
-        /* TODO check for key and display can-be-opened graphics */
+    get lock() {
+        return this._lock;
     }
 
-    _updateLockState() {
+    set lock(lock) {
+        if ('_lock' in this && this._lock === lock)
+            return;
+        if (this._lockChangedId !== 0)
+            this._manager.disconnect(this._lockChangedId);
+        this._lockChangedId = this._manager.connect(
+            `changed::${lock}`, this._updateLockStateWithLock.bind(this));
+        this._lock = lock;
+        this._updateLockStateWithLock();
+    }
+
+    _updateLockStateWithKey() {
         if (!this._key)
             return;
-        if (!this._manager.isUnlocked(this._key))
+        if (this._manager.hasKey(this._key)) {
+
+            /* TODO update the lock-screen graphics with can-be-opened image */
+        }
+    }
+
+    _updateLockStateWithLock() {
+        if (!this._lock)
+            return;
+        if (!this._manager.isUnlocked(this._lock))
             return;
         this.locked = false;
     }
@@ -83,11 +104,12 @@ var Lockscreen = GObject.registerClass({
             this.locked = false;
             return;
         }
-        if (!this._key)
+        if (!this._key || !this._lock)
             return;
         if (!this._manager.hasKey(this._key))
             return;
-        this._manager.setUnlocked(this._key);
+        this._manager.setUnlocked(this._lock);
+        this._manager.setUsed(this._key);
     }
 
     _updateUI() {

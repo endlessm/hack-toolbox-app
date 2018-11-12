@@ -144,4 +144,12 @@ var Defaults = class Defaults {
             return KEYS[this._appId];
         return KEYS_DEFAULT;
     }
+
+    get locks() {
+        return [
+            `lock.${this._appId}.1`,
+            `lock.${this._appId}.2`,
+            `lock.${this._appId}.3`,
+        ];
+    }
 };
