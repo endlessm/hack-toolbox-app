@@ -264,7 +264,7 @@ var FizzicsLevel2 = GObject.registerClass({
         const props = this._getPropsForIndex(index);
         Object.keys(props).forEach(prop => {
             const value = this._getValueForScope(prop, props[prop]);
-            code += `species[${index}].${prop} = ${value}\n`;
+            code += `species[${index}].${prop} = ${value};\n`;
         });
         return code;
     }
@@ -280,7 +280,7 @@ var FizzicsLevel2 = GObject.registerClass({
         const props = this._getPropsForGlobals();
         Object.keys(props).forEach(prop => {
             const value = this._getValueForScope(prop, props[prop]);
-            code += `${prop} = ${value}\n`;
+            code += `${prop} = ${value};\n`;
         });
         code += `
 ////////////////////////////
