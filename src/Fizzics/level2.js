@@ -49,7 +49,7 @@ var FizzicsLevel2 = GObject.registerClass({
         return {
             background: 'backgroundImageIndex',
             showDragTool: 'moveToolActive',
-            showShootTool: 'flingToolActive',
+            showFlingTool: 'flingToolActive',
             showAddTool: 'createToolActive',
             showDeleteTool: 'deleteToolActive',
         };

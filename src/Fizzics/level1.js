@@ -15,7 +15,7 @@ var FizzicsLevel1 = GObject.registerClass({
     InternalChildren: [
         'buttonBackground',
         'buttonDrag',
-        'buttonShoot',
+        'buttonFling',
         'buttonAdd',
         'buttonDelete',
         'tab0',
@@ -82,7 +82,7 @@ var FizzicsLevel1 = GObject.registerClass({
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
         model.bind_property('backgroundImageIndex', this._menuBackground, 'index', flags);
         model.bind_property('moveToolActive', this._buttonDrag, 'active', flags);
-        model.bind_property('flingToolActive', this._buttonShoot, 'active', flags);
+        model.bind_property('flingToolActive', this._buttonFling, 'active', flags);
         model.bind_property('createToolActive', this._buttonAdd, 'active', flags);
         model.bind_property('deleteToolActive', this._buttonDelete, 'active', flags);
         model.bind_property('imageIndex-0', this._image0, 'index', flags);

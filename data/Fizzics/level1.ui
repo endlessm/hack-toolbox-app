@@ -365,7 +365,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkCheckButton" id="buttonShoot">
+                      <object class="GtkCheckButton" id="buttonFling">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -374,7 +374,7 @@
                           <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Shoot</property>
+                            <property name="label" translatable="yes">Fling</property>
                           </object>
                         </child>
                       </object>
