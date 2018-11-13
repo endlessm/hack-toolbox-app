@@ -103,6 +103,7 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="margin_top">5</property>
                     <property name="label" translatable="yes">Cipher</property>
                     <property name="xalign">0</property>
                   </object>
@@ -189,6 +190,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="valign">start</property>
+                    <property name="margin_top">5</property>
                     <property name="label" translatable="yes">Hover</property>
                     <property name="xalign">0</property>
                   </object>
@@ -233,6 +235,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="valign">start</property>
+                    <property name="margin_top">5</property>
                     <property name="label" translatable="yes">Click</property>
                     <property name="xalign">0</property>
                   </object>
