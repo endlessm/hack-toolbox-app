@@ -58,7 +58,7 @@ var FizzicsLevel2 = GObject.registerClass({
     _getPropsForIndex(index) {
         void this;
         return {
-            size: `radius_${index}`,
+            radius: `radius_${index}`,
             gravity: `gravity_${index}`,
             bounce: `collision_${index}`,
             drag: `friction_${index}`,

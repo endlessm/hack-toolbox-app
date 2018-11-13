@@ -9,7 +9,7 @@ var FizzicsObjectEditor = GObject.registerClass({
     GTypeName: 'FizzicsObjectEditor',
     Template: 'resource:///com/endlessm/HackToolbox/Fizzics/objectEditor.ui',
     InternalChildren: [
-        'adjustmentSize',
+        'adjustmentRadius',
         'adjustmentGravity',
         'adjustmentBounce',
         'adjustmentDrag',
@@ -66,7 +66,7 @@ var FizzicsObjectEditor = GObject.registerClass({
     bindModel(model, map) {
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
         const flagsInvert = flags | GObject.BindingFlags.INVERT_BOOLEAN;
-        model.bind_property(map['radius'], this._adjustmentSize, 'value', flags);
+        model.bind_property(map['radius'], this._adjustmentRadius, 'value', flags);
         model.bind_property(map['gravity'], this._adjustmentGravity, 'value', flags);
         model.bind_property(map['collision'], this._adjustmentBounce, 'value', flags);
         model.bind_property(map['friction'], this._adjustmentDrag, 'value', flags);
