@@ -9,16 +9,16 @@ var FizzicsObjectEditor = GObject.registerClass({
     GTypeName: 'FizzicsObjectEditor',
     Template: 'resource:///com/endlessm/HackToolbox/Fizzics/objectEditor.ui',
     InternalChildren: [
-        'adjustmentSize',
+        'adjustmentRadius',
         'adjustmentGravity',
         'adjustmentBounce',
-        'adjustmentDrag',
+        'adjustmentFriction',
         'adjustmentSocial0',
         'adjustmentSocial1',
         'adjustmentSocial2',
         'adjustmentSocial3',
         'adjustmentSocial4',
-        'buttonLock',
+        'buttonFrozen',
         'buttonSkin',
         'comboBadSFX',
         'comboBadVFX',
@@ -66,11 +66,11 @@ var FizzicsObjectEditor = GObject.registerClass({
     bindModel(model, map) {
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
         const flagsInvert = flags | GObject.BindingFlags.INVERT_BOOLEAN;
-        model.bind_property(map['radius'], this._adjustmentSize, 'value', flags);
+        model.bind_property(map['radius'], this._adjustmentRadius, 'value', flags);
         model.bind_property(map['gravity'], this._adjustmentGravity, 'value', flags);
         model.bind_property(map['collision'], this._adjustmentBounce, 'value', flags);
-        model.bind_property(map['friction'], this._adjustmentDrag, 'value', flags);
-        model.bind_property(map['physics'], this._buttonLock, 'active', flagsInvert);
+        model.bind_property(map['friction'], this._adjustmentFriction, 'value', flags);
+        model.bind_property(map['physics'], this._buttonFrozen, 'active', flagsInvert);
         model.bind_property(map['social0'], this._adjustmentSocial0, 'value', flags);
         model.bind_property(map['social1'], this._adjustmentSocial1, 'value', flags);
         model.bind_property(map['social2'], this._adjustmentSocial2, 'value', flags);

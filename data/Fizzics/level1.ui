@@ -317,18 +317,16 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
-            <property name="heading">Controls</property>
+            <property name="heading">Tools</property>
             <child>
               <object class="GtkGrid">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
                 <property name="valign">center</property>
-                <property name="margin_start">12</property>
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <property name="row_spacing">24</property>
-                <property name="column_spacing">24</property>
+                <property name="border_width">12</property>
+                <property name="row_spacing">12</property>
+                <property name="column_spacing">12</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
@@ -342,15 +340,23 @@
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
                         <child>
-                          <object class="GtkLabel">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Drag</property>
-                          </object>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_start">5</property>
+                        <property name="label" translatable="yes">Drag</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
                         <property name="top_attach">0</property>
                       </packing>
                     </child>
@@ -365,21 +371,29 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkCheckButton" id="buttonShoot">
+                      <object class="GtkCheckButton" id="buttonFling">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
                         <child>
-                          <object class="GtkLabel">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Shoot</property>
-                          </object>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_start">5</property>
+                        <property name="label" translatable="yes">Fling</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
                         <property name="top_attach">0</property>
                       </packing>
                     </child>
@@ -400,15 +414,23 @@
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
                         <child>
-                          <object class="GtkLabel">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Add</property>
-                          </object>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_start">5</property>
+                        <property name="label" translatable="yes">Add</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
                         <property name="top_attach">0</property>
                       </packing>
                     </child>
@@ -429,15 +451,23 @@
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
                         <child>
-                          <object class="GtkLabel">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Delete</property>
-                          </object>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_start">5</property>
+                        <property name="label" translatable="yes">Delete</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
                         <property name="top_attach">0</property>
                       </packing>
                     </child>
