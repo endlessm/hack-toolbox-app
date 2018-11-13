@@ -62,7 +62,7 @@ var FizzicsLevel2 = GObject.registerClass({
             gravity: `gravity_${index}`,
             bounce: `collision_${index}`,
             friction: `friction_${index}`,
-            lock: `usePhysics_${index}`,
+            frozen: `usePhysics_${index}`,
             attraction0: `socialForce_${index}_0`,
             attraction1: `socialForce_${index}_1`,
             attraction2: `socialForce_${index}_2`,
@@ -89,7 +89,7 @@ var FizzicsLevel2 = GObject.registerClass({
             return `"${VFX_GOOD[this._model[modelProp]]}"`;
         if (scopeProp === 'sfxGood')
             return `"${SFX_GOOD[this._model[modelProp]]}"`;
-        if (scopeProp === 'lock')
+        if (scopeProp === 'frozen')
             return !this._model[modelProp];
         return this._model[modelProp];
     }
@@ -108,7 +108,7 @@ var FizzicsLevel2 = GObject.registerClass({
             return VFX_GOOD.indexOf(scope[scopeProp]);
         if (scopeProp === 'sfxGood')
             return SFX_GOOD.indexOf(scope[scopeProp]);
-        if (scopeProp === 'lock')
+        if (scopeProp === 'frozen')
             return !scope[scopeProp];
         return scope[scopeProp];
     }
