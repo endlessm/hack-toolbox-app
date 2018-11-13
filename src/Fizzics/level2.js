@@ -61,7 +61,7 @@ var FizzicsLevel2 = GObject.registerClass({
             radius: `radius_${index}`,
             gravity: `gravity_${index}`,
             bounce: `collision_${index}`,
-            drag: `friction_${index}`,
+            friction: `friction_${index}`,
             lock: `usePhysics_${index}`,
             attraction0: `socialForce_${index}_0`,
             attraction1: `socialForce_${index}_1`,

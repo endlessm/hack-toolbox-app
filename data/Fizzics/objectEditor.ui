@@ -8,7 +8,7 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="adjustmentDrag">
+  <object class="GtkAdjustment" id="adjustmentFriction">
     <property name="upper">18</property>
     <property name="value">9</property>
     <property name="step_increment">1</property>
@@ -262,7 +262,7 @@
           <object class="GtkSpinButton">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="adjustment">adjustmentDrag</property>
+            <property name="adjustment">adjustmentFriction</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -273,7 +273,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Drag</property>
+            <property name="label" translatable="yes">Friction</property>
           </object>
           <packing>
             <property name="left_attach">0</property>

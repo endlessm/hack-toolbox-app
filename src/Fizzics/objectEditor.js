@@ -12,7 +12,7 @@ var FizzicsObjectEditor = GObject.registerClass({
         'adjustmentRadius',
         'adjustmentGravity',
         'adjustmentBounce',
-        'adjustmentDrag',
+        'adjustmentFriction',
         'adjustmentSocial0',
         'adjustmentSocial1',
         'adjustmentSocial2',
@@ -69,7 +69,7 @@ var FizzicsObjectEditor = GObject.registerClass({
         model.bind_property(map['radius'], this._adjustmentRadius, 'value', flags);
         model.bind_property(map['gravity'], this._adjustmentGravity, 'value', flags);
         model.bind_property(map['collision'], this._adjustmentBounce, 'value', flags);
-        model.bind_property(map['friction'], this._adjustmentDrag, 'value', flags);
+        model.bind_property(map['friction'], this._adjustmentFriction, 'value', flags);
         model.bind_property(map['physics'], this._buttonLock, 'active', flagsInvert);
         model.bind_property(map['social0'], this._adjustmentSocial0, 'value', flags);
         model.bind_property(map['social1'], this._adjustmentSocial1, 'value', flags);
