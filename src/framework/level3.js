@@ -243,7 +243,7 @@ card_layout = '${this._model.card_layout}';
 image_filter = '${this._model.image_filter}';
 sounds_cursor_hover = '${this._model.sounds_cursor_hover}';
 sounds_cursor_click = '${this._model.sounds_cursor_click}';
-hyperlinks = ${this._model.hyperlinks ? 'yes' : 'no'};
+hyperlinks = ${this._model.hyperlinks ? 'true' : 'false'};
 `;
     }
 
