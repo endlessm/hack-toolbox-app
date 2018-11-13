@@ -138,6 +138,12 @@ notebook stack {
     background-color: transparent;
 }
 
+/* Checkboxes */
+checkbutton {
+   padding: 9px;
+   background-color: rgba(6, 20, 39, 0.50);
+}
+
 .codeview {
     font-family: monospace;
 }
