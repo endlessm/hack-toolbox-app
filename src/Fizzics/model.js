@@ -76,12 +76,6 @@ function _addPropsForIndex(props, index) {
             _propFlags, -30.0, 30.0, 0.0);
     });
 
-    _indexes.forEach(subIndex => {
-        props[`touchDeath-${index}-${subIndex}`] = GObject.ParamSpec.boolean(
-            `touchDeath-${index}-${subIndex}`, `touchDeath-${index}-${subIndex}`, '',
-            _propFlags, false);
-    });
-
     props[`deathVisualBad-${index}`] = GObject.ParamSpec.uint(
         `deathVisualBad-${index}`, `deathVisualBad-${index}`, '',
         _propFlags, 0, 3, 0);
