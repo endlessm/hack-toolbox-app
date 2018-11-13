@@ -68,6 +68,10 @@ var ToolboxWindow = GObject.registerClass({
         });
     }
 
+    get frame() {
+        return this._toolbox_frame;
+    }
+
     get lockscreen() {
         return this._lockscreen;
     }

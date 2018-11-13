@@ -1,6 +1,6 @@
 /* exported HUToolbox */
 
-const {GObject} = imports.gi;
+const {GObject, Gtk} = imports.gi;
 const Gettext = imports.gettext;
 
 const {Toolbox} = imports.toolbox;
@@ -11,7 +11,7 @@ const _ = Gettext.gettext;
 
 var HUToolbox = GObject.registerClass(class HUToolbox extends Toolbox {
     _init(props = {}) {
-        props.title = _('Hack Modules');
+        props.title = _('Controls');
         super._init(props);
         this._model = new HUModelGlobal();
         this._controlPanel = new HUControlPanel({visible: true});
@@ -25,6 +25,12 @@ var HUToolbox = GObject.registerClass(class HUToolbox extends Toolbox {
     }
 
     bindWindow(win) {
+        Object.assign(win.frame, {
+            halign: Gtk.Align.CENTER,
+            valign: Gtk.Align.END,
+            margin: 0,
+        });
+
         win.get_style_context().add_class('HackUnlock');
         win.lockscreen.locked = false;
         void this;
