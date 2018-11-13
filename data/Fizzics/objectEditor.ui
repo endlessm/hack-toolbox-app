@@ -176,6 +176,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_top">5</property>
             <property name="label" translatable="yes">Radius</property>
           </object>
           <packing>
@@ -209,6 +210,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_top">5</property>
             <property name="label" translatable="yes">Bounce</property>
           </object>
           <packing>
@@ -241,6 +243,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_top">5</property>
             <property name="label" translatable="yes">Gravity</property>
           </object>
           <packing>
@@ -273,6 +276,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_top">5</property>
             <property name="label" translatable="yes">Friction</property>
           </object>
           <packing>
@@ -296,6 +300,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">end</property>
+            <property name="margin_top">5</property>
             <property name="label" translatable="yes">Frozen</property>
           </object>
           <packing>
