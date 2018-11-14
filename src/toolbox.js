@@ -24,14 +24,17 @@ var Toolbox = GObject.registerClass({
         props.orientation = Gtk.Orientation.VERTICAL;
         super._init(props);
 
-        const image = new Gtk.Image({iconName: 'view-refresh-symbolic'});
-        const buttonReset = new Gtk.Button({
-            alwaysShowImage: true,
-            image,
-            label: _('Reset All'),
+        const image = new Gtk.Image({
+            iconName: 'reset-button-symbolic',
+            pixelSize: 32,
         });
+        const buttonReset = new Gtk.Button();
+        buttonReset.get_style_context().add_class('reset');
+        buttonReset.add(image);
+
         this._minimizeImage = new Gtk.Image({iconName: 'go-down-symbolic'});
         const buttonMinimize = new Gtk.Button();
+        buttonMinimize.get_style_context().add_class('minimize');
         buttonMinimize.add(this._minimizeImage);
 
         this._leftStack = new Gtk.Stack({

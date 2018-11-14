@@ -65,6 +65,7 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         _loadStyleSheet('/com/endlessm/HackToolbox/application.css');
 
         const iconTheme = Gtk.IconTheme.get_default();
+        iconTheme.add_resource_path('/com/endlessm/HackToolbox/icons');
         iconTheme.add_resource_path('/com/endlessm/HackToolbox/framework/icons');
 
         this._locksManager = new LocksManager();
