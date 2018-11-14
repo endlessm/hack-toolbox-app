@@ -162,6 +162,8 @@ var Codeview = GObject.registerClass({
         this._view.connect_after('copy-clipboard', () => _actionSound('copy'));
         this._view.connect_after('paste-clipboard', () => _actionSound('paste'));
         this._view.connect('move-cursor', this.constructor._onMoveCursor);
+        this._view.connect('focus-in-event', this._onFocusIn.bind(this));
+        this._view.connect('focus-out-event', this._onFocusOut.bind(this));
 
         this._compileTimeout = null;
         this._numErrors = 0;
@@ -266,6 +268,31 @@ var Codeview = GObject.registerClass({
             else if (count === -1)
                 SoundServer.getDefault().play('codeview/keypress/up');
         }
+    }
+
+    _onFocusIn() {
+        this._ambientMusicID = 'pending';
+        SoundServer.getDefault().playAsync('codeview/ambient/hacking')
+        .then(uuid => {
+            if (this._ambientMusicID === 'cancel') {
+                SoundServer.getDefault().stop(uuid);
+                this._ambientMusicID = null;
+                return;
+            }
+
+            this._ambientMusicID = uuid;
+        });
+        return Gdk.EVENT_PROPAGATE;
+    }
+
+    _onFocusOut() {
+        if (this._ambientMusicID === 'pending') {
+            this._ambientMusicID = 'cancel';
+        } else if (this._ambientMusicID) {
+            SoundServer.getDefault().stop(this._ambientMusicID);
+            this._ambientMusicID = null;
+        }
+        return Gdk.EVENT_PROPAGATE;
     }
 
     _getOurSourceMarks(iter) {
