@@ -1,6 +1,6 @@
 /* exported FizzicsToolbox */
 
-const {GObject} = imports.gi;
+const {Gio, GLib, GObject} = imports.gi;
 const Gettext = imports.gettext;
 
 const {Toolbox} = imports.toolbox;
@@ -20,7 +20,13 @@ var FizzicsToolbox = GObject.registerClass(class FizzicsToolbox extends Toolbox 
         this.show_all();
 
         this.connect('reset', () => {
-            this._model.reset();
+            Gio.DBus.session.call_sync(
+                'com.endlessm.Fizzics',
+                '/com/endlessm/Fizzics',
+                'org.gtk.Actions', 'Activate',
+                new GLib.Variant('(sava{sv})', ['reset', [], {}]),
+                null, Gio.DBusCallFlags.NONE, -1, null
+            );
         });
     }
 
