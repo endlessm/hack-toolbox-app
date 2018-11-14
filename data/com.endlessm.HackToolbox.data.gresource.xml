@@ -38,6 +38,8 @@
     <file compressed="true" preprocess="xml-stripblanks">Fizzics/level1.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">Fizzics/level2.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">Fizzics/objectEditor.ui</file>
+    <file preprocess="xml-stripblanks">Fizzics/icons/16x16/actions/eye-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">Fizzics/icons/16x16/actions/speaker-symbolic.svg</file>
     <file>Fizzics/backgrounds/0.png</file>
     <file>Fizzics/backgrounds/1.png</file>
     <file>Fizzics/backgrounds/2.png</file>

@@ -28,14 +28,14 @@ var Toolbox = GObject.registerClass({
             iconName: 'reset-button-symbolic',
             pixelSize: 32,
         });
-        const buttonReset = new Gtk.Button();
-        buttonReset.get_style_context().add_class('reset');
-        buttonReset.add(image);
+        this._buttonReset = new Gtk.Button();
+        this._buttonReset.get_style_context().add_class('reset');
+        this._buttonReset.add(image);
 
         this._minimizeImage = new Gtk.Image({iconName: 'go-down-symbolic'});
-        const buttonMinimize = new Gtk.Button();
-        buttonMinimize.get_style_context().add_class('minimize');
-        buttonMinimize.add(this._minimizeImage);
+        this._buttonMinimize = new Gtk.Button();
+        this._buttonMinimize.get_style_context().add_class('minimize');
+        this._buttonMinimize.add(this._minimizeImage);
 
         this._leftStack = new Gtk.Stack({
             transitionType: Gtk.StackTransitionType.CROSSFADE,
@@ -44,11 +44,11 @@ var Toolbox = GObject.registerClass({
         });
         this._spinner = new Gtk.Spinner({active: false, visible: true});
         this._leftStack.add_named(this._spinner, 'busy');
-        this._leftStack.add_named(buttonMinimize, 'normal');
+        this._leftStack.add_named(this._buttonMinimize, 'normal');
         this._leftStack.visibleChildName = 'normal';
 
         this._headerbar.pack_start(this._leftStack);
-        this._headerbar.pack_end(buttonReset);
+        this._headerbar.pack_end(this._buttonReset);
         this._headerbar.show_all();
         this._realAdd(this._headerbar);
 
@@ -58,13 +58,21 @@ var Toolbox = GObject.registerClass({
         });
         this._realAdd(this._revealer);
 
-        buttonReset.connect('clicked', this._onResetClicked.bind(this));
-        buttonMinimize.connect('clicked', this._onMinimize.bind(this));
+        this._buttonReset.connect('clicked', this._onResetClicked.bind(this));
+        this._buttonMinimize.connect('clicked', this._onMinimize.bind(this));
         this.setBusy(false);
     }
 
     get title() {
         return this._title;
+    }
+
+    get buttonReset() {
+        return this._buttonReset;
+    }
+
+    get buttonMinimize() {
+        return this._buttonMinimize;
     }
 
     set title(value) {
