@@ -55,6 +55,25 @@ toolbox revealer {
     font-family: 'Metropolis Medium';
 }
 
+.minimize {
+    background-image: none;
+    border: 0;
+    box-shadow: none;
+}
+
+.minimize:focus {
+    outline: none;
+}
+
+.reset {
+    background-color: rgba(20, 77, 146, 0.795);
+    background-image: none;
+    border-radius: 8px;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 6px;
+}
+
 .sourceview {
     background: transparent;
     font-family: Hack;
