@@ -18,10 +18,6 @@ var HUToolbox = GObject.registerClass(class HUToolbox extends Toolbox {
 
         this.buttonReset.visible = false;
         this.buttonMinimize.visible = false;
-
-        this.connect('reset', () => {
-            this._model.reset();
-        });
     }
 
     bindWindow(win) {
