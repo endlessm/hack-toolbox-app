@@ -5,10 +5,12 @@ const {Codeview} = imports.codeview;
 const {Lockscreen} = imports.lockscreen;
 const {OSCursorModel} = imports.OperatingSystemApp.oscursormodel;
 const {OSWobblyModel} = imports.OperatingSystemApp.oswobblymodel;
+const {Section} = imports.section;
 const {SpinInput} = imports.spinInput;
 
 GObject.type_ensure(Codeview.$gtype);
 GObject.type_ensure(Lockscreen.$gtype);
+GObject.type_ensure(Section.$gtype);
 GObject.type_ensure(SpinInput.$gtype);
 
 var OSControlPanel = GObject.registerClass({
@@ -30,7 +32,7 @@ var OSControlPanel = GObject.registerClass({
         'springAdjustment',
         'wobblyCheck',
     ],
-}, class OSControlPanel extends Gtk.Box {
+}, class OSControlPanel extends Gtk.Grid {
     _init(props = {}) {
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
 
