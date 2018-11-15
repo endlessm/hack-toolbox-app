@@ -254,7 +254,15 @@ var FizzicsLevel2 = GObject.registerClass({
 
     _generateCodeForOptions(options) {
         void this;
-        return options.join(', ');
+        let code = '';
+        options.forEach((option, index) => {
+            if (index % 4 === 0)
+                code += '\n// ';
+            code += `"${option}"`;
+            if (index !== options.length - 1)
+                code += ', ';
+        });
+        return code;
     }
 
     _generateCodeForIndex(index) {
@@ -275,7 +283,7 @@ var FizzicsLevel2 = GObject.registerClass({
 // Globals
 ////////////////////////////
 
-// background options: ${this._generateCodeForOptions(BACKGROUNDS)}\n
+// background options:${this._generateCodeForOptions(BACKGROUNDS)}\n
 `;
         const props = this._getPropsForGlobals();
         Object.keys(props).forEach(prop => {
@@ -287,11 +295,15 @@ var FizzicsLevel2 = GObject.registerClass({
 // Species
 ////////////////////////////
 
-// skin options: ${this._generateCodeForOptions(SKINS)}
-// vfxBad options: ${this._generateCodeForOptions(VFX_BAD)}
-// sfxBad options: ${this._generateCodeForOptions(SFX_BAD)}
-// vfxGood options: ${this._generateCodeForOptions(VFX_GOOD)}
-// sfxGood options: ${this._generateCodeForOptions(SFX_GOOD)}
+// skin options:${this._generateCodeForOptions(SKINS)}
+
+// vfxBad options:${this._generateCodeForOptions(VFX_BAD)}
+
+// sfxBad options:${this._generateCodeForOptions(SFX_BAD)}
+
+// vfxGood options:${this._generateCodeForOptions(VFX_GOOD)}
+
+// sfxGood options:${this._generateCodeForOptions(SFX_GOOD)}
 `;
 
         Array.from({length: SPECIES}).forEach((value, index) => {
