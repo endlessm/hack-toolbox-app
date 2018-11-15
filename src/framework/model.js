@@ -79,7 +79,9 @@ class RaModelBase extends GObject.Object {
     }
 
     set logo_color(value) {
-        if ('_logoColor' in this && this._logoColor === value)
+        if ('_logoColor' in this &&
+            this._logoColor !== null && value !== null &&
+            this._logoColor.equal(value))
             return;
         this._logoColor = value;
         this.notify('logo-color');
@@ -90,7 +92,9 @@ class RaModelBase extends GObject.Object {
     }
 
     set main_color(value) {
-        if ('_mainColor' in this && this._mainColor === value)
+        if ('_mainColor' in this &&
+            this._mainColor !== null && value !== null &&
+            this._mainColor.equal(value))
             return;
         this._mainColor = value;
         this.notify('main-color');
@@ -101,7 +105,9 @@ class RaModelBase extends GObject.Object {
     }
 
     set accent_color(value) {
-        if ('_accentColor' in this && this._accentColor === value)
+        if ('_accentColor' in this &&
+            this._accentColor !== null && value !== null &&
+            this._accentColor.equal(value))
             return;
         this._accentColor = value;
         this.notify('accent-color');
@@ -112,7 +118,9 @@ class RaModelBase extends GObject.Object {
     }
 
     set info_color(value) {
-        if ('_infoColor' in this && this._infoColor === value)
+        if ('_infoColor' in this &&
+            this._infoColor !== null && value !== null &&
+            this._infoColor.equal(value))
             return;
         this._infoColor = value;
         this.notify('info-color');
@@ -156,7 +164,9 @@ class RaModelBase extends GObject.Object {
     }
 
     set border_color(value) {
-        if ('_borderColor' in this && this._borderColor === value)
+        if ('_borderColor' in this &&
+            this._borderColor !== null && value !== null &&
+            this._borderColor.equal(value))
             return;
         this._borderColor = value;
         this.notify('border-color');
