@@ -271,6 +271,15 @@ var Codeview = GObject.registerClass({
     }
 
     _onFocusIn() {
+        if (this._ambientMusicID === 'pending')
+            return Gdk.EVENT_PROPAGATE;
+        if (this._ambientMusicID === 'cancel') {
+            // Focused in and out and back in quickly, before the first UUID was
+            // returned. In this case, un-cancel the original sound but don't
+            // request another one.
+            this._ambientMusicID = 'pending';
+            return Gdk.EVENT_PROPAGATE;
+        }
         this._ambientMusicID = 'pending';
         SoundServer.getDefault().playAsync('codeview/ambient/hacking')
         .then(uuid => {
