@@ -52,6 +52,16 @@ var getDefault = (function () {
                     });
                 });
             };
+            // Helpers
+            defaultGameStateProxy.getDictValueSync = function(key, property, defaultValue) {
+                try {
+                    const [variant] = this.GetSync(key);
+                    const dict = variant.deep_unpack();
+                    return dict[property].deep_unpack();
+                } catch (e) {
+                    return defaultValue;
+                }
+            };
         }
         return defaultGameStateProxy;
     };
