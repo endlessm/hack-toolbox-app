@@ -47,14 +47,7 @@ var LocksManager = GObject.registerClass({
     }
 
     isUnlocked(lock) {
-        try {
-            const [variant] = this._proxy.GetSync(lock);
-            return !variant.deep_unpack()
-                           .locked
-                           .deep_unpack();
-        } catch (error) {
-            return false;
-        }
+        return !this._proxy.getDictValueSync(lock, 'locked', true);
     }
 
     setUnlocked(lock) {
