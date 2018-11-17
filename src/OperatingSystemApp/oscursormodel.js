@@ -17,6 +17,10 @@ const cursorThemes = [
     'cursor-daemon',
 ];
 
+function double_equals(a, b) {
+    return Math.abs(a - b) < 1e-90;
+}
+
 var OSCursorModel = GObject.registerClass({
     Properties: {
         theme: GObject.ParamSpec.string(
@@ -37,25 +41,45 @@ var OSCursorModel = GObject.registerClass({
 
         var ifaceSettings = new Gio.Settings({
             schemaId: 'org.gnome.desktop.interface',
-            path: '/org/gnome/desktop/interface/',
         });
 
-        var touchpadSettings = new Gio.Settings({
+        this._touchpadSettings = new Gio.Settings({
             schemaId: 'org.gnome.desktop.peripherals.touchpad',
-            path: '/org/gnome/desktop/peripherals/touchpad/',
         });
 
-        var mouseSettings = new Gio.Settings({
+        this._mouseSettings = new Gio.Settings({
             schemaId: 'org.gnome.desktop.peripherals.mouse',
-            path: '/org/gnome/desktop/peripherals/mouse/',
         });
 
         this._copiedCursors = [];
 
         this.bindSetting(ifaceSettings, 'cursor-size', 'size');
         this.bindSetting(ifaceSettings, 'cursor-theme', 'theme');
-        this.bindSetting(touchpadSettings, 'speed', 'speed');
-        this.bindSetting(mouseSettings, 'speed', 'speed');
+
+        /* Manually update touchpad and mouse speed when speed changes */
+        this.connect('notify::speed', () => {
+            if (!double_equals(this.speed, this._touchpadSettings.get_double('speed')))
+                this._touchpadSettings.set_double('speed', this.speed);
+
+            if (!double_equals(this.speed, this._mouseSettings.get_double('speed')))
+                this._mouseSettings.set_double('speed', this.speed);
+        });
+
+        /* Listen to touchpad and mouse speed changes */
+        this._touchpadSettings.connect('changed', this._on_speed_changed.bind(this));
+        this._mouseSettings.connect('changed', this._on_speed_changed.bind(this));
+
+        /* Initialize speed from touchpad */
+        this.set_property('speed', this._touchpadSettings.get_double('speed'));
+    }
+
+    _on_speed_changed(settings, prop) {
+        var speed = settings.get_double('speed');
+
+        if (prop !== 'speed' || double_equals(speed, this.speed))
+            return;
+
+        this.set_property('speed', speed);
     }
 
     reset() {
@@ -65,6 +89,8 @@ var OSCursorModel = GObject.registerClass({
          * up to 256px
          */
         this.theme = 'cursor-default';
+
+        this._touchpadSettings.reset('speed');
     }
 
     get theme () {
