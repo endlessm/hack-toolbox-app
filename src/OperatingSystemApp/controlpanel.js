@@ -49,7 +49,6 @@ var OSControlPanel = GObject.registerClass({
         /* Bind model properties with UI elements */
         this._cursor.bind_property('theme', this._cursorImage, 'icon_name', flags);
         this._cursor.bind_property('size', this._cursorSizeAdjustment, 'value', flags);
-        this._cursor.bind_property('size', this._cursorImage, 'pixel-size', flags);
         this._cursor.bind_property('speed', this._cursorSpeedAdjustment, 'value', flags);
 
         this._wobbly.bind_property('wobblyEffect', this._wobblyCheck, 'active', flags);
