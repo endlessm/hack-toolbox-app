@@ -49,7 +49,6 @@ var OSControlPanel = GObject.registerClass({
         /* Bind model properties with UI elements */
         this._cursor.bind_property('theme', this._cursorImage, 'icon_name', flags);
         this._cursor.bind_property('size', this._cursorSizeAdjustment, 'value', flags);
-        this._cursor.bind_property('size', this._cursorImage, 'pixel-size', flags);
         this._cursor.bind_property('speed', this._cursorSpeedAdjustment, 'value', flags);
 
         this._wobbly.bind_property('wobblyEffect', this._wobblyCheck, 'active', flags);
@@ -61,6 +60,9 @@ var OSControlPanel = GObject.registerClass({
             'value', flags);
         this._wobbly.bind_property('wobblySpringK', this._springAdjustment,
             'value', flags);
+
+        this._previous_size = this._cursorSizeAdjustment.value;
+        this._cursorSizeAdjustment.connect('value-changed', this._snapSizeToOption.bind(this));
 
         /* Connect to cursor radio buttons toggled signals */
         this._cursorRadiobutton.get_group().forEach(button => {
@@ -90,5 +92,26 @@ var OSControlPanel = GObject.registerClass({
             }
         }
     }
-});
 
+    _snapSizeToOption() {
+        let size = this._cursorSizeAdjustment.value;
+        if (size === this._previous_size)
+            return;
+
+        const options = [16, 24, 32, 48, 64, 96, 128, 192, 256];
+        const increasing = size - this._previous_size > 0;
+
+        if (!increasing)
+            options.reverse();
+
+        for (const index in options) {
+            if (increasing && size <= options[index] || !increasing && size >= options[index]) {
+                size = options[index];
+                this._previous_size = size;
+                break;
+            }
+        }
+
+        this._cursorSizeAdjustment.value = size;
+    }
+});
