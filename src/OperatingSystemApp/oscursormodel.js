@@ -1,11 +1,11 @@
-/* exported OSCursorModel */
+/* exported OSCursorModel, VALID_CURSORS */
 
 const {Gio, GLib, GObject} = imports.gi;
 const {OSModel} = imports.OperatingSystemApp.osmodel;
 
 const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 
-const cursorThemes = [
+var VALID_CURSORS = [
     'cursor-default',
     'cursor-cheese',
     'cursor-ice-cream',
@@ -101,7 +101,7 @@ var OSCursorModel = GObject.registerClass({
         if (!cursor_theme || this._theme === cursor_theme)
             return;
 
-        this._theme = cursorThemes.indexOf(cursor_theme) < 0 ? 'cursor-default' : cursor_theme;
+        this._theme = VALID_CURSORS.indexOf(cursor_theme) < 0 ? 'cursor-default' : cursor_theme;
 
         /* Do not copy the cursor if it was alredy copied once */
         if (this._copiedCursors.indexOf(this._theme) >= 0) {

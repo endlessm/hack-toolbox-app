@@ -104,6 +104,8 @@ var PopupMenu = GObject.registerClass({
         const selectChild = this._choices.get_children().find(child =>
             child.get_child()._enumValue === this.value);
         this._choices.select_child(selectChild);
+        // Must also be focused to improve usability and visual consistency
+        selectChild.grab_focus();
     }
 
     _onChoicesActivated(widget, child) {

@@ -3,10 +3,12 @@
 const {GObject, Gtk} = imports.gi;
 const {Codeview} = imports.codeview;
 const {Lockscreen} = imports.lockscreen;
-const {OSCursorModel} = imports.OperatingSystemApp.oscursormodel;
+const {CursorImage, cursorIDToResource} = imports.OperatingSystemApp.cursorImage;
+const {OSCursorModel, VALID_CURSORS} = imports.OperatingSystemApp.oscursormodel;
 const {OSWobblyModel} = imports.OperatingSystemApp.oswobblymodel;
 const {Section} = imports.section;
 const {SpinInput} = imports.spinInput;
+const {PopupMenu} = imports.popupMenu;
 
 GObject.type_ensure(Codeview.$gtype);
 GObject.type_ensure(Lockscreen.$gtype);
@@ -22,8 +24,7 @@ var OSControlPanel = GObject.registerClass({
     ],
     InternalChildren: [
         'codeview',
-        'cursorRadiobutton',
-        'cursorImage',
+        'cursorButton',
         'cursorSizeAdjustment',
         'cursorSpeedAdjustment',
         'frictionAdjustment',
@@ -46,8 +47,15 @@ var OSControlPanel = GObject.registerClass({
         this._cursor = new OSCursorModel();
         this._wobbly = new OSWobblyModel();
 
+        const cursorChoices = {};
+        VALID_CURSORS.forEach(cursor => {
+            cursorChoices[cursor] = cursorIDToResource(cursor);
+        });
+        this._cursorGroup = new PopupMenu(this._cursorButton, cursorChoices,
+            CursorImage, 'resource', {});
+
         /* Bind model properties with UI elements */
-        this._cursor.bind_property('theme', this._cursorImage, 'icon_name', flags);
+        this._cursor.bind_property('theme', this._cursorGroup, 'value', flags);
         this._cursor.bind_property('size', this._cursorSizeAdjustment, 'value', flags);
         this._cursor.bind_property('speed', this._cursorSpeedAdjustment, 'value', flags);
 
@@ -63,34 +71,11 @@ var OSControlPanel = GObject.registerClass({
 
         this._previous_size = this._cursorSizeAdjustment.value;
         this._cursorSizeAdjustment.connect('value-changed', this._snapSizeToOption.bind(this));
-
-        /* Connect to cursor radio buttons toggled signals */
-        this._cursorRadiobutton.get_group().forEach(button => {
-            button.connect('toggled', () => {
-                if (!button.active)
-                    return;
-
-                this._cursor.theme = button.get_child().icon_name;
-            });
-        });
-
-        this._cursor.connect('notify::theme', this._refreshRadioGroup.bind(this));
     }
 
     reset () {
         this._cursor.reset();
         this._wobbly.reset();
-    }
-
-    _refreshRadioGroup() {
-        var group = this._cursorRadiobutton.get_group();
-
-        for (var button of group) {
-            if (button.get_child().icon_name === this._cursor.theme) {
-                button.set_active(true);
-                break;
-            }
-        }
     }
 
     _snapSizeToOption() {
