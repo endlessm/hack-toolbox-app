@@ -173,7 +173,7 @@ popover.error {
 }
 
 .framework.toolbox-surrounding-window {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-image: url('resource:///com/endlessm/HackToolbox/framework/toolbox-background.png');
 }
 
 .OperatingSystemApp.toolbox-surrounding-window,
