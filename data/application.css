@@ -74,6 +74,10 @@ toolbox revealer {
     padding: 6px;
 }
 
+.reset:hover {
+   background-color: rgba(29, 112, 213, 0.795);
+}
+
 .sourceview {
     background: transparent;
     font-family: Hack;
