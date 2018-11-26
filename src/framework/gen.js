@@ -494,7 +494,7 @@ $body-font: ${model.font};
 ${commonRules}
 `;
     default:
-        return '!import "default"';
+        return '@import "default";';
     }
 }
 

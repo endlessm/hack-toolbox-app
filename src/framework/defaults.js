@@ -61,10 +61,11 @@ const COMMON_DEFAULTS = {
 
 const AVAILABLE_FONTS = {
     'com.endlessm.dinosaurs.en': ['Fira Sans', 'HammersmithOne', 'Lato',
-        'Marcellus SC', 'Pathway Gothic One', 'Podkova', 'Raleway', 'Skranji'],
+        'Libre Baskerville', 'Marcellus SC', 'Pathway Gothic One',
+        'Patrick Hand SC', 'Podkova', 'Raleway', 'Skranji'],
     'com.endlessm.Hackdex_chapter_one': ['Fira Sans', 'Hack', 'HammersmithOne',
-        'Lato', 'Marcellus SC', 'Pathway Gothic One', 'Orator', 'Podkova',
-        'Raleway', 'Skranji'],
+        'Lato', 'Libre Baskerville', 'Marcellus SC', 'Pathway Gothic One',
+        'Orator', 'Podkova', 'Raleway', 'Skranji'],
 };
 
 function _valueToCode(value) {
