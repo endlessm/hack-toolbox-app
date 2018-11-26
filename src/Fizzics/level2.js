@@ -113,6 +113,23 @@ var FizzicsLevel2 = GObject.registerClass({
         return scope[scopeProp];
     }
 
+    _getOptionsForScopeValue(scope, scopeProp) {
+        void this;
+        if (scopeProp === 'background')
+            return BACKGROUNDS;
+        if (scopeProp === 'skin')
+            return SKINS;
+        if (scopeProp === 'vfxBad')
+            return VFX_BAD;
+        if (scopeProp === 'sfxBad')
+            return SFX_BAD;
+        if (scopeProp === 'vfxGood')
+            return VFX_GOOD;
+        if (scopeProp === 'sfxGood')
+            return SFX_GOOD;
+        return null;
+    }
+
     _createScopeWithProps(props) {
         void this;
         const scope = {};
@@ -230,10 +247,18 @@ var FizzicsLevel2 = GObject.registerClass({
             const modelProp = props[prop];
             const value = this._getValueForScope(prop, modelProp);
             const type = typeof value;
+            const options = this._getOptionsForScopeValue(scope, prop);
+            const baseMessage = `Unknown value ${scope[prop]} for ${prop}`;
             if (typeof scope[prop] !== type) {
                 errors.push(this._errorRecordAtAssignmentLocation(
                     prefix ? `${prefix}${prop}` : prop,
-                    `Unknown value ${scope[prop]} for ${prop}: value must be a ${type}`,
+                    `${baseMessage}: value must be a ${type}`,
+                    value
+                ));
+            } else if (options !== null && options.indexOf(scope[prop]) === -1) {
+                errors.push(this._errorRecordAtAssignmentLocation(
+                    prefix ? `${prefix}${prop}` : prop,
+                    `${baseMessage}: value must be one of ${options.join(', ')}`,
                     value
                 ));
             }
@@ -250,11 +275,6 @@ var FizzicsLevel2 = GObject.registerClass({
                 errors, scope.species[index], objProps, `species[${index}].`);
         });
         return errors;
-    }
-
-    _generateCodeForOptions(options) {
-        void this;
-        return options.join(', ');
     }
 
     _generateCodeForIndex(index) {
@@ -275,7 +295,6 @@ var FizzicsLevel2 = GObject.registerClass({
 // Globals
 ////////////////////////////
 
-// background options: ${this._generateCodeForOptions(BACKGROUNDS)}\n
 `;
         const props = this._getPropsForGlobals();
         Object.keys(props).forEach(prop => {
@@ -286,12 +305,6 @@ var FizzicsLevel2 = GObject.registerClass({
 ////////////////////////////
 // Species
 ////////////////////////////
-
-// skin options: ${this._generateCodeForOptions(SKINS)}
-// vfxBad options: ${this._generateCodeForOptions(VFX_BAD)}
-// sfxBad options: ${this._generateCodeForOptions(SFX_BAD)}
-// vfxGood options: ${this._generateCodeForOptions(VFX_GOOD)}
-// sfxGood options: ${this._generateCodeForOptions(SFX_GOOD)}
 `;
 
         Array.from({length: SPECIES}).forEach((value, index) => {
