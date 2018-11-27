@@ -4,8 +4,7 @@ const {GLib, GObject, Gtk} = imports.gi;
 
 const {Codeview} = imports.codeview;
 const SoundServer = imports.soundServer;
-const {SPECIES, BACKGROUNDS, SKINS, VFX_BAD,
-    VFX_GOOD, SFX_BAD, SFX_GOOD} = imports.Fizzics.model;
+const {SPECIES, BACKGROUNDS, SKINS, VFXS, SFXS} = imports.Fizzics.model;
 
 var FizzicsLevel2 = GObject.registerClass({
     GTypeName: 'FizzicsLevel2',
@@ -82,13 +81,13 @@ var FizzicsLevel2 = GObject.registerClass({
         if (scopeProp === 'skin')
             return `"${SKINS[this._model[modelProp]]}"`;
         if (scopeProp === 'vfxBad')
-            return `"${VFX_BAD[this._model[modelProp]]}"`;
+            return `"${VFXS[this._model[modelProp]]}"`;
         if (scopeProp === 'sfxBad')
-            return `"${SFX_BAD[this._model[modelProp]]}"`;
+            return `"${SFXS[this._model[modelProp]]}"`;
         if (scopeProp === 'vfxGood')
-            return `"${VFX_GOOD[this._model[modelProp]]}"`;
+            return `"${VFXS[this._model[modelProp]]}"`;
         if (scopeProp === 'sfxGood')
-            return `"${SFX_GOOD[this._model[modelProp]]}"`;
+            return `"${SFXS[this._model[modelProp]]}"`;
         if (scopeProp === 'frozen')
             return !this._model[modelProp];
         return this._model[modelProp];
@@ -101,16 +100,33 @@ var FizzicsLevel2 = GObject.registerClass({
         if (scopeProp === 'skin')
             return SKINS.indexOf(scope[scopeProp]);
         if (scopeProp === 'vfxBad')
-            return VFX_BAD.indexOf(scope[scopeProp]);
+            return VFXS.indexOf(scope[scopeProp]);
         if (scopeProp === 'sfxBad')
-            return SFX_BAD.indexOf(scope[scopeProp]);
+            return SFXS.indexOf(scope[scopeProp]);
         if (scopeProp === 'vfxGood')
-            return VFX_GOOD.indexOf(scope[scopeProp]);
+            return VFXS.indexOf(scope[scopeProp]);
         if (scopeProp === 'sfxGood')
-            return SFX_GOOD.indexOf(scope[scopeProp]);
+            return SFXS.indexOf(scope[scopeProp]);
         if (scopeProp === 'frozen')
             return !scope[scopeProp];
         return scope[scopeProp];
+    }
+
+    _getOptionsForScopeValue(scope, scopeProp) {
+        void this;
+        if (scopeProp === 'background')
+            return BACKGROUNDS;
+        if (scopeProp === 'skin')
+            return SKINS;
+        if (scopeProp === 'vfxBad')
+            return VFXS;
+        if (scopeProp === 'sfxBad')
+            return SFXS;
+        if (scopeProp === 'vfxGood')
+            return VFXS;
+        if (scopeProp === 'sfxGood')
+            return SFXS;
+        return null;
     }
 
     _createScopeWithProps(props) {
@@ -230,10 +246,18 @@ var FizzicsLevel2 = GObject.registerClass({
             const modelProp = props[prop];
             const value = this._getValueForScope(prop, modelProp);
             const type = typeof value;
+            const options = this._getOptionsForScopeValue(scope, prop);
+            const baseMessage = `Unknown value ${scope[prop]} for ${prop}`;
             if (typeof scope[prop] !== type) {
                 errors.push(this._errorRecordAtAssignmentLocation(
                     prefix ? `${prefix}${prop}` : prop,
-                    `Unknown value ${scope[prop]} for ${prop}: value must be a ${type}`,
+                    `${baseMessage}: value must be a ${type}`,
+                    value
+                ));
+            } else if (options !== null && options.indexOf(scope[prop]) === -1) {
+                errors.push(this._errorRecordAtAssignmentLocation(
+                    prefix ? `${prefix}${prop}` : prop,
+                    `${baseMessage}: value must be one of ${options.join(', ')}`,
                     value
                 ));
             }
@@ -250,11 +274,6 @@ var FizzicsLevel2 = GObject.registerClass({
                 errors, scope.species[index], objProps, `species[${index}].`);
         });
         return errors;
-    }
-
-    _generateCodeForOptions(options) {
-        void this;
-        return options.join(', ');
     }
 
     _generateCodeForIndex(index) {
@@ -275,7 +294,6 @@ var FizzicsLevel2 = GObject.registerClass({
 // Globals
 ////////////////////////////
 
-// background options: ${this._generateCodeForOptions(BACKGROUNDS)}\n
 `;
         const props = this._getPropsForGlobals();
         Object.keys(props).forEach(prop => {
@@ -286,12 +304,6 @@ var FizzicsLevel2 = GObject.registerClass({
 ////////////////////////////
 // Species
 ////////////////////////////
-
-// skin options: ${this._generateCodeForOptions(SKINS)}
-// vfxBad options: ${this._generateCodeForOptions(VFX_BAD)}
-// sfxBad options: ${this._generateCodeForOptions(SFX_BAD)}
-// vfxGood options: ${this._generateCodeForOptions(VFX_GOOD)}
-// sfxGood options: ${this._generateCodeForOptions(SFX_GOOD)}
 `;
 
         Array.from({length: SPECIES}).forEach((value, index) => {

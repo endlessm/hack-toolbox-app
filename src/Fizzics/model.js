@@ -1,5 +1,4 @@
-/* exported FizzicsModelGlobal, SPECIES, BACKGROUNDS,
-SKINS, VFX_BAD, VFX_GOOD, SFX_BAD, SFX_GOOD */
+/* exported FizzicsModelGlobal, SPECIES, BACKGROUNDS, SKINS, VFXS, SFXS */
 
 const {GObject} = imports.gi;
 const {ClippyWrapper} = imports.clippyWrapper;
@@ -20,26 +19,22 @@ var SKINS = [
     'cricket',
     'mole',
     'star',
+    'sphere',
+    'diamond',
 ];
-var VFX_BAD = [
-    'fireworks',
-    'splat',
+var VFXS = [
+    'confetti',
+    'explotion',
+    'level_down_red',
+    'level_down_dark',
+    'life_up',
+    'level_up_blue',
+    'level_up_dark',
     'vaporized',
-    'singularity',
+    'rainbow',
+    'skull',
 ];
-var VFX_GOOD = [
-    'fireworks',
-    'splat',
-    'vaporized',
-    'singularity',
-];
-var SFX_BAD = [
-    'pop',
-    'horn',
-    'drum',
-    'beam',
-];
-var SFX_GOOD = [
+var SFXS = [
     'pop',
     'horn',
     'drum',
@@ -68,7 +63,7 @@ function _addPropsForIndex(props, index) {
         _propFlags, true);
     props[`imageIndex-${index}`] = GObject.ParamSpec.uint(
         `imageIndex-${index}`, `imageIndex-${index}`, '',
-        _propFlags, 0, 8, index);
+        _propFlags, 0, SKINS.length - 1, index);
 
     _indexes.forEach(subIndex => {
         props[`socialForce-${index}-${subIndex}`] = GObject.ParamSpec.double(
@@ -78,17 +73,17 @@ function _addPropsForIndex(props, index) {
 
     props[`deathVisualBad-${index}`] = GObject.ParamSpec.uint(
         `deathVisualBad-${index}`, `deathVisualBad-${index}`, '',
-        _propFlags, 0, 3, 0);
+        _propFlags, 0, VFXS.length - 1, 0);
     props[`deathSoundBad-${index}`] = GObject.ParamSpec.uint(
         `deathSoundBad-${index}`, `deathSoundBad-${index}`, '',
-        _propFlags, 0, 3, 0);
+        _propFlags, 0, SFXS.length - 1, 0);
 
     props[`deathVisualGood-${index}`] = GObject.ParamSpec.uint(
         `deathVisualGood-${index}`, `deathVisualGood-${index}`, '',
-        _propFlags, 0, 3, 0);
+        _propFlags, 0, VFXS.length - 1, 0);
     props[`deathSoundGood-${index}`] = GObject.ParamSpec.uint(
         `deathSoundGood-${index}`, `deathSoundGood-${index}`, '',
-        _propFlags, 0, 3, 0);
+        _propFlags, 0, SFXS.length - 1, 0);
 }
 
 function _generateProperties() {
