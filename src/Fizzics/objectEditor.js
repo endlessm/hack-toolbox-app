@@ -3,7 +3,7 @@
 const {GObject, Gtk} = imports.gi;
 const {FizzicsSkinImage} = imports.Fizzics.skinImage;
 const {PopupMenu} = imports.popupMenu;
-const {SKINS, VFX_BAD, VFX_GOOD, SFX_BAD, SFX_GOOD} = imports.Fizzics.model;
+const {SKINS, VFXS, SFXS} = imports.Fizzics.model;
 
 var FizzicsObjectEditor = GObject.registerClass({
     GTypeName: 'FizzicsObjectEditor',
@@ -38,16 +38,16 @@ var FizzicsObjectEditor = GObject.registerClass({
         this._menuSkin = new PopupMenu(this._buttonSkin, indices, FizzicsSkinImage,
             'index', {});
 
-        SFX_BAD.forEach((value, index) => {
+        SFXS.forEach((value, index) => {
             this._comboBadSFX.append(`${index}`, value);
         });
-        VFX_BAD.forEach((value, index) => {
+        VFXS.forEach((value, index) => {
             this._comboBadVFX.append(`${index}`, value);
         });
-        SFX_GOOD.forEach((value, index) => {
+        SFXS.forEach((value, index) => {
             this._comboGoodSFX.append(`${index}`, value);
         });
-        VFX_GOOD.forEach((value, index) => {
+        VFXS.forEach((value, index) => {
             this._comboGoodVFX.append(`${index}`, value);
         });
 

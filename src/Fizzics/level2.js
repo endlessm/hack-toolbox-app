@@ -4,8 +4,7 @@ const {GLib, GObject, Gtk} = imports.gi;
 
 const {Codeview} = imports.codeview;
 const SoundServer = imports.soundServer;
-const {SPECIES, BACKGROUNDS, SKINS, VFX_BAD,
-    VFX_GOOD, SFX_BAD, SFX_GOOD} = imports.Fizzics.model;
+const {SPECIES, BACKGROUNDS, SKINS, VFXS, SFXS} = imports.Fizzics.model;
 
 var FizzicsLevel2 = GObject.registerClass({
     GTypeName: 'FizzicsLevel2',
@@ -82,13 +81,13 @@ var FizzicsLevel2 = GObject.registerClass({
         if (scopeProp === 'skin')
             return `"${SKINS[this._model[modelProp]]}"`;
         if (scopeProp === 'vfxBad')
-            return `"${VFX_BAD[this._model[modelProp]]}"`;
+            return `"${VFXS[this._model[modelProp]]}"`;
         if (scopeProp === 'sfxBad')
-            return `"${SFX_BAD[this._model[modelProp]]}"`;
+            return `"${SFXS[this._model[modelProp]]}"`;
         if (scopeProp === 'vfxGood')
-            return `"${VFX_GOOD[this._model[modelProp]]}"`;
+            return `"${VFXS[this._model[modelProp]]}"`;
         if (scopeProp === 'sfxGood')
-            return `"${SFX_GOOD[this._model[modelProp]]}"`;
+            return `"${SFXS[this._model[modelProp]]}"`;
         if (scopeProp === 'frozen')
             return !this._model[modelProp];
         return this._model[modelProp];
@@ -101,13 +100,13 @@ var FizzicsLevel2 = GObject.registerClass({
         if (scopeProp === 'skin')
             return SKINS.indexOf(scope[scopeProp]);
         if (scopeProp === 'vfxBad')
-            return VFX_BAD.indexOf(scope[scopeProp]);
+            return VFXS.indexOf(scope[scopeProp]);
         if (scopeProp === 'sfxBad')
-            return SFX_BAD.indexOf(scope[scopeProp]);
+            return SFXS.indexOf(scope[scopeProp]);
         if (scopeProp === 'vfxGood')
-            return VFX_GOOD.indexOf(scope[scopeProp]);
+            return VFXS.indexOf(scope[scopeProp]);
         if (scopeProp === 'sfxGood')
-            return SFX_GOOD.indexOf(scope[scopeProp]);
+            return SFXS.indexOf(scope[scopeProp]);
         if (scopeProp === 'frozen')
             return !scope[scopeProp];
         return scope[scopeProp];
@@ -120,13 +119,13 @@ var FizzicsLevel2 = GObject.registerClass({
         if (scopeProp === 'skin')
             return SKINS;
         if (scopeProp === 'vfxBad')
-            return VFX_BAD;
+            return VFXS;
         if (scopeProp === 'sfxBad')
-            return SFX_BAD;
+            return SFXS;
         if (scopeProp === 'vfxGood')
-            return VFX_GOOD;
+            return VFXS;
         if (scopeProp === 'sfxGood')
-            return SFX_GOOD;
+            return SFXS;
         return null;
     }
 
