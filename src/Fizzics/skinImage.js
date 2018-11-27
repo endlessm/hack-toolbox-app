@@ -1,15 +1,13 @@
-/* exported FizzicsSkinImage, FizzicsSkinMaxIndex */
+/* exported FizzicsSkinImage */
 
-const {GdkPixbuf, GObject, Gtk} = imports.gi;
-
-var FizzicsSkinMaxIndex = 8;
+const {GdkPixbuf, GLib, GObject, Gtk} = imports.gi;
 
 var FizzicsSkinImage = GObject.registerClass({
     Properties: {
         index: GObject.ParamSpec.uint(
             'index', 'index', 'index',
             GObject.ParamFlags.READWRITE,
-            0, FizzicsSkinMaxIndex, 0),
+            0, GLib.MAXUINT32, 0),
         pixels: GObject.ParamSpec.uint(
             'pixels', 'pixels', 'pixels',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,

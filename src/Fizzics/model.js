@@ -20,6 +20,8 @@ var SKINS = [
     'cricket',
     'mole',
     'star',
+    'sphere',
+    'diamond',
 ];
 var VFX_BAD = [
     'fireworks',
@@ -68,7 +70,7 @@ function _addPropsForIndex(props, index) {
         _propFlags, true);
     props[`imageIndex-${index}`] = GObject.ParamSpec.uint(
         `imageIndex-${index}`, `imageIndex-${index}`, '',
-        _propFlags, 0, 8, index);
+        _propFlags, 0, SKINS.length - 1, index);
 
     _indexes.forEach(subIndex => {
         props[`socialForce-${index}-${subIndex}`] = GObject.ParamSpec.double(

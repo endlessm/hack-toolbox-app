@@ -1,9 +1,9 @@
 /* exported FizzicsObjectEditor */
 
 const {GObject, Gtk} = imports.gi;
-const {FizzicsSkinImage, FizzicsSkinMaxIndex} = imports.Fizzics.skinImage;
+const {FizzicsSkinImage} = imports.Fizzics.skinImage;
 const {PopupMenu} = imports.popupMenu;
-const {VFX_BAD, VFX_GOOD, SFX_BAD, SFX_GOOD} = imports.Fizzics.model;
+const {SKINS, VFX_BAD, VFX_GOOD, SFX_BAD, SFX_GOOD} = imports.Fizzics.model;
 
 var FizzicsObjectEditor = GObject.registerClass({
     GTypeName: 'FizzicsObjectEditor',
@@ -34,7 +34,7 @@ var FizzicsObjectEditor = GObject.registerClass({
     _init(props = {}) {
         super._init(props);
 
-        const indices = Array.from({length: FizzicsSkinMaxIndex + 1}, (v, i) => i);
+        const indices = Array.from({length: SKINS.length}, (v, i) => i);
         this._menuSkin = new PopupMenu(this._buttonSkin, indices, FizzicsSkinImage,
             'index', {});
 
