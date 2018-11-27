@@ -38,6 +38,7 @@ var FrameworkLevel1 = GObject.registerClass({
             nest: 'nest-symbolic',
             overflow: 'overflow-symbolic',
             grid: 'grid-symbolic',
+            list: 'list-symbolic',
         }, Gtk.Image, 'iconName', {pixelSize: 50});
 
         const logoChoices = {};

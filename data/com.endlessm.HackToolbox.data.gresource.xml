@@ -19,6 +19,7 @@
     <file preprocess="xml-stripblanks">framework/geography.svg</file>
     <file preprocess="xml-stripblanks">framework/history.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/grid-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">framework/icons/16x16/actions/list-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/nest-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/overflow-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/piano-symbolic.svg</file>

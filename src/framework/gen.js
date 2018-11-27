@@ -542,6 +542,8 @@ function _arrangementModule(model) {
         return 'Arrangement.OverflowNoise';
     case 'grid':
         return 'Arrangement.GridNoise';
+    case 'list':
+        return 'Arrangement.ListNoise';
     default:
         throw new Error(`${model.card_layout}, oops`);
     }
@@ -600,6 +602,12 @@ function generateYAML(model) {
             },
         };
         Object.assign(homeSetsCard.properties, hackableTextProperties);
+        if (model.card_layout === 'list') {
+            homeSetsCard.type = titleCard;
+            delete homeSetsCard.properties.excluded_types;
+            if (!hasHackableText)
+                delete homeSetsCard.properties;
+        }
 
         const setTitleCard = {
             type: titleCard,
