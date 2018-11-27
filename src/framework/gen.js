@@ -513,49 +513,43 @@ function generateWebSCSS(model) {
     return '';
 }
 
-function generateYAML(model) {
-    let order;
+function _orderShortdef(model) {
     switch (model.card_order) {
     case 'ordered':
-        order = 'Order.Sequence';
-        break;
+        return 'Order.Sequence';
     case 'random':
-        order = 'Order.Random';
-        break;
+        return 'Order.Random';
     case 'az':
-        order = "'Order.Alphabetical(ascending: true)'";
-        break;
+        return "'Order.Alphabetical(ascending: true)'";
     case 'za':
-        order = "'Order.Alphabetical(ascending: false)'";
-        break;
+        return "'Order.Alphabetical(ascending: false)'";
     default:
         throw new Error(`${model.card_order}, oops`);
     }
+}
 
-    let layout;
+function _arrangementModule(model) {
     switch (model.card_layout) {
     case 'tiledGrid':
-        layout = 'Arrangement.TiledGridNoise';
-        break;
+        return 'Arrangement.TiledGridNoise';
     case 'windshield':
-        layout = 'Arrangement.WindshieldNoise';
-        break;
+        return 'Arrangement.WindshieldNoise';
     case 'piano':
-        layout = 'Arrangement.PianoNoise';
-        break;
+        return 'Arrangement.PianoNoise';
     case 'nest':
-        layout = 'Arrangement.NestNoise';
-        break;
+        return 'Arrangement.NestNoise';
     case 'overflow':
-        layout = 'Arrangement.OverflowNoise';
-        break;
+        return 'Arrangement.OverflowNoise';
     case 'grid':
-        layout = 'Arrangement.GridNoise';
-        break;
+        return 'Arrangement.GridNoise';
     default:
         throw new Error(`${model.card_layout}, oops`);
     }
+}
 
+function generateYAML(model) {
+    const order = _orderShortdef(model);
+    const layout = _arrangementModule(model);
     let soundpackProperty = '';
     if (model.sounds_cursor_hover !== 'none')
         soundpackProperty = `soundpack: ${model.sounds_cursor_hover}`;
