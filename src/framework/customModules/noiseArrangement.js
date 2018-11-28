@@ -98,6 +98,13 @@ function generateProto(Name, Extends) {
         },
 
         // Override of the original Arrangement class
+        unpack_card(card) {
+            this._ncards--;
+            // eslint-disable-next-line no-restricted-syntax
+            this.parent(card);
+        },
+
+        // Override of the original Arrangement class
         pack_card(card) {
             const id = this._ncards++;
             const key = `framework/${this._soundpack}/${id}`;
