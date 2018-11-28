@@ -133,110 +133,7 @@ background-repeat: no-repeat;
 };
 `;
 
-    switch (model.constructor.appId) {
-    case 'com.endlessm.dinosaurs.en':
-        return `
-$primary-light-color: ${infoColor};
-$primary-medium-color: ${mainColor};
-$primary-dark-color: darken(${mainColor}, 30%);
-$accent-light-color: ${accentColor};
-$accent-dark-color: darken(${accentColor}, 30%);
-
-$title-font: '${model.font}';
-$logo-font: 'Patrick Hand SC';
-
-@import 'thematic';
-
-// com.endlessm.dinosaurs.en existing overrides:
-
-.BannerDynamic__logo {
-    font-weight: 400;
-}
-
-.home-page .Card__title {
-    font-weight: bold;
-    font-size: ${model.font_size * 0.156}em;
-}
-
-.set-page .Card__title {
-    font-weight: bold;
-    font-size: ${model.font_size * 0.338}em;
-}
-
-// new overrides:
-
-.BannerDynamic__logo,
-.BannerDynamic__subititle {
-    color: ${logoColor};
-}
-
-// This makes the main color a bit more interesting and obvious
-.CardDefault.CardPost {
-    .CardDefault__title {
-        color: ${mainColor};
-    }
-
-    &:hover .CardDefault__title {
-        color: ${accentColor};
-    }
-
-    .CardDefault__context {
-        color: $primary-light-color;
-    }
-}
-
-// This as well
-.LayoutSidebar {
-    .content {
-        .BannerSet .CardTitle__title,
-        .BannerSearch__title {
-            color: ${mainColor};
-        }
-    }
-
-    .sidebar .CardTitle {
-        &__title {
-            color: transparentize(${mainColor}, 1 - 0.60);
-        }
-
-        &:hover .Card__title {
-            color: ${mainColor};
-        }
-
-        &:active,
-        &.highlighted {
-            .CardTitle .CardTitle__title {
-                color: ${accentColor};
-            }
-        }
-    }
-}
-
-// Card borders:
-
-.CardDefault {
-    padding: ${model.border_width}px;
-    background-color: ${borderColor};
-}
-
-// Overlay filters
-
-.CardHackableDefault__filter_overlay {
-    ${overlayFilterProperties}
-}
-
-// These basically override every font size in the theme
-
-.LayoutSidebar .sidebar .ContentGroupNoResultsMessage {
-    &__title {
-        font-size: ${model.font_size * 3}px;
-    }
-
-    &__subtitle {
-        font-size: ${model.font_size * 2}px;
-    }
-}
-
+    const cardDefaultRules = `
 .CardDefault {
     &__title {
         font-size: ${model.font_size * 1.8}px;
@@ -383,6 +280,113 @@ $logo-font: 'Patrick Hand SC';
         }
     }
 }
+`;
+
+    switch (model.constructor.appId) {
+    case 'com.endlessm.dinosaurs.en':
+        return `
+$primary-light-color: ${infoColor};
+$primary-medium-color: ${mainColor};
+$primary-dark-color: darken(${mainColor}, 30%);
+$accent-light-color: ${accentColor};
+$accent-dark-color: darken(${accentColor}, 30%);
+
+$title-font: '${model.font}';
+$logo-font: 'Patrick Hand SC';
+
+@import 'thematic';
+
+// com.endlessm.dinosaurs.en existing overrides:
+
+.BannerDynamic__logo {
+    font-weight: 400;
+}
+
+.home-page .Card__title {
+    font-weight: bold;
+    font-size: ${model.font_size * 0.156}em;
+}
+
+.set-page .Card__title {
+    font-weight: bold;
+    font-size: ${model.font_size * 0.338}em;
+}
+
+// new overrides:
+
+.BannerDynamic__logo,
+.BannerDynamic__subititle {
+    color: ${logoColor};
+}
+
+// This makes the main color a bit more interesting and obvious
+.CardDefault.CardPost {
+    .CardDefault__title {
+        color: ${mainColor};
+    }
+
+    &:hover .CardDefault__title {
+        color: ${accentColor};
+    }
+
+    .CardDefault__context {
+        color: $primary-light-color;
+    }
+}
+
+// This as well
+.LayoutSidebar {
+    .content {
+        .BannerSet .CardTitle__title,
+        .BannerSearch__title {
+            color: ${mainColor};
+        }
+    }
+
+    .sidebar .CardTitle {
+        &__title {
+            color: transparentize(${mainColor}, 1 - 0.60);
+        }
+
+        &:hover .Card__title {
+            color: ${mainColor};
+        }
+
+        &:active,
+        &.highlighted {
+            .CardTitle .CardTitle__title {
+                color: ${accentColor};
+            }
+        }
+    }
+}
+
+// Card borders:
+
+.CardDefault {
+    padding: ${model.border_width}px;
+    background-color: ${borderColor};
+}
+
+// Overlay filters
+
+.CardHackableDefault__filter_overlay {
+    ${overlayFilterProperties}
+}
+
+// These basically override every font size in the theme
+
+.LayoutSidebar .sidebar .ContentGroupNoResultsMessage {
+    &__title {
+        font-size: ${model.font_size * 3}px;
+    }
+
+    &__subtitle {
+        font-size: ${model.font_size * 2}px;
+    }
+}
+
+${cardDefaultRules}
 
 .LayoutSidebar {
     .content .BannerSearch__title {
@@ -404,6 +408,75 @@ $logo-font: 'Patrick Hand SC';
 
 .BannerDynamic {
     font-size: ${model.font_size * 2}px;
+}
+
+${commonRules}
+`;
+
+    case 'com.endlessm.encyclopedia.en':
+        return `
+$primary-light-color: ${mainColor};
+$primary-medium-color: ${infoColor};
+$primary-dark-color: darken(${infoColor}, 30%);
+$accent-light-color: transparentize(${accentColor}, 1 - 0.40);
+$accent-dark-color: ${accentColor};
+
+$title-font: '${model.font}';
+$display-font: '${model.font}';
+// fudge this a bit; the base font is Lato, but we want to make sure there is
+// a change visible on the front page when the font changes.
+$logo-font: '${model.font === 'Lato' ? 'Libre Baskerville' : model.font}';
+
+@import "encyclopedia";
+
+// No existing overrides, the encyclopedia is its own template.
+// New overrides:
+
+.WindowSimple {
+    font-size: ${model.font_size * 0.8}pt;
+}
+
+.BannerDynamic__logo,
+.BannerDynamic__subititle {
+    color: ${logoColor};
+}
+
+.CardTitle {
+    border-width: ${model.border_width}px;
+    border-color: ${borderColor};
+    border-style: solid;
+}
+
+.search-page .CardTitle__title {
+    color: $primary-medium-color;
+    font-family: $title-font;
+    font-size: ${model.font_size * 1.5}px;
+}
+
+.search-page .title.search-terms {
+    color: $accent-dark-color;
+}
+
+.search-page .BannerSearch {
+    color: $accent-light-color;
+    font-family: $title-font;
+    font-size: ${model.font_size * 2.4}px;
+}
+
+.paper-template {
+    background-image: linear-gradient(to bottom,
+                                      $primary-light-color 0%,
+                                      $primary-light-color 100%),
+                      url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
+}
+
+.ContentGroupNoResultsMessage {
+    &__title {
+        font-size: ${model.font_size * 2.5}px;
+    }
+    &__subtitle {
+        font-size: ${model.font_size * 1.5}px;
+    }
 }
 
 ${commonRules}
@@ -490,6 +563,8 @@ $body-font: ${model.font};
         ${overlayFilterProperties}
     }
 }
+
+${cardDefaultRules}
 
 ${commonRules}
 `;
@@ -655,6 +730,61 @@ overrides:
 !import 'thematic'
 `;
     }
+
+    case 'com.endlessm.encyclopedia.en': {
+        const appBanner = {
+            type: dynamicBanner,
+            properties: {
+                expand: true,
+                mode: 'full',
+            },
+        };
+        Object.assign(appBanner.properties, hackableTextProperties);
+
+        const searchArticlesCard = {
+            type: defaultCard,
+            properties: {
+                halign: 'fill',
+            },
+        };
+        Object.assign(searchArticlesCard.properties, hackableTextProperties);
+        if (model.card_layout === 'list') {
+            searchArticlesCard.type = titleCard;
+            searchArticlesCard.properties.halign = 'start';
+        }
+
+        const searchArticlesArrangement = {
+            type: layout,
+            properties: {
+                hexpand: true,
+                homogeneous: false,
+            },
+        };
+        Object.assign(searchArticlesArrangement.properties, soundpackProperties);
+
+        return `---
+overrides:
+  app-banner:
+    ${JSON.stringify(appBanner)}
+
+  search-articles-card:
+    ${JSON.stringify(searchArticlesCard)}
+
+  search-articles-arrangement:
+    ${JSON.stringify(searchArticlesArrangement)}
+
+  # test this
+  root.window.content.content.search-page.contents.1.content.content.contents.2.selection:
+    type: Selection.Search
+    id: search-results
+    slots:
+      filter: Filter.Articles
+      order: ${order}
+---
+!import 'encyclopedia'
+`;
+    }
+
     case 'com.endlessm.Hackdex_chapter_one': {
         const homeButton = {
             type: 'Banner.HomeButton',
