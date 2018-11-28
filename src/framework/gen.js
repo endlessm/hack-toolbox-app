@@ -550,15 +550,17 @@ function _arrangementModule(model) {
 function generateYAML(model) {
     const order = _orderShortdef(model);
     const layout = _arrangementModule(model);
-    let soundpackProperty = '';
+    const soundpackProperties = {
+        allow_navigation: model.hyperlinks,
+        click: model.sounds_cursor_click !== 'none',
+    };
     if (model.sounds_cursor_hover !== 'none')
-        soundpackProperty = `soundpack: ${model.sounds_cursor_hover}`;
+        soundpackProperties.soundpack = model.sounds_cursor_hover;
     else if (model.sounds_cursor_click !== 'none')
-        soundpackProperty = `soundpack: ${model.sounds_cursor_click}`;
+        soundpackProperties.soundpack = model.sounds_cursor_click;
 
-    let textFilterProperty = '';
-    let rotationProperty = '';
-    let shorthandProperties = '';
+    const hackableTextProperties = {};
+    let hasHackableText = false;
     let defaultCard = 'Card.Default';
     let titleCard = 'Card.Title';
     let dynamicBanner = 'Banner.Dynamic';
@@ -567,25 +569,58 @@ function generateYAML(model) {
         model.text_cipher !== 0) {
         defaultCard = 'Card.HackableDefault';
         titleCard = 'Card.HackableTitle';
-        textFilterProperty = `textfilter: ${model.text_transformation}`;
-        rotationProperty = `rotation: ${model.text_cipher}`;
-        shorthandProperties = `${textFilterProperty}, ${rotationProperty}`;
+        hackableTextProperties.textfilter = model.text_transformation;
+        hackableTextProperties.rotation = model.text_cipher;
+        hasHackableText = true;
         dynamicBanner = 'Banner.HackableDynamic';
         searchBanner = 'Banner.HackableSearch';
     }
     switch (model.constructor.appId) {
-    case 'com.endlessm.dinosaurs.en':
+    case 'com.endlessm.dinosaurs.en': {
+        const appBanner = {
+            type: dynamicBanner,
+            properties: {
+                mode: 'full',
+                layout: 'horizontal',
+                valign: 'center',
+                halign: 'center',
+            },
+        };
+        Object.assign(appBanner.properties, hackableTextProperties);
+
+        const homeSetsArrangement = {
+            type: layout,
+            properties: soundpackProperties,
+        };
+
+        const homeSetsCard = {
+            type: defaultCard,
+            properties: {
+                excluded_types: [0, 1],
+            },
+        };
+        Object.assign(homeSetsCard.properties, hackableTextProperties);
+
+        const setTitleCard = {
+            type: titleCard,
+            properties: {
+                max_title_lines: 5,
+            },
+        };
+        Object.assign(setTitleCard.properties, hackableTextProperties);
+
+        const sidebarCard = {type: titleCard};
+        if (hasHackableText)
+            sidebarCard.properties = hackableTextProperties;
+
+        const banner = {type: searchBanner};
+        if (hasHackableText)
+            banner.properties = hackableTextProperties;
+
         return `---
 overrides:
   app-banner:
-    type: ${dynamicBanner}
-    properties:
-      mode: full
-      layout: horizontal
-      valign: center
-      halign: center
-      ${textFilterProperty}
-      ${rotationProperty}
+    ${JSON.stringify(appBanner)}
 
   home-sets-order: &order
     shortdef: ${order}
@@ -593,78 +628,81 @@ overrides:
   set-articles-order: *order
 
   home-sets-arrangement:
-    type: ${layout}
-    properties:
-      allow_navigation: ${model.hyperlinks}
-      click: ${model.sounds_cursor_click !== 'none'}
-      ${soundpackProperty}
+    ${JSON.stringify(homeSetsArrangement)}
 
   home-sets-card:
-    type: ${defaultCard}
-    properties:
-      excluded_types:
-        - 0
-        - 1
-      ${textFilterProperty}
-      ${rotationProperty}
+    ${JSON.stringify(homeSetsCard)}
 
   root.window.content.content.content.set-page.sidebar.content.arrangement.card:
-    shortdef: '${titleCard}(${shorthandProperties})'
+    ${JSON.stringify(sidebarCard)}
   root.window.content.content.content.set-page.content.card:
-    type: ${titleCard}
-    properties:
-      max-title-lines: 5
-      ${textFilterProperty}
-      ${rotationProperty}
+    ${JSON.stringify(setTitleCard)}
   root.window.content.content.content.search-page.sidebar.content.arrangement.card:
-    shortdef: '${titleCard}(${shorthandProperties})'
+    ${JSON.stringify(sidebarCard)}
   root.window.content.content.content.search-page.content:
-    shortdef: '${searchBanner}(${shorthandProperties})'
+    ${JSON.stringify(banner)}
   root.window.content.content.content.article-page.sidebar.content.arrangement.card:
-    shortdef: '${titleCard}(${shorthandProperties})'
+    ${JSON.stringify(sidebarCard)}
 ---
 !import 'thematic'
 `;
-    case 'com.endlessm.Hackdex_chapter_one':
+    }
+    case 'com.endlessm.Hackdex_chapter_one': {
+        const homeButton = {
+            type: 'Banner.HomeButton',
+            properties: {
+                text: 'HACKDEX : CHAPTER 1',
+            },
+        };
+        Object.assign(homeButton.properties, hackableTextProperties);
+
+        const appBanner = {
+            type: dynamicBanner,
+            properties: {
+                mode: 'full',
+                format_string: 'Clubhouse Directory',
+                valign: 'center',
+                halign: 'start',
+            },
+        };
+        Object.assign(appBanner.properties, hackableTextProperties);
+
+        const homeArticlesArrangement = {
+            type: layout,
+            properties: {
+                homogeneous: true,
+                column_spacing: 33,
+                row_spacing: 90,
+                halign: 'center',
+                valign: 'start',
+            },
+        };
+        Object.assign(homeArticlesArrangement.properties, soundpackProperties);
+
+        const hackdexCard = {type: 'Card.Hackdex'};
+        if (hasHackableText)
+            hackdexCard.properties = hackableTextProperties;
+
         return `---
 overrides:
   home-button:
-    type: Banner.HomeButton
-    properties:
-      text: 'HACKDEX : CHAPTER 1'
-      ${textFilterProperty}
-      ${rotationProperty}
+    ${JSON.stringify(homeButton)}
 
   app-banner:
-    type: ${dynamicBanner}
-    properties:
-      mode: full
-      format-string: 'Clubhouse Directory'
-      valign: center
-      halign: start
-      ${textFilterProperty}
-      ${rotationProperty}
+    ${JSON.stringify(appBanner)}
 
   home-articles-order:
     shortdef: ${order}
 
   home-articles-arrangement:
-    type: ${layout}
-    properties:
-      homogeneous: true
-      column-spacing: 33
-      row-spacing: 90
-      halign: center
-      valign: start
-      allow_navigation: ${model.hyperlinks}
-      click: ${model.sounds_cursor_click !== 'none'}
-      ${soundpackProperty}
+    ${JSON.stringify(homeArticlesArrangement)}
 
   home-articles-card:
-    shortdef: 'Card.Hackdex(${shorthandProperties})'
+    ${JSON.stringify(hackdexCard)}
 ---
 !import 'Hackdex_chapter_one'
 `;
+    }
     default:
         return '!import "library"';
     }
