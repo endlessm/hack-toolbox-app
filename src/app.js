@@ -16,6 +16,7 @@ function _loadStyleSheet(resourcePath) {
 function _toolboxClassForAppId(targetAppId) {
     switch (targetAppId) {
     case 'com.endlessm.dinosaurs.en':
+    case 'com.endlessm.encyclopedia.en':
     case 'com.endlessm.Hackdex_chapter_one':
         return imports.framework.toolbox.FrameworkToolbox;
     case 'com.endlessm.Fizzics':

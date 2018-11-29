@@ -33,6 +33,18 @@ const DEFAULTS = {
             border: 'black',
         },
     },
+    'com.endlessm.encyclopedia.en': {
+        'logo-graphic': 'encyclopedia',
+        font: 'Lato',
+        'card-layout': 'list',
+        [COLORS]: {
+            logo: 'white',
+            main: '#ececec',
+            accent: 'black',
+            info: '#277090',
+            border: 'black',
+        },
+    },
     'com.endlessm.Hackdex_chapter_one': {
         'logo-graphic': 'clubhouse',
         font: 'Orator',
@@ -63,6 +75,9 @@ const AVAILABLE_FONTS = {
     'com.endlessm.dinosaurs.en': ['Fira Sans', 'HammersmithOne', 'Lato',
         'Libre Baskerville', 'Marcellus SC', 'Pathway Gothic One',
         'Patrick Hand SC', 'Podkova', 'Raleway', 'Skranji'],
+    'com.endlessm.encyclopedia.en': ['Fira Sans', 'HammersmithOne', 'Lato',
+        'Libre Baskerville', 'Marcellus SC', 'Pathway Gothic One', 'Podkova',
+        'Raleway', 'Skranji'],
     'com.endlessm.Hackdex_chapter_one': ['Fira Sans', 'Hack', 'HammersmithOne',
         'Lato', 'Libre Baskerville', 'Marcellus SC', 'Pathway Gothic One',
         'Orator', 'Podkova', 'Raleway', 'Skranji'],

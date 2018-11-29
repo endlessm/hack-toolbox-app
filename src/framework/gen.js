@@ -133,110 +133,7 @@ background-repeat: no-repeat;
 };
 `;
 
-    switch (model.constructor.appId) {
-    case 'com.endlessm.dinosaurs.en':
-        return `
-$primary-light-color: ${infoColor};
-$primary-medium-color: ${mainColor};
-$primary-dark-color: darken(${mainColor}, 30%);
-$accent-light-color: ${accentColor};
-$accent-dark-color: darken(${accentColor}, 30%);
-
-$title-font: '${model.font}';
-$logo-font: 'Patrick Hand SC';
-
-@import 'thematic';
-
-// com.endlessm.dinosaurs.en existing overrides:
-
-.BannerDynamic__logo {
-    font-weight: 400;
-}
-
-.home-page .Card__title {
-    font-weight: bold;
-    font-size: ${model.font_size * 0.156}em;
-}
-
-.set-page .Card__title {
-    font-weight: bold;
-    font-size: ${model.font_size * 0.338}em;
-}
-
-// new overrides:
-
-.BannerDynamic__logo,
-.BannerDynamic__subititle {
-    color: ${logoColor};
-}
-
-// This makes the main color a bit more interesting and obvious
-.CardDefault.CardPost {
-    .CardDefault__title {
-        color: ${mainColor};
-    }
-
-    &:hover .CardDefault__title {
-        color: ${accentColor};
-    }
-
-    .CardDefault__context {
-        color: $primary-light-color;
-    }
-}
-
-// This as well
-.LayoutSidebar {
-    .content {
-        .BannerSet .CardTitle__title,
-        .BannerSearch__title {
-            color: ${mainColor};
-        }
-    }
-
-    .sidebar .CardTitle {
-        &__title {
-            color: transparentize(${mainColor}, 1 - 0.60);
-        }
-
-        &:hover .Card__title {
-            color: ${mainColor};
-        }
-
-        &:active,
-        &.highlighted {
-            .CardTitle .CardTitle__title {
-                color: ${accentColor};
-            }
-        }
-    }
-}
-
-// Card borders:
-
-.CardDefault {
-    padding: ${model.border_width}px;
-    background-color: ${borderColor};
-}
-
-// Overlay filters
-
-.CardHackableDefault__filter_overlay {
-    ${overlayFilterProperties}
-}
-
-// These basically override every font size in the theme
-
-.LayoutSidebar .sidebar .ContentGroupNoResultsMessage {
-    &__title {
-        font-size: ${model.font_size * 3}px;
-    }
-
-    &__subtitle {
-        font-size: ${model.font_size * 2}px;
-    }
-}
-
+    const cardDefaultRules = `
 .CardDefault {
     &__title {
         font-size: ${model.font_size * 1.8}px;
@@ -383,6 +280,113 @@ $logo-font: 'Patrick Hand SC';
         }
     }
 }
+`;
+
+    switch (model.constructor.appId) {
+    case 'com.endlessm.dinosaurs.en':
+        return `
+$primary-light-color: ${infoColor};
+$primary-medium-color: ${mainColor};
+$primary-dark-color: darken(${mainColor}, 30%);
+$accent-light-color: ${accentColor};
+$accent-dark-color: darken(${accentColor}, 30%);
+
+$title-font: '${model.font}';
+$logo-font: 'Patrick Hand SC';
+
+@import 'thematic';
+
+// com.endlessm.dinosaurs.en existing overrides:
+
+.BannerDynamic__logo {
+    font-weight: 400;
+}
+
+.home-page .Card__title {
+    font-weight: bold;
+    font-size: ${model.font_size * 0.156}em;
+}
+
+.set-page .Card__title {
+    font-weight: bold;
+    font-size: ${model.font_size * 0.338}em;
+}
+
+// new overrides:
+
+.BannerDynamic__logo,
+.BannerDynamic__subititle {
+    color: ${logoColor};
+}
+
+// This makes the main color a bit more interesting and obvious
+.CardDefault.CardPost {
+    .CardDefault__title {
+        color: ${mainColor};
+    }
+
+    &:hover .CardDefault__title {
+        color: ${accentColor};
+    }
+
+    .CardDefault__context {
+        color: $primary-light-color;
+    }
+}
+
+// This as well
+.LayoutSidebar {
+    .content {
+        .BannerSet .CardTitle__title,
+        .BannerSearch__title {
+            color: ${mainColor};
+        }
+    }
+
+    .sidebar .CardTitle {
+        &__title {
+            color: transparentize(${mainColor}, 1 - 0.60);
+        }
+
+        &:hover .Card__title {
+            color: ${mainColor};
+        }
+
+        &:active,
+        &.highlighted {
+            .CardTitle .CardTitle__title {
+                color: ${accentColor};
+            }
+        }
+    }
+}
+
+// Card borders:
+
+.CardDefault {
+    padding: ${model.border_width}px;
+    background-color: ${borderColor};
+}
+
+// Overlay filters
+
+.CardHackableDefault__filter_overlay {
+    ${overlayFilterProperties}
+}
+
+// These basically override every font size in the theme
+
+.LayoutSidebar .sidebar .ContentGroupNoResultsMessage {
+    &__title {
+        font-size: ${model.font_size * 3}px;
+    }
+
+    &__subtitle {
+        font-size: ${model.font_size * 2}px;
+    }
+}
+
+${cardDefaultRules}
 
 .LayoutSidebar {
     .content .BannerSearch__title {
@@ -404,6 +408,75 @@ $logo-font: 'Patrick Hand SC';
 
 .BannerDynamic {
     font-size: ${model.font_size * 2}px;
+}
+
+${commonRules}
+`;
+
+    case 'com.endlessm.encyclopedia.en':
+        return `
+$primary-light-color: ${mainColor};
+$primary-medium-color: ${infoColor};
+$primary-dark-color: darken(${infoColor}, 30%);
+$accent-light-color: transparentize(${accentColor}, 1 - 0.40);
+$accent-dark-color: ${accentColor};
+
+$title-font: '${model.font}';
+$display-font: '${model.font}';
+// fudge this a bit; the base font is Lato, but we want to make sure there is
+// a change visible on the front page when the font changes.
+$logo-font: '${model.font === 'Lato' ? 'Libre Baskerville' : model.font}';
+
+@import "encyclopedia";
+
+// No existing overrides, the encyclopedia is its own template.
+// New overrides:
+
+.WindowSimple {
+    font-size: ${model.font_size * 0.8}pt;
+}
+
+.BannerDynamic__logo,
+.BannerDynamic__subititle {
+    color: ${logoColor};
+}
+
+.CardTitle {
+    border-width: ${model.border_width}px;
+    border-color: ${borderColor};
+    border-style: solid;
+}
+
+.search-page .CardTitle__title {
+    color: $primary-medium-color;
+    font-family: $title-font;
+    font-size: ${model.font_size * 1.5}px;
+}
+
+.search-page .title.search-terms {
+    color: $accent-dark-color;
+}
+
+.search-page .BannerSearch {
+    color: $accent-light-color;
+    font-family: $title-font;
+    font-size: ${model.font_size * 2.4}px;
+}
+
+.paper-template {
+    background-image: linear-gradient(to bottom,
+                                      $primary-light-color 0%,
+                                      $primary-light-color 100%),
+                      url('resource:///com/endlessm/knowledge/data/templates/images/noise.png');
+}
+
+.ContentGroupNoResultsMessage {
+    &__title {
+        font-size: ${model.font_size * 2.5}px;
+    }
+    &__subtitle {
+        font-size: ${model.font_size * 1.5}px;
+    }
 }
 
 ${commonRules}
@@ -491,6 +564,8 @@ $body-font: ${model.font};
     }
 }
 
+${cardDefaultRules}
+
 ${commonRules}
 `;
     default:
@@ -513,58 +588,56 @@ function generateWebSCSS(model) {
     return '';
 }
 
-function generateYAML(model) {
-    let order;
+function _orderShortdef(model) {
     switch (model.card_order) {
     case 'ordered':
-        order = 'Order.Sequence';
-        break;
+        return 'Order.Sequence';
     case 'random':
-        order = 'Order.Random';
-        break;
+        return 'Order.Random';
     case 'az':
-        order = "'Order.Alphabetical(ascending: true)'";
-        break;
+        return "'Order.Alphabetical(ascending: true)'";
     case 'za':
-        order = "'Order.Alphabetical(ascending: false)'";
-        break;
+        return "'Order.Alphabetical(ascending: false)'";
     default:
         throw new Error(`${model.card_order}, oops`);
     }
+}
 
-    let layout;
+function _arrangementModule(model) {
     switch (model.card_layout) {
     case 'tiledGrid':
-        layout = 'Arrangement.TiledGridNoise';
-        break;
+        return 'Arrangement.TiledGridNoise';
     case 'windshield':
-        layout = 'Arrangement.WindshieldNoise';
-        break;
+        return 'Arrangement.WindshieldNoise';
     case 'piano':
-        layout = 'Arrangement.PianoNoise';
-        break;
+        return 'Arrangement.PianoNoise';
     case 'nest':
-        layout = 'Arrangement.NestNoise';
-        break;
+        return 'Arrangement.NestNoise';
     case 'overflow':
-        layout = 'Arrangement.OverflowNoise';
-        break;
+        return 'Arrangement.OverflowNoise';
     case 'grid':
-        layout = 'Arrangement.GridNoise';
-        break;
+        return 'Arrangement.GridNoise';
+    case 'list':
+        return 'Arrangement.ListNoise';
     default:
         throw new Error(`${model.card_layout}, oops`);
     }
+}
 
-    let soundpackProperty = '';
+function generateYAML(model) {
+    const order = _orderShortdef(model);
+    const layout = _arrangementModule(model);
+    const soundpackProperties = {
+        allow_navigation: model.hyperlinks,
+        click: model.sounds_cursor_click !== 'none',
+    };
     if (model.sounds_cursor_hover !== 'none')
-        soundpackProperty = `soundpack: ${model.sounds_cursor_hover}`;
+        soundpackProperties.soundpack = model.sounds_cursor_hover;
     else if (model.sounds_cursor_click !== 'none')
-        soundpackProperty = `soundpack: ${model.sounds_cursor_click}`;
+        soundpackProperties.soundpack = model.sounds_cursor_click;
 
-    let textFilterProperty = '';
-    let rotationProperty = '';
-    let shorthandProperties = '';
+    const hackableTextProperties = {};
+    let hasHackableText = false;
     let defaultCard = 'Card.Default';
     let titleCard = 'Card.Title';
     let dynamicBanner = 'Banner.Dynamic';
@@ -573,25 +646,64 @@ function generateYAML(model) {
         model.text_cipher !== 0) {
         defaultCard = 'Card.HackableDefault';
         titleCard = 'Card.HackableTitle';
-        textFilterProperty = `textfilter: ${model.text_transformation}`;
-        rotationProperty = `rotation: ${model.text_cipher}`;
-        shorthandProperties = `${textFilterProperty}, ${rotationProperty}`;
+        hackableTextProperties.textfilter = model.text_transformation;
+        hackableTextProperties.rotation = model.text_cipher;
+        hasHackableText = true;
         dynamicBanner = 'Banner.HackableDynamic';
         searchBanner = 'Banner.HackableSearch';
     }
     switch (model.constructor.appId) {
-    case 'com.endlessm.dinosaurs.en':
+    case 'com.endlessm.dinosaurs.en': {
+        const appBanner = {
+            type: dynamicBanner,
+            properties: {
+                mode: 'full',
+                layout: 'horizontal',
+                valign: 'center',
+                halign: 'center',
+            },
+        };
+        Object.assign(appBanner.properties, hackableTextProperties);
+
+        const homeSetsArrangement = {
+            type: layout,
+            properties: soundpackProperties,
+        };
+
+        const homeSetsCard = {
+            type: defaultCard,
+            properties: {
+                excluded_types: [0, 1],
+            },
+        };
+        Object.assign(homeSetsCard.properties, hackableTextProperties);
+        if (model.card_layout === 'list') {
+            homeSetsCard.type = titleCard;
+            delete homeSetsCard.properties.excluded_types;
+            if (!hasHackableText)
+                delete homeSetsCard.properties;
+        }
+
+        const setTitleCard = {
+            type: titleCard,
+            properties: {
+                max_title_lines: 5,
+            },
+        };
+        Object.assign(setTitleCard.properties, hackableTextProperties);
+
+        const sidebarCard = {type: titleCard};
+        if (hasHackableText)
+            sidebarCard.properties = hackableTextProperties;
+
+        const banner = {type: searchBanner};
+        if (hasHackableText)
+            banner.properties = hackableTextProperties;
+
         return `---
 overrides:
   app-banner:
-    type: ${dynamicBanner}
-    properties:
-      mode: full
-      layout: horizontal
-      valign: center
-      halign: center
-      ${textFilterProperty}
-      ${rotationProperty}
+    ${JSON.stringify(appBanner)}
 
   home-sets-order: &order
     shortdef: ${order}
@@ -599,78 +711,136 @@ overrides:
   set-articles-order: *order
 
   home-sets-arrangement:
-    type: ${layout}
-    properties:
-      allow_navigation: ${model.hyperlinks}
-      click: ${model.sounds_cursor_click !== 'none'}
-      ${soundpackProperty}
+    ${JSON.stringify(homeSetsArrangement)}
 
   home-sets-card:
-    type: ${defaultCard}
-    properties:
-      excluded_types:
-        - 0
-        - 1
-      ${textFilterProperty}
-      ${rotationProperty}
+    ${JSON.stringify(homeSetsCard)}
 
   root.window.content.content.content.set-page.sidebar.content.arrangement.card:
-    shortdef: '${titleCard}(${shorthandProperties})'
+    ${JSON.stringify(sidebarCard)}
   root.window.content.content.content.set-page.content.card:
-    type: ${titleCard}
-    properties:
-      max-title-lines: 5
-      ${textFilterProperty}
-      ${rotationProperty}
+    ${JSON.stringify(setTitleCard)}
   root.window.content.content.content.search-page.sidebar.content.arrangement.card:
-    shortdef: '${titleCard}(${shorthandProperties})'
+    ${JSON.stringify(sidebarCard)}
   root.window.content.content.content.search-page.content:
-    shortdef: '${searchBanner}(${shorthandProperties})'
+    ${JSON.stringify(banner)}
   root.window.content.content.content.article-page.sidebar.content.arrangement.card:
-    shortdef: '${titleCard}(${shorthandProperties})'
+    ${JSON.stringify(sidebarCard)}
 ---
 !import 'thematic'
 `;
-    case 'com.endlessm.Hackdex_chapter_one':
+    }
+
+    case 'com.endlessm.encyclopedia.en': {
+        const appBanner = {
+            type: dynamicBanner,
+            properties: {
+                expand: true,
+                mode: 'full',
+            },
+        };
+        Object.assign(appBanner.properties, hackableTextProperties);
+
+        const searchArticlesCard = {
+            type: defaultCard,
+            properties: {
+                halign: 'fill',
+            },
+        };
+        Object.assign(searchArticlesCard.properties, hackableTextProperties);
+        if (model.card_layout === 'list') {
+            searchArticlesCard.type = titleCard;
+            searchArticlesCard.properties.halign = 'start';
+        }
+
+        const searchArticlesArrangement = {
+            type: layout,
+            properties: {
+                hexpand: true,
+                homogeneous: false,
+            },
+        };
+        Object.assign(searchArticlesArrangement.properties, soundpackProperties);
+
+        return `---
+overrides:
+  app-banner:
+    ${JSON.stringify(appBanner)}
+
+  search-articles-card:
+    ${JSON.stringify(searchArticlesCard)}
+
+  search-articles-arrangement:
+    ${JSON.stringify(searchArticlesArrangement)}
+
+  # test this
+  root.window.content.content.search-page.contents.1.content.content.contents.2.selection:
+    type: Selection.Search
+    id: search-results
+    slots:
+      filter: Filter.Articles
+      order: ${order}
+---
+!import 'encyclopedia'
+`;
+    }
+
+    case 'com.endlessm.Hackdex_chapter_one': {
+        const homeButton = {
+            type: 'Banner.HomeButton',
+            properties: {
+                text: 'HACKDEX : CHAPTER 1',
+            },
+        };
+        Object.assign(homeButton.properties, hackableTextProperties);
+
+        const appBanner = {
+            type: dynamicBanner,
+            properties: {
+                mode: 'full',
+                format_string: 'Clubhouse Directory',
+                valign: 'center',
+                halign: 'start',
+            },
+        };
+        Object.assign(appBanner.properties, hackableTextProperties);
+
+        const homeArticlesArrangement = {
+            type: layout,
+            properties: {
+                homogeneous: true,
+                column_spacing: 33,
+                row_spacing: 90,
+                halign: 'center',
+                valign: 'start',
+            },
+        };
+        Object.assign(homeArticlesArrangement.properties, soundpackProperties);
+
+        const hackdexCard = {type: 'Card.Hackdex'};
+        if (hasHackableText)
+            hackdexCard.properties = hackableTextProperties;
+
         return `---
 overrides:
   home-button:
-    type: Banner.HomeButton
-    properties:
-      text: 'HACKDEX : CHAPTER 1'
-      ${textFilterProperty}
-      ${rotationProperty}
+    ${JSON.stringify(homeButton)}
 
   app-banner:
-    type: ${dynamicBanner}
-    properties:
-      mode: full
-      format-string: 'Clubhouse Directory'
-      valign: center
-      halign: start
-      ${textFilterProperty}
-      ${rotationProperty}
+    ${JSON.stringify(appBanner)}
 
   home-articles-order:
     shortdef: ${order}
 
   home-articles-arrangement:
-    type: ${layout}
-    properties:
-      homogeneous: true
-      column-spacing: 33
-      row-spacing: 90
-      halign: center
-      valign: start
-      allow_navigation: ${model.hyperlinks}
-      click: ${model.sounds_cursor_click !== 'none'}
-      ${soundpackProperty}
+    ${JSON.stringify(homeArticlesArrangement)}
 
   home-articles-card:
-    shortdef: 'Card.Hackdex(${shorthandProperties})'
+    ${JSON.stringify(hackdexCard)}
 ---
 !import 'Hackdex_chapter_one'
 `;
+    }
     default:
         return '!import "library"';
     }
