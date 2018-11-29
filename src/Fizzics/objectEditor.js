@@ -1,6 +1,6 @@
 /* exported FizzicsObjectEditor */
 
-const {GObject, Gtk} = imports.gi;
+const {GObject, Gtk, Pango} = imports.gi;
 const {FizzicsSkinImage} = imports.Fizzics.skinImage;
 const {PopupMenu} = imports.popupMenu;
 const {SKINS, VFXS, SFXS} = imports.Fizzics.model;
@@ -38,18 +38,10 @@ var FizzicsObjectEditor = GObject.registerClass({
         this._menuSkin = new PopupMenu(this._buttonSkin, indices, FizzicsSkinImage,
             'index', {});
 
-        SFXS.forEach((value, index) => {
-            this._comboBadSFX.append(`${index}`, value);
-        });
-        VFXS.forEach((value, index) => {
-            this._comboBadVFX.append(`${index}`, value);
-        });
-        SFXS.forEach((value, index) => {
-            this._comboGoodSFX.append(`${index}`, value);
-        });
-        VFXS.forEach((value, index) => {
-            this._comboGoodVFX.append(`${index}`, value);
-        });
+        this._populateCombo(this._comboBadSFX, SFXS);
+        this._populateCombo(this._comboBadVFX, VFXS);
+        this._populateCombo(this._comboGoodSFX, SFXS);
+        this._populateCombo(this._comboGoodVFX, VFXS);
 
         this._imageSkin0 = new FizzicsSkinImage({visible: true, pixels: 32});
         this._imageObject0.add(this._imageSkin0);
@@ -61,6 +53,24 @@ var FizzicsObjectEditor = GObject.registerClass({
         this._imageObject3.add(this._imageSkin3);
         this._imageSkin4 = new FizzicsSkinImage({visible: true, pixels: 32});
         this._imageObject4.add(this._imageSkin4);
+    }
+
+    _populateCombo(combo, options) {
+        void this;
+        const store = new Gtk.ListStore();
+        store.set_column_types([GObject.TYPE_STRING]);
+        options.forEach(value => {
+            store.set(store.append(), [0], [value]);
+        });
+
+        const renderer = new Gtk.CellRendererText({
+            ellipsize: Pango.EllipsizeMode.END,
+        });
+        renderer.set_fixed_size(100, -1);
+
+        combo.set_model(store);
+        combo.pack_start(renderer, true);
+        combo.add_attribute(renderer, 'text', 0);
     }
 
     bindModel(model, map) {
