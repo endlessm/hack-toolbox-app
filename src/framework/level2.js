@@ -1,14 +1,11 @@
 /* exported FrameworkLevel2 */
 
 const {GObject, Gtk} = imports.gi;
-const Gettext = imports.gettext;
 
 const {PopupMenu} = imports.popupMenu;
 const {Section} = imports.section;
 
 GObject.type_ensure(Section.$gtype);
-
-const _ = Gettext.gettext;
 
 var FrameworkLevel2 = GObject.registerClass({
     GTypeName: 'FrameworkLevel2',
@@ -21,20 +18,20 @@ var FrameworkLevel2 = GObject.registerClass({
         super._init(props);
 
         this._effectGroup = new PopupMenu(this._effectButton, {
-            normal: _('Normal'),
-            flipped: _('Flipped'),
-            bubbles: _('Bubbles'),
-            scrambled: _('Scrambled'),
-            zalgo: _('Zalgo'),
-        }, Gtk.Label, 'label', {});
+            normal: 'text-transformation-normal-symbolic',
+            flipped: 'text-transformation-flipped-symbolic',
+            bubbles: 'text-transformation-bubbles-symbolic',
+            scrambled: 'text-transformation-scrambled-symbolic',
+            zalgo: 'text-transformation-zalgo-symbolic',
+        }, Gtk.Image, 'iconName', {pixelSize: 50});
 
         this._filterGroup = new PopupMenu(this._filterButton, {
-            none: _('None'),
-            disco: _('Disco'),
-            corduroy: _('Corduroy'),
-            blueprint: _('Blueprint'),
-            lensFlare: _('Lens Flare'),
-        }, Gtk.Label, 'label', {});
+            none: 'image-filter-normal-symbolic',
+            disco: 'image-filter-disco-symbolic',
+            corduroy: 'image-filter-corduroy-symbolic',
+            blueprint: 'image-filter-blueprint-symbolic',
+            lensFlare: 'image-filter-lensflare-symbolic',
+        }, Gtk.Image, 'iconName', {pixelSize: 50});
 
         this._cipherChooser.connect('output', entry => {
             entry.text = `+${this._cipherAdjustment.value}`;
