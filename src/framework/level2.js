@@ -22,7 +22,7 @@ var FrameworkLevel2 = GObject.registerClass({
             flipped: 'text-transformation-flipped-symbolic',
             bubbles: 'text-transformation-bubbles-symbolic',
             scrambled: 'text-transformation-scrambled-symbolic',
-            zalgo: 'text-transformation-zalgo-symbolic',
+            creepy: 'text-transformation-creepy-symbolic',
         }, Gtk.Image, 'iconName', {pixelSize: 50});
 
         this._filterGroup = new PopupMenu(this._filterButton, {

@@ -9,10 +9,9 @@ const Utils = imports.framework.utils;
 
 const VALID_ENUMS = {
     logo_graphic: VALID_LOGOS,
-    text_transformation: ['bubbles', 'flipped', 'normal', 'scrambled', 'zalgo'],
+    text_transformation: ['bubbles', 'creepy', 'flipped', 'normal', 'scrambled'],
     card_order: ['ordered', 'random', 'az', 'za'],
     card_layout: ['grid', 'tiledGrid', 'windshield', 'piano', 'nest', 'overflow'],
-    // FIXME what to call the card layouts
     image_filter: ['none', 'disco', 'corduroy', 'blueprint', 'lensFlare'],
     sounds_cursor_hover: ['none', 'scifi'],
     sounds_cursor_click: ['none', 'piano', 'drumkit'],

@@ -33,10 +33,10 @@
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/overflow-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/piano-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/text-transformation-bubbles-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">framework/icons/16x16/actions/text-transformation-creepy-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/text-transformation-flipped-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/text-transformation-normal-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/text-transformation-scrambled-symbolic.svg</file>
-    <file preprocess="xml-stripblanks">framework/icons/16x16/actions/text-transformation-zalgo-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/tiled-grid-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/icons/16x16/actions/windshield-symbolic.svg</file>
     <file preprocess="xml-stripblanks">framework/math.svg</file>

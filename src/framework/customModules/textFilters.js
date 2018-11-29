@@ -1,8 +1,9 @@
-/* exported bubbles, flipped, normal, scrambled, zalgo */
+/* exported bubbles, creepy, flipped, normal, scrambled */
 
 const Utils = imports.framework.utils;
 
-// The "bubbles", "flipped" and "zalgo" transformations are taken from Lunicode:
+// The "bubbles", "flipped" and "creepy" (zalgo) transformations are taken from
+// Lunicode:
 // https://github.com/combatwombat/Lunicode.js/blob/master/lunicode.js
 // License: MIT
 
@@ -212,7 +213,7 @@ function scrambled(text) {
     return words.join(' ');
 }
 
-function zalgo(text) {
+function creepy(text) {
     // How many diacritic marks shall we put on top/bottom?
     const MAX_HEIGHT = 15;
     // 0-100%. maxHeight 100 and randomization 20%: the height goes from 80 to
