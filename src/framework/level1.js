@@ -1,15 +1,12 @@
 /* exported FrameworkLevel1 */
 
 const {GObject, Gtk} = imports.gi;
-const Gettext = imports.gettext;
 
 const {logoIDToResource, LogoImage, VALID_LOGOS} = imports.framework.logoImage;
 const {PopupMenu} = imports.popupMenu;
 const {Section} = imports.section;
 
 GObject.type_ensure(Section.$gtype);
-
-const _ = Gettext.gettext;
 
 var FrameworkLevel1 = GObject.registerClass({
     GTypeName: 'FrameworkLevel1',
@@ -49,11 +46,11 @@ var FrameworkLevel1 = GObject.registerClass({
             LogoImage, 'resource', {});
 
         this._orderGroup = new PopupMenu(this._orderButton, {
-            ordered: _('Ordered'),
-            random: _('Random'),
-            az: _('A–Z'),
-            za: _('Z–A'),
-        }, Gtk.Label, 'label', {});
+            ordered: 'card-order-ordered-symbolic',
+            random: 'card-order-random-symbolic',
+            az: 'card-order-a-z-symbolic',
+            za: 'card-order-z-a-symbolic',
+        }, Gtk.Image, 'iconName', {pixelSize: 50});
     }
 
     bindModel(model) {
