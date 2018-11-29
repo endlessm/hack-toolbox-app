@@ -176,11 +176,19 @@ popover.error {
     padding: 12px;
 }
 
-.framework.toolbox-surrounding-window {
-    background-color: rgba(0, 0, 0, 0);
-    background-image: url('resource:///com/endlessm/HackToolbox/framework/toolbox-background.png');
+.framework.toolbox-surrounding-window.has-changes {
+    background-image: cross-fade(100% url('resource:///com/endlessm/HackToolbox/framework/toolbox-background.png'),
+                                 linear-gradient(transparent, transparent));
+    transition-duration: 200ms;
 }
 
+.framework.toolbox-surrounding-window {
+    background-image: cross-fade(0% url('resource:///com/endlessm/HackToolbox/framework/toolbox-background.png'),
+                                 linear-gradient(transparent, transparent));
+    transition: background-image 10s;
+}
+
+.framework.toolbox-surrounding-window,
 .OperatingSystemApp.toolbox-surrounding-window,
 .HackUnlock.toolbox-surrounding-window,
 .Fizzics.toolbox-surrounding-window {

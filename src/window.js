@@ -87,10 +87,13 @@ var ToolboxWindow = GObject.registerClass({
     }
 
     set enableFlipBack(val) {
-        if (val)
+        if (val) {
             this.add_action(this._flipBack);
-        else
+            this.get_style_context().add_class('has-changes');
+        } else {
             this.remove_action('flip-back');
+            this.get_style_context().remove_class('has-changes');
+        }
     }
 
     _createHackToolboxSkeletonOnPath(objectPath) {
