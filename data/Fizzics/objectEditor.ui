@@ -694,7 +694,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkComboBoxText" id="comboGoodVFX">
+          <object class="GtkComboBox" id="comboGoodVFX">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
           </object>
@@ -705,7 +705,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkComboBoxText" id="comboGoodSFX">
+          <object class="GtkComboBox" id="comboGoodSFX">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
           </object>
@@ -716,7 +716,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkComboBoxText" id="comboBadSFX">
+          <object class="GtkComboBox" id="comboBadSFX">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
           </object>
@@ -749,7 +749,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkComboBoxText" id="comboBadVFX">
+          <object class="GtkComboBox" id="comboBadVFX">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
           </object>
