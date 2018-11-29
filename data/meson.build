@@ -19,3 +19,11 @@ configure_file(input: 'com.endlessm.HackToolbox.service.in',
 
 stylesdir = join_paths(get_option('datadir'), 'gtksourceview-3.0', 'styles')
 install_data('gtksourceview-3.0/styles/hack.xml', install_dir: stylesdir)
+
+install_subdir(
+    'lockscreens',
+    install_dir: 'share/lockscreens',
+    strip_directory: true
+)
+
+meson.add_install_script('extra-install.sh')
