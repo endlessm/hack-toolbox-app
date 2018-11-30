@@ -167,6 +167,13 @@ checkbutton {
    background-color: rgba(6, 20, 39, 0.50);
 }
 
+/* Sliders */
+slider {
+    background-image: linear-gradient(-131deg,
+                                      rgba(249, 147, 71, 0.85) 0%,
+                                      rgba(241, 90, 34, 0.85) 100%);
+}
+
 .codeview {
     font-family: monospace;
 }
