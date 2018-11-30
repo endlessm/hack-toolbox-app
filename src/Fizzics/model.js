@@ -24,7 +24,7 @@ var SKINS = [
 ];
 var VFXS = [
     'confetti',
-    'explotion',
+    'explosion',
     'level_down_red',
     'level_down_dark',
     'life_up',
