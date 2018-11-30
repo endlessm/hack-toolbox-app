@@ -508,7 +508,7 @@ $body-font: ${model.font};
 }
 
 .CardHackdex {
-    min-height: 462px;
+    min-height: 456px;
     min-width: 300px;
     margin: 0;
 
@@ -517,6 +517,14 @@ $body-font: ${model.font};
         font-family: $body-font;
         font-size: ${model.font_size * 4.5}px;
         margin: 25px 37px;
+    }
+
+    & frame {
+        background-position: top;
+    }
+
+    &:hover frame {
+        background-position: bottom;
     }
 }
 
