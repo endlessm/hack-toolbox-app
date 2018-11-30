@@ -303,6 +303,7 @@
                 <property name="adjustment">adjustmentSocial0</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
+                <property name="has_origin">False</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -376,6 +377,7 @@
                 <property name="adjustment">adjustmentSocial1</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
+                <property name="has_origin">False</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -449,6 +451,7 @@
                 <property name="adjustment">adjustmentSocial2</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
+                <property name="has_origin">False</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -522,6 +525,7 @@
                 <property name="adjustment">adjustmentSocial3</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
+                <property name="has_origin">False</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -595,6 +599,7 @@
                 <property name="adjustment">adjustmentSocial4</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
+                <property name="has_origin">False</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
