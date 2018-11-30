@@ -535,9 +535,10 @@ $body-font: ${model.font};
         color: $logo-color;
         font-family: $logo-font;
         font-weight: normal;
-        min-height: 200px;
-        min-width: 1000px;
-        margin-left: -100px;
+        min-height: 100px;
+        min-width: 500px;
+        padding: 50px 0;
+        margin-left: -20px;
     }
 }
 
@@ -797,7 +798,7 @@ overrides:
         const homeButton = {
             type: 'Banner.HomeButton',
             properties: {
-                text: 'HACKDEX : CHAPTER 1',
+                text: 'Roster',
             },
         };
         Object.assign(homeButton.properties, hackableTextProperties);
@@ -806,7 +807,7 @@ overrides:
             type: dynamicBanner,
             properties: {
                 mode: 'full',
-                format_string: 'Clubhouse Directory',
+                format_string: 'Roster',
                 valign: 'center',
                 halign: 'start',
             },
