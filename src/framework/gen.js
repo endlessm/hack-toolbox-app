@@ -535,10 +535,10 @@ $body-font: ${model.font};
         color: $logo-color;
         font-family: $logo-font;
         font-weight: normal;
-        min-height: 100px;
-        min-width: 500px;
+        min-height: 200px;
+        min-width: 900px;
         padding: 50px 0;
-        margin-left: -20px;
+        margin-left: 40px;
     }
 }
 
