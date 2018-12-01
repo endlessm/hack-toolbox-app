@@ -31,10 +31,6 @@ var Lockscreen = GObject.registerClass({
 
         this._playbin.connect('clicked', this._onClicked.bind(this));
 
-        this._playbin.connect('start', () => {
-            this._playbin.get_style_context().remove_class('locked');
-        });
-
         this._playbin.connect('done', () => {
             this._playbin.hide();
         });
@@ -126,12 +122,14 @@ var Lockscreen = GObject.registerClass({
     }
 
     _updateLockStateWithLock() {
+        let playbinStyle = this._playbin.get_style_context();
+
         if (!this._lock) {
-            this._playbin.get_style_context().add_class('no-lock');
+            playbinStyle.add_class('no-lock');
             return;
         }
 
-        this._playbin.get_style_context().remove_class('no-lock');
+        playbinStyle.remove_class('no-lock');
         this._updateBackground();
 
         if (!this._manager.isUnlocked(this._lock))
@@ -161,19 +159,21 @@ var Lockscreen = GObject.registerClass({
     }
 
     _updateUI() {
+        let playbinStyle = this._playbin.get_style_context();
+
         if (this._lock)
-            this._playbin.get_style_context().remove_class('no-lock');
+            playbinStyle.remove_class('no-lock');
         else
-            this._playbin.get_style_context().add_class('no-lock');
+            playbinStyle.add_class('no-lock');
+
+        this._playbin.locked = this._locked;
 
         if (this._locked) {
-            this._playbin.get_style_context().add_class('locked');
             this._playbin.show();
         } else if (this._openURI) {
             this._playbin.show();
             this._playbin.play();
         } else {
-            this._playbin.get_style_context().remove_class('locked');
             this._playbin.hide();
         }
     }

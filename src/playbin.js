@@ -151,4 +151,12 @@ playbin.locked {
         this._playbin.uri = this.uri;
         this._playbin.set_state(Gst.State.PLAYING);
     }
+
+    set locked(value) {
+        const style = this.get_style_context();
+        if (value)
+            style.add_class('locked');
+        else
+            style.remove_class('locked');
+    }
 });
