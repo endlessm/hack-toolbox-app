@@ -33,10 +33,10 @@
     <file>OperatingSystemApp/oscursormodel.js</file>
     <file>OperatingSystemApp/oswobblymodel.js</file>
     <file>OperatingSystemApp/toolbox.js</file>
-    <file>playbin.js</file>
     <file>lockscreen.js</file>
     <file>locksManager.js</file>
     <file>main.js</file>
+    <file>playbin.js</file>
     <file>popupMenu.js</file>
     <file>section.js</file>
     <file>soundServer.js</file>
