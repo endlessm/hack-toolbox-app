@@ -13,16 +13,12 @@ var Lockscreen = GObject.registerClass({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             true),
         key: GObject.ParamSpec.string('key', 'Key', '',
-            GObject.ParamFlags.READWRITE, null),
+            GObject.ParamFlags.READWRITE, ''),
         lock: GObject.ParamSpec.string('lock', 'lock', '',
-            GObject.ParamFlags.READWRITE, null),
+            GObject.ParamFlags.READWRITE, ''),
     },
 }, class Lockscreen extends Gtk.Overlay {
     _init(props = {}) {
-        this._locked = true;
-        this._key = null;
-        this._lock = null;
-
         super._init(props);
 
         this._playbin = new Playbin({
@@ -49,7 +45,7 @@ var Lockscreen = GObject.registerClass({
     }
 
     set locked(value) {
-        if (this._locked === value)
+        if ('_locked' in this && this._locked === value)
             return;
         this._locked = value;
         this._updateUI();
@@ -61,7 +57,7 @@ var Lockscreen = GObject.registerClass({
     }
 
     set key(key) {
-        if (this._key === key)
+        if ('_key' in this && this._key === key)
             return;
         if (this._keyChangedId !== 0)
             this._manager.disconnect(this._keyChangedId);
@@ -76,7 +72,7 @@ var Lockscreen = GObject.registerClass({
     }
 
     set lock(lock) {
-        if (this._lock === lock)
+        if ('_lock' in this && this._lock === lock)
             return;
         if (this._lockChangedId !== 0)
             this._manager.disconnect(this._lockChangedId);
@@ -163,6 +159,9 @@ var Lockscreen = GObject.registerClass({
     }
 
     _updateUI() {
+        if (!this._playbin)
+            return;
+
         this._playbin.hasLock = !!this._lock;
         this._playbin.locked = this._locked;
 
