@@ -122,14 +122,11 @@ var Lockscreen = GObject.registerClass({
     }
 
     _updateLockStateWithLock() {
-        let playbinStyle = this._playbin.get_style_context();
+        this._playbin.hasLock = !!this._lock;
 
-        if (!this._lock) {
-            playbinStyle.add_class('no-lock');
+        if (!this._lock)
             return;
-        }
 
-        playbinStyle.remove_class('no-lock');
         this._updateBackground();
 
         if (!this._manager.isUnlocked(this._lock))
@@ -159,13 +156,7 @@ var Lockscreen = GObject.registerClass({
     }
 
     _updateUI() {
-        let playbinStyle = this._playbin.get_style_context();
-
-        if (this._lock)
-            playbinStyle.remove_class('no-lock');
-        else
-            playbinStyle.add_class('no-lock');
-
+        this._playbin.hasLock = !!this._lock;
         this._playbin.locked = this._locked;
 
         if (this._locked) {

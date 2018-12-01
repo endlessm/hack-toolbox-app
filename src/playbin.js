@@ -159,4 +159,12 @@ playbin.locked {
         else
             style.remove_class('locked');
     }
+
+    set hasLock(value) {
+        const style = this.get_style_context();
+        if (value)
+            style.remove_class('no-lock');
+        else
+            style.add_class('no-lock');
+    }
 });
