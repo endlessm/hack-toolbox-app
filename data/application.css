@@ -201,3 +201,19 @@ popover.error {
 .Fizzics.toolbox-surrounding-window {
     background-color: rgba(0, 0, 0, 0);
 }
+
+/* Miscellaneous theme overrides */
+arrow, button.down, button.up {
+   opacity: 0.81;
+   color: #f18c22;
+}
+
+arrow:disabled,
+button.down:disabled,
+button.up:disabled {
+    /* Adwaita uses 50% mix between foreground and background color for
+     * insensitive FG. The BG color here is from Adwaita's dark variant.
+     * Computed with sassmeister.com from these functions:
+     * color: mix(#f18c22, desaturate(#3d3846, 10%), 50%); */
+    color: #986531;
+}
