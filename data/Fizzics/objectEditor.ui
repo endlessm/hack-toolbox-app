@@ -294,7 +294,7 @@
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <child>
-              <object class="GtkScale">
+              <object class="GtkScale" id="scaleSocial0">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="valign">end</property>
@@ -303,6 +303,7 @@
                 <property name="adjustment">adjustmentSocial0</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
+                <property name="has_origin">False</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -367,7 +368,7 @@
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <child>
-              <object class="GtkScale">
+              <object class="GtkScale" id="scaleSocial1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="valign">end</property>
@@ -376,6 +377,7 @@
                 <property name="adjustment">adjustmentSocial1</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
+                <property name="has_origin">False</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -440,7 +442,7 @@
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <child>
-              <object class="GtkScale">
+              <object class="GtkScale" id="scaleSocial2">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="valign">end</property>
@@ -449,6 +451,7 @@
                 <property name="adjustment">adjustmentSocial2</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
+                <property name="has_origin">False</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -513,7 +516,7 @@
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <child>
-              <object class="GtkScale">
+              <object class="GtkScale" id="scaleSocial3">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="valign">end</property>
@@ -522,6 +525,7 @@
                 <property name="adjustment">adjustmentSocial3</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
+                <property name="has_origin">False</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -586,7 +590,7 @@
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <child>
-              <object class="GtkScale">
+              <object class="GtkScale" id="scaleSocial4">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="valign">end</property>
@@ -595,6 +599,7 @@
                 <property name="adjustment">adjustmentSocial4</property>
                 <property name="round_digits">0</property>
                 <property name="digits">0</property>
+                <property name="has_origin">False</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>

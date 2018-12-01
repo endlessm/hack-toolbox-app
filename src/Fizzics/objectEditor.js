@@ -29,6 +29,11 @@ var FizzicsObjectEditor = GObject.registerClass({
         'imageObject2',
         'imageObject3',
         'imageObject4',
+        'scaleSocial0',
+        'scaleSocial1',
+        'scaleSocial2',
+        'scaleSocial3',
+        'scaleSocial4',
     ],
 }, class FizzicsObjectEditor extends Gtk.Grid {
     _init(props = {}) {
@@ -53,6 +58,12 @@ var FizzicsObjectEditor = GObject.registerClass({
         this._imageObject3.add(this._imageSkin3);
         this._imageSkin4 = new FizzicsSkinImage({visible: true, pixels: 32});
         this._imageObject4.add(this._imageSkin4);
+
+        for (let ix = 0; ix < 5; ix++) {
+            const scale = this[`_scaleSocial${ix}`];
+            scale.add_mark(0.0, Gtk.PositionType.TOP, null);
+            scale.add_mark(0.0, Gtk.PositionType.BOTTOM, null);
+        }
     }
 
     _populateCombo(combo, options) {
