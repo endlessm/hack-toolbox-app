@@ -1,11 +1,13 @@
 /* exported Lockscreen */
+/* global pkg */
 
-const {Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
+const {Gio, GLib, GObject, Gtk} = imports.gi;
 
-const FADE_OUT_TIME_MS = 750;
+const {Playbin} = imports.playbin;
 
 var Lockscreen = GObject.registerClass({
     GTypeName: 'Lockscreen',
+    CssName: 'lockscreen',
     Properties: {
         locked: GObject.ParamSpec.boolean('locked', 'Locked', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
@@ -15,29 +17,27 @@ var Lockscreen = GObject.registerClass({
         lock: GObject.ParamSpec.string('lock', 'lock', '',
             GObject.ParamFlags.READWRITE, ''),
     },
-    Signals: {
-        'overlay-clicked': {},
-    },
 }, class Lockscreen extends Gtk.Overlay {
     _init(props = {}) {
         super._init(props);
 
-        this._overlay = new Gtk.EventBox({
+        this._playbin = new Playbin({
             expand: true,
-            visible: true,
+            noShowAll: true,
         });
-        this._overlay.get_style_context().add_class('lockscreen');
-        this._updateUI();
 
-        this._overlay.connect('button-release-event', () => {
-            this.emit('overlay-clicked');
-            return Gdk.EVENT_PROPAGATE;
+        this._playbin.connect('clicked', this._onClicked.bind(this));
+
+        this._playbin.connect('done', () => {
+            this._playbin.hide();
         });
+
+        this.add_overlay(this._playbin);
 
         this._manager = Gio.Application.get_default().locksManager;
         this._keyChangedId = 0;
         this._lockChangedId = 0;
-        this.connect('overlay-clicked', this._onClicked.bind(this));
+        this._updateUI();
     }
 
     get locked() {
@@ -82,24 +82,69 @@ var Lockscreen = GObject.registerClass({
         this._updateLockStateWithLock();
     }
 
+    _updateBackground () {
+        const defaultPath = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', 'default']);
+        var assetsHasKey = false;
+        var assetsPath;
+        var videoPath;
+
+        if (this._lock) {
+            const path = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', this._lock]);
+            const dir = Gio.File.new_for_path(path);
+
+            if (dir.query_exists(null) &&
+                dir.get_child('no-key').query_exists(null)) {
+                // All the required assets are here, let's use this path for
+                // the background
+                assetsPath = path;
+
+                // Now check the optional assets
+                assetsHasKey = dir.get_child('has-key').query_exists(null);
+
+                if (dir.get_child('open.webm').query_exists(null))
+                    videoPath = assetsPath;
+            }
+        } else {
+            videoPath = defaultPath;
+        }
+
+        if (!assetsPath)
+            assetsPath = defaultPath;
+
+        if (videoPath)
+            this._openURI = `file://${videoPath}/open.webm`;
+        else
+            this._openURI = null;
+
+        if (assetsHasKey && this._key && this._manager.hasKey(this._key))
+            this._playbin.setBackground(`file://${assetsPath}/has-key`);
+        else
+            this._playbin.setBackground(`file://${assetsPath}/no-key`);
+    }
+
     _updateLockStateWithKey() {
         if (!this._key)
             return;
-        if (this._manager.hasKey(this._key)) {
-
-            /* TODO update the lock-screen graphics with can-be-opened image */
-        }
+        this._updateBackground();
     }
 
     _updateLockStateWithLock() {
+        this._playbin.hasLock = !!this._lock;
+
         if (!this._lock)
             return;
+
+        this._updateBackground();
+
         if (!this._manager.isUnlocked(this._lock))
             return;
         this.locked = false;
     }
 
     _onClicked() {
+        if (!this.locked)
+            return;
+
         if (this._manager.hasKey('item.key.master')) {
             this.locked = false;
             return;
@@ -108,29 +153,29 @@ var Lockscreen = GObject.registerClass({
             return;
         if (!this._manager.hasKey(this._key))
             return;
+
+        /* We are going to need to playback an animation */
+        if (this._openURI)
+            this._playbin.uri = this._openURI;
+
         this._manager.setUnlocked(this._lock);
         this._manager.setUsed(this._key);
     }
 
     _updateUI() {
-        if (!this._overlay)
+        if (!this._playbin)
             return;
 
-        const style = this._overlay.get_style_context();
+        this._playbin.hasLock = !!this._lock;
+        this._playbin.locked = this._locked;
+
         if (this._locked) {
-            style.add_class('locked');
-            this.add_overlay(this._overlay);
+            this._playbin.show();
+        } else if (this._playbin.uri) {
+            this._playbin.show();
+            this._playbin.play();
         } else {
-            style.remove_class('locked');
-
-            // hide widget after transition completes, so that it doesn't
-            // continue to intercept clicks
-            GLib.timeout_add(GLib.PRIORITY_DEFAULT, FADE_OUT_TIME_MS, () => {
-                this.remove(this._overlay);
-                return GLib.SOURCE_REMOVE;
-            });
+            this._playbin.hide();
         }
-
-        this.set_overlay_pass_through(this._overlay, !this._locked);
     }
 });
