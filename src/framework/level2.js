@@ -23,7 +23,7 @@ var FrameworkLevel2 = GObject.registerClass({
             bubbles: 'text-transformation-bubbles-symbolic',
             scrambled: 'text-transformation-scrambled-symbolic',
             creepy: 'text-transformation-creepy-symbolic',
-        }, Gtk.Image, 'iconName', {pixelSize: 50});
+        }, Gtk.Image, 'iconName', {pixelSize: 32});
 
         this._filterGroup = new PopupMenu(this._filterButton, {
             none: 'image-filter-normal-symbolic',
@@ -31,7 +31,7 @@ var FrameworkLevel2 = GObject.registerClass({
             corduroy: 'image-filter-corduroy-symbolic',
             blueprint: 'image-filter-blueprint-symbolic',
             lensFlare: 'image-filter-lensflare-symbolic',
-        }, Gtk.Image, 'iconName', {pixelSize: 50});
+        }, Gtk.Image, 'iconName', {pixelSize: 32});
 
         this._cipherChooser.connect('output', entry => {
             entry.text = `+${this._cipherAdjustment.value}`;

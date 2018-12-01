@@ -121,9 +121,16 @@ button.color {
 button.popup {
     min-width: 55px;
     min-height: 55px;
-    /* Reduce extra horizontal padding from Adwaita */
-    padding-left: 4px;
-    padding-right: 4px;
+    /* Reduce padding from Adwaita */
+    padding: 0px;
+}
+
+button .selected-contents {
+    padding: 4px;
+}
+
+popover.popup-menu image {
+    padding: 10px;
 }
 
 .section {
@@ -203,14 +210,15 @@ popover.error {
 }
 
 /* Miscellaneous theme overrides */
-arrow, button.down, button.up {
+arrow, button.down, button.up, .dropdown {
    opacity: 0.81;
    color: #f18c22;
 }
 
 arrow:disabled,
 button.down:disabled,
-button.up:disabled {
+button.up:disabled,
+.dropdown:disabled {
     /* Adwaita uses 50% mix between foreground and background color for
      * insensitive FG. The BG color here is from Adwaita's dark variant.
      * Computed with sassmeister.com from these functions:
