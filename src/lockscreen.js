@@ -1,6 +1,7 @@
 /* exported Lockscreen */
+/* global pkg */
 
-const {Gio, GObject, Gtk} = imports.gi;
+const {Gio, GLib, GObject, Gtk} = imports.gi;
 
 const {Playbin} = imports.playbin;
 
@@ -86,28 +87,34 @@ var Lockscreen = GObject.registerClass({
     }
 
     _updateBackground () {
-        var assetsPath = '/app/share/lockscreens/default';
-        var assetsOpen = true;
+        const defaultPath = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', 'default']);
         var assetsHasKey = false;
-
-        this._openURI = null;
+        var assetsPath;
+        var videoPath;
 
         if (this._lock) {
-            var path = `/app/share/lockscreens/${this._lock}`;
-            var dir = Gio.File.new_for_path(path);
-            var no_key = dir.get_child('no-key');
+            const path = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', this._lock]);
+            const dir = Gio.File.new_for_path(path);
 
-            if (dir.query_exists(null) && no_key.query_exists(null)) {
-                assetsHasKey = dir.get_child('has-key').query_exists(null);
-                assetsOpen = dir.get_child('open.webm').query_exists(null);
+            if (dir.query_exists(null) &&
+                dir.get_child('no-key').query_exists(null)) {
+                // All the required assets are here, let's use this path for the background
                 assetsPath = path;
 
+                // Now check the optional assets
+                assetsHasKey = dir.get_child('has-key').query_exists(null);
+
                 if (dir.get_child('open.webm').query_exists(null))
-                    this._openURI = `file://${assetsPath}/open.webm`;
+                    videoPath = assetsPath;
             }
-        } else {
-            this._openURI = `file://${assetsPath}/open.webm`;
         }
+
+        if (!assetsPath)
+            assetsPath = defaultPath;
+        if (!videoPath)
+            videoPath = defaultPath;
+
+        this._openURI = `file://${videoPath}/open.webm`;
 
         if (assetsHasKey && this._key && this._manager.hasKey(this._key))
             this._playbin.setBackground(`file://${assetsPath}/has-key`);

@@ -22,7 +22,7 @@ install_data('gtksourceview-3.0/styles/hack.xml', install_dir: stylesdir)
 
 install_subdir(
     'lockscreens',
-    install_dir: 'share/lockscreens',
+    install_dir: join_paths(pkgdatadir, 'lockscreens'),
     strip_directory: true
 )
 
