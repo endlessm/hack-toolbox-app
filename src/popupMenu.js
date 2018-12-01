@@ -30,11 +30,27 @@ var PopupMenu = GObject.registerClass({
         const selectedProps = {[itemProp]: defaultValue, visible: true};
         Object.assign(selectedProps, itemExtraProps);
         this._selected = new ItemClass(selectedProps);
-        this._button.add(this._selected);
+
+        this._selectedContainer = new Gtk.Overlay({visible: true});
+        this._selectedContainer.add(this._selected);
+        const arrow = new Gtk.Image({
+            iconName: 'pan-down-symbolic',
+            iconSize: Gtk.IconSize.BUTTON,
+            halign: Gtk.Align.END,
+            valign: Gtk.Align.END,
+            visible: true,
+        });
+        this._selectedContainer.add_overlay(arrow);
+
+        arrow.get_style_context().add_class('dropdown');
+        this._selected.get_style_context().add_class('selected-contents');
+
+        this._button.add(this._selectedContainer);
 
         super._init(props);
 
         this._menu = new Gtk.Popover();
+        this._menu.get_style_context().add_class('popup-menu');
         const [minChildrenPerLine, maxChildrenPerLine] = this._getChildrenPerLine();
         this._choices = new Gtk.FlowBox({
             homogeneous: true,

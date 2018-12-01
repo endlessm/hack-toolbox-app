@@ -36,7 +36,7 @@ var FrameworkLevel1 = GObject.registerClass({
             overflow: 'overflow-symbolic',
             grid: 'grid-symbolic',
             list: 'list-symbolic',
-        }, Gtk.Image, 'iconName', {pixelSize: 50});
+        }, Gtk.Image, 'iconName', {pixelSize: 32});
 
         const logoChoices = {};
         VALID_LOGOS.forEach(name => {
@@ -50,7 +50,7 @@ var FrameworkLevel1 = GObject.registerClass({
             random: 'card-order-random-symbolic',
             az: 'card-order-a-z-symbolic',
             za: 'card-order-z-a-symbolic',
-        }, Gtk.Image, 'iconName', {pixelSize: 50});
+        }, Gtk.Image, 'iconName', {pixelSize: 32});
     }
 
     bindModel(model) {
