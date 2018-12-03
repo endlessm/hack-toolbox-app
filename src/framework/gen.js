@@ -575,6 +575,42 @@ $body-font: ${model.font};
 
 ${cardDefaultRules}
 
+.ArrangementPianoLayout {
+    .CardHackdex {
+        &:first-child:hover frame {
+           background-position: center -1650px;
+        }
+        
+        &:not(:first-child) frame {
+           background-position: center -30px;
+        }
+
+        &:hover frame {
+           background-position: center -840px;
+        }
+    }
+}
+
+.ArrangementWindshieldLayout {
+  .CardHackdex {
+    &:first-child frame {
+      background-position: center -175px;
+    }
+
+    &:first-child:hover frame {
+      background-position: center -1967px;
+    }
+
+    &:not(:first-child) frame {
+      background-position: center -30px;
+    }
+
+    &:hover frame {
+      background-position: center -607px;
+    }
+  }
+}
+
 ${commonRules}
 `;
     default:
