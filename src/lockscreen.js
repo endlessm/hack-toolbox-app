@@ -117,9 +117,9 @@ var Lockscreen = GObject.registerClass({
             this._openURI = null;
 
         if (assetsHasKey && this._key && this._manager.hasKey(this._key))
-            this._playbin.setBackground(`file://${assetsPath}/has-key`);
+            this._playbin.background = `file://${assetsPath}/has-key`;
         else
-            this._playbin.setBackground(`file://${assetsPath}/no-key`);
+            this._playbin.background = `file://${assetsPath}/no-key`;
     }
 
     _updateLockStateWithKey() {
@@ -167,7 +167,6 @@ var Lockscreen = GObject.registerClass({
             return;
 
         this._playbin.hasLock = !!this._lock;
-        this._playbin.locked = this._locked;
 
         if (this._locked) {
             this._playbin.show();
