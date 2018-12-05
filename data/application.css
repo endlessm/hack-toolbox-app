@@ -7,7 +7,7 @@
     margin: 20px;
 }
 
-lockscreen > playbin.locked.no-lock  {
+lockscreen > playbin.no-lock > lock {
     background: url('resource:///com/endlessm/HackToolbox/hacktoolbox/lockscreen.jpg') no-repeat center / cover;
 }
 
