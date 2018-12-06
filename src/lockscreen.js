@@ -206,8 +206,10 @@ var Lockscreen = GObject.registerClass({
         }
         if (!this._key || !this._lock)
             return;
-        if (!this._manager.hasKey(this._key))
+        if (!this._manager.hasKey(this._key)) {
+            SoundServer.getDefault().play('hack-toolbox/lockscreen/inactive');
             return;
+        }
 
         /* We are going to need to playback an animation */
         if (this._openURI)
