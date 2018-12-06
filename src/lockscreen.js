@@ -116,7 +116,9 @@ var Lockscreen = GObject.registerClass({
         else
             this._openURI = null;
 
-        if (assetsHasKey && this._key && this._manager.hasKey(this._key))
+        this._playbin.hasKey = this._key && this._manager.hasKey(this._key);
+
+        if (assetsHasKey && this._playbin.hasKey)
             this._playbin.background = `file://${assetsPath}/has-key`;
         else
             this._playbin.background = `file://${assetsPath}/no-key`;

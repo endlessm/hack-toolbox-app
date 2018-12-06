@@ -1,6 +1,6 @@
 /* exported Playbin */
 
-const {GLib, GObject, Gtk, Gst} = imports.gi;
+const {Gdk, GLib, GObject, Gtk, Gst} = imports.gi;
 
 const Lock = GObject.registerClass({
     CssName: 'lock',
@@ -41,6 +41,7 @@ var Playbin = GObject.registerClass({
 }, class Playbin extends Gtk.Stack {
     _init(props) {
         this._uri = null;
+        this._hasKey = false;
 
         props.transitionType = props.transitionType || Gtk.StackTransitionType.CROSSFADE;
         props.transitionDuration = props.transitionDuration || 100;
@@ -53,6 +54,11 @@ var Playbin = GObject.registerClass({
 
         this._button.connect('clicked', () => {
             this.emit('clicked');
+        });
+
+        this.connect('realize', () => {
+            this._cursor = Gdk.Cursor.new_from_name(this.get_display(), 'pointer');
+            this.window.set_cursor(this._hasKey ? this._cursor : null);
         });
 
         /* Update crop values on size allocation */
@@ -149,6 +155,8 @@ var Playbin = GObject.registerClass({
         if (newstate === Gst.State.PLAYING) {
             this.set_visible_child(this._video_widget);
             this._started = true;
+            if (this.get_realized())
+                this.window.set_cursor(null);
         }
     }
 
@@ -198,5 +206,16 @@ var Playbin = GObject.registerClass({
             style.remove_class('no-lock');
         else
             style.add_class('no-lock');
+    }
+
+    get hasKey() {
+        return this._hasKey;
+    }
+
+    set hasKey(value) {
+        this._hasKey = value;
+
+        if (this.get_realized())
+            this.window.set_cursor(this._hasKey ? this._cursor : null);
     }
 });
