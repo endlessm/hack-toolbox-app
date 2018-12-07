@@ -178,13 +178,16 @@ var Playbin = GObject.registerClass({
     }
 
     set uri (value) {
-        if (!value)
+        if (this._uri === value)
             return;
 
-        this._ensurePlaybin();
         this._uri = value;
-        this._playbin.uri = this._uri;
-        this._playbin.set_state(Gst.State.PAUSED);
+
+        if (this._uri) {
+            this._ensurePlaybin();
+            this._playbin.uri = this._uri;
+            this._playbin.set_state(Gst.State.PAUSED);
+        }
     }
 
     play () {
@@ -192,7 +195,6 @@ var Playbin = GObject.registerClass({
             return;
 
         this._started = false;
-        this._playbin.uri = this._uri;
         this._playbin.set_state(Gst.State.PLAYING);
     }
 
