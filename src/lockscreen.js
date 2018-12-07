@@ -4,6 +4,7 @@
 const {Gio, GLib, GObject, Gtk} = imports.gi;
 
 const {Playbin} = imports.playbin;
+const SoundServer = imports.soundServer;
 
 var Lockscreen = GObject.registerClass({
     GTypeName: 'Lockscreen',
@@ -37,7 +38,15 @@ var Lockscreen = GObject.registerClass({
         this._manager = Gio.Application.get_default().locksManager;
         this._keyChangedId = 0;
         this._lockChangedId = 0;
+        this._activeSoundID = null;
         this._updateUI();
+
+        this._playbin.connect('realize', () => {
+            this._playActiveSound();
+        });
+        this.connect('destroy', () => {
+            this._stopActiveSound();
+        });
     }
 
     get locked() {
@@ -62,7 +71,10 @@ var Lockscreen = GObject.registerClass({
         if (this._keyChangedId !== 0)
             this._manager.disconnect(this._keyChangedId);
         this._keyChangedId = this._manager.connect(
-            `changed::${key}`, this._updateLockStateWithKey.bind(this));
+            `changed::${key}`, () => {
+                this._updateLockStateWithKey();
+                this._playActiveSound();
+            });
         this._key = key;
         this._updateLockStateWithKey();
     }
@@ -130,6 +142,45 @@ var Lockscreen = GObject.registerClass({
         this._updateBackground();
     }
 
+    _playActiveSound() {
+        if (!this._locked)
+            return;
+        if (!this._playbin.hasKey)
+            return;
+
+        /* if waiting for the loop to start, leave it */
+        if (this._activeSoundID === 'pending')
+            return;
+
+        /* if the loop is playing, leave it */
+        if (this._activeSoundID !== null && this._activeSoundID !== 'cancel')
+            return;
+
+        SoundServer.getDefault().playAsync('hack-toolbox/lockscreen/active')
+        .then(uuid => {
+            if (this._activeSoundID === 'cancel') {
+                this._activeSoundID = uuid;
+                this._stopActiveSound();
+                return;
+            }
+            this._activeSoundID = uuid;
+        });
+        this._activeSoundID = 'pending';
+    }
+
+    _stopActiveSound() {
+        if (this._activeSoundID === null)
+            return;
+        if (this._activeSoundID === 'cancel')
+            return;
+        if (this._activeSoundID === 'pending') {
+            this._activeSoundID = 'cancel';
+            return;
+        }
+        SoundServer.getDefault().stop(this._activeSoundID);
+        this._activeSoundID = null;
+    }
+
     _updateLockStateWithLock() {
         this._playbin.hasLock = !!this._lock;
 
@@ -147,14 +198,18 @@ var Lockscreen = GObject.registerClass({
         if (!this.locked)
             return;
 
+        this._stopActiveSound();
+
         if (this._manager.hasKey('item.key.master')) {
             this.locked = false;
             return;
         }
         if (!this._key || !this._lock)
             return;
-        if (!this._manager.hasKey(this._key))
+        if (!this._manager.hasKey(this._key)) {
+            SoundServer.getDefault().play('hack-toolbox/lockscreen/inactive');
             return;
+        }
 
         /* We are going to need to playback an animation */
         if (this._openURI)
