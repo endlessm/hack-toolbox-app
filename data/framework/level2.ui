@@ -176,7 +176,12 @@
                     <property name="active_id">none</property>
                     <items>
                       <item id="none" translatable="yes">None</item>
-                      <item id="scifi" translatable="yes">Sci-Fi</item>
+                      <item id="drumkit" translatable="yes">Drum Kit</item>
+                      <item id="idm" translatable="yes">IDM</item>
+                      <item id="jingle" translatable="yes">Jingle</item>
+                      <item id="mallets" translatable="yes">Mallets</item>
+                      <item id="tchaik" translatable="yes">Tchaikovsky</item>
+                      <item id="tower" translatable="yes">Tower</item>
                     </items>
                   </object>
                   <packing>
@@ -220,8 +225,12 @@
                     <property name="active_id">none</property>
                     <items>
                       <item id="none" translatable="yes">None</item>
-                      <item id="piano" translatable="yes">Piano</item>
                       <item id="drumkit" translatable="yes">Drum Kit</item>
+                      <item id="idm" translatable="yes">IDM</item>
+                      <item id="jingle" translatable="yes">Jingle</item>
+                      <item id="mallets" translatable="yes">Mallets</item>
+                      <item id="tchaik" translatable="yes">Tchaikovsky</item>
+                      <item id="tower" translatable="yes">Tower</item>
                     </items>
                   </object>
                   <packing>

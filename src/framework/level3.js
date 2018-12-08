@@ -13,8 +13,10 @@ const VALID_ENUMS = {
     card_order: ['ordered', 'random', 'az', 'za'],
     card_layout: ['grid', 'tiledGrid', 'windshield', 'piano', 'nest', 'overflow'],
     image_filter: ['none', 'disco', 'corduroy', 'blueprint', 'lensFlare'],
-    sounds_cursor_hover: ['none', 'scifi'],
-    sounds_cursor_click: ['none', 'piano', 'drumkit'],
+    sounds_cursor_hover: ['none', 'drumkit', 'idm', 'jingle', 'mallets',
+        'tchaik', 'tower'],
+    sounds_cursor_click: ['none', 'drumkit', 'idm', 'jingle', 'mallets',
+        'tchaik', 'tower'],
 };
 
 const COLOR_PROPS = ['logo_color', 'main_color', 'accent_color', 'info_color',
