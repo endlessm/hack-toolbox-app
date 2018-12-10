@@ -28,6 +28,7 @@ class SoundServer {
         const SoundServerProxy = Gio.DBusProxy.makeProxyWrapper(SoundServerIface);
         this._proxy = new SoundServerProxy(Gio.DBus.session,
             'com.endlessm.HackSoundServer', '/com/endlessm/HackSoundServer');
+        this._uniqueSounds = {};
     }
 
     // Most common use case, fire and forget, no return value
@@ -50,6 +51,41 @@ class SoundServer {
                 resolve(uuid);
             });
         });
+    }
+
+    // Only one instance of this sound id will play at the same time
+    playUnique(id) {
+        if (id in this._uniqueSounds)
+            return;
+        this._uniqueSounds[id] = 'pending';
+        this._proxy.PlaySoundRemote(id, (out, err) => {
+            if (err) {
+                logError(err, `Error playing sound ${id}`);
+                delete this._uniqueSounds[id];
+                return;
+            }
+            const [uuid] = out;
+            if (this._uniqueSounds[id] === 'cancel') {
+                this._uniqueSounds[id] = uuid;
+                this.StopUnique(id);
+                return;
+            }
+            this._uniqueSounds[id] = uuid;
+        });
+    }
+
+    stopUnique(id) {
+        if (!(id in this._uniqueSounds))
+            return;
+        const uuid = this._uniqueSounds[id];
+        if (uuid === 'cancel')
+            return;
+        if (uuid === 'pending') {
+            this._uniqueSounds[id] = 'cancel';
+            return;
+        }
+        this.stop(uuid);
+        delete this._uniqueSounds[id];
     }
 
     // Use sparingly, only if you need the return value, but also can't use an
