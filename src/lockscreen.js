@@ -45,8 +45,24 @@ var Lockscreen = GObject.registerClass({
             this._playActiveSound();
         });
         this.connect('destroy', () => {
+            this._untrackKeyChanges();
+            this._untrackLockChanges();
             this._stopActiveSound();
         });
+    }
+
+    _untrackKeyChanges () {
+        if (this._keyChangedId !== 0) {
+            this._manager.disconnect(this._keyChangedId);
+            this._keyChangedId = 0;
+        }
+    }
+
+    _untrackLockChanges () {
+        if (this._lockChangedId !== 0) {
+            this._manager.disconnect(this._lockChangedId);
+            this._lockChangedId = 0;
+        }
     }
 
     get locked() {
@@ -68,8 +84,7 @@ var Lockscreen = GObject.registerClass({
     set key(key) {
         if ('_key' in this && this._key === key)
             return;
-        if (this._keyChangedId !== 0)
-            this._manager.disconnect(this._keyChangedId);
+        this._untrackKeyChanges();
         this._keyChangedId = this._manager.connect(
             `changed::${key}`, () => {
                 this._updateLockStateWithKey();
@@ -86,8 +101,7 @@ var Lockscreen = GObject.registerClass({
     set lock(lock) {
         if ('_lock' in this && this._lock === lock)
             return;
-        if (this._lockChangedId !== 0)
-            this._manager.disconnect(this._lockChangedId);
+        this._untrackLockChanges();
         this._lockChangedId = this._manager.connect(
             `changed::${lock}`, this._updateLockStateWithLock.bind(this));
         this._lock = lock;
