@@ -107,7 +107,7 @@ var Defaults = class Defaults {
             const key = 'app.com_endlessm_Hackdex_chapter_one.corruption';
             let corruption;
             try {
-                corruption = gameState.GetSync(key);
+                corruption = gameState.GetSync(key)[0].deep_unpack();
             } catch (e) {
                 void e;  // key not yet present; do nothing
                 return;
