@@ -58,6 +58,7 @@
                 <property name="halign">center</property>
                 <property name="valign">start</property>
                 <property name="rgba">rgb(255,255,255)</property>
+                <property name="use_alpha">True</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -107,6 +108,7 @@
                 <property name="halign">start</property>
                 <property name="valign">start</property>
                 <property name="rgba">rgb(255,255,255)</property>
+                <property name="use_alpha">True</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -121,6 +123,7 @@
                 <property name="halign">center</property>
                 <property name="valign">start</property>
                 <property name="rgba">rgb(204,83,43)</property>
+                <property name="use_alpha">True</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -135,6 +138,7 @@
                 <property name="halign">end</property>
                 <property name="valign">start</property>
                 <property name="rgba">rgb(244,217,79)</property>
+                <property name="use_alpha">True</property>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -297,6 +301,7 @@
                 <property name="halign">start</property>
                 <property name="valign">start</property>
                 <property name="rgba">rgb(0,0,0)</property>
+                <property name="use_alpha">True</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
