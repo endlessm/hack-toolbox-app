@@ -282,12 +282,12 @@ class RaModelBase extends GObject.Object {
                 void e;
                 return;  // key not yet present, nothing to do
             }
-            const corruptedColor = new Gdk.RGBA({red: 1.0, green: 1.0, blue: 1.0, alpha: 0});
             const state = corruption.state.deep_unpack();
-            if (state === 'corrupted' && !this.main_color.equal(corruptedColor) ||
+            if (state === 'corrupted' && this.main_color.alpha > 0.05 ||
                 state === 'fixed') {
-                // Quest was solved, player set main color to another color; or
-                // quest was already solved and we just update the stored color
+                // Quest was solved, player set main color to a visible color;
+                // or quest was already solved and we just update the stored
+                // color
                 await gameState.Set(key, new GLib.Variant('a{ss}', {
                     state: 'fixed',
                     color: Utils.rgbaToString(this.main_color),
