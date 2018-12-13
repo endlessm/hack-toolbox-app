@@ -48,9 +48,9 @@ int
 hack_toolbox_open_fd_readonly (GFile *file,
                                GError **error)
 {
-  g_return_val_if_fail (file, FALSE);
-  g_return_val_if_fail (G_IS_FILE (file), FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail (file, -1);
+  g_return_val_if_fail (G_IS_FILE (file), -1);
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   int open_flags = O_RDONLY | O_CLOEXEC | O_NOCTTY;
 
