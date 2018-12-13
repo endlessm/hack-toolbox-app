@@ -167,6 +167,7 @@ var Codeview = GObject.registerClass({
 
         this._compileTimeout = null;
         this._numErrors = 0;
+        this._ambientMusicID = null;
     }
 
     get text() {
