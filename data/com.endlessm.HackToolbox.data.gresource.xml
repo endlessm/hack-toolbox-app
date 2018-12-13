@@ -50,6 +50,7 @@
     <file>hacktoolbox/lockscreen.jpg</file>
     <file compressed="true" preprocess="xml-stripblanks">hacktoolbox/toolbox.ui</file>
     <file preprocess="xml-stripblanks">icons/16x16/actions/error-fix-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/16x16/actions/error-indicator.svg</file>
     <file preprocess="xml-stripblanks">icons/16x16/actions/reset-button-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">Fizzics/controlpanel.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">Fizzics/level1.ui</file>

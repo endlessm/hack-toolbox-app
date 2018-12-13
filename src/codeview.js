@@ -152,6 +152,7 @@ var Codeview = GObject.registerClass({
         const renderer = new GtkSource.GutterRendererPixbuf({
             size: 16,
             visible: true,
+            yalign: 0.7,
         });
         gutter.insert(renderer, 0);
 
@@ -237,7 +238,7 @@ var Codeview = GObject.registerClass({
         renderer.iconName = '';
         const marks = this._getOurSourceMarks(start);
         if (marks.length > 0)
-            renderer.iconName = 'edit-delete-symbolic';
+            renderer.iconName = 'error-indicator';
     }
 
     _onRendererActivate(renderer, iter, area) {
