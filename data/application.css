@@ -229,6 +229,12 @@ arrow, button.down, button.up, .dropdown {
    color: #f18c22;
 }
 
+button.toggle,
+button.combo,
+spinbutton {
+    background: rgba(11,28,53,0.60);
+}
+
 arrow:disabled,
 button.down:disabled,
 button.up:disabled,
