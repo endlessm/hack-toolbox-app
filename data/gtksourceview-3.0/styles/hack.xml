@@ -48,6 +48,9 @@
   <!-- Identifiers -->
   <style name="def:identifier" foreground="#fdfdfd"/>
 
+  <!-- Others -->
+  <style name="def:error" background="#ff6a6a" foreground="white" bold="true"/>
+
   <!-- Below here is identical to Tango -->
 
   <!-- Search Matching -->
@@ -74,7 +77,6 @@
 
   <!-- Others -->
   <style name="def:preprocessor"            foreground="chocolate3"/>
-  <style name="def:error"                   background="scarletred2" bold="true"/>
   <style name="def:warning"                 background="plum1"/>
   <style name="def:note"                    background="orange1" bold="true"/>
   <style name="def:underlined"              italic="true" underline="single"/>

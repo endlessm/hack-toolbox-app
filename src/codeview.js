@@ -1,6 +1,6 @@
 /* exported Codeview */
 
-const {Gdk, GLib, GObject, Gtk, GtkSource, Pango} = imports.gi;
+const {Gdk, GLib, GObject, Gtk, GtkSource} = imports.gi;
 
 const SoundServer = imports.soundServer;
 
@@ -125,13 +125,18 @@ var Codeview = GObject.registerClass({
 
         this._buffer = new Buffer({language, styleScheme});
 
-        const darkRed = new Gdk.RGBA({red: 0xa4});
-        this._errorUnderline = new GtkSource.Tag({
-            name: 'error-underline',
-            underline: Pango.Underline.ERROR,
-            underlineRgba: darkRed,
+        const bgErr = new Gdk.RGBA();
+        bgErr.parse('#ff6a6a');
+        const fgErr = new Gdk.RGBA();
+        fgErr.parse('#fdfdfd');
+        this._errorStyle = new GtkSource.Tag({
+            name: 'error-style',
+            backgroundSet: true,
+            backgroundRgba: bgErr,
+            foregroundSet: true,
+            foregroundRgba: fgErr,
         });
-        this._buffer.tagTable.add(this._errorUnderline);
+        this._buffer.tagTable.add(this._errorStyle);
 
         this._view = new GtkSource.View({
             buffer: this._buffer,
@@ -139,7 +144,7 @@ var Codeview = GObject.registerClass({
             visible: true,
         });
 
-        const background = new Gdk.RGBA({red: 0xa4, alpha: 0.2});
+        const background = new Gdk.RGBA({red: 1, green: 1, blue: 1, alpha: 0.1});
         const attrs = new GtkSource.MarkAttributes({background});
         this._view.set_mark_attributes(MarkType.ERROR, attrs, 0);
 
@@ -147,6 +152,7 @@ var Codeview = GObject.registerClass({
         const renderer = new GtkSource.GutterRendererPixbuf({
             size: 16,
             visible: true,
+            yalign: 0.7,
         });
         gutter.insert(renderer, 0);
 
@@ -167,6 +173,7 @@ var Codeview = GObject.registerClass({
 
         this._compileTimeout = null;
         this._numErrors = 0;
+        this._ambientMusicID = null;
     }
 
     get text() {
@@ -231,7 +238,7 @@ var Codeview = GObject.registerClass({
         renderer.iconName = '';
         const marks = this._getOurSourceMarks(start);
         if (marks.length > 0)
-            renderer.iconName = 'edit-delete-symbolic';
+            renderer.iconName = 'error-indicator';
     }
 
     _onRendererActivate(renderer, iter, area) {
@@ -325,7 +332,7 @@ var Codeview = GObject.registerClass({
     setCompileResults(results) {
         const [begin, bound] = this._buffer.get_bounds();
         this._buffer.remove_source_marks(begin, bound, MarkType.ERROR);
-        this._buffer.remove_tag(this._errorUnderline, begin, bound);
+        this._buffer.remove_tag(this._errorStyle, begin, bound);
         results.forEach(({start, end, message, fixme}) => {
             const iter = this._buffer.get_iter_at_line_offset(start.line - 1, start.column);
             const mark = this._buffer.create_source_mark(null, MarkType.ERROR, iter);
@@ -341,7 +348,7 @@ var Codeview = GObject.registerClass({
                 endIter = iter.copy();
                 endIter.forward_to_line_end();
             }
-            this._buffer.apply_tag(this._errorUnderline, iter, endIter);
+            this._buffer.apply_tag(this._errorStyle, iter, endIter);
 
             if (fixme)
                 mark._fixme = fixme;

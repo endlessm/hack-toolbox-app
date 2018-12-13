@@ -162,8 +162,31 @@ slider {
 }
 
 popover.error {
-    background-color: #ffb1aa;
+    background-color: #191919;
+    border: 1px solid #ff6a6a;
+    border-radius: 1px;
     padding: 12px;
+    font-family: Metropolis;
+    font-size: 16px;
+    color: white;
+}
+
+popover.error button {
+    background-image: linear-gradient(49deg, #f99347 0%, #f15a22 100%);
+    border-radius: 8px;
+    outline: none;
+    text-shadow: none;
+    -gtk-icon-shadow: none;
+    padding: 8px;
+    font-family: 'Metropolis Medium';
+}
+
+popover.error button:hover {
+    background-image: linear-gradient(49deg, #fcb936 0%, #fc4d36 100%);
+}
+
+.help-message-icon {
+    color: #ff6a6a;
 }
 
 .framework.toolbox-surrounding-window.has-changes {
