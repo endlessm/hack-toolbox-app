@@ -87,6 +87,15 @@ var Playbin = GObject.registerClass({
         this._video_widget.show();
         this.add(this._video_widget);
 
+        this._has_ready_to_show = !!GObject.signal_lookup('ready-to-show',
+            this._video_widget.constructor.$gtype);
+
+        if (this._has_ready_to_show) {
+            this._video_widget.connect('ready-to-show', () => {
+                this.set_visible_child(this._video_widget);
+            });
+        }
+
         this._playbin.get_bus().add_watch(0, this._bus_watch.bind(this));
     }
 
@@ -153,7 +162,9 @@ var Playbin = GObject.registerClass({
         const [, newstate] = msg.parse_state_changed();
 
         if (newstate === Gst.State.PLAYING) {
-            this.set_visible_child(this._video_widget);
+            if (!this._has_ready_to_show)
+                this.set_visible_child(this._video_widget);
+
             this._started = true;
             if (this.get_realized())
                 this.window.set_cursor(null);
