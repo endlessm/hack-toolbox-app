@@ -33,6 +33,10 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="halign">center</property>
+                <property name="vexpand">True</property>
+                <property name="valign">center</property>
                 <child>
                   <object class="GtkBox" id="tab0Image">
                     <property name="visible">True</property>
@@ -83,6 +87,10 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="halign">center</property>
+                <property name="vexpand">True</property>
+                <property name="valign">center</property>
                 <child>
                   <object class="GtkBox" id="tab1Image">
                     <property name="visible">True</property>
@@ -134,6 +142,10 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="halign">center</property>
+                <property name="vexpand">True</property>
+                <property name="valign">center</property>
                 <child>
                   <object class="GtkBox" id="tab2Image">
                     <property name="visible">True</property>
@@ -185,6 +197,10 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="halign">center</property>
+                <property name="vexpand">True</property>
+                <property name="valign">center</property>
                 <child>
                   <object class="GtkBox" id="tab3Image">
                     <property name="visible">True</property>
@@ -236,6 +252,10 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="halign">center</property>
+                <property name="vexpand">True</property>
+                <property name="valign">center</property>
                 <child>
                   <object class="GtkBox" id="tab4Image">
                     <property name="visible">True</property>

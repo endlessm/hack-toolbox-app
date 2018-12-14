@@ -133,15 +133,53 @@ popover.popup-menu image {
 /* Notebook and tabs */
 notebook {
     background-color: rgba(6, 20, 39, 0.24);
+    border: 0 none;
+    border-radius: 8px;
 }
 
 notebook header {
-    background-color: rgba(6, 20, 39, 0.48);
+    background-color: transparent;
+    border: 0 none;
+    padding: 0;
 }
 
-notebook tabs,
+notebook tabs {
+    background-color: transparent;
+    padding: 1px;
+}
+
 notebook stack {
     background-color: transparent;
+}
+
+notebook tab {
+    min-height: 69px;
+    margin: 0;  /* remove Adwaita margin between tabs */
+
+    /* these gradient colors are premultiplied with opacity: 0.85 */
+    background-image: linear-gradient(-129deg,
+                                      rgba(11, 24, 60, 0.46) 0%,
+                                      rgba(6, 20, 39, 0.34) 100%);
+}
+
+notebook tab:checked {
+    background-image: none;
+    /* make the Adwaita highlight orange and move it up to the top */
+    box-shadow: inset 0 3px #f18c22;
+}
+
+notebook tab:first-child {
+     border-top-left-radius: 8px;
+}
+
+notebook tab:last-child {
+    border-top-right-radius: 8px;
+}
+
+notebook tab:not(:checked):hover {
+    /* Adwaita has a black shadow on hover, make it orange but less vivid than
+     * the selected orange */
+    box-shadow: inset 0 3px rgba(241, 140, 34, 0.4);
 }
 
 /* Checkboxes */
@@ -212,6 +250,12 @@ popover.error button:hover {
 arrow, button.down, button.up, .dropdown {
    opacity: 0.81;
    color: #f18c22;
+}
+
+button.toggle,
+button.combo,
+spinbutton {
+    background: rgba(11,28,53,0.60);
 }
 
 arrow:disabled,
