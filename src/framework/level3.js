@@ -163,21 +163,22 @@ var FrameworkLevel3 = GObject.registerClass({
         if (scope.logo_graphic !== null &&
             !VALID_ENUMS.logo_graphic.includes(scope.logo_graphic)) {
             errors.push(this._errorRecordAtAssignmentLocation('logo_graphic',
-                `Unknown value ${scope.logo_graphic}: value must be one ` +
-                `of ${VALID_ENUMS.logo_graphic.join(', ')}`));
+                `Unknown value "${scope.logo_graphic}": value must be one ` +
+                `of "${VALID_ENUMS.logo_graphic.join('", "')}"`));
         }
 
         const {fonts} = this._defaults;
         if (scope.font !== null && !fonts.includes(scope.font)) {
             errors.push(this._errorRecordAtAssignmentLocation('font',
-                `Unknown value ${scope.font}: value must be one of ${fonts.join(', ')}`));
+                `Unknown value "${scope.font}": value must be one ` +
+                `of "${fonts.join('", "')}"`));
         }
 
         ['border_width', 'font_size'].forEach(prop => {
             if (scope[prop] !== null &&
                 (typeof scope[prop] !== 'number' || scope[prop] < 0)) {
                 errors.push(this._errorRecordAtAssignmentLocation(prop,
-                    `Unknown value ${scope[prop]}: value must be a number ` +
+                    `Unknown value "${scope[prop]}": value must be a number ` +
                     'of zero or more, like 10'));
             }
         });
@@ -194,7 +195,7 @@ var FrameworkLevel3 = GObject.registerClass({
                 }
                 if (failed) {
                     errors.push(this._errorRecordAtAssignmentLocation(prop,
-                        `Unknown value ${scope[prop]}: value must be a ` +
+                        `Unknown value "${scope[prop]}": value must be a ` +
                         'color, like "red" or "#729fcf"'));
                 }
             }
@@ -203,16 +204,16 @@ var FrameworkLevel3 = GObject.registerClass({
         ENUM_PROPS.forEach(prop => {
             if (scope[prop] !== null && !VALID_ENUMS[prop].includes(scope[prop])) {
                 errors.push(this._errorRecordAtAssignmentLocation(prop,
-                    `Unknown value ${scope[prop]}: value must be one ` +
-                    `of ${VALID_ENUMS[prop].join('\n')}`));
+                    `Unknown value "${scope[prop]}": value must be one ` +
+                    `of "${VALID_ENUMS[prop].join('", "')}"`));
             }
         });
 
         if (scope.hyperlinks !== null && scope.hyperlinks !== true &&
             scope.hyperlinks !== false) {
             errors.push(this._errorRecordAtAssignmentLocation('hyperlinks',
-                `Unknown value ${scope.hyperlinks}: value must be yes or no, ` +
-                'on or off, true or false'));
+                `Unknown value "${scope.hyperlinks}": value must be yes or ` +
+                'no, on or off, true or false'));
         }
 
         return errors;
