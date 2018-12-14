@@ -36,5 +36,7 @@ Gio._promisify(Gio._LocalFilePrototype, 'replace_contents_bytes_async',
     'replace_contents_finish');
 Gio._promisify(ResourceFilePrototype, 'copy_async', 'copy_finish');
 Gio._promisify(Gio.OutputStream.prototype, 'splice_async', 'splice_finish');
+Gio._promisify(Gio.Subprocess.prototype, 'communicate_utf8_async',
+    'communicate_utf8_finish');
 Gio._promisify(Gio.Subprocess.prototype, 'wait_check_async',
     'wait_check_finish');
