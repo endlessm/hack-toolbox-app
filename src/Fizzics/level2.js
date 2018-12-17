@@ -247,7 +247,7 @@ var FizzicsLevel2 = GObject.registerClass({
             const value = this._getValueForScope(prop, modelProp);
             const type = typeof value;
             const options = this._getOptionsForScopeValue(scope, prop);
-            const baseMessage = `Unknown value ${scope[prop]} for ${prop}`;
+            const baseMessage = `Unknown value "${scope[prop]}" for ${prop}`;
             if (typeof scope[prop] !== type) {
                 errors.push(this._errorRecordAtAssignmentLocation(
                     prefix ? `${prefix}${prop}` : prop,
@@ -257,8 +257,8 @@ var FizzicsLevel2 = GObject.registerClass({
             } else if (options !== null && options.indexOf(scope[prop]) === -1) {
                 errors.push(this._errorRecordAtAssignmentLocation(
                     prefix ? `${prefix}${prop}` : prop,
-                    `${baseMessage}: value must be one of ${options.join(', ')}`,
-                    value
+                    `${baseMessage}: value must be one of ` +
+                    `"${options.join('", "')}"`, value
                 ));
             }
         });
