@@ -30,6 +30,10 @@ var FizzicsControlPanel = GObject.registerClass({
             GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
     }
 
+    reset() {
+        this._level2.reset();
+    }
+
     bindModel(model) {
         this._level1.bindModel(model);
         this._level2.bindModel(model);
