@@ -39,6 +39,9 @@ var SFXS = [
     'horn',
     'drum',
     'beam',
+    'goal',
+    'gem',
+    'win',
 ];
 
 const _indexes = new Array(SPECIES).fill(0)
