@@ -313,6 +313,10 @@ var FizzicsLevel2 = GObject.registerClass({
     }
 
     _onNotify() {
+        this.reset();
+    }
+
+    reset() {
         const oldText = this._codeview.text;
         this._regenerateCode();
         const timeMicrosec = GLib.get_monotonic_time();

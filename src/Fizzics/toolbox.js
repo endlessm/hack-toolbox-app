@@ -27,6 +27,7 @@ var FizzicsToolbox = GObject.registerClass(class FizzicsToolbox extends Toolbox 
                 new GLib.Variant('(sava{sv})', ['reset', [], {}]),
                 null, Gio.DBusCallFlags.NONE, -1, null
             );
+            this._controlPanel.reset();
         });
     }
 
