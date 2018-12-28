@@ -16,7 +16,8 @@ var ToolboxWindow = GObject.registerClass({
     },
 }, class ToolboxWindow extends Gtk.ApplicationWindow {
     _init(params) {
-        Object.assign(params, {expand: true});
+        Object.assign(params, {expand: true,
+                               modal: true});
         super._init(params);
 
         // Need to create the hack toolbox after the window
