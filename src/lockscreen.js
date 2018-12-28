@@ -93,7 +93,6 @@ var Lockscreen = GObject.registerClass({
         this._keyChangedId = this._manager.connect(
             `changed::${key}`, () => {
                 this._updateLockStateWithKey();
-                this._playActiveSound();
             });
         this._key = key;
         this._updateLockStateWithKey();
@@ -108,7 +107,10 @@ var Lockscreen = GObject.registerClass({
             return;
         this._untrackLockChanges();
         this._lockChangedId = this._manager.connect(
-            `changed::${lock}`, this._updateLockStateWithLock.bind(this));
+            `changed::${lock}`, () => {
+                this._updateLockStateWithLock();
+                this._stopActiveSound();
+            });
         this._lock = lock;
         this._updateLockStateWithLock();
     }
@@ -174,38 +176,21 @@ var Lockscreen = GObject.registerClass({
             return;
         if (!this._playbin.hasKey)
             return;
-
-        /* if waiting for the loop to start, leave it */
-        if (this._activeSoundID === 'pending')
-            return;
-
-        /* if the loop is playing, leave it */
-        if (this._activeSoundID !== null && this._activeSoundID !== 'cancel')
-            return;
-
-        SoundServer.getDefault().playAsync('hack-toolbox/lockscreen/active')
-        .then(uuid => {
-            if (this._activeSoundID === 'cancel') {
-                this._activeSoundID = uuid;
-                this._stopActiveSound();
-                return;
-            }
+        const playPromise = SoundServer.getDefault().playAtBusNameAsync(
+            'hack-toolbox/lockscreen/active', this.toolbox.target_app_id);
+        playPromise.then(uuid => {
             this._activeSoundID = uuid;
         });
-        this._activeSoundID = 'pending';
     }
 
     _stopActiveSound() {
-        if (this._activeSoundID === null)
-            return;
-        if (this._activeSoundID === 'cancel')
-            return;
-        if (this._activeSoundID === 'pending') {
-            this._activeSoundID = 'cancel';
-            return;
+        if (this._activeSoundID !== null) {
+            SoundServer.getDefault().stopAtBusName(
+                this._activeSoundID,
+                this.toolbox.target_app_id
+            );
+            this._activeSoundID = null;
         }
-        SoundServer.getDefault().stop(this._activeSoundID);
-        this._activeSoundID = null;
     }
 
     _updateLockStateWithLock() {
@@ -224,8 +209,6 @@ var Lockscreen = GObject.registerClass({
     _onClicked() {
         if (!this.locked)
             return;
-
-        this._stopActiveSound();
 
         if (this._manager.hasKey('item.key.master')) {
             this.locked = false;

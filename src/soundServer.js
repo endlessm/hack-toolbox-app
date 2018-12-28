@@ -9,8 +9,17 @@ const SoundServerIface = `
       <arg type='s' name='sound_event' direction='in'/>
       <arg type='s' name='uuid' direction='out'/>
     </method>
+    <method name='PlaySoundAtBusName'>
+      <arg type='s' name='sound_event' direction='in'/>
+      <arg type='s' name='bus_name' direction='in'/>
+      <arg type='s' name='uuid' direction='out'/>
+    </method>
     <method name='StopSound'>
       <arg type='s' name='uuid' direction='in'/>
+    </method>
+    <method name='StopSoundAtBusName'>
+      <arg type='s' name='uuid' direction='in'/>
+      <arg type='s' name='bus_name' direction='in'/>
     </method>
     <signal name='Error'>
       <arg type='s' name='uuid'/>
@@ -56,6 +65,36 @@ class SoundServer {
     // async function
     playSync(id) {
         return this._proxy.PlaySoundSync(id);
+    }
+
+    // Fire and forget, no return value.
+    playAtBusName(id, appId) {
+        this._proxy.PlaySoundAtBusNameRemote(id, appId, (out, err) => {
+            if (err)
+                logError(err, `Error playing sound ${id} at bus name ${appId}`);
+        });
+    }
+
+    // Use sparingly, only if you need the return value, but also can't use an
+    // async function.
+    playAtBusNameAsync(id, appId) {
+        return new Promise((resolve, reject) => {
+            this._proxy.PlaySoundAtBusNameRemote(id, appId, (out, err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                const [uuid] = out;
+                resolve(uuid);
+            });
+        });
+    }
+
+    stopAtBusName(uuid, appId) {
+        this._proxy.StopSoundAtBusNameRemote(uuid, appId, (out, err) => {
+            if (err)
+                logError(err, `Error stopping sound ${uuid} at bus ${appId}`);
+        });
     }
 
     stop(uuid) {
