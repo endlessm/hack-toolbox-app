@@ -4,12 +4,17 @@
 const {Gio, GLib, GObject, Gtk} = imports.gi;
 
 const {Playbin} = imports.playbin;
+const {Toolbox} = imports.toolbox;
 const SoundServer = imports.soundServer;
 
 var Lockscreen = GObject.registerClass({
     GTypeName: 'Lockscreen',
     CssName: 'lockscreen',
     Properties: {
+        toolbox: GObject.ParamSpec.object(
+            'toolbox', 'Toolbox', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            Toolbox),
         locked: GObject.ParamSpec.boolean('locked', 'Locked', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             true),
@@ -106,6 +111,14 @@ var Lockscreen = GObject.registerClass({
             `changed::${lock}`, this._updateLockStateWithLock.bind(this));
         this._lock = lock;
         this._updateLockStateWithLock();
+    }
+
+    get toolbox() {
+        return this._toolbox;
+    }
+
+    set toolbox(value) {
+        this._toolbox = value;
     }
 
     _updateBackground () {

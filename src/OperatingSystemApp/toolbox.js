@@ -8,6 +8,9 @@ var OSToolbox = GObject.registerClass(class OSToolbox extends Toolbox {
     _init(props = {}) {
         super._init(props);
         this._controlPanel = new OSControlPanel({visible: true});
+        this._controlPanel.wobblyLock.toolbox = this;
+        this._controlPanel.codeLock.toolbox = this;
+
         this.add(this._controlPanel);
         this.show_all();
 

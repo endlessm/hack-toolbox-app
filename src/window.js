@@ -15,10 +15,11 @@ var ToolboxWindow = GObject.registerClass({
             ''),
     },
 }, class ToolboxWindow extends Gtk.ApplicationWindow {
-    _init(params) {
+    _init(toolbox, params) {
         Object.assign(params, {expand: true});
         super._init(params);
 
+        this._toolbox = toolbox;
         // Need to create the hack toolbox after the window
         // is created, since we need its id
         const objectPath =
@@ -35,6 +36,7 @@ var ToolboxWindow = GObject.registerClass({
         this.set_visual(screen.get_rgba_visual());
 
         this._lockscreen = new Lockscreen({
+            toolbox: this._toolbox,
             expand: true,
             visible: true,
         });
@@ -57,6 +59,7 @@ var ToolboxWindow = GObject.registerClass({
             if (this._toolbox)
                 this._toolbox.shutdown();
         });
+        this._toolbox_frame.add(this._toolbox);
     }
 
     _onFlipBack() {
@@ -74,12 +77,6 @@ var ToolboxWindow = GObject.registerClass({
 
     get lockscreen() {
         return this._lockscreen;
-    }
-
-    // Override Gtk.Container.add()
-    add(widget) {
-        this._toolbox = widget;
-        this._toolbox_frame.add(widget);
     }
 
     get toolbox() {

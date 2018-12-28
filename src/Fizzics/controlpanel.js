@@ -13,12 +13,12 @@ var FizzicsControlPanel = GObject.registerClass({
         'panelLevel2',
     ],
 }, class FizzicsControlPanel extends Gtk.Box {
-    _init(props = {}) {
+    _init(toolbox, props = {}) {
         super._init(props);
 
         this._level1 = new FizzicsLevel1({visible: true});
         this._level2 = new FizzicsLevel2({visible: true});
-        this._level2lock = new Lockscreen({visible: false});
+        this._level2lock = new Lockscreen({toolbox: toolbox, visible: false});
 
         this._level2lock.add(this._level2);
         this._panelLevel1.add(this._level1);

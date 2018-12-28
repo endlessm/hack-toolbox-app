@@ -44,7 +44,8 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
         });
         this._model.snapshot();  // ignore any initial syncing
 
-        this._controlPanel = new RaControlPanel(defaults, {visible: true});
+        this._controlPanel =
+            new RaControlPanel(win.toolbox, defaults, {visible: true});
         this._controlPanel.bindModel(this._model);
         this._controlPanel.bindWindow(win);
         this.add(this._controlPanel);

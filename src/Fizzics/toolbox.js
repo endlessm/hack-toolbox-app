@@ -14,7 +14,7 @@ var FizzicsToolbox = GObject.registerClass(class FizzicsToolbox extends Toolbox 
         props.title = _('Hack Modules');
         super._init(props);
         this._model = new FizzicsModelGlobal();
-        this._controlPanel = new FizzicsControlPanel({visible: true});
+        this._controlPanel = new FizzicsControlPanel(this, {visible: true});
         this._controlPanel.bindModel(this._model);
         this.add(this._controlPanel);
         this.show_all();

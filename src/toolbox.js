@@ -13,6 +13,10 @@ const RESET_BUTTON_KEY = 'app.hack_toolbox.reset_button';
 var Toolbox = GObject.registerClass({
     CssName: 'toolbox',
     Properties: {
+        'target-app-id': GObject.ParamSpec.string('target-app-id',
+            'Target App ID', 'The App ID that this toolbox is "hacking"',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            ''),
         title: GObject.ParamSpec.string('title', 'Title', '',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
             _('Hack')),
