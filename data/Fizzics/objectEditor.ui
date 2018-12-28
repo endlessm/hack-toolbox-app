@@ -30,32 +30,32 @@
   <object class="GtkAdjustment" id="adjustmentSocial0">
     <property name="lower">-30</property>
     <property name="upper">30</property>
-    <property name="step_increment">5</property>
-    <property name="page_increment">10</property>
+    <property name="step_increment">2</property>
+    <property name="page_increment">2</property>
   </object>
   <object class="GtkAdjustment" id="adjustmentSocial1">
     <property name="lower">-30</property>
     <property name="upper">30</property>
-    <property name="step_increment">5</property>
-    <property name="page_increment">10</property>
+    <property name="step_increment">2</property>
+    <property name="page_increment">2</property>
   </object>
   <object class="GtkAdjustment" id="adjustmentSocial2">
     <property name="lower">-30</property>
     <property name="upper">30</property>
-    <property name="step_increment">5</property>
-    <property name="page_increment">10</property>
+    <property name="step_increment">2</property>
+    <property name="page_increment">2</property>
   </object>
   <object class="GtkAdjustment" id="adjustmentSocial3">
     <property name="lower">-30</property>
     <property name="upper">30</property>
-    <property name="step_increment">5</property>
-    <property name="page_increment">10</property>
+    <property name="step_increment">2</property>
+    <property name="page_increment">2</property>
   </object>
   <object class="GtkAdjustment" id="adjustmentSocial4">
     <property name="lower">-30</property>
     <property name="upper">30</property>
-    <property name="step_increment">5</property>
-    <property name="page_increment">10</property>
+    <property name="step_increment">2</property>
+    <property name="page_increment">2</property>
   </object>
   <template class="FizzicsObjectEditor" parent="GtkGrid">
     <property name="visible">True</property>
