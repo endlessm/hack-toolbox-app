@@ -74,10 +74,11 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
     static _onInsertText(buffer, location, text) {
         if (!text.length === 1)
             return;
-        if (text in KEYPRESS_SOUNDS) {
-            const sound = SoundServer.getDefault();
+        const sound = SoundServer.getDefault();
+        if (text in KEYPRESS_SOUNDS)
             sound.play(KEYPRESS_SOUNDS[text]);
-        }
+        else
+            sound.play('codeview/keypress/other');
     }
 
     static _onDeleteRange(buffer, start, end) {
