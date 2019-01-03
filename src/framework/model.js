@@ -6,6 +6,7 @@ const ByteArray = imports.byteArray;
 const GameState = imports.gameState;
 const Gen = imports.framework.gen;
 const Utils = imports.framework.utils;
+void imports.utils;  // pull in promisified function
 
 const _PRIO = GLib.PRIORITY_DEFAULT;
 

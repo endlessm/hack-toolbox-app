@@ -1,8 +1,12 @@
 /* exported Codeview */
 
-const {Gdk, GLib, GObject, Gtk, GtkSource} = imports.gi;
+const {EosMetrics, Gdk, Gio, GLib, GObject, Gtk, GtkSource, HackToolbox} = imports.gi;
+const ByteArray = imports.byteArray;
 
 const SoundServer = imports.soundServer;
+void imports.utils;  // pull in promisified functions
+
+const CODEVIEW_ERROR_EVENT = 'e98aa2b8-3f11-4a25-b8e9-b10a635df121';
 
 // Can add more, e.g. WARNING, SUGGESTION
 const MarkType = {
@@ -175,6 +179,8 @@ var Codeview = GObject.registerClass({
         this._compileTimeout = null;
         this._numErrors = 0;
         this._ambientMusicID = null;
+        this._inMetricsEvent = false;
+        this._lastCompiledText = null;
     }
 
     get text() {
@@ -330,6 +336,62 @@ var Codeview = GObject.registerClass({
         return GLib.SOURCE_REMOVE;
     }
 
+    // returns a diff in the form of an ed-script, which is the format output by
+    // the diff tool that takes the fewest bytes. It is forward-only; you cannot
+    // apply it in reverse.
+    async _diffFromLastCompiledText() {
+        const oldBytes = ByteArray.fromString(this._lastCompiledText);
+        const oldTextFd = HackToolbox.open_bytes(oldBytes);
+
+        const launcher = new Gio.SubprocessLauncher({
+            flags: Gio.SubprocessFlags.STDIN_PIPE | Gio.SubprocessFlags.STDOUT_PIPE,
+        });
+        launcher.take_fd(oldTextFd, oldTextFd);
+        const proc = launcher.spawnv(['diff', '-e', `/dev/fd/${oldTextFd}`, '-']);
+        const [stdout] = await proc.communicate_utf8_async(this._buffer.text, null);
+        return stdout;
+    }
+
+    async _recordErrorMetrics(results) {
+        if (this._numErrors === 0 && !this._inMetricsEvent)
+            return;
+
+        const recorder = EosMetrics.EventRecorder.get_default();
+        // This will contain info about the user function being edited, when we
+        // gain that feature. Empty string signifies the regular code panel.
+        const userFunction = '';
+        const eventKey = new GLib.Variant('(ss)',
+            [Gio.Application.get_default().applicationId, userFunction]);
+
+        if (this._numErrors && !this._inMetricsEvent) {
+            const payload = new GLib.Variant('(sssa(suquq))', [
+                Gio.Application.get_default().applicationId,
+                userFunction,
+                this._buffer.text,
+                results.map(result => {
+                    const {start, message} = result;
+                    const end = result.end || start;
+                    return [message, start.line, start.column,
+                        end.line, end.column];
+                }),
+            ]);
+            recorder.record_start(CODEVIEW_ERROR_EVENT, eventKey, payload);
+            this._inMetricsEvent = true;
+            this._lastCompiledText = this._buffer.text;
+        } else if (this._inMetricsEvent) {
+            const edScript = await this._diffFromLastCompiledText();
+            const payload = new GLib.Variant('s', edScript);
+            if (this._numErrors) {
+                recorder.record_progress(CODEVIEW_ERROR_EVENT, eventKey, payload);
+                this._lastCompiledText = this._buffer.text;
+            } else {
+                recorder.record_stop(CODEVIEW_ERROR_EVENT, eventKey, payload);
+                this._inMetricsEvent = false;
+                this._lastCompiledText = null;
+            }
+        }
+    }
+
     setCompileResults(results) {
         const [begin, bound] = this._buffer.get_bounds();
         this._buffer.remove_source_marks(begin, bound, MarkType.ERROR);
@@ -362,6 +424,9 @@ var Codeview = GObject.registerClass({
             else
                 SoundServer.getDefault().play('codeview/code-error-disappearance');
         }
+
+        this._recordErrorMetrics(results)
+            .catch(e => logError(e, 'Error while recording error metrics'));
     }
 
     findAssignmentLocation(variable) {

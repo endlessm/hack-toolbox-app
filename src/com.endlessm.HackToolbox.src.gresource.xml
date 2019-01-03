@@ -42,6 +42,7 @@
     <file>soundServer.js</file>
     <file>spinInput.js</file>
     <file>toolbox.js</file>
+    <file>utils.js</file>
     <file>window.js</file>
   </gresource>
 </gresources>

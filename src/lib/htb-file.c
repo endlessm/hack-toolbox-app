@@ -48,9 +48,9 @@ int
 hack_toolbox_open_fd_readonly (GFile *file,
                                GError **error)
 {
-  g_return_val_if_fail (file, FALSE);
-  g_return_val_if_fail (G_IS_FILE (file), FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail (file, -1);
+  g_return_val_if_fail (G_IS_FILE (file), -1);
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   int open_flags = O_RDONLY | O_CLOEXEC | O_NOCTTY;
 
@@ -67,4 +67,52 @@ hack_toolbox_open_fd_readonly (GFile *file,
     _htb_throw_errno_prefix (error, "open(%s)", path);
 
   return fd;
+}
+
+/**
+ * hack_toolbox_open_bytes:
+ * @bytes: bytes to send to the pipe
+ * @error: Return location for a #GError, or %NULL
+ *
+ * Creates a pipe and sends @bytes to it, such that it is suitable for passing
+ * to g_subprocess_launcher_take_fd().
+ *
+ * Returns: file descriptor, or -1 on error
+ */
+int
+hack_toolbox_open_bytes(GBytes *bytes,
+                        GError **error)
+{
+  g_return_val_if_fail (bytes, -1);
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
+
+  int pipefd[2];
+  if (pipe2 (pipefd, O_CLOEXEC) == -1)
+    {
+      _htb_throw_errno_prefix (error, "pipe2");
+      return -1;
+    }
+
+  size_t count;
+  const void *buf = g_bytes_get_data (bytes, &count);
+
+  ssize_t bytes_written = TEMP_FAILURE_RETRY (write (pipefd[1], buf, count));
+  if (bytes_written == -1)
+    {
+      _htb_throw_errno_prefix (error, "write");
+      return -1;
+    }
+
+  if (bytes_written != count)
+    g_warning ("%s: %zd bytes sent, only %zu bytes written", __func__, count,
+               bytes_written);
+
+  int result = TEMP_FAILURE_RETRY (close (pipefd[1]));
+  if (result == -1)
+    {
+      _htb_throw_errno_prefix (error, "close");
+      return -1;
+    }
+
+  return pipefd[0];
 }
