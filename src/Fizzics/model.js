@@ -60,7 +60,7 @@ function _addPropsForIndex(props, index) {
         _propFlags, 0.0, 0.2, 0.1);
     props[`friction-${index}`] = GObject.ParamSpec.double(
         `friction-${index}`, `friction-${index}`, '',
-        _propFlags, 0.0, 18.0, 9.0);
+        _propFlags, 0.0, 100.0, 5.0);
     props[`usePhysics-${index}`] = GObject.ParamSpec.boolean(
         `usePhysics-${index}`, `usePhysics-${index}`, '',
         _propFlags, true);

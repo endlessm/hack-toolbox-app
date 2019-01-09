@@ -9,9 +9,9 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustmentFriction">
-    <property name="upper">18</property>
-    <property name="value">9</property>
-    <property name="step_increment">1</property>
+    <property name="upper">100</property>
+    <property name="value">5</property>
+    <property name="step_increment">5</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustmentGravity">
