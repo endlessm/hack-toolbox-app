@@ -121,7 +121,7 @@ function rgbaToString(rgba) {
         '#7fff00': 'chartreuse',
         '#d2691e': 'chocolate',
         '#ff7f50': 'coral',
-        '#6495ed': 'cornflower',
+        '#6495ed': 'cornflower blue',
         '#fff8dc': 'cornsilk',
         '#dc143c': 'crimson',
         '#00ffff': 'cyan',
