@@ -38,11 +38,12 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
     _init(props = {}) {
         super._init(props);
         this._lastSelectionLength = 0;
+        this._lastKeypressTimestamp = null;
 
         this._insertHandler = this.connect('insert-text',
-            this.constructor._onInsertText);
+            this._onInsertText.bind(this));
         this._deleteHandler = this.connect('delete-range',
-            this.constructor._onDeleteRange);
+            this._onDeleteRange.bind(this));
         this.connect('mark-set', this._onMarkSet.bind(this));
     }
 
@@ -71,24 +72,43 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
         }
     }
 
-    static _onInsertText(buffer, location, text) {
-        if (!text.length === 1)
-            return;
-        const sound = SoundServer.getDefault();
-        if (text in KEYPRESS_SOUNDS)
-            sound.play(KEYPRESS_SOUNDS[text]);
-        else
-            sound.play('codeview/keypress/other');
+    _calculateKeystrokePitch() {
+        const now = Date.now();
+        const options = {pitch: 1.0};
+        if (this._lastKeypressTimestamp !== null) {
+            const delay = now - this._lastKeypressTimestamp;
+            // If the delay is too long, then play at default pitch.
+            if (delay <= 2000)
+                options.pitch = Math.max(2 - 0.0015 * delay, 0.5);
+        }
+        this._lastKeypressTimestamp = Date.now();
+        return options;
     }
 
-    static _onDeleteRange(buffer, start, end) {
+    _onInsertText(buffer, location, text) {
+        if (!text.length === 1)
+            return;
+
+        const sound = SoundServer.getDefault();
+        const options = this._calculateKeystrokePitch();
+
+        if (text in KEYPRESS_SOUNDS)
+            sound.playFull(KEYPRESS_SOUNDS[text], options);
+        else
+            sound.playFull('codeview/keypress/other', options);
+    }
+
+    _onDeleteRange(buffer, start, end) {
         const deletedLength = end.get_offset() - start.get_offset();
 
         const sound = SoundServer.getDefault();
-        if (deletedLength === 1)
-            sound.play('codeview/keypress/delete');
-        else
+
+        if (deletedLength === 1) {
+            const options = this._calculateKeystrokePitch();
+            sound.playFull('codeview/keypress/delete', options);
+        } else {
             sound.play('codeview/keypress/delete-selection');
+        }
     }
 
     _onMarkSet(buffer, location, mark) {
