@@ -38,9 +38,10 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
     _init(props = {}) {
         super._init(props);
         this._lastSelectionLength = 0;
+        this._lastKeypressTimestamp = null;
 
         this._insertHandler = this.connect('insert-text',
-            this.constructor._onInsertText);
+            this._onInsertText.bind(this));
         this._deleteHandler = this.connect('delete-range',
             this.constructor._onDeleteRange);
         this.connect('mark-set', this._onMarkSet.bind(this));
@@ -71,14 +72,33 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
         }
     }
 
-    static _onInsertText(buffer, location, text) {
+    _onInsertText(buffer, location, text) {
         if (!text.length === 1)
             return;
+
+        const now = Date.now();
         const sound = SoundServer.getDefault();
+        let sound_event_id;
+
         if (text in KEYPRESS_SOUNDS)
-            sound.play(KEYPRESS_SOUNDS[text]);
+            sound_event_id = KEYPRESS_SOUNDS[text];
         else
-            sound.play('codeview/keypress/other');
+            sound_event_id = 'codeview/keypress/other';
+
+        if (this._lastKeypressTimestamp) {
+            const delay = now - this._lastKeypressTimestamp;
+            const options = {
+                recalculate: {
+                    pitch: {
+                        x: delay,
+                    },
+                },
+            };
+            sound.playFull(sound_event_id, options);
+        } else {
+            sound.play(sound_event_id);
+        }
+        this._lastKeypressTimestamp = Date.now();
     }
 
     static _onDeleteRange(buffer, start, end) {
