@@ -2,6 +2,7 @@
 
 const {Gio, GLib, GObject, Gtk, HackToolbox} = imports.gi;
 const {Lockscreen} = imports.lockscreen;
+const SoundServer = imports.soundServer;
 
 var ToolboxWindow = GObject.registerClass({
     Properties: {
@@ -53,9 +54,22 @@ var ToolboxWindow = GObject.registerClass({
         const context = this.get_style_context();
         context.add_class('toolbox-surrounding-window');
 
+        const soundId = `hack-toolbox/ambient/${this.target_app_id}`;
+        this._backgroundMusic = new SoundServer.SoundItem(soundId);
+
+        if (this.hasToplevelFocus)
+            this._backgroundMusic.play();
+        this.connect('notify::has-toplevel-focus', () => {
+            if (this.hasToplevelFocus)
+                this._backgroundMusic.play();
+            else
+                this._backgroundMusic.stop();
+        });
+
         this.connect('destroy', () => {
             if (this._toolbox)
                 this._toolbox.shutdown();
+            this._backgroundMusic.stop();
         });
     }
 
