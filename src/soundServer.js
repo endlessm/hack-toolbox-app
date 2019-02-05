@@ -23,9 +23,10 @@ const SoundServerIface = `
 </node>
 `;
 
+const SoundServerProxy = Gio.DBusProxy.makeProxyWrapper(SoundServerIface);
+
 class SoundServer {
     constructor() {
-        const SoundServerProxy = Gio.DBusProxy.makeProxyWrapper(SoundServerIface);
         this._proxy = new SoundServerProxy(Gio.DBus.session,
             'com.endlessm.HackSoundServer', '/com/endlessm/HackSoundServer');
     }
@@ -74,3 +75,56 @@ var getDefault = (function () {
         return defaultSoundServer;
     };
 }());
+
+var SoundItem = class {
+    constructor(name) {
+        this._id = SoundItem.Status.NONE;
+        this.name = name;
+    }
+
+    play() {
+        // If we are about to play the sound, do nothing
+        if (this._id === SoundItem.Status.PENDING)
+            return;
+
+        // If we had to play and to stop before the first UUID was returned,
+        // then un-cancel the original sound but do not request another one.
+        if (this._id === SoundItem.Status.CANCELLING) {
+            this._id = SoundItem.Status.PENDING;
+            return;
+        }
+
+        // If we are already playing a sound, do nothing (we want to avoid
+        // overlapped sounds)
+        if (this._id !== SoundItem.Status.NONE)
+            return;
+
+        this._id = SoundItem.Status.PENDING;
+        getDefault().playAsync(this.name)
+        .then(uuid => {
+            if (this._id === SoundItem.Status.CANCELLING) {
+                getDefault().stop(uuid);
+                this._id = SoundItem.Status.NONE;
+                return;
+            }
+            this._id = uuid;
+        });
+    }
+
+    stop() {
+        if (this._id === SoundItem.Status.PENDING) {
+            this._id = SoundItem.Status.CANCELLING;
+            return;
+        }
+
+        if (this._id === SoundItem.Status.CANCELLING || this._id === SoundItem.Status.NONE)
+            return;
+        getDefault().stop(this._id);
+        this._id = SoundItem.Status.NONE;
+    }
+};
+SoundItem.Status = {
+    NONE: 'none',
+    PENDING: 'pending',
+    CANCELLING: 'cancel',
+};
