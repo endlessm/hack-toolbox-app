@@ -225,6 +225,8 @@ var Lockscreen = GObject.registerClass({
             return;
         }
 
+        SoundServer.getDefault().play(`hack-toolbox/lockscreen/open/${this._lock}`);
+
         /* We are going to need to playback an animation */
         if (this._openURI)
             this._playbin.uri = this._openURI;
