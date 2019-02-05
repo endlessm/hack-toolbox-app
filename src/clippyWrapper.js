@@ -18,9 +18,8 @@ const ClippyIface = `
 
 var ClippyWrapper = GObject.registerClass({
 }, class ClippyWrapper extends GObject.Object {
-    _init(props = {}) {
-        this._appId = props.appId;
-        delete props['appId'];
+    _init(appId, props = {}) {
+        this._appId = appId;
         super._init(props);
         this._setupRemote();
         this._setupLocal();
