@@ -23,6 +23,8 @@ function _toolboxClassForAppId(targetAppId) {
         return imports.Fizzics.toolbox.FizzicsToolbox;
     case 'com.endlessm.HackUnlock':
         return imports.HackUnlock.toolbox.HUToolbox;
+    case 'com.endlessm.LightSpeed':
+        return imports.LightSpeed.toolbox.LSToolbox;
     case 'com.endlessm.OperatingSystemApp':
         return imports.OperatingSystemApp.toolbox.OSToolbox;
     default:

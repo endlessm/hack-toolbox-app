@@ -73,6 +73,10 @@
     <file>Fizzics/skins/9.png</file>
     <file>Fizzics/skins/10.png</file>
     <file>HackUnlock/controlpanel.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">LightSpeed/panel.ui</file>
+    <file>LightSpeed/ships/daemon.png</file>
+    <file>LightSpeed/ships/spaceship.png</file>
+    <file>LightSpeed/ships/unicorn.png</file>
     <file compressed="true" preprocess="xml-stripblanks">OperatingSystemApp/controlpanel.ui</file>
     <file compressed="true">OperatingSystemApp/cursors/cursor-cheese.xmc</file>
     <file compressed="true">OperatingSystemApp/cursors/cursor-daemon.xmc</file>
