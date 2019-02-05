@@ -1,12 +1,17 @@
 /* exported getDefault */
 
-const {Gio} = imports.gi;
+const {Gio, GLib} = imports.gi;
 
 const SoundServerIface = `
 <node>
   <interface name='com.endlessm.HackSoundServer'>
     <method name='PlaySound'>
       <arg type='s' name='sound_event' direction='in'/>
+      <arg type='s' name='uuid' direction='out'/>
+    </method>
+    <method name='PlayFull'>
+      <arg type='s' name='sound_event' direction='in'/>
+      <arg type='a{sv}' name='options' direction='in'/>
       <arg type='s' name='uuid' direction='out'/>
     </method>
     <method name='StopSound'>
@@ -56,6 +61,22 @@ class SoundServer {
     // async function
     playSync(id) {
         return this._proxy.PlaySoundSync(id);
+    }
+
+    playFull(id, options) {
+        const variants = {};
+
+        for (const key in options) {
+            if (typeof options[key] === 'number')
+                variants[key] = new GLib.Variant('d', options[key]);
+            else
+                log(`'${key}' ignored because not a number`);
+        }
+
+        this._proxy.PlayFullRemote(id, variants, (out, err) => {
+            if (err)
+                logError(err, `Error playing sound ${id}`);
+        });
     }
 
     stop(uuid) {
