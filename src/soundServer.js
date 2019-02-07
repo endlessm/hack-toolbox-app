@@ -87,9 +87,9 @@ class SoundServer {
     }
 }
 
-var getDefault = (function () {
+var getDefault = (function() {
     let defaultSoundServer;
-    return function () {
+    return function() {
         if (!defaultSoundServer)
             defaultSoundServer = new SoundServer();
         return defaultSoundServer;

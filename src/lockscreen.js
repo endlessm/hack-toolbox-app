@@ -51,14 +51,14 @@ var Lockscreen = GObject.registerClass({
         });
     }
 
-    _untrackKeyChanges () {
+    _untrackKeyChanges() {
         if (this._keyChangedId !== 0) {
             this._manager.disconnect(this._keyChangedId);
             this._keyChangedId = 0;
         }
     }
 
-    _untrackLockChanges () {
+    _untrackLockChanges() {
         if (this._lockChangedId !== 0) {
             this._manager.disconnect(this._lockChangedId);
             this._lockChangedId = 0;
@@ -108,7 +108,7 @@ var Lockscreen = GObject.registerClass({
         this._updateLockStateWithLock();
     }
 
-    _updateBackground () {
+    _updateBackground() {
         const defaultPath = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', 'default']);
         var assetsHasKey = false;
         var assetsPath;

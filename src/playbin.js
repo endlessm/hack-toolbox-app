@@ -18,7 +18,7 @@ const Lock = GObject.registerClass({
         );
     }
 
-    set background (url) {
+    set background(url) {
         try {
             this._css_provider.load_from_data(`
 lock {
@@ -67,7 +67,7 @@ var Playbin = GObject.registerClass({
         });
     }
 
-    _ensurePlaybin () {
+    _ensurePlaybin() {
         if (this._playbin)
             return;
 
@@ -99,7 +99,7 @@ var Playbin = GObject.registerClass({
         this._playbin.get_bus().add_watch(0, this._bus_watch.bind(this));
     }
 
-    _updateCropArea (alloc) {
+    _updateCropArea(alloc) {
         if (!this._videocrop ||
             !this._video_width || !this._video_height ||
             alloc.width < 2 || alloc.height < 2)
@@ -114,7 +114,7 @@ var Playbin = GObject.registerClass({
         this._videocrop.bottom = crop_y;
     }
 
-    _onStreamsSelected (msg) {
+    _onStreamsSelected(msg) {
         const collection = msg.parse_streams_selected();
         const n = collection.get_size();
         let stream = null;
@@ -143,7 +143,7 @@ var Playbin = GObject.registerClass({
         }
     }
 
-    _onEndOfStream () {
+    _onEndOfStream() {
         this.emit('done');
         this._playbin.set_state(Gst.State.NULL);
         this.remove(this._video_widget);
@@ -155,7 +155,7 @@ var Playbin = GObject.registerClass({
         this._video_height = 0;
     }
 
-    _onStateChanged (msg) {
+    _onStateChanged(msg) {
         if (this._started)
             return;
 
@@ -171,7 +171,7 @@ var Playbin = GObject.registerClass({
         }
     }
 
-    _bus_watch (bus, msg) {
+    _bus_watch(bus, msg) {
         if (msg.type === Gst.MessageType.EOS) {
             this._onEndOfStream(msg);
             return GLib.SOURCE_REMOVE;
@@ -184,11 +184,11 @@ var Playbin = GObject.registerClass({
         return GLib.SOURCE_CONTINUE;
     }
 
-    get uri () {
+    get uri() {
         return this._uri;
     }
 
-    set uri (value) {
+    set uri(value) {
         if (this._uri === value)
             return;
 
@@ -201,7 +201,7 @@ var Playbin = GObject.registerClass({
         }
     }
 
-    play () {
+    play() {
         if (!this._uri)
             return;
 
@@ -209,7 +209,7 @@ var Playbin = GObject.registerClass({
         this._playbin.set_state(Gst.State.PLAYING);
     }
 
-    set background (url) {
+    set background(url) {
         this._button.background = url;
     }
 

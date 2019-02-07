@@ -25,9 +25,9 @@ const BusIface = `
 
 const GameStateProxy = Gio.DBusProxy.makeProxyWrapper(BusIface);
 
-var getDefault = (function () {
+var getDefault = (function() {
     let defaultGameStateProxy;
-    return function () {
+    return function() {
         if (!defaultGameStateProxy) {
             defaultGameStateProxy = new GameStateProxy(Gio.DBus.session,
                 BusName, BusPath);

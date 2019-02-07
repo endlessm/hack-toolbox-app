@@ -93,11 +93,11 @@ var OSCursorModel = GObject.registerClass({
         this._touchpadSettings.reset('speed');
     }
 
-    get theme () {
+    get theme() {
         return this._theme;
     }
 
-    set theme (cursor_theme) {
+    set theme(cursor_theme) {
         if (!cursor_theme || this._theme === cursor_theme)
             return;
 
