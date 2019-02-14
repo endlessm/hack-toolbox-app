@@ -58,6 +58,45 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         });
         flip.connect('activate', this._onFlip.bind(this));
         this.add_action(flip);
+
+        const init = new Gio.SimpleAction({
+            name: 'init',
+            parameter_type: new GLib.VariantType('(ss)'),
+        });
+        init.connect('activate', this._initToolbox.bind(this));
+        this.add_action(init);
+    }
+
+    _initToolbox(action, parameterVariant) {
+        this.hold();
+        try {
+            const unpacked = parameterVariant.deep_unpack();
+            const [appId, windowId] = unpacked;
+
+            if (!this._windows[appId])
+                this._windows[appId] = {};
+
+            const ToolboxClass = _toolboxClassForAppId(appId);
+            const toolbox = new ToolboxClass({visible: true});
+            const win = new ToolboxWindow({
+                application: this,
+                decorated: _toolboxIsDecorated(appId),
+                target_app_id: appId,
+                target_window_id: windowId,
+            });
+            win.add(toolbox);
+            toolbox.bindWindow(win);
+
+            const settings = Gtk.Settings.get_default();
+            settings.gtk_application_prefer_dark_theme = true;
+
+            this._windows[appId][windowId] = win;
+            win.connect('destroy', () => {
+                delete this._windows[appId][windowId];
+            });
+        } finally {
+            this.release();
+        }
     }
 
     vfunc_startup() {
@@ -81,26 +120,8 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         if (!this._windows[appId])
             this._windows[appId] = {};
 
-        if (!this._windows[appId][windowId]) {
-            const ToolboxClass = _toolboxClassForAppId(appId);
-            const toolbox = new ToolboxClass({visible: true});
-            const win = new ToolboxWindow({
-                application: this,
-                decorated: _toolboxIsDecorated(appId),
-                target_app_id: appId,
-                target_window_id: windowId,
-            });
-            win.add(toolbox);
-            toolbox.bindWindow(win);
-
-            const settings = Gtk.Settings.get_default();
-            settings.gtk_application_prefer_dark_theme = true;
-
-            this._windows[appId][windowId] = win;
-            win.connect('destroy', () => {
-                delete this._windows[appId][windowId];
-            });
-        }
+        if (!this._windows[appId][windowId])
+            this._initToolbox(action, parameterVariant);
 
         this._windows[appId][windowId].present();
         this.release();
