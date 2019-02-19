@@ -73,7 +73,7 @@ var HackableDefault = new Module.Class({
             ''),
     },
 
-    _init: function (props = {}) {
+    _init(props = {}) {
         Object.defineProperties(this, {
             excluded_types: {
                 value: props.excluded_types ? props.excluded_types.slice(0) : [],
@@ -131,7 +131,7 @@ var HackableDefault = new Module.Class({
         this._decodefunc = new Function('letter', value);
     },
 
-    _setup_justification: function () {
+    _setup_justification() {
         const props = {
             halign: Gtk.Align.START,
             justify: Gtk.Justification.LEFT,
@@ -155,7 +155,7 @@ var HackableDefault = new Module.Class({
         this._context_frame.halign = props.halign;
     },
 
-    _get_card_type: function () {
+    _get_card_type() {
         if (!this.model.thumbnail_uri)
             return CardType.LOW_RES_IMAGE;
         const size = Utils.get_image_size_from_uri(this.model.thumbnail_uri);
@@ -179,7 +179,7 @@ var HackableDefault = new Module.Class({
 
     // Layout for Polaroid card in horizontal orientation.
     // This orientation always shows the context.
-    _get_constraints_polaroid_card_horizontal: function (show_synopsis) {
+    _get_constraints_polaroid_card_horizontal(show_synopsis) {
         return [
             {
                 target_object: this._title_box,
@@ -236,7 +236,7 @@ var HackableDefault = new Module.Class({
 
     // Layout for Polaroid card in vertical orientation.
     // This orientation never shows the synopsis.
-    get_constraints_polaroid_card_vertical: function (show_context) {
+    get_constraints_polaroid_card_vertical(show_context) {
         return [
             {
                 target_object: this._title_box,
@@ -276,7 +276,7 @@ var HackableDefault = new Module.Class({
     },
 
     // Layout for Post card. This card never shows the synopsis.
-    _get_constraints_post_card: function (show_context) {
+    _get_constraints_post_card(show_context) {
         return [
             {
                 target_object: this._title_box,
@@ -320,7 +320,7 @@ var HackableDefault = new Module.Class({
     },
 
     // Layout for all text card.
-    _get_constraints_text_card: function (show_synopsis) {
+    _get_constraints_text_card(show_synopsis) {
         return [
             {
                 target_object: this._title_box,
@@ -535,7 +535,7 @@ var HackableDefault = new Module.Class({
             Emeus.ConstraintAttribute.HEIGHT, Emeus.ConstraintAttribute.WIDTH);
     },
 
-    vfunc_size_allocate: function (alloc) {
+    vfunc_size_allocate(alloc) {
         const card_margins = this._get_margins();
         const real_alloc_width = alloc.width - (card_margins.left + card_margins.right);
         const real_alloc_height = alloc.height - (card_margins.top + card_margins.bottom);
@@ -598,14 +598,14 @@ var HackableDefault = new Module.Class({
         this.update_card_sizing_classes(real_alloc_height, real_alloc_width);
     },
 
-    _get_orientation: function (width, height) {
+    _get_orientation(width, height) {
         const horizontal = width > Card.MaxSize.C && height < Card.MinSize.C ||
             width > Card.MaxSize.D && height < Card.MinSize.E ||
             width > Card.MaxSize.E;
         return horizontal ? Gtk.Orientation.HORIZONTAL : Gtk.Orientation.VERTICAL;
     },
 
-    _should_show_synopsis: function (card_type, width, height, orientation) {
+    _should_show_synopsis(card_type, width, height, orientation) {
         if (card_type === CardType.LOW_RES_IMAGE) {
             return !(height < Card.MaxSize.C && width > Card.MinSize.E ||
                 height < Card.MaxSize.A);
@@ -617,7 +617,7 @@ var HackableDefault = new Module.Class({
         return false;
     },
 
-    _should_show_context: function (card_type, width, height) {
+    _should_show_context(card_type, width, height) {
         if (card_type === CardType.LOW_RES_IMAGE)
             return true;
         if (card_type === CardType.MED_RES_IMAGE)
@@ -625,7 +625,7 @@ var HackableDefault = new Module.Class({
         return !(height < Card.MinSize.C && width < Card.MinSize.C);
     },
 
-    _get_margins: function () {
+    _get_margins() {
         const context = this.get_style_context();
         const flags = this.get_state_flags();
 

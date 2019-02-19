@@ -68,7 +68,7 @@ var HackableSearch = new Module.Class({
         return TextFilters[this.textfilter](caesar);
     },
 
-    _on_history_changed: function (store) {
+    _on_history_changed(store) {
         const item = store.search_backwards(0, it => it.search_terms);
         if (!item || !item.search_terms)
             return;

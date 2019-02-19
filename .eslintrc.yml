@@ -208,6 +208,11 @@ rules:
     - error
     - last
   space-before-blocks: error
+  space-before-function-paren:
+    - error
+    - named: never
+      anonymous: never
+      asyncArrow: always
   space-in-parens:
     - error
     - never

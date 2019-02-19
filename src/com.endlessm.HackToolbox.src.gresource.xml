@@ -27,6 +27,10 @@
     <file>HackUnlock/controlpanel.js</file>
     <file>HackUnlock/model.js</file>
     <file>HackUnlock/toolbox.js</file>
+    <file>LightSpeed/controlpanel.js</file>
+    <file>LightSpeed/globalParams.js</file>
+    <file>LightSpeed/model.js</file>
+    <file>LightSpeed/toolbox.js</file>
     <file>OperatingSystemApp/cursorImage.js</file>
     <file>OperatingSystemApp/controlpanel.js</file>
     <file>OperatingSystemApp/osmodel.js</file>

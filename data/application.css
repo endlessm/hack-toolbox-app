@@ -242,7 +242,8 @@ popover.error button:hover {
 .framework.toolbox-surrounding-window,
 .OperatingSystemApp.toolbox-surrounding-window,
 .HackUnlock.toolbox-surrounding-window,
-.Fizzics.toolbox-surrounding-window {
+.Fizzics.toolbox-surrounding-window,
+.LightSpeed.toolbox-surrounding-window {
     background-color: rgba(0, 0, 0, 0);
 }
 

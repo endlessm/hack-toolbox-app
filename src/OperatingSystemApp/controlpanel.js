@@ -73,7 +73,7 @@ var OSControlPanel = GObject.registerClass({
         this._cursorSizeAdjustment.connect('value-changed', this._snapSizeToOption.bind(this));
     }
 
-    reset () {
+    reset() {
         this._cursor.reset();
         this._wobbly.reset();
     }
