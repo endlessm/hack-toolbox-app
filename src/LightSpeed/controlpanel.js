@@ -20,7 +20,7 @@ var LSControlPanel = GObject.registerClass({
     InternalChildren: ['astronautSizeAdjustment', 'scoreTargetAdjustment',
         'shipAccelerationAdjustment', 'shipAssetButton', 'shipSizeAdjustment',
         'shipSpeedAdjustment', 'timeLimitAdjustment', 'variablesCodeview'],
-}, class FizzicsControlPanel extends Gtk.Grid {
+}, class LSControlPanel extends Gtk.Grid {
     _init(props = {}) {
         this._lastCodeviewSoundMicrosec = 0;
 
