@@ -253,7 +253,7 @@
           </packing>
         </child>
         <child>
-          <object class="Codeview" id="spawnAstronautCodeview">
+          <object class="Codeview" id="spawnEnemyCodeview">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -276,7 +276,7 @@
           </packing>
         </child>
         <child>
-          <object class="Codeview" id="spawnObstacleCodeview">
+          <object class="Codeview" id="updateAsteroidCodeview">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -299,7 +299,7 @@
           </packing>
         </child>
         <child>
-          <object class="Codeview" id="updateEnemyCodeview">
+          <object class="Codeview" id="updateSpinnerCodeview">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -314,7 +314,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">👾️</property>
+            <property name="label" translatable="yes">🌟️</property>
           </object>
           <packing>
             <property name="position">3</property>
@@ -322,7 +322,7 @@
           </packing>
         </child>
         <child>
-          <object class="Codeview" id="setParametersCodeview">
+          <object class="Codeview" id="updateSquidCodeview">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -337,10 +337,33 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">🛠️</property>
+            <property name="label" translatable="yes">🦑️</property>
           </object>
           <packing>
             <property name="position">4</property>
+            <property name="tab_fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="Codeview" id="updateBeamCodeview">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child type="tab">
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">⚡️</property>
+          </object>
+          <packing>
+            <property name="position">5</property>
             <property name="tab_fill">False</property>
           </packing>
         </child>
