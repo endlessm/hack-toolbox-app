@@ -108,6 +108,25 @@ var Lockscreen = GObject.registerClass({
         this._updateLockStateWithLock();
     }
 
+    getAssetsPath() {
+        const defaultPath = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', 'default']);
+
+        if (this._lock) {
+            const path = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', this._lock]);
+            const dir = Gio.File.new_for_path(path);
+
+            if (dir.query_exists(null) &&
+                dir.get_child('no-key').query_exists(null)) {
+                // All the required assets are here, let's use this path for
+                // the background
+                return path;
+            }
+        }
+
+        return defaultPath;
+    }
+
+    // FIXME refactor to use _getAssetsPath
     _updateBackground() {
         const defaultPath = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', 'default']);
         var assetsHasKey = false;

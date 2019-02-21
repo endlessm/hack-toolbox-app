@@ -2,7 +2,7 @@
 
 const {GObject, Gtk} = imports.gi;
 const {Codeview} = imports.codeview;
-const {Lockscreen} = imports.lockscreen;
+const {WobblyLockscreen} = imports.OperatingSystemApp.wobblyLockscreen;
 const {CursorImage, cursorIDToResource} = imports.OperatingSystemApp.cursorImage;
 const {OSCursorModel, VALID_CURSORS} = imports.OperatingSystemApp.oscursormodel;
 const {OSWobblyModel} = imports.OperatingSystemApp.oswobblymodel;
@@ -11,7 +11,7 @@ const {SpinInput} = imports.spinInput;
 const {PopupMenu} = imports.popupMenu;
 
 GObject.type_ensure(Codeview.$gtype);
-GObject.type_ensure(Lockscreen.$gtype);
+GObject.type_ensure(WobblyLockscreen.$gtype);
 GObject.type_ensure(Section.$gtype);
 GObject.type_ensure(SpinInput.$gtype);
 

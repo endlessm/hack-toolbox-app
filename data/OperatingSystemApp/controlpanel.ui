@@ -136,7 +136,7 @@
       </packing>
     </child>
     <child>
-      <object class="Lockscreen" id="wobblyLock">
+      <object class="WobblyLockscreen" id="wobblyLock">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
