@@ -54,4 +54,20 @@ var LocksManager = GObject.registerClass({
         const variant = new GLib.Variant('a{sb}', {locked: false});
         this._proxy.SetSync(lock, variant);
     }
+
+    getTrapSequence(lock) {
+        return this._proxy.getDictValueSync(lock, 'trap_sequence');
+    }
+
+    setLockTried(lock, tried) {
+        try {
+            const [variant] = this._proxy.GetSync(lock);
+            const dict = new GLib.VariantDict(variant);
+            dict.insert_value('tried', new GLib.Variant('b', tried));
+            this._proxy.SetSync(lock, dict.end());
+        } catch (error) {
+            const variant2 = new GLib.Variant('a{sb}', {tried: true});
+            this._proxy.SetSync(lock, variant2);
+        }
+    }
 });

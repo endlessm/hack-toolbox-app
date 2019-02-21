@@ -148,6 +148,17 @@ var Lockscreen = GObject.registerClass({
             this._playbin.background = `file://${assetsPath}/has-key`;
         else
             this._playbin.background = `file://${assetsPath}/no-key`;
+
+        // FIXME in subclass overriding this method
+        if (this._manager.getTrapSequence(this._lock) === 0) {
+            this._playbin.background = `file://${assetsPath}/trap0`;
+        }
+        if (this._manager.getTrapSequence(this._lock) === 1) {
+            this._playbin.background = `file://${assetsPath}/trap1`;
+        }
+        if (this._manager.getTrapSequence(this._lock) === 2) {
+            this._playbin.background = `file://${assetsPath}/trap2`;
+        }
     }
 
     _updateLockStateWithKey() {
@@ -213,6 +224,16 @@ var Lockscreen = GObject.registerClass({
             return;
 
         this._stopActiveSound();
+
+        // FIXME in subclass overriding _onClicked
+        if (this._key === 'item.key.OperatingSystemApp.2') {
+            this._manager.setLockTried(this._lock, true);
+            GLib.timeout_add_seconds(GLib.PRIORITY_LOW, 5, () => {
+                this._manager.setLockTried(this._lock, false);
+                return GLib.SOURCE_REMOVE;
+            });
+            return
+        }
 
         if (this._manager.hasKey('item.key.master')) {
             this.locked = false;
