@@ -190,10 +190,9 @@ ${model[modelProp]}
     }
 
     bindWindow(win) {
-        // Reuse Fizzics key for now
         void this;
-        win.lockscreen.key = 'item.key.fizzics.1';
-        win.lockscreen.lock = 'lock.fizzics.1';
+        win.lockscreen.key = 'item.key.lightspeed.1';
+        win.lockscreen.lock = 'lock.lightspeed.1';
     }
 
     _compileUserFunction({name, args, modelProp, getScope}, codeview) {
