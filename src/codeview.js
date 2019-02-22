@@ -201,6 +201,10 @@ var Codeview = GObject.registerClass({
         this._ambientMusicID = null;
         this._inMetricsEvent = false;
         this._lastCompiledText = null;
+
+        // This is the identifier of the user function being edited in this
+        // codeview. Empty string is the regular variable assignment panel.
+        this._userFunction = '';
     }
 
     get text() {
@@ -229,6 +233,14 @@ var Codeview = GObject.registerClass({
         if (this._cached_ast)
             return this._cached_ast;
         return Reflect.parse(this.text);
+    }
+
+    get userFunction() {
+        return this._userFunction;
+    }
+
+    set userFunction(value) {
+        this._userFunction = value;
     }
 
     _onBufferChanged() {
@@ -377,16 +389,13 @@ var Codeview = GObject.registerClass({
             return;
 
         const recorder = EosMetrics.EventRecorder.get_default();
-        // This will contain info about the user function being edited, when we
-        // gain that feature. Empty string signifies the regular code panel.
-        const userFunction = '';
         const eventKey = new GLib.Variant('(ss)',
-            [Gio.Application.get_default().applicationId, userFunction]);
+            [Gio.Application.get_default().applicationId, this._userFunction]);
 
         if (this._numErrors && !this._inMetricsEvent) {
             const payload = new GLib.Variant('(sssa(suquq))', [
                 Gio.Application.get_default().applicationId,
-                userFunction,
+                this._userFunction,
                 this._buffer.text,
                 results.map(result => {
                     const {start, message} = result;
