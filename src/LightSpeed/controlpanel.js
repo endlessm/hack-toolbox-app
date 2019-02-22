@@ -13,13 +13,47 @@ GObject.type_ensure(Section.$gtype);
 GObject.type_ensure(SpinInput.$gtype);
 
 const VALID_SHIPS = ['spaceship', 'daemon', 'unicorn'];
+const USER_FUNCTIONS = [
+    {
+        name: 'spawnEnemy',
+        args: [],
+        modelProp: 'spawnEnemyCode',
+        childWidget: '_spawnEnemyCodeview',
+    },
+    {
+        name: 'updateAsteroid',
+        args: [],
+        modelProp: 'updateAsteroidCode',
+        childWidget: '_updateAsteroidCodeview',
+    },
+    {
+        name: 'updateSpinner',
+        args: [],
+        modelProp: 'updateSpinnerCode',
+        childWidget: '_updateSpinnerCodeview',
+    },
+    {
+        name: 'updateSquid',
+        args: [],
+        modelProp: 'updateSquidCode',
+        childWidget: '_updateSquidCodeview',
+    },
+    {
+        name: 'updateBeam',
+        args: [],
+        modelProp: 'updateBeamCode',
+        childWidget: '_updateBeamCodeview',
+    },
+];
 
 var LSControlPanel = GObject.registerClass({
     GTypeName: 'LSControlPanel',
     Template: 'resource:///com/endlessm/HackToolbox/LightSpeed/panel.ui',
     InternalChildren: ['astronautSizeAdjustment', 'scoreTargetAdjustment',
         'shipAccelerationAdjustment', 'shipAssetButton', 'shipSizeAdjustment',
-        'shipSpeedAdjustment', 'timeLimitAdjustment', 'variablesCodeview'],
+        'shipSpeedAdjustment', 'spawnEnemyCodeview', 'timeLimitAdjustment',
+        'updateAsteroidCodeview', 'updateBeamCodeview', 'updateSpinnerCodeview',
+        'updateSquidCodeview', 'variablesCodeview'],
 }, class LSControlPanel extends Gtk.Grid {
     _init(props = {}) {
         this._lastCodeviewSoundMicrosec = 0;
@@ -34,6 +68,12 @@ var LSControlPanel = GObject.registerClass({
             Gtk.Image, 'resource');
 
         this._variablesCodeview.connect('should-compile', this._compile.bind(this));
+        USER_FUNCTIONS.forEach(info => {
+            const codeview = this[info.childWidget];
+            codeview.userFunction = info.name;
+            codeview.connect('should-compile',
+                this._compileUserFunction.bind(this, info));
+        });
     }
 
     bindGlobal(model) {
@@ -81,6 +121,13 @@ var LSControlPanel = GObject.registerClass({
 
         this._notifyHandler = model.connect('notify', this._onNotify.bind(this));
         this._regenerateCode();
+
+        USER_FUNCTIONS.forEach(({name, args, modelProp, childWidget}) => {
+            const codeview = this[childWidget];
+            codeview.text = `function ${name}(${args.join(', ')}) {
+${model[modelProp]}
+}`;
+        });
     }
 
     bindWindow(win) {
@@ -88,6 +135,55 @@ var LSControlPanel = GObject.registerClass({
         void this;
         win.lockscreen.key = 'item.key.fizzics.1';
         win.lockscreen.lock = 'lock.fizzics.1';
+    }
+
+    _compileUserFunction({name, args, modelProp}, codeview) {
+        const code = codeview.text;
+        const scope = {};
+        let userFunction;
+
+        try {
+            // eslint-disable-next-line no-new-func
+            const factoryFunc = new Function('scope', `\
+with(scope){
+${code}
+; if (typeof ${name} !== 'undefined') return ${name};
+}`);
+            userFunction = factoryFunc(scope);
+        } catch (e) {
+            if (!(e instanceof SyntaxError || e instanceof ReferenceError))
+                throw e;
+            codeview.setCompileResults([{
+                start: {
+                    line: e.lineNumber - 1,  // remove the "with(scope)" line
+                    column: e.columnNumber - 1,  // seems to be 1-based
+                },
+                message: e.message,
+            }]);
+            return;
+        }
+
+        if (!userFunction) {
+            // Function definition deleted, or otherwise not working
+            codeview.setCompileResults([{
+                start: {
+                    line: 1,
+                    column: 1,
+                },
+                end: {
+                    line: 1,
+                    column: 1,
+                },
+                message: `Expected a function named ${name}.`,
+                fixme: `function ${name}(${args.join('\n')}) {\n}\n`,
+            }]);
+            return;
+        }
+
+        codeview.setCompileResults([]);
+
+        const funcBody = codeview.getFunctionBody(name);
+        this._model[modelProp] = funcBody;
     }
 
     _compile() {
