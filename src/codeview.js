@@ -458,6 +458,16 @@ var Codeview = GObject.registerClass({
             .catch(e => logError(e, 'Error while recording error metrics'));
     }
 
+    setCompileResultsFromException(exception) {
+        this.setCompileResults([{
+            start: {
+                line: exception.lineNumber - 1,  // remove initial "with(scope)" line
+                column: exception.columnNumber - 1,  // seems to be 1-based
+            },
+            message: exception.message,
+        }]);
+    }
+
     findAssignmentLocation(variable) {
         const expressions = this.ast.body
             .filter(({type, expression}) => type === 'ExpressionStatement' &&

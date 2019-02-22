@@ -212,13 +212,7 @@ ${code}
         } catch (e) {
             if (!(e instanceof SyntaxError || e instanceof ReferenceError))
                 throw e;
-            codeview.setCompileResults([{
-                start: {
-                    line: e.lineNumber - 1,  // remove the "with(scope)" line
-                    column: e.columnNumber - 1,  // seems to be 1-based
-                },
-                message: e.message,
-            }]);
+            codeview.setCompileResultsFromException(e);
             return;
         }
 
@@ -242,13 +236,7 @@ ${code}
         try {
             userFunction();
         } catch (e) {
-            codeview.setCompileResults([{
-                start: {
-                    line: e.lineNumber - 1,  // remove the "with(scope)" line
-                    column: e.columnNumber - 1,  // seems to be 1-based
-                },
-                message: e.message,
-            }]);
+            codeview.setCompileResultsFromException(e);
             return;
         }
 
@@ -280,13 +268,7 @@ ${code}
         } catch (e) {
             if (!(e instanceof SyntaxError || e instanceof ReferenceError))
                 throw e;
-            this._variablesCodeview.setCompileResults([{
-                start: {
-                    line: e.lineNumber - 1,  // remove the "with(scope)" line
-                    column: e.columnNumber - 1,  // seems to be 1-based
-                },
-                message: e.message,
-            }]);
+            this._variablesCodeview.setCompileResultsFromException(e);
             return;
         }
 
