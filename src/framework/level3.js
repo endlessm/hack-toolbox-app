@@ -93,13 +93,7 @@ var FrameworkLevel3 = GObject.registerClass({
         } catch (e) {
             if (!(e instanceof SyntaxError || e instanceof ReferenceError))
                 throw e;
-            this._codeview.setCompileResults([{
-                start: {
-                    line: e.lineNumber - 1,  // remove the "with(scope)" line
-                    column: e.columnNumber - 1,  // seems to be 1-based
-                },
-                message: e.message,
-            }]);
+            this._codeview.setCompileResultsFromException(e);
             return;
         }
 

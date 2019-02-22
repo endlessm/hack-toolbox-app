@@ -201,6 +201,10 @@ var Codeview = GObject.registerClass({
         this._ambientMusicID = null;
         this._inMetricsEvent = false;
         this._lastCompiledText = null;
+
+        // This is the identifier of the user function being edited in this
+        // codeview. Empty string is the regular variable assignment panel.
+        this._userFunction = '';
     }
 
     get text() {
@@ -229,6 +233,14 @@ var Codeview = GObject.registerClass({
         if (this._cached_ast)
             return this._cached_ast;
         return Reflect.parse(this.text);
+    }
+
+    get userFunction() {
+        return this._userFunction;
+    }
+
+    set userFunction(value) {
+        this._userFunction = value;
     }
 
     _onBufferChanged() {
@@ -377,16 +389,13 @@ var Codeview = GObject.registerClass({
             return;
 
         const recorder = EosMetrics.EventRecorder.get_default();
-        // This will contain info about the user function being edited, when we
-        // gain that feature. Empty string signifies the regular code panel.
-        const userFunction = '';
         const eventKey = new GLib.Variant('(ss)',
-            [Gio.Application.get_default().applicationId, userFunction]);
+            [Gio.Application.get_default().applicationId, this._userFunction]);
 
         if (this._numErrors && !this._inMetricsEvent) {
             const payload = new GLib.Variant('(sssa(suquq))', [
                 Gio.Application.get_default().applicationId,
-                userFunction,
+                this._userFunction,
                 this._buffer.text,
                 results.map(result => {
                     const {start, message} = result;
@@ -449,6 +458,16 @@ var Codeview = GObject.registerClass({
             .catch(e => logError(e, 'Error while recording error metrics'));
     }
 
+    setCompileResultsFromException(exception) {
+        this.setCompileResults([{
+            start: {
+                line: exception.lineNumber - 1,  // remove initial "with(scope)" line
+                column: exception.columnNumber - 1,  // seems to be 1-based
+            },
+            message: exception.message,
+        }]);
+    }
+
     findAssignmentLocation(variable) {
         const expressions = this.ast.body
             .filter(({type, expression}) => type === 'ExpressionStatement' &&
@@ -461,5 +480,32 @@ var Codeview = GObject.registerClass({
 `${left.object.object.name}[${left.object.property.value}].${left.property.name}` === variable);
         }
         return node ? node.right.loc : null;
+    }
+
+    // Get the body of a function defined at top level, removing the starting
+    // "function foo() {" and the ending curly brace.
+    getFunctionBody(fname) {
+        const funcDecl = this.ast.body.find(({type, id}) =>
+            type === 'FunctionDeclaration' && id.name === fname);
+        if (typeof funcDecl === 'undefined')
+            throw new Error(`No function named ${fname} was defined at toplevel`);
+
+        const {start, end} = funcDecl.body.loc;
+        const lines = this._buffer.text.split('\n');
+
+        // Add 2 to the start column, 1 because slice() is inclusive, and
+        // another 1 because the position returned by the parser is the one
+        // before the opening brace
+        lines[start.line - 1] = lines[start.line - 1].slice(start.column + 2);
+        lines[end.line - 1] = lines[end.line - 1].slice(0, end.column);
+        let funcBody = lines.filter((line, ix) =>
+            ix >= start.line - 1 && ix <= end.line - 1)
+            .join('\n');
+
+        // Chop off leading \n after the opening brace, if it was still there
+        if (funcBody.startsWith('\n'))
+            funcBody = funcBody.slice(1);
+
+        return funcBody;
     }
 });
