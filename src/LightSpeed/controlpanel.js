@@ -12,6 +12,50 @@ GObject.type_ensure(Codeview.$gtype);
 GObject.type_ensure(Section.$gtype);
 GObject.type_ensure(SpinInput.$gtype);
 
+// Parameters that we pass to the user functions while executing them.
+// Unlike the real parameters in the game, which will vary, these need to be
+// deterministic. If we're validating things before sending them to the game,
+// then we don't want something to be an error only sometimes. The game will
+// deal with runtime errors for that purpose.
+const COMMON_SCOPE = {
+    // Keep this in sync with getScope() in
+    // hack-toy-apps/com.endlessm.LightSpeed/levelScene.js
+    tick: 0,
+    time: 0,
+    width: 1920,
+    height: 1080,
+    shipTypes: [
+        'spaceship',
+        'daemon',
+        'unicorn',
+    ],
+    enemyTypes: [
+        'asteroid',
+        'spinner',
+        'squid',
+        'beam',
+    ],
+
+    // validates arguments passed in to random() and returns deterministically
+    random(min, max) {
+        if (Number.isNaN(Number(min)))
+            throw new TypeError(`${min} isn't a number`);
+        if (Number.isNaN(Number(max)))
+            throw new TypeError(`${max} isn't a number`);
+        return min;
+    },
+};
+
+const COMMON_UPDATE_SCOPE = {
+    // Keep this in sync with runUpdateEnemy() in
+    // hack-toy-apps/com.endlessm.LightSpeed/levelScene.js
+    playerShipY: 0,
+    enemy: {
+        position: {x: 0, y: 0},
+        velocity: {x: 0, y: 0},
+    },
+};
+
 const VALID_SHIPS = ['spaceship', 'daemon', 'unicorn'];
 const USER_FUNCTIONS = [
     {
@@ -19,30 +63,45 @@ const USER_FUNCTIONS = [
         args: [],
         modelProp: 'spawnEnemyCode',
         childWidget: '_spawnEnemyCodeview',
+        getScope() {
+            return Object.assign({}, COMMON_SCOPE);
+        },
     },
     {
         name: 'updateAsteroid',
         args: [],
         modelProp: 'updateAsteroidCode',
         childWidget: '_updateAsteroidCodeview',
+        getScope() {
+            return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
+        },
     },
     {
         name: 'updateSpinner',
         args: [],
         modelProp: 'updateSpinnerCode',
         childWidget: '_updateSpinnerCodeview',
+        getScope() {
+            return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
+        },
     },
     {
         name: 'updateSquid',
         args: [],
         modelProp: 'updateSquidCode',
         childWidget: '_updateSquidCodeview',
+        getScope() {
+            return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
+        },
     },
     {
         name: 'updateBeam',
         args: [],
         modelProp: 'updateBeamCode',
         childWidget: '_updateBeamCodeview',
+        getScope() {
+            return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
+        },
     },
 ];
 
@@ -137,9 +196,9 @@ ${model[modelProp]}
         win.lockscreen.lock = 'lock.fizzics.1';
     }
 
-    _compileUserFunction({name, args, modelProp}, codeview) {
+    _compileUserFunction({name, args, modelProp, getScope}, codeview) {
         const code = codeview.text;
-        const scope = {};
+        const scope = getScope();
         let userFunction;
 
         try {
@@ -176,6 +235,19 @@ ${code}
                 },
                 message: `Expected a function named ${name}.`,
                 fixme: `function ${name}(${args.join('\n')}) {\n}\n`,
+            }]);
+            return;
+        }
+
+        try {
+            userFunction();
+        } catch (e) {
+            codeview.setCompileResults([{
+                start: {
+                    line: e.lineNumber - 1,  // remove the "with(scope)" line
+                    column: e.columnNumber - 1,  // seems to be 1-based
+                },
+                message: e.message,
             }]);
             return;
         }
