@@ -471,4 +471,31 @@ var Codeview = GObject.registerClass({
         }
         return node ? node.right.loc : null;
     }
+
+    // Get the body of a function defined at top level, removing the starting
+    // "function foo() {" and the ending curly brace.
+    getFunctionBody(fname) {
+        const funcDecl = this.ast.body.find(({type, id}) =>
+            type === 'FunctionDeclaration' && id.name === fname);
+        if (typeof funcDecl === 'undefined')
+            throw new Error(`No function named ${fname} was defined at toplevel`);
+
+        const {start, end} = funcDecl.body.loc;
+        const lines = this._buffer.text.split('\n');
+
+        // Add 2 to the start column, 1 because slice() is inclusive, and
+        // another 1 because the position returned by the parser is the one
+        // before the opening brace
+        lines[start.line - 1] = lines[start.line - 1].slice(start.column + 2);
+        lines[end.line - 1] = lines[end.line - 1].slice(0, end.column);
+        let funcBody = lines.filter((line, ix) =>
+            ix >= start.line - 1 && ix <= end.line - 1)
+            .join('\n');
+
+        // Chop off leading \n after the opening brace, if it was still there
+        if (funcBody.startsWith('\n'))
+            funcBody = funcBody.slice(1);
+
+        return funcBody;
+    }
 });
