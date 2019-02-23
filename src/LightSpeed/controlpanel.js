@@ -108,11 +108,12 @@ const USER_FUNCTIONS = [
 var LSControlPanel = GObject.registerClass({
     GTypeName: 'LSControlPanel',
     Template: 'resource:///com/endlessm/HackToolbox/LightSpeed/panel.ui',
-    InternalChildren: ['astronautSizeAdjustment', 'scoreTargetAdjustment',
-        'shipAccelerationAdjustment', 'shipAssetButton', 'shipSizeAdjustment',
-        'shipSpeedAdjustment', 'spawnEnemyCodeview', 'timeLimitAdjustment',
-        'updateAsteroidCodeview', 'updateBeamCodeview', 'updateSpinnerCodeview',
-        'updateSquidCodeview', 'variablesCodeview'],
+    InternalChildren: ['astronautSizeAdjustment', 'level2lock',
+        'scoreTargetAdjustment', 'shipAccelerationAdjustment',
+        'shipAssetButton', 'shipSizeAdjustment', 'shipSpeedAdjustment',
+        'spawnEnemyCodeview', 'timeLimitAdjustment', 'updateAsteroidCodeview',
+        'updateBeamCodeview', 'updateSpinnerCodeview', 'updateSquidCodeview',
+        'variablesCodeview'],
 }, class LSControlPanel extends Gtk.Grid {
     _init(props = {}) {
         this._lastCodeviewSoundMicrosec = 0;
@@ -190,9 +191,10 @@ ${model[modelProp]}
     }
 
     bindWindow(win) {
-        void this;
         win.lockscreen.key = 'item.key.lightspeed.1';
         win.lockscreen.lock = 'lock.lightspeed.1';
+        this._level2lock.key = 'item.key.lightspeed.2';
+        this._level2lock.lock = 'lock.lightspeed.2';
     }
 
     _compileUserFunction({name, args, modelProp, getScope}, codeview) {
