@@ -44,6 +44,14 @@ const COMMON_SCOPE = {
             throw new TypeError(`${max} isn't a number`);
         return min;
     },
+
+    sin(theta) {
+        return Math.sin(theta);
+    },
+
+    cos(theta) {
+        return Math.cos(theta);
+    },
 };
 
 const COMMON_UPDATE_SCOPE = {
