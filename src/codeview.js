@@ -426,6 +426,9 @@ var Codeview = GObject.registerClass({
         this._buffer.remove_source_marks(begin, bound, MarkType.ERROR);
         this._buffer.remove_tag(this._errorStyle, begin, bound);
         results.forEach(({start, end, message, fixme}) => {
+            // Avoid aborting on bad input - classy GtkTextBuffer crash
+            if (start.column < 0)
+                start.column = 0;
             const iter = this._buffer.get_iter_at_line_offset(start.line - 1, start.column);
             const mark = this._buffer.create_source_mark(null, MarkType.ERROR, iter);
             mark._message = message;
