@@ -22,7 +22,8 @@ var ResetButton = GObject.registerClass({}, class ResetButton extends Gtk.Button
         this.get_style_context().add_class('reset');
 
         const gameState = GameState.getDefault();
-        this.visible = gameState.getDictValueSync(RESET_BUTTON_KEY, 'visible', false);
+        gameState.getDictValue(RESET_BUTTON_KEY, 'visible', false)
+            .then(value => (this.visible = value));
         Signals._connect.call(gameState, 'changed', this._onGameStateChanged.bind(this));
     }
 
