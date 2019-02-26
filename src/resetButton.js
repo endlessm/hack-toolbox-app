@@ -12,12 +12,25 @@ var ResetButton = GObject.registerClass({}, class ResetButton extends Gtk.Button
         Object.assign(props, {noShowAll: true});
         super._init(props);
 
+        const box = new Gtk.Grid({
+            orientation: Gtk.Orientation.HORIZONTAL,
+            halign: Gtk.Align.CENTER,
+            valign: Gtk.Align.CENTER,
+        });
+        const label = new Gtk.Label({
+            label: 'reset all',
+            valign: Gtk.Align.CENTER,
+        });
         const image = new Gtk.Image({
             iconName: 'reset-button-symbolic',
-            pixelSize: 32,
-            visible: true,
+            pixelSize: 18,
+            valign: Gtk.Align.CENTER,
         });
-        this.add(image);
+
+        box.add(label);
+        box.add(image);
+        box.show_all();
+        this.add(box);
 
         this.get_style_context().add_class('reset');
 
