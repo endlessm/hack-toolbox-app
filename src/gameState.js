@@ -53,6 +53,15 @@ var getDefault = (function() {
                 });
             };
             // Helpers
+            defaultGameStateProxy.getDictValue = async function(key, property, defaultValue) {
+                try {
+                    const variant = await this.Get(key);
+                    const dict = variant.deep_unpack();
+                    return dict[property].deep_unpack();
+                } catch (e) {
+                    return defaultValue;
+                }
+            };
             defaultGameStateProxy.getDictValueSync = function(key, property, defaultValue) {
                 try {
                     const [variant] = this.GetSync(key);
