@@ -43,6 +43,7 @@
     <file>main.js</file>
     <file>playbin.js</file>
     <file>popupMenu.js</file>
+    <file>resetButton.js</file>
     <file>section.js</file>
     <file>soundServer.js</file>
     <file>spinInput.js</file>
