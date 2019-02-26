@@ -12,6 +12,10 @@ lockscreen > playbin.no-lock > lock {
 }
 
 toolbox {
+    font-family: Metropolis;
+}
+
+toolbox .panel {
     background-image: url('resource:///com/endlessm/HackToolbox/hacktoolbox/background.png'),
                       radial-gradient(at -47% 158%,
                                       rgba(197, 163, 93, 0.81) 0%,
@@ -19,7 +23,6 @@ toolbox {
                                       rgba(32, 69, 108, 0.63) 66%,
                                       #1C3753 100%),
                       image(rgba(14, 35, 65, 0.85));
-    font-family: Metropolis;
 
     /* This inset box shadow is needed because the panel covers up the left
      * column's box shadow. */
@@ -49,11 +52,6 @@ toolbox .masthead .info {
 toolbox .left-column separator {
     border-width: 2px;
     color: black;
-}
-
-toolbox headerbar {
-    background: rgba(6, 20, 39, 0.80);
-    opacity: 0.9;
 }
 
 .minimize {
@@ -261,6 +259,20 @@ popover.error button:hover {
     transition: background-image 10s;
 }
 
+/* Keep in sync with "toolbox .panel" background above */
+.HackUnlock frame.toolbox {
+    background-image: url('resource:///com/endlessm/HackToolbox/hacktoolbox/background.png'),
+                      radial-gradient(at -47% 158%,
+                                      rgba(197, 163, 93, 0.81) 0%,
+                                      rgba(208, 95, 52, 0.80) 14%,
+                                      rgba(32, 69, 108, 0.63) 66%,
+                                      #1C3753 100%),
+                      image(rgba(14, 35, 65, 0.85));
+}
+
+.HackUnlock toolbox {
+    font-family: 'Metropolis Medium';
+}
 
 .HackUnlock frame.toolbox,
 .HackUnlock frame.toolbox border,
@@ -268,6 +280,12 @@ popover.error button:hover {
 .HackUnlock frame.toolbox > toolbox > headerbar {
     border-radius: 8px 8px 0 0;
 }
+
+.HackUnlock frame.toolbox > toolbox > headerbar {
+    background: rgba(6, 20, 39, 0.80);
+    opacity: 0.9;
+}
+
 .framework.toolbox-surrounding-window,
 .OperatingSystemApp.toolbox-surrounding-window,
 .HackUnlock.toolbox-surrounding-window,

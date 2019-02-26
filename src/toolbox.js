@@ -61,13 +61,13 @@ var Toolbox = GObject.registerClass({
         leftColumn.add(masthead);
         leftColumn.add(separator);
 
-        this.attach(leftColumn, 0, 0, 1, 2);
+        this.attach(leftColumn, 0, 0, 1, 1);
 
-        this._headerbar = new Gtk.HeaderBar({hasSubtitle: false});
-        this._minimizeImage = new Gtk.Image({iconName: 'go-down-symbolic'});
-        this._buttonMinimize = new Gtk.Button();
-        this._buttonMinimize.get_style_context().add_class('minimize');
-        this._buttonMinimize.add(this._minimizeImage);
+        const headerbar = new Gtk.Box({orientation: Gtk.Orientation.HORIZONTAL});
+        const minimizeImage = new Gtk.Image({iconName: 'go-previous-symbolic'});
+        const buttonMinimize = new Gtk.Button();
+        buttonMinimize.get_style_context().add_class('minimize');
+        buttonMinimize.add(minimizeImage);
 
         this._leftStack = new Gtk.Stack({
             transitionType: Gtk.StackTransitionType.CROSSFADE,
@@ -76,30 +76,30 @@ var Toolbox = GObject.registerClass({
         });
         this._spinner = new Gtk.Spinner({active: false, visible: true});
         this._leftStack.add_named(this._spinner, 'busy');
-        this._leftStack.add_named(this._buttonMinimize, 'normal');
+        this._leftStack.add_named(buttonMinimize, 'normal');
         this._leftStack.visibleChildName = 'normal';
 
-        this._headerbar.pack_end(this._leftStack);
-        this._headerbar.show_all();
-        this.attach(this._headerbar, 1, 0, 1, 1);
+        headerbar.pack_end(this._leftStack, false, false, 0);
+        headerbar.show_all();
+
+        this._toolboxPanel = new Gtk.Grid({orientation: Gtk.Orientation.VERTICAL});
+        this._toolboxPanel.get_style_context().add_class('panel');
+        this._toolboxPanel.add(headerbar);
 
         this._revealer = new Gtk.Revealer({
             revealChild: true,
             transitionType: Gtk.RevealerTransitionType.SLIDE_RIGHT,
         });
-        this.attach(this._revealer, 1, 1, 1, 1);
+        this._revealer.add(this._toolboxPanel);
+        this.attach(this._revealer, 1, 0, 1, 1);
 
-        this._buttonMinimize.connect('clicked', this._onMinimize.bind(this));
+        buttonMinimize.connect('clicked', this._onMinimize.bind(this));
         buttonReset.connect('clicked', this._onResetClicked.bind(this));
         this.setBusy(false);
     }
 
-    get buttonMinimize() {
-        return this._buttonMinimize;
-    }
-
     add(widget) {
-        this._revealer.add(widget);
+        this._toolboxPanel.add(widget);
     }
 
     _onResetClicked() {
@@ -110,7 +110,6 @@ var Toolbox = GObject.registerClass({
 
     _onMinimize() {
         const open = this._revealer.revealChild;
-        this._minimizeImage.iconName = open ? 'go-up-symbolic' : 'go-down-symbolic';
         this._revealer.revealChild = !open;
         SoundServer.getDefault().play(`hack-toolbox/${open ? '' : 'un'}minimize`);
     }

@@ -23,8 +23,6 @@ var HUToolbox = GObject.registerClass({
         this.add(this._controlPanel);
 
         this.show_all();
-
-        this.buttonMinimize.visible = false;
     }
 
     bindWindow(win) {
