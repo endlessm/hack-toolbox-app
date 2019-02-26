@@ -5,8 +5,8 @@ const {Toolbox} = imports.toolbox;
 const {OSControlPanel} = imports.OperatingSystemApp.controlpanel;
 
 var OSToolbox = GObject.registerClass(class OSToolbox extends Toolbox {
-    _init(props = {}) {
-        super._init(props);
+    _init(appId, props = {}) {
+        super._init(appId, props);
         this._controlPanel = new OSControlPanel({visible: true});
         this.add(this._controlPanel);
         this.show_all();

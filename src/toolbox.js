@@ -1,6 +1,6 @@
 /* exported Toolbox */
 
-const {GObject, Gtk} = imports.gi;
+const {Gio, GObject, Gtk} = imports.gi;
 const Gettext = imports.gettext;
 
 const {ResetButton} = imports.resetButton;
@@ -20,14 +20,50 @@ var Toolbox = GObject.registerClass({
         reset: {},
     },
 }, class Toolbox extends Gtk.Grid {
-    _init(props = {}) {
-        this._headerbar = new Gtk.HeaderBar({hasSubtitle: false});
-
-        props.orientation = Gtk.Orientation.VERTICAL;
+    _init(appId, props = {}) {
         super._init(props);
 
-        this._buttonReset = new ResetButton();
+        const leftColumn = new Gtk.Grid({
+            orientation: Gtk.Orientation.VERTICAL,
+            valign: Gtk.Align.FILL,
+        });
+        leftColumn.get_style_context().add_class('left-column');
 
+        const masthead = new Gtk.Grid();
+        masthead.get_style_context().add_class('masthead');
+
+        const appIcon = new Gtk.Image();
+        appIcon.get_style_context().add_class('icon');
+        const appNameLabel = new Gtk.Label({halign: Gtk.Align.START});
+        appNameLabel.get_style_context().add_class('name');
+
+        const appInfo = Gio.DesktopAppInfo.new(`${appId}.desktop`);
+        if (appInfo) {
+            appIcon.set_from_gicon(appInfo.get_icon(), Gtk.IconSize.DIALOG);
+            appNameLabel.label = appInfo.get_name();
+        } else {
+            // Application not installed, this is not expected during normal
+            // use, but set some defaults in case it happens during development
+            appIcon.set_from_icon_name('user-available', Gtk.IconSize.DIALOG);
+            appNameLabel.label = 'Toolbox';
+        }
+        appIcon.pixelSize = 48;
+        this._infoLabel = new Gtk.Label({halign: Gtk.Align.START});
+        this._infoLabel.get_style_context().add_class('info');
+        const buttonReset = new ResetButton();
+
+        masthead.attach(appIcon, 0, 0, 1, 2);
+        masthead.attach(appNameLabel, 1, 0, 1, 1);
+        masthead.attach(this._infoLabel, 1, 1, 1, 1);
+        masthead.attach(buttonReset, 0, 2, 2, 1);
+
+        const separator = new Gtk.Separator({orientation: Gtk.Orientation.HORIZONTAL});
+        leftColumn.add(masthead);
+        leftColumn.add(separator);
+
+        this.attach(leftColumn, 0, 0, 1, 2);
+
+        this._headerbar = new Gtk.HeaderBar({hasSubtitle: false});
         this._minimizeImage = new Gtk.Image({iconName: 'go-down-symbolic'});
         this._buttonMinimize = new Gtk.Button();
         this._buttonMinimize.get_style_context().add_class('minimize');
@@ -43,44 +79,23 @@ var Toolbox = GObject.registerClass({
         this._leftStack.add_named(this._buttonMinimize, 'normal');
         this._leftStack.visibleChildName = 'normal';
 
-        this._headerbar.pack_start(this._leftStack);
-        this._headerbar.pack_end(this._buttonReset);
+        this._headerbar.pack_end(this._leftStack);
         this._headerbar.show_all();
-        this._realAdd(this._headerbar);
+        this.attach(this._headerbar, 1, 0, 1, 1);
 
         this._revealer = new Gtk.Revealer({
             revealChild: true,
             transitionType: Gtk.RevealerTransitionType.SLIDE_RIGHT,
         });
-        this._realAdd(this._revealer);
+        this.attach(this._revealer, 1, 1, 1, 1);
 
-        this._buttonReset.connect('clicked', this._onResetClicked.bind(this));
         this._buttonMinimize.connect('clicked', this._onMinimize.bind(this));
+        buttonReset.connect('clicked', this._onResetClicked.bind(this));
         this.setBusy(false);
-    }
-
-    get title() {
-        return this._title;
-    }
-
-    get buttonReset() {
-        return this._buttonReset;
     }
 
     get buttonMinimize() {
         return this._buttonMinimize;
-    }
-
-    set title(value) {
-        if ('_title' in this && this._title === value)
-            return;
-        this._title = value;
-        this._headerbar.title = value;
-        this.notify('title');
-    }
-
-    _realAdd(widget) {
-        Gtk.Container.prototype.add.call(this, widget);
     }
 
     add(widget) {

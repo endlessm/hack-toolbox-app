@@ -1,18 +1,14 @@
 /* exported LSToolbox */
 
 const {Gio, GLib, GObject} = imports.gi;
-const Gettext = imports.gettext;
 
 const {Toolbox} = imports.toolbox;
 const {LSControlPanel} = imports.LightSpeed.controlpanel;
 const {LSGlobalModel} = imports.LightSpeed.globalParams;
 
-const _ = Gettext.gettext;
-
 var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
-    _init(props = {}) {
-        props.title = _('🔥🔥🔥 GOBBLE ON FIRE 🔥🔥🔥');
-        super._init(props);
+    _init(appId, props = {}) {
+        super._init(appId, props);
         this._global = new LSGlobalModel();
         this._controlPanel = new LSControlPanel({visible: true});
         this._controlPanel.bindGlobal(this._global);

@@ -19,7 +19,36 @@ toolbox {
                                       rgba(32, 69, 108, 0.63) 66%,
                                       #1C3753 100%),
                       image(rgba(14, 35, 65, 0.85));
-    font-family: 'Metropolis Medium';
+    font-family: Metropolis;
+
+    /* This inset box shadow is needed because the panel covers up the left
+     * column's box shadow. */
+    box-shadow: 4px 0 3px 0 rgba(0, 0, 0, 0.3) inset;
+}
+
+toolbox .left-column {
+    background: #4a3a37;
+    box-shadow: 4px 0 5px 0 rgba(0, 0, 0, 0.5);
+    opacity: 0.9;
+}
+
+toolbox .masthead {
+    padding: 12px;
+}
+
+toolbox .masthead .name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 6px;
+}
+
+toolbox .masthead .info {
+    margin-left: 6px;
+}
+
+toolbox .left-column separator {
+    border-width: 2px;
+    color: black;
 }
 
 toolbox headerbar {
@@ -81,13 +110,6 @@ toolbox headerbar {
 
 .codeview-frame {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
-}
-
-/* Toolbox HeaderBar */
-frame.toolbox > border,
-frame.toolbox > toolbox,
-frame.toolbox > toolbox > headerbar {
-    border-radius: 8px 8px 0px 0px;
 }
 
 button.color {
@@ -239,6 +261,13 @@ popover.error button:hover {
     transition: background-image 10s;
 }
 
+
+.HackUnlock frame.toolbox,
+.HackUnlock frame.toolbox border,
+.HackUnlock frame.toolbox > toolbox,
+.HackUnlock frame.toolbox > toolbox > headerbar {
+    border-radius: 8px 8px 0 0;
+}
 .framework.toolbox-surrounding-window,
 .OperatingSystemApp.toolbox-surrounding-window,
 .HackUnlock.toolbox-surrounding-window,
