@@ -1,4 +1,5 @@
 /* exported WobblyLockscreen */
+/* global pkg */
 
 const {GLib, GObject} = imports.gi;
 
@@ -9,7 +10,7 @@ var WobblyLockscreen = GObject.registerClass({
     CssName: 'wobblylockscreen',
 }, class WobblyLockscreen extends Lockscreen {
     _init(props = {}) {
-        super._init(props);
+        super._init(props, false);
         this._timeout = null;
         this.connect('destroy', () => {
             if (this._timeout) {
@@ -22,12 +23,26 @@ var WobblyLockscreen = GObject.registerClass({
     _updateBackground() {
         super._updateBackground();
         const assetsPath = this.getAssetsPath();
-        if (this._manager.getTrapSequence(this.lock) === 0)
+        const trapSequence = this._manager.getTrapSequence(this.lock);
+        log(`MANUQ _updateBackground ${trapSequence}`);
+        if (trapSequence === 0) {
+            const defaultPath = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', 'default']);
             this._playbin.background = `file://${assetsPath}/trap0`;
-        if (this._manager.getTrapSequence(this.lock) === 1)
+            this._playbin.uri = `file://${defaultPath}/open.webm`;
+            this._playbin._destroy_after_play = false;
+            this._playbin.play();
+        }
+        if (trapSequence === 1)
             this._playbin.background = `file://${assetsPath}/trap1`;
-        if (this._manager.getTrapSequence(this.lock) === 2)
+        if (trapSequence === 2) {
+            this._playbin._destroy_after_play = true;
             this._playbin.background = `file://${assetsPath}/trap2`;
+        }
+    }
+
+    _updateLockStateWithLock() {
+        log(`MANUQ _updateLockStateWithLock`);
+        super._updateLockStateWithLock();
     }
 
     _onClicked() {

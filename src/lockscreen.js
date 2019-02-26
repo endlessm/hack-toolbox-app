@@ -19,7 +19,7 @@ var Lockscreen = GObject.registerClass({
             GObject.ParamFlags.READWRITE, ''),
     },
 }, class Lockscreen extends Gtk.Overlay {
-    _init(props = {}) {
+    _init(props = {}, hidePlaybinAfterPlay = true) {
         super._init(props);
 
         this._playbin = new Playbin({
@@ -29,9 +29,12 @@ var Lockscreen = GObject.registerClass({
 
         this._playbin.connect('clicked', this._onClicked.bind(this));
 
-        this._playbin.connect('done', () => {
-            this._playbin.hide();
-        });
+        if (hidePlaybinAfterPlay) {
+            this._playbin.connect('done', () => {
+                log(`MANUQ Call done handler`);
+                this._playbin.hide();
+            });
+        }
 
         this.add_overlay(this._playbin);
 
@@ -106,6 +109,10 @@ var Lockscreen = GObject.registerClass({
             `changed::${lock}`, this._updateLockStateWithLock.bind(this));
         this._lock = lock;
         this._updateLockStateWithLock();
+    }
+
+    get playbin() {
+        return this._playbin;
     }
 
     getAssetsPath() {

@@ -42,6 +42,7 @@ var Playbin = GObject.registerClass({
     _init(props) {
         this._uri = null;
         this._hasKey = false;
+        this._destroy_after_play = true;
 
         props.transitionType = props.transitionType || Gtk.StackTransitionType.CROSSFADE;
         props.transitionDuration = props.transitionDuration || 100;
@@ -146,6 +147,12 @@ var Playbin = GObject.registerClass({
     _onEndOfStream() {
         this.emit('done');
         this._playbin.set_state(Gst.State.NULL);
+
+        if (!this._destroy_after_play) {
+            return;
+        }
+
+        log(`MANUQ destroy playbin`);
         this.remove(this._video_widget);
         this._uri = null;
         this._playbin = null;
@@ -189,6 +196,8 @@ var Playbin = GObject.registerClass({
     }
 
     set uri(value) {
+        log(`MANUQ Call set uri ${value}`);
+
         if (this._uri === value)
             return;
 
