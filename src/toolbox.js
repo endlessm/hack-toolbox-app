@@ -50,7 +50,7 @@ var Toolbox = GObject.registerClass({
 
         this._revealer = new Gtk.Revealer({
             revealChild: true,
-            transitionType: Gtk.RevealerTransitionType.SLIDE_UP,
+            transitionType: Gtk.RevealerTransitionType.SLIDE_RIGHT,
         });
         this._realAdd(this._revealer);
 
