@@ -31,8 +31,8 @@ var Lockscreen = GObject.registerClass({
 
         if (hidePlaybinAfterPlay) {
             this._playbin.connect('done', () => {
-                log(`MANUQ Call done handler`);
                 this._playbin.hide();
+                this._playbin.destroy();
             });
         }
 
@@ -109,10 +109,6 @@ var Lockscreen = GObject.registerClass({
             `changed::${lock}`, this._updateLockStateWithLock.bind(this));
         this._lock = lock;
         this._updateLockStateWithLock();
-    }
-
-    get playbin() {
-        return this._playbin;
     }
 
     getAssetsPath() {

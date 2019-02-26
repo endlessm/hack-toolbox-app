@@ -42,7 +42,6 @@ var Playbin = GObject.registerClass({
     _init(props) {
         this._uri = null;
         this._hasKey = false;
-        this._destroy_after_play = true;
 
         props.transitionType = props.transitionType || Gtk.StackTransitionType.CROSSFADE;
         props.transitionDuration = props.transitionDuration || 100;
@@ -144,14 +143,7 @@ var Playbin = GObject.registerClass({
         }
     }
 
-    _onEndOfStream() {
-        this.emit('done');
-        this._playbin.set_state(Gst.State.NULL);
-
-        if (!this._destroy_after_play) {
-            return;
-        }
-
+    destroy() {
         log(`MANUQ destroy playbin`);
         this.remove(this._video_widget);
         this._uri = null;
@@ -160,6 +152,12 @@ var Playbin = GObject.registerClass({
         this._video_widget = null;
         this._video_width = 0;
         this._video_height = 0;
+    }
+
+    _onEndOfStream() {
+        log(`MANUQ _onEndOfStream`);
+        this._playbin.set_state(Gst.State.NULL);
+        this.emit('done');
     }
 
     _onStateChanged(msg) {
@@ -180,8 +178,10 @@ var Playbin = GObject.registerClass({
 
     _bus_watch(bus, msg) {
         if (msg.type === Gst.MessageType.EOS) {
-            this._onEndOfStream(msg);
-            return GLib.SOURCE_REMOVE;
+            if (this._playbin)
+                this._onEndOfStream(msg);
+            else
+                return GLib.SOURCE_REMOVE;
         } else if (msg.type === Gst.MessageType.STREAMS_SELECTED) {
             this._onStreamsSelected(msg);
         } else if (msg.type === Gst.MessageType.STATE_CHANGED) {
