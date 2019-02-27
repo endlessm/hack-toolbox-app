@@ -4,6 +4,7 @@ const {GObject, Gtk} = imports.gi;
 const Gettext = imports.gettext;
 
 const {ResetButton} = imports.resetButton;
+const {TopicButton} = imports.topicButton;
 const Utils = imports.utils;
 
 const _ = Gettext.gettext;
@@ -59,12 +60,35 @@ var Toolbox = GObject.registerClass({
         masthead.attach(buttonReset, 0, 2, 2, 1);
 
         const separator = new Gtk.Separator({orientation: Gtk.Orientation.HORIZONTAL});
+
+        const topicsScroll = new Gtk.ScrolledWindow({
+            hexpand: true,
+            hscrollbarPolicy: Gtk.PolicyType.NEVER,
+            minContentWidth: 154,
+            vexpand: true,
+        });
+        this._topicsList = new Gtk.ListBox({
+            halign: Gtk.Align.START,
+            selectionMode: Gtk.SelectionMode.BROWSE,
+        });
+        this._topicsList.connect('row-selected', this._onRowSelected.bind(this));
+        topicsScroll.add(this._topicsList);
+
         leftColumn.add(masthead);
         leftColumn.add(separator);
+        leftColumn.add(topicsScroll);
 
         this.attach(leftColumn, 0, 0, 1, 1);
 
         const headerbar = new Gtk.Box({orientation: Gtk.Orientation.HORIZONTAL});
+
+        const headerGrid = new Gtk.Grid({orientation: Gtk.Orientation.HORIZONTAL});
+        headerGrid.get_style_context().add_class('header');
+        this._headerImage = new Gtk.Image({pixelSize: 32});
+        this._headerLabel = new Gtk.Label();
+        headerGrid.add(this._headerImage);
+        headerGrid.add(this._headerLabel);
+
         const minimizeImage = new Gtk.Image({iconName: 'go-previous-symbolic'});
         const buttonMinimize = new Gtk.Button();
         buttonMinimize.get_style_context().add_class('minimize');
@@ -80,18 +104,24 @@ var Toolbox = GObject.registerClass({
         this._leftStack.add_named(buttonMinimize, 'normal');
         this._leftStack.visibleChildName = 'normal';
 
+        headerbar.set_center_widget(headerGrid);
         headerbar.pack_end(this._leftStack, false, false, 0);
         headerbar.show_all();
 
-        this._toolboxPanel = new Gtk.Grid({orientation: Gtk.Orientation.VERTICAL});
-        this._toolboxPanel.get_style_context().add_class('panel');
-        this._toolboxPanel.add(headerbar);
+        this._topicsStack = new Gtk.Stack({
+            transitionType: Gtk.StackTransitionType.CROSSFADE,
+        });
+
+        const toolboxPanel = new Gtk.Grid({orientation: Gtk.Orientation.VERTICAL});
+        toolboxPanel.get_style_context().add_class('panel');
+        toolboxPanel.add(headerbar);
+        toolboxPanel.add(this._topicsStack);
 
         this._revealer = new Gtk.Revealer({
             revealChild: true,
             transitionType: Gtk.RevealerTransitionType.SLIDE_RIGHT,
         });
-        this._revealer.add(this._toolboxPanel);
+        this._revealer.add(toolboxPanel);
         this.attach(this._revealer, 1, 0, 1, 1);
 
         buttonMinimize.connect('clicked', this._onMinimize.bind(this));
@@ -99,8 +129,23 @@ var Toolbox = GObject.registerClass({
         this.setBusy(false);
     }
 
-    add(widget) {
-        this._toolboxPanel.add(widget);
+    addTopic(title, iconName, widget) {
+        const topic = new TopicButton({title, iconName});
+        this._topicsList.add(topic);
+        this._toolboxStack.add_named(title, widget);
+    }
+
+    _onRowSelected(list, row) {
+        if (row === null) {
+            this._setMinimized(true);
+            return;
+        }
+
+        const topic = row.get_child();
+        this._headerLabel.label = topic.title;
+        this._headerImage.iconName = topic.icon_name;
+        this._toolboxStack.visibleChildName = topic.title;
+        this._setMinimized(false);
     }
 
     _onResetClicked() {
@@ -110,9 +155,14 @@ var Toolbox = GObject.registerClass({
     }
 
     _onMinimize() {
-        const open = this._revealer.revealChild;
-        this._revealer.revealChild = !open;
-        SoundServer.getDefault().play(`hack-toolbox/${open ? '' : 'un'}minimize`);
+        this._topicsList.select_row(null);
+    }
+
+    _setMinimized(minimized) {
+        if (this._revealer.revealChild === !minimized)
+            return;
+        this._revealer.revealChild = !minimized;
+        SoundServer.getDefault().play(`hack-toolbox/${minimized ? '' : 'un'}minimize`);
     }
 
     setBusy(value) {

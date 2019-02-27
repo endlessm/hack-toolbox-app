@@ -12,7 +12,7 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         this._global = new LSGlobalModel();
         this._controlPanel = new LSControlPanel({visible: true});
         this._controlPanel.bindGlobal(this._global);
-        this.add(this._controlPanel);
+        this.addTopic('Tools', 'preferences-other-symbolic', this._controlPanel);
         this.show_all();
 
         this.connect('reset', this._onReset.bind(this));

@@ -8,7 +8,7 @@ var OSToolbox = GObject.registerClass(class OSToolbox extends Toolbox {
     _init(appId, props = {}) {
         super._init(appId, props);
         this._controlPanel = new OSControlPanel({visible: true});
-        this.add(this._controlPanel);
+        this.addTopic('Tools', 'preferences-other-symbolic', this._controlPanel);
         this.show_all();
 
         this.connect('reset', () => {
