@@ -66,7 +66,7 @@ var LocksManager = GObject.registerClass({
             dict.insert_value('tried', new GLib.Variant('b', tried));
             this._proxy.SetSync(lock, dict.end());
         } catch (error) {
-            const variant2 = new GLib.Variant('a{sb}', {tried: true});
+            const variant2 = new GLib.Variant('a{sb}', {tried});
             this._proxy.SetSync(lock, variant2);
         }
     }
