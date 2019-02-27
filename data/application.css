@@ -54,6 +54,49 @@ toolbox .left-column separator {
     color: black;
 }
 
+toolbox .left-column scrolledwindow {
+    background-color: transparent;
+    padding: 12px 6px 0 12px;
+}
+
+/* Remove undershoot dashed-lines */
+toolbox .left-column scrolledwindow undershoot {
+    background-image: none;
+}
+
+toolbox .left-column scrollbar {
+    border-radius: 5px;
+    border-width: 0;
+}
+
+toolbox .left-column scrollbar trough {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+
+toolbox .left-column scrollbar slider {
+    margin: -3px;  /* removes padding in between slider and trough */
+    min-width: 5px;
+}
+
+toolbox .left-column list {
+    background-color: transparent;
+}
+
+toolbox .left-column list row {
+    outline-width: 0;
+    margin-bottom: 6px;
+    margin-right: 18px;
+}
+
+toolbox .left-column list row:selected,
+toolbox .left-column list row:hover {
+    background-color: transparent;
+}
+toolbox .left-column list row:active {
+    box-shadow: none;
+}
+
 .minimize {
     background-image: none;
     border: 0;
@@ -79,6 +122,53 @@ toolbox .left-column separator {
 
 .reset:hover {
     background-color: rgba(32, 46, 65, 0.6);  /* lighten rgba(6, 20, 39, 0.6) 10% */
+}
+
+.header {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 24px;
+    margin: 6px;
+    padding: 6px 18px;
+}
+
+.header label {
+    margin-left: 12px;
+}
+
+.topic {
+    background-color: rgba(6, 20, 39, 0.8);
+    border-radius: 25px;
+    min-height: 154px;
+    min-width: 154px;
+    outline-width: 0;
+    transition: background-color 200ms;
+}
+
+.topic box {
+    padding: 4px 17px;
+}
+
+row:hover .topic {
+    background-color: rgba(32, 46, 65, 0.8);  /* lighten rgba(6, 20, 39, 0.8) 10% */
+}
+
+.topic border {
+    border-width: 0;
+}
+
+.topic label {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    margin-top: 12px;
+    padding: 4px;
+}
+
+row:selected .topic {
+    background-color: #f18c22;
+}
+
+row:selected:hover .topic {
+    background-color: #ffa63c;  /* lighten #f18c22 10% */
 }
 
 .sourceview {

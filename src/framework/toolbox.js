@@ -43,7 +43,9 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
         this._controlPanel = new RaControlPanel(defaults, {visible: true});
         this._controlPanel.bindModel(this._model);
         this._controlPanel.bindWindow(win);
-        this.add(this._controlPanel);
+        this.addTopic('Tools', 'preferences-other-symbolic', this._controlPanel);
+
+        this.show_all();
 
         this.setBusy(false);
     }
