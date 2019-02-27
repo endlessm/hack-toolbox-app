@@ -144,7 +144,6 @@ var Lockscreen = GObject.registerClass({
     }
 
     _updateBackground() {
-        const defaultPath = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', 'default']);
         const [assetsPath, videoPath, assetsHasKey] = this.getAssetsPath();
 
         this._openURI = `file://${videoPath}/open.webm`;

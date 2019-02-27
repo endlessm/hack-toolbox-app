@@ -144,7 +144,6 @@ var Playbin = GObject.registerClass({
     }
 
     destroy() {
-        log(`MANUQ destroy playbin`);
         this.remove(this._video_widget);
         this._uri = null;
         this._playbin = null;
@@ -155,7 +154,6 @@ var Playbin = GObject.registerClass({
     }
 
     _onEndOfStream() {
-        log(`MANUQ _onEndOfStream`);
         this._playbin.set_state(Gst.State.NULL);
         this.emit('done');
     }

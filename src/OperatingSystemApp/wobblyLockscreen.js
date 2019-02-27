@@ -1,5 +1,4 @@
 /* exported WobblyLockscreen */
-/* global pkg */
 
 const {GLib, GObject} = imports.gi;
 
@@ -14,10 +13,8 @@ var WobblyLockscreen = GObject.registerClass({
         this._trapSequence = null;
         this._videoLoops = false;
         this._playbin.connect('done', () => {
-            log(`MANUQ playbin done ${this._videoLoops}`);
-            if (this._videoLoops) {
+            if (this._videoLoops)
                 this._playbin.play();
-            }
         });
         this._timeout = null;
         this.connect('destroy', () => {
@@ -30,43 +27,34 @@ var WobblyLockscreen = GObject.registerClass({
 
     _updateBackground() {
         super._updateBackground();
-        const [assetsPath, , ] = this.getAssetsPath();
+        // eslint-disable-next-line comma-spacing
+        const [assetsPath,,] = this.getAssetsPath();
 
-        log(`MANUQ _updateBackground ${this._trapSequence} ${this._playbin.background}`);
-        if (this._trapSequence === 0) {
-            log(`MANUQ video: lock opens but there is a trap`);
-            this._playbin.background = `file://${assetsPath}/trap0`;
-            this._playbin.uri = `file://${assetsPath}/trap0.webm`;
-            this._playbin.play();
-        }
-        if (this._trapSequence === 1) {
-            log(`MANUQ video: riley falls into the trap`);
-            this._playbin.background = `file://${assetsPath}/trap1`;
-            this._playbin.uri = `file://${assetsPath}/trap1.webm`;
-            this._playbin.play();
-        }
-        if (this._trapSequence === 2) {
-            log(`MANUQ video: in loop, red alarm`);
+        if (this._trapSequence === null)
+            return;
+
+        this._playbin.background = `file://${assetsPath}/trap${this._trapSequence}`;
+        this._playbin.uri = `file://${assetsPath}/trap${this._trapSequence}.webm`;
+
+        // Last video plays in loop
+        if (this._trapSequence === 2)
             this._videoLoops = true;
-            this._playbin.background = `file://${assetsPath}/trap2`;
-            this._playbin.uri = `file://${assetsPath}/trap2.webm`;
-            this._playbin.play();
-        }
+
+        this._playbin.play();
     }
 
     _updateLockStateWithLock() {
         if (this._manager.isUnlocked(this.lock)) {
-            log(`MANUQ _updateLockStateWithLock unlocked`);
             this._playbin.hide();
             this._playbin.destroy();
             return;
         }
 
         const trapSequence = this._manager.getTrapSequence(this.lock);
-        log(`MANUQ _updateLockStateWithLock ${trapSequence}`);
-        if (typeof trapSequence === 'undefined') {
+        // FIXME check
+        if (typeof trapSequence === 'undefined')
             super._updateLockStateWithLock();
-        }
+
         if (typeof trapSequence !== 'undefined' && trapSequence !== this._trapSequence) {
             this._trapSequence = trapSequence;
             super._updateLockStateWithLock();
