@@ -1,9 +1,10 @@
 /* exported Toolbox */
 
-const {Gio, GObject, Gtk} = imports.gi;
+const {GObject, Gtk} = imports.gi;
 const Gettext = imports.gettext;
 
 const {ResetButton} = imports.resetButton;
+const Utils = imports.utils;
 
 const _ = Gettext.gettext;
 
@@ -37,10 +38,10 @@ var Toolbox = GObject.registerClass({
         const appNameLabel = new Gtk.Label({halign: Gtk.Align.START});
         appNameLabel.get_style_context().add_class('name');
 
-        const appInfo = Gio.DesktopAppInfo.new(`${appId}.desktop`);
+        const appInfo = Utils.appInfoForAppId(appId);
         if (appInfo) {
-            appIcon.set_from_gicon(appInfo.get_icon(), Gtk.IconSize.DIALOG);
-            appNameLabel.label = appInfo.get_name();
+            appIcon.set_from_gicon(appInfo.icon, Gtk.IconSize.DIALOG);
+            appNameLabel.label = appInfo.name;
         } else {
             // Application not installed, this is not expected during normal
             // use, but set some defaults in case it happens during development
