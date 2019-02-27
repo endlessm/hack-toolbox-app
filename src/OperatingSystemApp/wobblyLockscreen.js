@@ -30,7 +30,8 @@ var WobblyLockscreen = GObject.registerClass({
 
     _updateBackground() {
         super._updateBackground();
-        const assetsPath = this.getAssetsPath();
+        const [assetsPath, , ] = this.getAssetsPath();
+
         log(`MANUQ _updateBackground ${this._trapSequence} ${this._playbin.background}`);
         if (this._trapSequence === 0) {
             log(`MANUQ video: lock opens but there is a trap`);
