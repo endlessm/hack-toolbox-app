@@ -65,6 +65,7 @@ var Toolbox = GObject.registerClass({
             hexpand: true,
             hscrollbarPolicy: Gtk.PolicyType.NEVER,
             minContentWidth: 154,
+            overlayScrolling: false,
             vexpand: true,
         });
         this._topicsList = new Gtk.ListBox({
@@ -132,7 +133,8 @@ var Toolbox = GObject.registerClass({
     addTopic(title, iconName, widget) {
         const topic = new TopicButton({title, iconName});
         this._topicsList.add(topic);
-        this._toolboxStack.add_named(title, widget);
+        widget.show_all();  // show_all() only propagates to current stack page
+        this._topicsStack.add_named(widget, title);
     }
 
     _onRowSelected(list, row) {
@@ -144,7 +146,7 @@ var Toolbox = GObject.registerClass({
         const topic = row.get_child();
         this._headerLabel.label = topic.title;
         this._headerImage.iconName = topic.icon_name;
-        this._toolboxStack.visibleChildName = topic.title;
+        this._topicsStack.visibleChildName = topic.title;
         this._setMinimized(false);
     }
 

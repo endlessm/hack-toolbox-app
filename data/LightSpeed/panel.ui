@@ -43,16 +43,16 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <template class="LSControlPanel" parent="GtkGrid">
+  <template class="LSCombinedTopic" parent="GtkGrid">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="column_spacing">12</property>
+    <property name="border_width">20</property>
+    <property name="column_spacing">20</property>
     <child>
       <object class="GtkGrid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="border_width">12</property>
-        <property name="row_spacing">24</property>
+        <property name="row_spacing">16</property>
         <child>
           <object class="Section">
             <property name="visible">True</property>
@@ -233,144 +233,15 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkNotebook" id="codeViewsNotebook">
+          <object class="Codeview" id="variablesCodeview">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="border_width">6</property>
+            <property name="can_focus">False</property>
             <child>
-              <object class="Codeview" id="variablesCodeview">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
+              <placeholder/>
             </child>
-            <child type="tab">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">=</property>
-              </object>
-              <packing>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="Codeview" id="spawnEnemyCodeview">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">🚀️</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="Codeview" id="updateAsteroidCodeview">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">🌕️</property>
-              </object>
-              <packing>
-                <property name="position">2</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="Codeview" id="updateSpinnerCodeview">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">🌟️</property>
-              </object>
-              <packing>
-                <property name="position">3</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="Codeview" id="updateSquidCodeview">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">4</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">🦑️</property>
-              </object>
-              <packing>
-                <property name="position">4</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="Codeview" id="updateBeamCodeview">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">5</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">⚡️</property>
-              </object>
-              <packing>
-                <property name="position">5</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
+            <style>
+              <class name="variables-codeview"/>
+            </style>
           </object>
           <packing>
             <property name="index">-1</property>

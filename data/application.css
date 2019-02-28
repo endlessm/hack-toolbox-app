@@ -309,6 +309,11 @@ slider {
     font-family: monospace;
 }
 
+frame.user-function {
+    border-width: 0;
+    padding: 12px;
+}
+
 popover.error {
     background-color: #191919;
     border: 1px solid #ff6a6a;
