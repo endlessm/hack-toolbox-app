@@ -11,7 +11,7 @@ var WobblyLockscreen = GObject.registerClass({
     _init(props = {}) {
         super._init(props);
         this._trapSequence = null;
-        this._videoLoops = false;
+        this._playDoneMode = null;
         this._timeout = null;
         this.connect('destroy', () => {
             if (this._timeout) {
@@ -34,20 +34,19 @@ var WobblyLockscreen = GObject.registerClass({
 
         // Last video plays in loop
         if (this._trapSequence === 2)
-            this._videoLoops = true;
+            this._playDoneMode = 'loop';
 
         this._playbin.play();
     }
 
     _updateLockStateWithLock() {
         if (this._manager.isUnlocked(this.lock)) {
-            this._playbin.hide();
-            this._playbin.destroy();
+            this._playDoneMode = 'end';
             return;
         }
 
         const trapSequence = this._manager.getTrapSequence(this.lock);
-        // FIXME check
+
         if (typeof trapSequence === 'undefined')
             super._updateLockStateWithLock();
 
@@ -77,7 +76,11 @@ var WobblyLockscreen = GObject.registerClass({
     }
 
     _onPlayDone() {
-        if (this._videoLoops)
+        if (this._playDoneMode === 'loop') {
             this._playbin.play();
+        } else if (this._playDoneMode === 'end') {
+            this._playbin.hide();
+            this._playbin.destroy();
+        }
     }
 });

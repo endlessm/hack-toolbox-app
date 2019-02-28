@@ -194,8 +194,6 @@ var Playbin = GObject.registerClass({
     }
 
     set uri(value) {
-        log(`MANUQ Call set uri ${value}`);
-
         if (this._uri === value)
             return;
 
