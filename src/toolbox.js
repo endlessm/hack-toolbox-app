@@ -172,6 +172,10 @@ var Toolbox = GObject.registerClass({
         this._spinner.active = value;
     }
 
+    setInfo(text) {
+        this._infoLabel.label = text;
+    }
+
     // Can be overridden by subclasses to do any work on window close
     shutdown() {
         void this;

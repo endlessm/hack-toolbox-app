@@ -40,14 +40,23 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         this._updateBeamTopic.bindGlobal(this._global);
         this.addTopic('Beam', 'beam-symbolic', this._updateBeamTopic);
 
+        this._updateLevelInfo();
         this.show_all();
 
+        this._global.connect('notify::currentLevel', this._updateLevelInfo.bind(this));
         this.connect('reset', this._onReset.bind(this));
     }
 
     bindWindow(win) {
         win.get_style_context().add_class('LightSpeed');
         this._combinedTopic.bindWindow(win);
+    }
+
+    _updateLevelInfo() {
+        let text = `Level ${this._global.currentLevel}`;
+        if (this._global.currentLevel === 0)
+            text = 'Intro';
+        this.setInfo(text);
     }
 
     _onReset() {
