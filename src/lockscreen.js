@@ -142,7 +142,6 @@ var Lockscreen = GObject.registerClass({
 
         this._openURI = `file://${videoPath}/open.webm`;
 
-        this._playbin.hasKey = this._key && this._manager.hasKey(this._key);
         if (assetsHasKey && this._playbin.hasKey)
             this._playbin.background = `file://${assetsPath}/has-key`;
         else
@@ -152,6 +151,7 @@ var Lockscreen = GObject.registerClass({
     _updateLockStateWithKey() {
         if (!this._key)
             return;
+        this._playbin.hasKey = this._manager.hasKey(this._key);
         this._updateBackground();
     }
 
