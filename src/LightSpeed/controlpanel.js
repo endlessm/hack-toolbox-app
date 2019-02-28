@@ -1,4 +1,4 @@
-/* exported LSControlPanel */
+/* exported LSCombinedTopic */
 
 const {GLib, GObject, Gtk} = imports.gi;
 
@@ -12,125 +12,16 @@ GObject.type_ensure(Codeview.$gtype);
 GObject.type_ensure(Section.$gtype);
 GObject.type_ensure(SpinInput.$gtype);
 
-// Parameters that we pass to the user functions while executing them.
-// Unlike the real parameters in the game, which will vary, these need to be
-// deterministic. If we're validating things before sending them to the game,
-// then we don't want something to be an error only sometimes. The game will
-// deal with runtime errors for that purpose.
-const COMMON_SCOPE = {
-    // Keep this in sync with UserScope class in
-    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
-    tick: 0,
-    time: 0,
-    width: 1920,
-    height: 1080,
-    shipTypes: [
-        'spaceship',
-        'daemon',
-        'unicorn',
-    ],
-    enemyTypes: [
-        'asteroid',
-        'spinner',
-        'squid',
-        'beam',
-    ],
-    data: {},
-
-    // validates arguments passed in to random() and returns deterministically
-    random(min, max) {
-        if (Number.isNaN(Number(min)))
-            throw new TypeError(`${min} isn't a number`);
-        if (Number.isNaN(Number(max)))
-            throw new TypeError(`${max} isn't a number`);
-        return min;
-    },
-
-    sin(theta) {
-        return Math.sin(theta);
-    },
-
-    cos(theta) {
-        return Math.cos(theta);
-    },
-};
-
-const COMMON_SPAWN_SCOPE = {
-    // Keep this in sync with SpawnScope class in
-    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
-    ticksSinceSpawn: 0,
-};
-
-const COMMON_UPDATE_SCOPE = {
-    // Keep this in sync with UpdateEnemyScope class in
-    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
-    playerShipY: 0,
-    enemy: {
-        position: {x: 0, y: 0},
-        velocity: {x: 0, y: 0},
-        data: {},
-    },
-};
-
 const VALID_SHIPS = ['spaceship', 'daemon', 'unicorn'];
-const USER_FUNCTIONS = [
-    {
-        name: 'spawnEnemy',
-        args: [],
-        modelProp: 'spawnEnemyCode',
-        childWidget: '_spawnEnemyCodeview',
-        getScope() {
-            return Object.assign({}, COMMON_SPAWN_SCOPE, COMMON_SCOPE);
-        },
-    },
-    {
-        name: 'updateAsteroid',
-        args: [],
-        modelProp: 'updateAsteroidCode',
-        childWidget: '_updateAsteroidCodeview',
-        getScope() {
-            return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
-        },
-    },
-    {
-        name: 'updateSpinner',
-        args: [],
-        modelProp: 'updateSpinnerCode',
-        childWidget: '_updateSpinnerCodeview',
-        getScope() {
-            return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
-        },
-    },
-    {
-        name: 'updateSquid',
-        args: [],
-        modelProp: 'updateSquidCode',
-        childWidget: '_updateSquidCodeview',
-        getScope() {
-            return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
-        },
-    },
-    {
-        name: 'updateBeam',
-        args: [],
-        modelProp: 'updateBeamCode',
-        childWidget: '_updateBeamCodeview',
-        getScope() {
-            return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
-        },
-    },
-];
 
-var LSControlPanel = GObject.registerClass({
-    GTypeName: 'LSControlPanel',
+var LSCombinedTopic = GObject.registerClass({
+    GTypeName: 'LSCombinedTopic',
     Template: 'resource:///com/endlessm/HackToolbox/LightSpeed/panel.ui',
     InternalChildren: ['astronautSizeAdjustment', 'level2lock',
         'scoreTargetAdjustment', 'shipAccelerationAdjustment',
         'shipAssetButton', 'shipSizeAdjustment', 'shipSpeedAdjustment',
-        'spawnEnemyCodeview', 'timeLimitAdjustment', 'updateAsteroidCodeview',
-        'updateBeamCodeview', 'updateSpinnerCodeview', 'updateSquidCodeview',
-        'variablesCodeview'],
-}, class LSControlPanel extends Gtk.Grid {
+        'timeLimitAdjustment', 'variablesCodeview'],
+}, class LSCombinedTopic extends Gtk.Grid {
     _init(props = {}) {
         this._lastCodeviewSoundMicrosec = 0;
 
@@ -144,12 +35,6 @@ var LSControlPanel = GObject.registerClass({
             Gtk.Image, 'resource');
 
         this._variablesCodeview.connect('should-compile', this._compile.bind(this));
-        USER_FUNCTIONS.forEach(info => {
-            const codeview = this[info.childWidget];
-            codeview.userFunction = info.name;
-            codeview.connect('should-compile',
-                this._compileUserFunction.bind(this, info));
-        });
     }
 
     bindGlobal(model) {
@@ -197,13 +82,6 @@ var LSControlPanel = GObject.registerClass({
 
         this._notifyHandler = model.connect('notify', this._onNotify.bind(this));
         this._regenerateCode();
-
-        USER_FUNCTIONS.forEach(({name, args, modelProp, childWidget}) => {
-            const codeview = this[childWidget];
-            codeview.text = `function ${name}(${args.join(', ')}) {
-${model[modelProp]}
-}`;
-        });
     }
 
     bindWindow(win) {
@@ -211,56 +89,6 @@ ${model[modelProp]}
         win.lockscreen.lock = 'lock.lightspeed.1';
         this._level2lock.key = 'item.key.lightspeed.2';
         this._level2lock.lock = 'lock.lightspeed.2';
-    }
-
-    _compileUserFunction({name, args, modelProp, getScope}, codeview) {
-        const code = codeview.text;
-        const scope = getScope();
-        let userFunction;
-
-        try {
-            // eslint-disable-next-line no-new-func
-            const factoryFunc = new Function('scope', `\
-with(scope){
-${code}
-; if (typeof ${name} !== 'undefined') return ${name};
-}`);
-            userFunction = factoryFunc(scope);
-        } catch (e) {
-            if (!(e instanceof SyntaxError || e instanceof ReferenceError))
-                throw e;
-            codeview.setCompileResultsFromException(e);
-            return;
-        }
-
-        if (!userFunction) {
-            // Function definition deleted, or otherwise not working
-            codeview.setCompileResults([{
-                start: {
-                    line: 1,
-                    column: 1,
-                },
-                end: {
-                    line: 1,
-                    column: 1,
-                },
-                message: `Expected a function named ${name}.`,
-                fixme: `function ${name}(${args.join('\n')}) {\n}\n`,
-            }]);
-            return;
-        }
-
-        try {
-            userFunction();
-        } catch (e) {
-            codeview.setCompileResultsFromException(e);
-            return;
-        }
-
-        codeview.setCompileResults([]);
-
-        const funcBody = codeview.getFunctionBody(name);
-        this._model[modelProp] = funcBody;
     }
 
     _compile() {
