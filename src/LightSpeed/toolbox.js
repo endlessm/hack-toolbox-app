@@ -1,6 +1,6 @@
 /* exported LSToolbox */
 
-const {Gio, GLib, GObject} = imports.gi;
+const {Gio, GLib, GObject, Gtk} = imports.gi;
 
 const {Toolbox} = imports.toolbox;
 const {LSControlPanel} = imports.LightSpeed.controlpanel;
@@ -9,6 +9,10 @@ const {LSGlobalModel} = imports.LightSpeed.globalParams;
 var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
     _init(appId, props = {}) {
         super._init(appId, props);
+
+        const iconTheme = Gtk.IconTheme.get_default();
+        iconTheme.add_resource_path('/com/endlessm/HackToolbox/LightSpeed/icons');
+
         this._global = new LSGlobalModel();
         this._controlPanel = new LSControlPanel({visible: true});
         this._controlPanel.bindGlobal(this._global);
