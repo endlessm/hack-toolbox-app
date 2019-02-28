@@ -73,6 +73,13 @@
     <file>Fizzics/skins/9.png</file>
     <file>Fizzics/skins/10.png</file>
     <file>HackUnlock/controlpanel.ui</file>
+    <!-- FIXME: placement assets. replace with ones that don't need attribution-->
+    <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/asteroid-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/astronaut-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/beam-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/rocket-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/spinner-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/squid-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">LightSpeed/panel.ui</file>
     <file>LightSpeed/ships/daemon.png</file>
     <file>LightSpeed/ships/spaceship.png</file>
