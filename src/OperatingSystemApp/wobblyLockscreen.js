@@ -21,7 +21,7 @@ var WobblyLockscreen = GObject.registerClass({
 
     _updateBackground() {
         super._updateBackground();
-        const assetsPath = this.getAssetsPath();
+        const [assetsPath] = this.getAssetsPath();
         if (this._manager.getTrapSequence(this.lock) === 0)
             this._playbin.background = `file://${assetsPath}/trap0`;
         if (this._manager.getTrapSequence(this.lock) === 1)
