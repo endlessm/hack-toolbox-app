@@ -23,8 +23,7 @@ var WobblyLockscreen = GObject.registerClass({
 
     _updateBackground() {
         super._updateBackground();
-        // eslint-disable-next-line comma-spacing
-        const [assetsPath,,] = this.getAssetsPath();
+        const [assetsPath] = this.getAssetsPath();
 
         if (this._trapSequence === null)
             return;
