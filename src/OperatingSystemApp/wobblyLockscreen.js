@@ -9,13 +9,9 @@ var WobblyLockscreen = GObject.registerClass({
     CssName: 'wobblylockscreen',
 }, class WobblyLockscreen extends Lockscreen {
     _init(props = {}) {
-        super._init(props, false);
+        super._init(props);
         this._trapSequence = null;
         this._videoLoops = false;
-        this._playbin.connect('done', () => {
-            if (this._videoLoops)
-                this._playbin.play();
-        });
         this._timeout = null;
         this.connect('destroy', () => {
             if (this._timeout) {
@@ -78,5 +74,10 @@ var WobblyLockscreen = GObject.registerClass({
                 return GLib.SOURCE_REMOVE;
             });
         }
+    }
+
+    _onPlayDone() {
+        if (this._videoLoops)
+            this._playbin.play();
     }
 });
