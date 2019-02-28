@@ -22,6 +22,10 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="WobblyLockscreen" parent="Lockscreen"
+                        generic-name="wobblylockscreen"
+                        title="WobblyLockscreen"/>
+
     <glade-widget-class name="CheckInput"
                         generic-name="CheckInput"
                         template="../checkinput.ui"
@@ -80,6 +84,7 @@
   <glade-widget-group name="hack-toolbox" title="Hack Toolbox">
     <glade-widget-class-ref name="Codeview"/>
     <glade-widget-class-ref name="Lockscreen"/>
+    <glade-widget-class-ref name="WobblyLockscreen"/>
     <glade-widget-class-ref name="CheckInput"/>
     <glade-widget-class-ref name="SpinInput"/>
     <glade-widget-class-ref name="Section"/>

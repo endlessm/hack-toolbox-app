@@ -28,10 +28,7 @@ var Lockscreen = GObject.registerClass({
         });
 
         this._playbin.connect('clicked', this._onClicked.bind(this));
-
-        this._playbin.connect('done', () => {
-            this._playbin.hide();
-        });
+        this._playbin.connect('done', this._onPlayDone.bind(this));
 
         this.add_overlay(this._playbin);
 
@@ -110,25 +107,6 @@ var Lockscreen = GObject.registerClass({
 
     getAssetsPath() {
         const defaultPath = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', 'default']);
-
-        if (this._lock) {
-            const path = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', this._lock]);
-            const dir = Gio.File.new_for_path(path);
-
-            if (dir.query_exists(null) &&
-                dir.get_child('no-key').query_exists(null)) {
-                // All the required assets are here, let's use this path for
-                // the background
-                return path;
-            }
-        }
-
-        return defaultPath;
-    }
-
-    // FIXME refactor to use _getAssetsPath
-    _updateBackground() {
-        const defaultPath = GLib.build_filenamev([pkg.pkgdatadir, 'lockscreens', 'default']);
         var assetsHasKey = false;
         var assetsPath;
         var videoPath;
@@ -156,13 +134,15 @@ var Lockscreen = GObject.registerClass({
         if (!assetsPath)
             assetsPath = defaultPath;
 
-        if (videoPath)
-            this._openURI = `file://${videoPath}/open.webm`;
-        else
-            this._openURI = null;
+        return [assetsPath, videoPath, assetsHasKey];
+    }
+
+    _updateBackground() {
+        const [assetsPath, videoPath, assetsHasKey] = this.getAssetsPath();
+
+        this._openURI = `file://${videoPath}/open.webm`;
 
         this._playbin.hasKey = this._key && this._manager.hasKey(this._key);
-
         if (assetsHasKey && this._playbin.hasKey)
             this._playbin.background = `file://${assetsPath}/has-key`;
         else
@@ -252,6 +232,11 @@ var Lockscreen = GObject.registerClass({
 
         this._manager.setUnlocked(this._lock);
         this._manager.setUsed(this._key);
+    }
+
+    _onPlayDone() {
+        this._playbin.hide();
+        this._playbin.destroy();
     }
 
     _updateUI() {

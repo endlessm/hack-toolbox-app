@@ -10,6 +10,8 @@ var WobblyLockscreen = GObject.registerClass({
 }, class WobblyLockscreen extends Lockscreen {
     _init(props = {}) {
         super._init(props);
+        this._trapSequence = null;
+        this._playDoneMode = null;
         this._timeout = null;
         this.connect('destroy', () => {
             if (this._timeout) {
@@ -21,13 +23,36 @@ var WobblyLockscreen = GObject.registerClass({
 
     _updateBackground() {
         super._updateBackground();
-        const assetsPath = this.getAssetsPath();
-        if (this._manager.getTrapSequence(this.lock) === 0)
-            this._playbin.background = `file://${assetsPath}/trap0`;
-        if (this._manager.getTrapSequence(this.lock) === 1)
-            this._playbin.background = `file://${assetsPath}/trap1`;
-        if (this._manager.getTrapSequence(this.lock) === 2)
-            this._playbin.background = `file://${assetsPath}/trap2`;
+        const [assetsPath] = this.getAssetsPath();
+
+        if (this._trapSequence === null)
+            return;
+
+        this._playbin.background = `file://${assetsPath}/trap${this._trapSequence}`;
+        this._playbin.uri = `file://${assetsPath}/trap${this._trapSequence}.webm`;
+
+        // Last video plays in loop
+        if (this._trapSequence === 2)
+            this._playDoneMode = 'loop';
+
+        this._playbin.play();
+    }
+
+    _updateLockStateWithLock() {
+        if (this._manager.isUnlocked(this.lock)) {
+            this._playDoneMode = 'end';
+            return;
+        }
+
+        const trapSequence = this._manager.getTrapSequence(this.lock);
+
+        if (typeof trapSequence === 'undefined')
+            super._updateLockStateWithLock();
+
+        if (typeof trapSequence !== 'undefined' && trapSequence !== this._trapSequence) {
+            this._trapSequence = trapSequence;
+            super._updateLockStateWithLock();
+        }
     }
 
     _onClicked() {
@@ -46,6 +71,15 @@ var WobblyLockscreen = GObject.registerClass({
                 this._timeout = null;
                 return GLib.SOURCE_REMOVE;
             });
+        }
+    }
+
+    _onPlayDone() {
+        if (this._playDoneMode === 'loop') {
+            this._playbin.play();
+        } else if (this._playDoneMode === 'end') {
+            this._playbin.hide();
+            this._playbin.destroy();
         }
     }
 });

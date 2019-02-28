@@ -143,9 +143,7 @@ var Playbin = GObject.registerClass({
         }
     }
 
-    _onEndOfStream() {
-        this.emit('done');
-        this._playbin.set_state(Gst.State.NULL);
+    destroy() {
         this.remove(this._video_widget);
         this._uri = null;
         this._playbin = null;
@@ -153,6 +151,11 @@ var Playbin = GObject.registerClass({
         this._video_widget = null;
         this._video_width = 0;
         this._video_height = 0;
+    }
+
+    _onEndOfStream() {
+        this._playbin.set_state(Gst.State.NULL);
+        this.emit('done');
     }
 
     _onStateChanged(msg) {
@@ -173,8 +176,10 @@ var Playbin = GObject.registerClass({
 
     _bus_watch(bus, msg) {
         if (msg.type === Gst.MessageType.EOS) {
-            this._onEndOfStream(msg);
-            return GLib.SOURCE_REMOVE;
+            if (this._playbin)
+                this._onEndOfStream(msg);
+            else
+                return GLib.SOURCE_REMOVE;
         } else if (msg.type === Gst.MessageType.STREAMS_SELECTED) {
             this._onStreamsSelected(msg);
         } else if (msg.type === Gst.MessageType.STATE_CHANGED) {
