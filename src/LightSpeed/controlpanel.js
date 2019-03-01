@@ -18,11 +18,10 @@ GObject.type_ensure(SpinInput.$gtype);
 // then we don't want something to be an error only sometimes. The game will
 // deal with runtime errors for that purpose.
 const COMMON_SCOPE = {
-    // Keep this in sync with getScope() in
-    // hack-toy-apps/com.endlessm.LightSpeed/levelScene.js
+    // Keep this in sync with UserScope class in
+    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
     tick: 0,
     time: 0,
-    ticks: 0,
     width: 1920,
     height: 1080,
     shipTypes: [
@@ -36,6 +35,7 @@ const COMMON_SCOPE = {
         'squid',
         'beam',
     ],
+    data: {},
 
     // validates arguments passed in to random() and returns deterministically
     random(min, max) {
@@ -55,13 +55,20 @@ const COMMON_SCOPE = {
     },
 };
 
+const COMMON_SPAWN_SCOPE = {
+    // Keep this in sync with SpawnScope class in
+    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
+    ticksSinceSpawn: 0,
+};
+
 const COMMON_UPDATE_SCOPE = {
-    // Keep this in sync with runUpdateEnemy() in
-    // hack-toy-apps/com.endlessm.LightSpeed/levelScene.js
+    // Keep this in sync with UpdateEnemyScope class in
+    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
     playerShipY: 0,
     enemy: {
         position: {x: 0, y: 0},
         velocity: {x: 0, y: 0},
+        data: {},
     },
 };
 
@@ -73,7 +80,7 @@ const USER_FUNCTIONS = [
         modelProp: 'spawnEnemyCode',
         childWidget: '_spawnEnemyCodeview',
         getScope() {
-            return Object.assign({}, COMMON_SCOPE);
+            return Object.assign({}, COMMON_SPAWN_SCOPE, COMMON_SCOPE);
         },
     },
     {
