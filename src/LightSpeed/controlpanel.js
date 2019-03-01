@@ -22,6 +22,7 @@ const COMMON_SCOPE = {
     // hack-toy-apps/com.endlessm.LightSpeed/levelScene.js
     tick: 0,
     time: 0,
+    ticks: 0,
     width: 1920,
     height: 1080,
     shipTypes: [
