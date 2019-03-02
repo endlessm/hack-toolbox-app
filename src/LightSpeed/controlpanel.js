@@ -156,14 +156,14 @@ var LSControlPanel = GObject.registerClass({
         this._global = model;
         this._globalNotifyHandler = model.connect('notify', this._onGlobalNotify.bind(this));
 
-        this._currentLevel = model.currentLevel;
+        this._currentLevel = model.nextLevel || model.currentLevel;
         this._bindModel(this._global.getModel(this._currentLevel));
     }
 
     _onGlobalNotify() {
-        if (this._global.currentLevel === this._currentLevel)
+        if (this._global.nextLevel === this._currentLevel)
             return;
-        this._currentLevel = this._global.currentLevel;
+        this._currentLevel = this._global.nextLevel || this._global.currentLevel;
         this._bindModel(this._global.getModel(this._currentLevel));
     }
 
