@@ -44,6 +44,7 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         this.show_all();
 
         this._global.connect('notify::currentLevel', this._updateLevelInfo.bind(this));
+        this._global.connect('notify::nextLevel', this._updateLevelInfo.bind(this));
         this.connect('reset', this._onReset.bind(this));
     }
 
@@ -53,8 +54,9 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
     }
 
     _updateLevelInfo() {
-        let text = `Level ${this._global.currentLevel}`;
-        if (this._global.currentLevel === 0)
+        const level = this._global.nextLevel || this._global.currentLevel;
+        let text = `Level ${level}`;
+        if (level === 0)
             text = 'Intro';
         this.setInfo(text);
     }
