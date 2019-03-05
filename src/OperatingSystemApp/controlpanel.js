@@ -43,6 +43,10 @@ var OSControlPanel = GObject.registerClass({
 
         super._init(props);
 
+        // Temporary fix for keeping the toolbox the same height as it was in
+        // the old design
+        this._codeview.minContentHeight = 424;
+
         /* Create data models for editable properties */
         this._cursor = new OSCursorModel();
         this._wobbly = new OSWobblyModel();
