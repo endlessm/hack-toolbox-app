@@ -3,6 +3,7 @@
 const {GLib, GObject} = imports.gi;
 
 const {Lockscreen} = imports.lockscreen;
+const SoundServer = imports.soundServer;
 
 var WobblyLockscreen = GObject.registerClass({
     GTypeName: 'WobblyLockscreen',
@@ -13,6 +14,7 @@ var WobblyLockscreen = GObject.registerClass({
         this._trapSequence = null;
         this._playDoneMode = null;
         this._timeout = null;
+        this._alarmSoundID = null;
         this.connect('destroy', () => {
             if (this._timeout) {
                 this._manager.setLockTried(this.lock, false);
@@ -33,9 +35,31 @@ var WobblyLockscreen = GObject.registerClass({
 
         this._stopActiveSound();
 
-        // Last video plays in loop
-        if (this._trapSequence === 2)
+        const sound = SoundServer.getDefault();
+
+        switch (this._trapSequence) {
+        case 0:
+            sound.play(`hack-toolbox/lockscreen/open/${this._lock}`);
+            break;
+        case 1:
+            sound.play('hack-toolbox/lockscreen/trap/glitch');
+            break;
+        case 2:
+            // Last video plays in loop
             this._playDoneMode = 'loop';
+            this._alarmSoundID = 'pending';
+            sound.playAsync('hack-toolbox/lockscreen/trap/alarm').then(id => {
+                if (this._alarmSoundID === 'cancel') {
+                    sound.stop(id);
+                    this._alarmSoundID = null;
+                } else {
+                    this._alarmSoundID = id;
+                }
+            });
+            break;
+        default:
+            throw new Error('This code should not be reached');
+        }
 
         this._playbin.play();
     }
@@ -82,6 +106,15 @@ var WobblyLockscreen = GObject.registerClass({
         } else if (this._playDoneMode === 'end') {
             this._playbin.hide();
             this._playbin.destroy();
+
+            if (this._alarmSoundID) {
+                if (this._alarmSoundID === 'pending') {
+                    this._alarmSoundID = 'cancel';
+                } else {
+                    SoundServer.getDefault().stop(this._alarmSoundID);
+                    this._alarmSoundID = null;
+                }
+            }
         }
     }
 });
