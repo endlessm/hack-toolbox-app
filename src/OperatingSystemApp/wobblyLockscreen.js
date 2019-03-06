@@ -31,6 +31,8 @@ var WobblyLockscreen = GObject.registerClass({
         this._playbin.background = `file://${assetsPath}/trap${this._trapSequence}`;
         this._playbin.uri = `file://${assetsPath}/trap${this._trapSequence}.webm`;
 
+        this._stopActiveSound();
+
         // Last video plays in loop
         if (this._trapSequence === 2)
             this._playDoneMode = 'loop';
