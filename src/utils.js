@@ -43,72 +43,48 @@ Gio._promisify(Gio.Subprocess.prototype, 'communicate_utf8_async',
 Gio._promisify(Gio.Subprocess.prototype, 'wait_check_async',
     'wait_check_finish');
 
-function _appInfoFromKeyFile(keyfile) {
-    const startGroup = keyfile.get_start_group();
-    if (!startGroup || startGroup !== GLib.KEY_FILE_DESKTOP_GROUP)
-        throw new Error('Invalid .desktop file');
-
-    const type = keyfile.get_string(GLib.KEY_FILE_DESKTOP_GROUP,
-        GLib.KEY_FILE_DESKTOP_KEY_TYPE);
-    if (type !== GLib.KEY_FILE_DESKTOP_TYPE_APPLICATION)
-        throw new Error('Not an application .desktop file');
-
-    const name = keyfile.get_locale_string(GLib.KEY_FILE_DESKTOP_GROUP,
-        GLib.KEY_FILE_DESKTOP_KEY_NAME, null);
-
-    let icon = null;
-    try {
-        let iconName = keyfile.get_locale_string(GLib.KEY_FILE_DESKTOP_GROUP,
-            GLib.KEY_FILE_DESKTOP_KEY_ICON, null);
-        if (GLib.path_is_absolute(iconName)) {
-            const file = Gio.File.new_for_path(iconName);
-            icon = new Gio.FileIcon({file});
-        } else {
-            // Work around a common mistake in desktop files
-            if (iconName.endsWith('.png') || iconName.endsWith('.xpm') ||
-                iconName.endsWith('.xvg'))
-                iconName = iconName.slice(0, -4);
-            icon = new Gio.ThemedIcon({name: iconName});
-        }
-    } catch (e) {
-        void e;
-    }
-
-    return {name, icon};
-}
-
-
 function appInfoForAppId(id) {
-    // Check GDesktopAppInfo's default search paths first
-    const appInfo = Gio.DesktopAppInfo.new(`${id}.desktop`);
-    if (appInfo) {
-        return {
-            name: appInfo.get_name(),
-            icon: appInfo.get_icon(),
-        };
-    }
+    // Check GDesktopAppInfo's default search paths first, and get info for any
+    // application whose information is available to the flatpak sandbox
+    let appInfo = Gio.DesktopAppInfo.new(`${id}.desktop`);
+    if (appInfo)
+        return appInfo;
 
-    // Try to load manually from the .desktop key file
+    // Check system data dirs, and also flatpak export dirs and host's data dir
+    const dirs = GLib.get_system_data_dirs().concat([
+        '/var/lib/flatpak/exports/share',
+        '/var/endless-extra/flatpak/exports/share',
+        '/run/host/usr/share',
+    ]);
+
     const desktopFile = new GLib.KeyFile();
-
-    // Check flatpak exports
-    try {
-        desktopFile.load_from_file(`/var/lib/flatpak/exports/share/applications/${id}.desktop`,
-            GLib.KeyFileFlags.NONE);
-        return _appInfoFromKeyFile(desktopFile);
-    } catch (e) {
-        if (!e.matches(GLib.FileError, GLib.FileError.NOENT))
+    for (const datadir of dirs) {
+        const path = GLib.build_filenamev([datadir, 'applications', `${id}.desktop`]);
+        try {
+            desktopFile.load_from_file(path, GLib.KeyFileFlags.NONE);
+        } catch (e) {
+            if (e.matches(GLib.FileError, GLib.FileError.NOENT))
+                continue;
             throw e;
-    }
+        }
 
-    // Check host's applications dir
-    try {
-        desktopFile.load_from_file(`/run/host/usr/share/applications/${id}.desktop`,
-            GLib.KeyFileFlags.NONE);
-        return _appInfoFromKeyFile(desktopFile);
-    } catch (e) {
-        if (!e.matches(GLib.FileError, GLib.FileError.NOENT))
-            throw e;
+        // Now that we have the keyfile, set the Exec line to some well-known
+        // binary, so that Gio.DesktopAppInfo doesn't trip up when we try to
+        // read it, as the binary listed there won't be accessible to the
+        // flatpak sandbox.
+        desktopFile.set_string(GLib.KEY_FILE_DESKTOP_GROUP,
+            GLib.KEY_FILE_DESKTOP_KEY_EXEC, '/bin/true');
+
+        appInfo = Gio.DesktopAppInfo.new_from_keyfile(desktopFile);
+
+        // Need to override the get_id function here - creating the desktop file
+        // with Gio.DesktopAppInfo.new_from_keyfile does not set the underlying
+        // desktop ID and there is no way to set it after construction.
+        appInfo.get_id = function() {
+            return `${id}.desktop`;
+        };
+
+        return appInfo;
     }
 
     return null;
