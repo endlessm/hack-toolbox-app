@@ -137,6 +137,30 @@ var Toolbox = GObject.registerClass({
         this._topicsStack.add_titled(widget, id, title);
     }
 
+    _findTopic(id) {
+        const rows = this._topicsList.get_children();
+        const topicRow = rows.find(row => row.get_child().id === id);
+        return topicRow;
+    }
+
+    hideTopic(id) {
+        const topicRow = this._findTopic(id);
+
+        if (this._topicsList.get_selected_row() === topicRow)
+            this._topicsList.select_row(null);
+
+        topicRow.noShowAll = true;
+        topicRow.hide();
+    }
+
+    revealTopic(id) {
+        const [topicRow, topic] = this._findTopic(id);
+
+        topicRow.noShowAll = false;
+        topicRow.show_all();
+        topic.get_style_context().add_class('reveal');  // animates once
+    }
+
     _onRowSelected(list, row) {
         if (row === null) {
             this._setMinimized(true);
