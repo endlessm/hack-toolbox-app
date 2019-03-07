@@ -12,9 +12,6 @@ var LSGlobalModel = GObject.registerClass({
             _propFlags, 0, Number.MAX_SAFE_INTEGER, 2),
         currentLevel: GObject.ParamSpec.double('currentLevel', 'Current level', '',
             _propFlags, 0, Number.MAX_SAFE_INTEGER, 0),
-        nextLevel: GObject.ParamSpec.double('nextLevel', 'Next level',
-            'Next level as requested by quest scripts',
-            _propFlags, 0, Number.MAX_SAFE_INTEGER, 0),
     },
 }, class LSGlobalModel extends ClippyWrapper {
     _init(level, props = {}) {
