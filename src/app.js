@@ -79,7 +79,7 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
                 this._windows[appId] = {};
 
             const ToolboxClass = _toolboxClassForAppId(appId);
-            const toolbox = new ToolboxClass({visible: true});
+            const toolbox = new ToolboxClass(appId, {visible: true});
             const win = new ToolboxWindow({
                 application: this,
                 decorated: _toolboxIsDecorated(appId),
@@ -109,6 +109,8 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
         const iconTheme = Gtk.IconTheme.get_default();
         iconTheme.add_resource_path('/com/endlessm/HackToolbox/icons');
         iconTheme.add_resource_path('/com/endlessm/HackToolbox/framework/icons');
+        // We need the ability to peek at other apps' icons
+        iconTheme.append_search_path('/var/lib/flatpak/exports/share/icons');
 
         this._locksManager = new LocksManager();
     }

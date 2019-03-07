@@ -31,6 +31,7 @@
     <file>LightSpeed/globalParams.js</file>
     <file>LightSpeed/model.js</file>
     <file>LightSpeed/toolbox.js</file>
+    <file>LightSpeed/userFunction.js</file>
     <file>OperatingSystemApp/cursorImage.js</file>
     <file>OperatingSystemApp/controlpanel.js</file>
     <file>OperatingSystemApp/osmodel.js</file>
@@ -43,10 +44,12 @@
     <file>main.js</file>
     <file>playbin.js</file>
     <file>popupMenu.js</file>
+    <file>resetButton.js</file>
     <file>section.js</file>
     <file>soundServer.js</file>
     <file>spinInput.js</file>
     <file>toolbox.js</file>
+    <file>topicButton.js</file>
     <file>utils.js</file>
     <file>window.js</file>
   </gresource>

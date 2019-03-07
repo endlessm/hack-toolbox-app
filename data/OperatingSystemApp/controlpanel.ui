@@ -139,6 +139,7 @@
       <object class="WobblyLockscreen" id="wobblyLock">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="valign">start</property>
         <child>
           <object class="Section">
             <property name="visible">True</property>
@@ -248,6 +249,7 @@
       <object class="Lockscreen" id="codeLock">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="valign">start</property>
         <child>
           <object class="Codeview" id="codeview">
             <property name="visible">True</property>

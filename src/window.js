@@ -40,9 +40,8 @@ var ToolboxWindow = GObject.registerClass({
         });
 
         this._toolbox_frame = new Gtk.Frame({
-            halign: Gtk.Align.END,
-            valign: Gtk.Align.END,
-            marginEnd: 50,
+            halign: Gtk.Align.START,
+            valign: Gtk.Align.FILL,
             visible: true,
         });
         this._toolbox_frame.get_style_context().add_class('toolbox');

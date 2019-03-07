@@ -1,21 +1,17 @@
 /* exported FrameworkToolbox */
 
 const {GLib, GObject} = imports.gi;
-const Gettext = imports.gettext;
 
 const {Defaults} = imports.framework.defaults;
 const Model = imports.framework.model;
 const {RaControlPanel} = imports.framework.controlPanel;
 const {Toolbox} = imports.toolbox;
 
-const _ = Gettext.gettext;
-
 var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Toolbox {
-    _init(props = {}) {
+    _init(appId, props = {}) {
         this._timeout = null;
 
-        props.title = _('Hack Modules');
-        super._init(props);
+        super._init(appId, props);
         this.show_all();
     }
 
@@ -47,7 +43,9 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
         this._controlPanel = new RaControlPanel(defaults, {visible: true});
         this._controlPanel.bindModel(this._model);
         this._controlPanel.bindWindow(win);
-        this.add(this._controlPanel);
+        this.addTopic('Tools', 'preferences-other-symbolic', this._controlPanel);
+
+        this.show_all();
 
         this.setBusy(false);
     }
