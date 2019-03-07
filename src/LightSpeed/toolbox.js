@@ -18,27 +18,32 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
 
         this._combinedTopic = new LSCombinedTopic();
         this._combinedTopic.bindGlobal(this._global);
-        this.addTopic('Game', 'rocket-symbolic', this._combinedTopic);
+        this.addTopic('game', 'Game', 'rocket-symbolic', this._combinedTopic);
 
         this._spawnEnemyTopic = new LSUserFunction('spawnEnemy');
         this._spawnEnemyTopic.bindGlobal(this._global);
-        this.addTopic('Enemies', 'astronaut-symbolic', this._spawnEnemyTopic);
+        this.addTopic('spawnEnemy', 'Enemies', 'astronaut-symbolic',
+            this._spawnEnemyTopic);
 
         this._updateAsteroidTopic = new LSUserFunction('updateAsteroid');
         this._updateAsteroidTopic.bindGlobal(this._global);
-        this.addTopic('Asteroid', 'asteroid-symbolic', this._updateAsteroidTopic);
+        this.addTopic('updateAsteroid', 'Asteroid', 'asteroid-symbolic',
+            this._updateAsteroidTopic);
 
         this._updateSpinnerTopic = new LSUserFunction('updateSpinner');
         this._updateSpinnerTopic.bindGlobal(this._global);
-        this.addTopic('Spinner', 'spinner-symbolic', this._updateSpinnerTopic);
+        this.addTopic('updateSpinner', 'Spinner', 'spinner-symbolic',
+            this._updateSpinnerTopic);
 
         this._updateSquidTopic = new LSUserFunction('updateSquid');
         this._updateSquidTopic.bindGlobal(this._global);
-        this.addTopic('Squid', 'squid-symbolic', this._updateSquidTopic);
+        this.addTopic('updateSquid', 'Squid', 'squid-symbolic',
+            this._updateSquidTopic);
 
         this._updateBeamTopic = new LSUserFunction('updateBeam');
         this._updateBeamTopic.bindGlobal(this._global);
-        this.addTopic('Beam', 'beam-symbolic', this._updateBeamTopic);
+        this.addTopic('updateBeam', 'Beam', 'beam-symbolic',
+            this._updateBeamTopic);
 
         this._updateLevelInfo();
         this.show_all();

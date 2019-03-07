@@ -130,11 +130,11 @@ var Toolbox = GObject.registerClass({
         this.setBusy(false);
     }
 
-    addTopic(title, iconName, widget) {
-        const topic = new TopicButton({title, iconName});
+    addTopic(id, title, iconName, widget) {
+        const topic = new TopicButton({id, title, iconName});
         this._topicsList.add(topic);
         widget.show_all();  // show_all() only propagates to current stack page
-        this._topicsStack.add_named(widget, title);
+        this._topicsStack.add_titled(widget, id, title);
     }
 
     _onRowSelected(list, row) {
@@ -146,7 +146,7 @@ var Toolbox = GObject.registerClass({
         const topic = row.get_child();
         this._headerLabel.label = topic.title;
         this._headerImage.iconName = topic.icon_name;
-        this._topicsStack.visibleChildName = topic.title;
+        this._topicsStack.visibleChildName = topic.id;
         this._setMinimized(false);
     }
 

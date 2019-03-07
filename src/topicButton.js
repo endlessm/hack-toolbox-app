@@ -4,6 +4,8 @@ const {GObject, Gtk} = imports.gi;
 
 var TopicButton = GObject.registerClass({
     Properties: {
+        id: GObject.ParamSpec.string('id', 'ID', 'Machine-facing topic ID',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         title: GObject.ParamSpec.string('title', 'Title', 'Topic title',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         'icon-name': GObject.ParamSpec.string('icon-name', 'Icon name',
@@ -37,6 +39,14 @@ var TopicButton = GObject.registerClass({
         this.add(overlay);
 
         this.get_style_context().add_class('topic');
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    set id(value) {
+        this._id = value;
     }
 
     get title() {
