@@ -140,17 +140,19 @@ var Toolbox = GObject.registerClass({
     _findTopic(id) {
         const rows = this._topicsList.get_children();
         const topicRow = rows.find(row => row.get_child().id === id);
-        return topicRow;
+        const topic = topicRow.get_child();
+        return [topicRow, topic];
     }
 
     hideTopic(id) {
-        const topicRow = this._findTopic(id);
+        const [topicRow, topic] = this._findTopic(id);
 
         if (this._topicsList.get_selected_row() === topicRow)
             this._topicsList.select_row(null);
 
         topicRow.noShowAll = true;
         topicRow.hide();
+        topic.get_style_context().remove_class('reveal');
     }
 
     revealTopic(id) {
@@ -159,6 +161,13 @@ var Toolbox = GObject.registerClass({
         topicRow.noShowAll = false;
         topicRow.show_all();
         topic.get_style_context().add_class('reveal');  // animates once
+    }
+
+    showTopic(id) {
+        const [topicRow] = this._findTopic(id);
+
+        topicRow.noShowAll = false;
+        topicRow.show_all();
     }
 
     _onRowSelected(list, row) {
