@@ -144,6 +144,15 @@ toolbox .left-column list row:active {
     transition: background-color 200ms;
 }
 
+@keyframes reveal-topic {
+    0%   { background-color: white; }
+    100% { background-color: rgba(6, 20, 39, 0.8); }
+}
+
+.topic.reveal {
+    animation: reveal-topic 1s ease-out;
+}
+
 .topic box {
     padding: 4px 17px;
 }

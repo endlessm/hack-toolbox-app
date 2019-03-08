@@ -130,11 +130,44 @@ var Toolbox = GObject.registerClass({
         this.setBusy(false);
     }
 
-    addTopic(title, iconName, widget) {
-        const topic = new TopicButton({title, iconName});
+    addTopic(id, title, iconName, widget) {
+        const topic = new TopicButton({id, title, iconName});
         this._topicsList.add(topic);
         widget.show_all();  // show_all() only propagates to current stack page
-        this._topicsStack.add_named(widget, title);
+        this._topicsStack.add_titled(widget, id, title);
+    }
+
+    _findTopic(id) {
+        const rows = this._topicsList.get_children();
+        const topicRow = rows.find(row => row.get_child().id === id);
+        const topic = topicRow.get_child();
+        return [topicRow, topic];
+    }
+
+    hideTopic(id) {
+        const [topicRow, topic] = this._findTopic(id);
+
+        if (this._topicsList.get_selected_row() === topicRow)
+            this._topicsList.select_row(null);
+
+        topicRow.noShowAll = true;
+        topicRow.hide();
+        topic.get_style_context().remove_class('reveal');
+    }
+
+    revealTopic(id) {
+        const [topicRow, topic] = this._findTopic(id);
+
+        topicRow.noShowAll = false;
+        topicRow.show_all();
+        topic.get_style_context().add_class('reveal');  // animates once
+    }
+
+    showTopic(id) {
+        const [topicRow] = this._findTopic(id);
+
+        topicRow.noShowAll = false;
+        topicRow.show_all();
     }
 
     _onRowSelected(list, row) {
@@ -146,7 +179,7 @@ var Toolbox = GObject.registerClass({
         const topic = row.get_child();
         this._headerLabel.label = topic.title;
         this._headerImage.iconName = topic.icon_name;
-        this._topicsStack.visibleChildName = topic.title;
+        this._topicsStack.visibleChildName = topic.id;
         this._setMinimized(false);
     }
 

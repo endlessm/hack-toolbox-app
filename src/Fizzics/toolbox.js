@@ -12,7 +12,7 @@ var FizzicsToolbox = GObject.registerClass(class FizzicsToolbox extends Toolbox 
         this._model = new FizzicsModelGlobal();
         this._controlPanel = new FizzicsControlPanel({visible: true});
         this._controlPanel.bindModel(this._model);
-        this.addTopic('Tools', 'preferences-other-symbolic', this._controlPanel);
+        this.addTopic('main', 'Tools', 'preferences-other-symbolic', this._controlPanel);
         this.show_all();
 
         this.connect('reset', () => {
