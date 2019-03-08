@@ -24,7 +24,7 @@ yamllint .
 If you add a new widget, you will have to add it to the Glade catalog.
 
 Install the Glade app (it's available in Endless OS through
-flathub). Go to **Prreferences**. In **Extra Catalog Paths**, click on
+flathub). Go to **Preferences**. In **Extra Catalog Paths**, click on
 the plus icon, then find your checkout directory, and select the
 directory `data/glade/` where the `toolbox.glade.xml` is.
 
