@@ -24,7 +24,7 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
 
         this._spawnEnemyTopic = new LSUserFunction('spawnEnemy');
         this._spawnEnemyTopic.bindGlobal(this._global);
-        this.addTopic('spawnEnemy', 'Spawn', 'astronaut-symbolic',
+        this.addTopic('spawnEnemy', 'Spawn', 'spawn-symbolic',
             this._spawnEnemyTopic);
         this.hideTopic('spawnEnemy');
 
