@@ -5,156 +5,41 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   data-name="Layer 1 copy 3"
+   id="Layer_1"
+   data-name="Layer 1"
    viewBox="0 0 16 16"
-   x="0px"
-   y="0px"
    version="1.1"
-   id="svg1057"
-   sodipodi:docname="lightspeed-beam-symbolic.svg"
    width="16"
-   height="16"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14">
+   height="16">
   <metadata
-     id="metadata1063">
+     id="metadata4756">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>factory-industry-laser-robotics</dc:title>
+        <dc:title>panel_ltspeed_Beam</dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs1061" />
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="3200"
-     inkscape:window-height="1648"
-     id="namedview1059"
-     showgrid="false"
-     inkscape:zoom="17.075"
-     inkscape:cx="32.556369"
-     inkscape:cy="37.657394"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg1057" />
+     id="defs4741">
+    <style
+       id="style4739">.cls-1{fill:none;}</style>
+  </defs>
   <title
-     id="title1021">factory-industry-laser-robotics</title>
-  <g
-     id="g1080"
-     transform="matrix(0,-0.26666667,0.26664456,0,-0.53262582,16.5335)"
-     style="fill:#bebebe;fill-opacity:1">
-    <rect
-       id="rect1023"
-       height="2"
-       width="31"
-       y="27"
-       x="6"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1025"
-       height="2"
-       width="21"
-       y="35"
-       x="2"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1027"
-       height="2"
-       width="2"
-       y="27"
-       x="2"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1029"
-       height="2"
-       width="2"
-       y="31"
-       x="17"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1031"
-       height="2"
-       width="6"
-       y="31"
-       x="21"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1033"
-       height="2"
-       width="6"
-       y="31"
-       x="29"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1035"
-       height="2"
-       width="13"
-       y="31"
-       x="2"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1037"
-       height="2"
-       width="2"
-       y="27"
-       x="39"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1039"
-       height="2"
-       width="2"
-       y="31"
-       x="37"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1041"
-       height="2"
-       width="2"
-       y="35"
-       x="25"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1043"
-       height="2"
-       width="7"
-       y="35"
-       x="29"
-       style="fill:#bebebe;fill-opacity:1" />
-    <rect
-       id="rect1045"
-       height="2"
-       width="2"
-       y="35"
-       x="39"
-       style="fill:#bebebe;fill-opacity:1" />
-    <path
-       id="path1047"
-       d="m 44.5,27 c -1.727,0 -2.5,2.511 -2.5,5 0,2.489 0.773,5 2.5,5 1.727,0 2.5,-2.511 2.5,-5 0,-2.489 -0.773,-5 -2.5,-5 z m 0,7.773 A 6.636,6.636 0 0 1 44,32 6.636,6.636 0 0 1 44.5,29.227 6.636,6.636 0 0 1 45,32 6.636,6.636 0 0 1 44.5,34.773 Z"
-       inkscape:connector-curvature="0"
-       style="fill:#bebebe;fill-opacity:1" />
-    <path
-       id="path1049"
-       d="m 60.8,22.02 -5,1 A 1,1 0 0 0 55,24 v 0.166 l -4.615,0.839 C 48.174,25.178 48,30.386 48,32 c 0,1.614 0.174,6.822 2.385,6.995 L 55,39.834 V 40 a 1,1 0 0 0 0.8,0.98 l 5,1 A 1,1 0 0 0 62,41 V 23 A 1,1 0 0 0 60.8,22.02 Z M 50.781,37.035 A 11.878,11.878 0 0 1 50,32 11.878,11.878 0 0 1 50.781,26.965 L 55,26.2 V 37.8 Z M 60,39.78 57,39.18 V 24.819 l 3,-0.6 z"
-       inkscape:connector-curvature="0"
-       style="fill:#bebebe;fill-opacity:1" />
-    <path
-       id="path1051"
-       d="m 53.35,34.438 -0.2,-1.027 -1.961,0.387 0.333,1.693 a 1,1 0 0 0 0.8,0.79 l 1.437,0.265 0.363,-1.967 z"
-       inkscape:connector-curvature="0"
-       style="fill:#bebebe;fill-opacity:1" />
-  </g>
+     id="title4743">panel_ltspeed_Beam</title>
+  <path
+     d="m 8.2069336,10.370134 a 1.1733334,1.1733334 0 0 0 -0.3136,-0.5632004 c -0.029867,-0.034133 -0.0704,-0.081067 -0.096,-0.1152 a 3.1328001,3.1328001 0 0 1 0.3541333,-0.1152 c 0.3658667,-0.1066666 0.7104,-0.1994666 0.8064,-0.4842666 0.1226667,-0.3637334 -0.3008,-0.5408001 -0.7093333,-0.7125334 -0.082133,-0.0352 -0.1930667,-0.081067 -0.288,-0.1269333 0.1066667,-0.032 0.2346667,-0.062933 0.3285333,-0.0864 C 8.7573336,8.0522669 9.1616003,7.9530669 9.242667,7.6394669 v -0.0224 C 9.3077336,7.2288002 8.8320003,7.0645336 8.4416003,6.9333336 A 0.51306668,0.51306668 0 0 0 8.5077333,6.7445335 C 8.5461333,6.4640002 8.3456,6.2485335 8.1984,6.0917335 A 1.1008,1.1008 0 0 1 8.0864,5.9616002 c -0.0192,-0.049067 0,-0.091733 0.052267,-0.2133334 0.0128,-0.026667 0.026667,-0.056533 0.039467,-0.0864 l 1.3845334,-1.8912 a 0.144,0.144 0 0 0 0,-0.1706667 L 8.1760003,1.5498667 a 0.21333334,0.21333334 0 0 0 -0.3381334,0 L 6.4448002,3.6394668 a 0.14613334,0.14613334 0 0 0 0,0.1717333 l 1.2352,1.6618667 -0.021333,0.0448 a 0.75306669,0.75306669 0 0 0 -0.071467,0.6336001 0.97493336,0.97493336 0 0 0 0.2218667,0.304 0.94080003,0.94080003 0 0 1 0.1685333,0.2133333 0.37013334,0.37013334 0 0 1 -0.1066666,0.082133 0.30080001,0.30080001 0 0 0 -0.1514667,0.2922667 c 0.023467,0.2133334 0.2261333,0.2858667 0.5333334,0.3882667 0.075733,0.0256 0.1973333,0.066133 0.3008,0.1066667 -0.1258667,0.040533 -0.2858667,0.078933 -0.4,0.1066666 C 7.7152002,7.7514666 7.3674669,7.8378666 7.2768002,8.1034666 7.1434669,8.4928 7.6170669,8.6912 8.0341336,8.8672 c 0.0704,0.0288 0.1632,0.068267 0.2464,0.1066666 -0.0928,0.032 -0.2005333,0.062933 -0.2805334,0.085333 -0.368,0.1066667 -0.7146666,0.2016 -0.7616,0.5098667 -0.0384,0.2592 0.1194667,0.4394667 0.2464,0.5855997 0.1269334,0.146133 0.1952,0.2304 0.1962667,0.3616 l -1.232,1.672533 a 0.14613334,0.14613334 0 0 0 0,0.171734 l 1.3930667,2.088533 a 0.21333334,0.21333334 0 0 0 0.3381333,0 l 1.3866667,-2.050133 a 0.144,0.144 0 0 0 0,-0.170667 z M 7.0400002,3.7098668 8.0106669,2.2549334 l 0.96,1.4197334 -0.9706666,1.3322667 z M 8.0106669,13.745067 7.0400002,12.290134 8.0000003,10.993067 8.9706669,12.325334 Z"
+     id="path4745"
+     style="stroke-width:0.10666667;fill:#bebebe;fill-opacity:1" />
+  <path
+     d="m 12.3456,11.917867 -2.587733,0.385067 a 0.26453334,0.26453334 0 0 1 -0.1002667,-0.0064 L 9.1829336,12.16 9.2992003,12.318934 8.0074669,14.222934 6.7125335,12.2816 6.8192002,12.132267 6.3456002,12.256 a 0.24640001,0.24640001 0 0 1 -0.0928,0 L 3.6469334,11.902934 c -0.1962666,-0.02667 -0.32,0.176 -0.1770666,0.296533 l 4.3872001,3.744 a 0.22933334,0.22933334 0 0 0 0.2890667,0 l 4.3733334,-3.733333 c 0.148267,-0.116267 0.02347,-0.321067 -0.173867,-0.292267 z"
+     id="path4747"
+     style="stroke-width:0.10666667;fill:#bebebe;fill-opacity:1" />
+  <path
+     d="M 3.6512001,4.0917335 6.2570669,3.7386668 a 0.24640001,0.24640001 0 0 1 0.0928,0.00533 l 0.4768,0.1237334 -0.1066667,-0.1493334 1.2949334,-1.9413334 1.2842667,1.9029334 -0.1162667,0.16 0.4746667,-0.1365333 a 0.26453334,0.26453334 0 0 1 0.1002667,-0.0064 l 2.587733,0.384 c 0.197334,0.029867 0.32,-0.1749333 0.180267,-0.2954667 L 8.1525336,0.05226667 a 0.22933334,0.22933334 0 0 0 -0.2890667,0 L 3.4741334,3.7952001 c -0.1408,0.1205334 -0.0192,0.3232 0.1770667,0.2965334 z"
+     id="path4749"
+     style="stroke-width:0.10666667;fill:#bebebe;fill-opacity:1" />
 </svg>
