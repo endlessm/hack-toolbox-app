@@ -17,10 +17,9 @@ const VALID_SHIPS = ['spaceship', 'daemon', 'unicorn'];
 var LSCombinedTopic = GObject.registerClass({
     GTypeName: 'LSCombinedTopic',
     Template: 'resource:///com/endlessm/HackToolbox/LightSpeed/panel.ui',
-    InternalChildren: ['astronautSizeAdjustment', 'level2lock',
-        'scoreTargetAdjustment', 'shipAccelerationAdjustment',
-        'shipAssetButton', 'shipSizeAdjustment', 'shipSpeedAdjustment',
-        'timeLimitAdjustment', 'variablesCodeview'],
+    InternalChildren: ['astronautSizeAdjustment', 'scoreTargetAdjustment',
+        'shipAccelerationAdjustment', 'shipAssetButton', 'shipSizeAdjustment',
+        'shipSpeedAdjustment', 'timeLimitAdjustment', 'variablesCodeview'],
 }, class LSCombinedTopic extends Gtk.Grid {
     _init(props = {}) {
         this._lastCodeviewSoundMicrosec = 0;
@@ -87,8 +86,7 @@ var LSCombinedTopic = GObject.registerClass({
     bindWindow(win) {
         win.lockscreen.key = 'item.key.lightspeed.1';
         win.lockscreen.lock = 'lock.lightspeed.1';
-        this._level2lock.key = 'item.key.lightspeed.2';
-        this._level2lock.lock = 'lock.lightspeed.2';
+        void this;
     }
 
     _compile() {
