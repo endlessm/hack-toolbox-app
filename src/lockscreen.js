@@ -41,6 +41,7 @@ var Lockscreen = GObject.registerClass({
         this._playbin.connect('realize', () => {
             this._playActiveSound();
         });
+        this._playbin.connect('unrealize', () => this._stopActiveSound());
         this.connect('destroy', () => {
             this._untrackKeyChanges();
             this._untrackLockChanges();
@@ -156,9 +157,7 @@ var Lockscreen = GObject.registerClass({
     }
 
     _playActiveSound() {
-        if (!this._locked)
-            return;
-        if (!this._playbin.hasKey)
+        if (!this._locked || !this._playbin.hasKey || !this._playbin.get_realized())
             return;
 
         /* if waiting for the loop to start, leave it */
