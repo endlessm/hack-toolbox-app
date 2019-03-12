@@ -78,6 +78,9 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
             if (!this._windows[appId])
                 this._windows[appId] = {};
 
+            if (this._windows[appId][windowId])
+                return;
+
             const ToolboxClass = _toolboxClassForAppId(appId);
             const toolbox = new ToolboxClass(appId, {visible: true});
             const win = new ToolboxWindow({
