@@ -19,7 +19,7 @@ var LSCombinedTopic = GObject.registerClass({
     Template: 'resource:///com/endlessm/HackToolbox/LightSpeed/panel.ui',
     InternalChildren: ['astronautSizeAdjustment', 'scoreTargetAdjustment',
         'shipAssetButton', 'shipSizeAdjustment', 'shipSpeedAdjustment',
-        'timeLimitAdjustment', 'variablesCodeview'],
+        'variablesCodeview'],
 }, class LSCombinedTopic extends Gtk.Grid {
     _init(props = {}) {
         this._lastCodeviewSoundMicrosec = 0;
@@ -69,7 +69,6 @@ var LSCombinedTopic = GObject.registerClass({
 
         const bindingInfo = {
             scoreTarget: this._scoreTargetAdjustment,
-            timeLimit: this._timeLimitAdjustment,
             astronautSize: this._astronautSizeAdjustment,
             shipAsset: this._shipAssetMenu,
             shipSize: this._shipSizeAdjustment,
@@ -96,7 +95,6 @@ var LSCombinedTopic = GObject.registerClass({
 
         const scope = {
             scoreTarget: null,
-            timeLimit: null,
             astronautSize: null,
             shipAsset: null,
             shipSize: null,
@@ -137,7 +135,6 @@ var LSCombinedTopic = GObject.registerClass({
 
         try {
             this._model.scoreTarget = scope.scoreTarget;
-            this._model.timeLimit = scope.timeLimit;
             this._model.astronautSize = scope.astronautSize;
             this._model.shipAsset = scope.shipAsset;
             this._model.shipSize = scope.shipSize;
@@ -162,7 +159,6 @@ var LSCombinedTopic = GObject.registerClass({
             // FIXME these are arbitrary. They should reflect the defaults of
             // each level instead.
             scoreTarget: 5,
-            timeLimit: -1,
             astronautSize: 30,
             shipSize: 50,
             shipSpeed: 500,
@@ -202,7 +198,6 @@ var LSCombinedTopic = GObject.registerClass({
     _regenerateCode() {
         this._variablesCodeview.text =
 `scoreTarget = ${this._model.scoreTarget};
-timeLimit = ${this._model.timeLimit};
 
 astronautSize = ${this._model.astronautSize};
 
