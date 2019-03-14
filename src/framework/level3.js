@@ -37,7 +37,12 @@ var FrameworkLevel3 = GObject.registerClass({
 
         this._defaults = defaults;
 
-        this._codeview = new Codeview({visible: true});
+        this._codeview = new Codeview({
+            // Temporary fix for keeping the codeview the same height as it was
+            // in the original design
+            minContentHeight: 535,
+            visible: true,
+        });
         this.add(this._codeview);
 
         this.get_style_context().add_class('codeview-frame');
