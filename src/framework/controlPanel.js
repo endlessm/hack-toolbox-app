@@ -19,12 +19,19 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         this._level1 = new FrameworkLevel1(defaults, {visible: true});
         this.attach(this._level1, 0, 0, 1, 1);
 
-        this._level2lock = new Lockscreen({visible: true, hexpand: true});
+        this._level2lock = new Lockscreen({
+            hexpand: true,
+            valign: Gtk.Align.START,
+            visible: true,
+        });
         this._level2 = new FrameworkLevel2({visible: true, hexpand: true});
         this._level2lock.add(this._level2);
         this.attach(this._level2lock, 0, 1, 1, 1);
 
-        this._level3lock = new Lockscreen({visible: false});
+        this._level3lock = new Lockscreen({
+            valign: Gtk.Align.START,
+            visible: false,
+        });
         this._level3 = new FrameworkLevel3(defaults, {visible: true});
         this._level3lock.add(this._level3);
         this.attach(this._level3lock, 1, 0, 1, 2);
