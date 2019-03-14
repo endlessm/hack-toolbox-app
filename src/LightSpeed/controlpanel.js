@@ -18,8 +18,8 @@ var LSCombinedTopic = GObject.registerClass({
     GTypeName: 'LSCombinedTopic',
     Template: 'resource:///com/endlessm/HackToolbox/LightSpeed/panel.ui',
     InternalChildren: ['astronautSizeAdjustment', 'scoreTargetAdjustment',
-        'shipAccelerationAdjustment', 'shipAssetButton', 'shipSizeAdjustment',
-        'shipSpeedAdjustment', 'timeLimitAdjustment', 'variablesCodeview'],
+        'shipAssetButton', 'shipSizeAdjustment', 'shipSpeedAdjustment',
+        'timeLimitAdjustment', 'variablesCodeview'],
 }, class LSCombinedTopic extends Gtk.Grid {
     _init(props = {}) {
         this._lastCodeviewSoundMicrosec = 0;
@@ -74,7 +74,6 @@ var LSCombinedTopic = GObject.registerClass({
             shipAsset: this._shipAssetMenu,
             shipSize: this._shipSizeAdjustment,
             shipSpeed: this._shipSpeedAdjustment,
-            shipAcceleration: this._shipAccelerationAdjustment,
         };
         this._bindings = Object.entries(bindingInfo).map(([prop, target]) =>
             model.bind_property(prop, target, 'value', flags));
@@ -102,7 +101,6 @@ var LSCombinedTopic = GObject.registerClass({
             shipAsset: null,
             shipSize: null,
             shipSpeed: null,
-            shipAcceleration: null,
         };
         try {
             // eslint-disable-next-line no-new-func
@@ -144,7 +142,6 @@ var LSCombinedTopic = GObject.registerClass({
             this._model.shipAsset = scope.shipAsset;
             this._model.shipSize = scope.shipSize;
             this._model.shipSpeed = scope.shipSpeed;
-            this._model.shipAcceleration = scope.shipAcceleration;
         } finally {
             this._model.disconnect(tempHandler);
             GObject.signal_handler_unblock(this._model, this._notifyHandler);
@@ -169,7 +166,6 @@ var LSCombinedTopic = GObject.registerClass({
             astronautSize: 30,
             shipSize: 50,
             shipSpeed: 500,
-            shipAcceleration: 500,
         };
         Object.entries(INT_PROPS_DEFAULTS).forEach(([prop, defaultValue]) => {
             if (typeof scope[prop] !== 'number') {
@@ -213,7 +209,6 @@ astronautSize = ${this._model.astronautSize};
 shipAsset = '${this._model.shipAsset}';
 shipSize = ${this._model.shipSize};
 shipSpeed = ${this._model.shipSpeed};
-shipAcceleration = ${this._model.shipAcceleration};
 `;
     }
 });

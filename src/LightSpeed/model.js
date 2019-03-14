@@ -19,8 +19,6 @@ var LSModel = GObject.registerClass({
             _propFlags, 1, 2000, 50),
         shipSpeed: GObject.ParamSpec.double('shipSpeed', 'Ship speed', '',
             _propFlags, 0, Number.MAX_SAFE_INTEGER, 500),
-        shipAcceleration: GObject.ParamSpec.double('shipAcceleration',
-            'Ship acceleration', '', _propFlags, 0, Number.MAX_SAFE_INTEGER, 500),
         spawnEnemyCode: GObject.ParamSpec.string('spawnEnemyCode',
             'Spawn enemy code', '', _propFlags, ''),
         updateAsteroidCode: GObject.ParamSpec.string('updateAsteroidCode',
