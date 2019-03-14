@@ -18,8 +18,8 @@ var LSCombinedTopic = GObject.registerClass({
     GTypeName: 'LSCombinedTopic',
     Template: 'resource:///com/endlessm/HackToolbox/LightSpeed/panel.ui',
     InternalChildren: ['astronautSizeAdjustment', 'scoreTargetAdjustment',
-        'shipAccelerationAdjustment', 'shipAssetButton', 'shipSizeAdjustment',
-        'shipSpeedAdjustment', 'timeLimitAdjustment', 'variablesCodeview'],
+        'shipAssetButton', 'shipSizeAdjustment', 'shipSpeedAdjustment',
+        'variablesCodeview'],
 }, class LSCombinedTopic extends Gtk.Grid {
     _init(props = {}) {
         this._lastCodeviewSoundMicrosec = 0;
@@ -69,12 +69,10 @@ var LSCombinedTopic = GObject.registerClass({
 
         const bindingInfo = {
             scoreTarget: this._scoreTargetAdjustment,
-            timeLimit: this._timeLimitAdjustment,
             astronautSize: this._astronautSizeAdjustment,
             shipAsset: this._shipAssetMenu,
             shipSize: this._shipSizeAdjustment,
             shipSpeed: this._shipSpeedAdjustment,
-            shipAcceleration: this._shipAccelerationAdjustment,
         };
         this._bindings = Object.entries(bindingInfo).map(([prop, target]) =>
             model.bind_property(prop, target, 'value', flags));
@@ -97,12 +95,10 @@ var LSCombinedTopic = GObject.registerClass({
 
         const scope = {
             scoreTarget: null,
-            timeLimit: null,
             astronautSize: null,
             shipAsset: null,
             shipSize: null,
             shipSpeed: null,
-            shipAcceleration: null,
         };
         try {
             // eslint-disable-next-line no-new-func
@@ -139,12 +135,10 @@ var LSCombinedTopic = GObject.registerClass({
 
         try {
             this._model.scoreTarget = scope.scoreTarget;
-            this._model.timeLimit = scope.timeLimit;
             this._model.astronautSize = scope.astronautSize;
             this._model.shipAsset = scope.shipAsset;
             this._model.shipSize = scope.shipSize;
             this._model.shipSpeed = scope.shipSpeed;
-            this._model.shipAcceleration = scope.shipAcceleration;
         } finally {
             this._model.disconnect(tempHandler);
             GObject.signal_handler_unblock(this._model, this._notifyHandler);
@@ -165,11 +159,9 @@ var LSCombinedTopic = GObject.registerClass({
             // FIXME these are arbitrary. They should reflect the defaults of
             // each level instead.
             scoreTarget: 5,
-            timeLimit: -1,
             astronautSize: 30,
             shipSize: 50,
             shipSpeed: 500,
-            shipAcceleration: 500,
         };
         Object.entries(INT_PROPS_DEFAULTS).forEach(([prop, defaultValue]) => {
             if (typeof scope[prop] !== 'number') {
@@ -206,14 +198,12 @@ var LSCombinedTopic = GObject.registerClass({
     _regenerateCode() {
         this._variablesCodeview.text =
 `scoreTarget = ${this._model.scoreTarget};
-timeLimit = ${this._model.timeLimit};
 
 astronautSize = ${this._model.astronautSize};
 
 shipAsset = '${this._model.shipAsset}';
 shipSize = ${this._model.shipSize};
 shipSpeed = ${this._model.shipSpeed};
-shipAcceleration = ${this._model.shipAcceleration};
 `;
     }
 });
