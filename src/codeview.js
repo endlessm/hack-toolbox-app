@@ -493,14 +493,18 @@ var Codeview = GObject.registerClass({
         if (typeof funcDecl === 'undefined')
             throw new Error(`No function named ${fname} was defined at toplevel`);
 
-        const {start, end} = funcDecl.body.loc;
+        const {start} = funcDecl.body.loc;
+        // Workaround for mozjs52 bug; funcDecl.body.loc.end is incorrect
+        const {end} = funcDecl.loc;
         const lines = this._buffer.text.split('\n');
 
         // Add 2 to the start column, 1 because slice() is inclusive, and
         // another 1 because the position returned by the parser is the one
         // before the opening brace
         lines[start.line - 1] = lines[start.line - 1].slice(start.column + 2);
-        lines[end.line - 1] = lines[end.line - 1].slice(0, end.column);
+        // Subtract 1 from the end column, because the end location is pointing
+        // at the function's closing brace, which should not be included.
+        lines[end.line - 1] = lines[end.line - 1].slice(0, end.column - 1);
         let funcBody = lines.filter((line, ix) =>
             ix >= start.line - 1 && ix <= end.line - 1)
             .join('\n');
