@@ -2,16 +2,13 @@
 
 const {GObject, Gtk} = imports.gi;
 const {Codeview} = imports.codeview;
-const {WobblyLockscreen} = imports.OperatingSystemApp.wobblyLockscreen;
 const {CursorImage, cursorIDToResource} = imports.OperatingSystemApp.cursorImage;
 const {OSCursorModel, VALID_CURSORS} = imports.OperatingSystemApp.oscursormodel;
-const {OSWobblyModel} = imports.OperatingSystemApp.oswobblymodel;
 const {Section} = imports.section;
 const {SpinInput} = imports.spinInput;
 const {PopupMenu} = imports.popupMenu;
 
 GObject.type_ensure(Codeview.$gtype);
-GObject.type_ensure(WobblyLockscreen.$gtype);
 GObject.type_ensure(Section.$gtype);
 GObject.type_ensure(SpinInput.$gtype);
 
@@ -20,18 +17,12 @@ var OSControlPanel = GObject.registerClass({
     Template: 'resource:///com/endlessm/HackToolbox/OperatingSystemApp/controlpanel.ui',
     Children: [
         'codeLock',
-        'wobblyLock',
     ],
     InternalChildren: [
         'codeview',
         'cursorButton',
         'cursorSizeAdjustment',
         'cursorSpeedAdjustment',
-        'frictionAdjustment',
-        'movementAdjustment',
-        'slowdownAdjustment',
-        'springAdjustment',
-        'wobblyCheck',
     ],
 }, class OSControlPanel extends Gtk.Grid {
     _init(props = {}) {
@@ -47,9 +38,8 @@ var OSControlPanel = GObject.registerClass({
         // the old design
         this._codeview.minContentHeight = 424;
 
-        /* Create data models for editable properties */
+        /* Create data model for editable properties */
         this._cursor = new OSCursorModel();
-        this._wobbly = new OSWobblyModel();
 
         const cursorChoices = {};
         VALID_CURSORS.forEach(cursor => {
@@ -63,23 +53,12 @@ var OSControlPanel = GObject.registerClass({
         this._cursor.bind_property('size', this._cursorSizeAdjustment, 'value', flags);
         this._cursor.bind_property('speed', this._cursorSpeedAdjustment, 'value', flags);
 
-        this._wobbly.bind_property('wobblyEffect', this._wobblyCheck, 'active', flags);
-        this._wobbly.bind_property('wobblyObjectMovementRange', this._movementAdjustment,
-            'value', flags);
-        this._wobbly.bind_property('wobblySlowdownFactor', this._slowdownAdjustment,
-            'value', flags);
-        this._wobbly.bind_property('wobblySpringFriction', this._frictionAdjustment,
-            'value', flags);
-        this._wobbly.bind_property('wobblySpringK', this._springAdjustment,
-            'value', flags);
-
         this._previous_size = this._cursorSizeAdjustment.value;
         this._cursorSizeAdjustment.connect('value-changed', this._snapSizeToOption.bind(this));
     }
 
     reset() {
         this._cursor.reset();
-        this._wobbly.reset();
     }
 
     _snapSizeToOption() {

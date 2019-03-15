@@ -398,6 +398,10 @@ popover.error button:hover {
     background-color: rgba(0, 0, 0, 0);
 }
 
+.wobblyLock {
+    border-radius: 8px 8px 8px 8px;
+}
+
 /* Miscellaneous theme overrides */
 arrow, button.down, button.up, .dropdown {
    opacity: 0.81;

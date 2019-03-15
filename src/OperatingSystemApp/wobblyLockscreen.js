@@ -60,7 +60,6 @@ var WobblyLockscreen = GObject.registerClass({
         default:
             throw new Error('This code should not be reached');
         }
-
         this._playbin.play();
     }
 
