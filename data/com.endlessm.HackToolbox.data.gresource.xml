@@ -85,6 +85,9 @@
     <file>LightSpeed/ships/spaceship.png</file>
     <file>LightSpeed/ships/unicorn.png</file>
     <file compressed="true" preprocess="xml-stripblanks">OperatingSystemApp/controlpanel.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">OperatingSystemApp/wobblypanel.ui</file>
+    <file preprocess="xml-stripblanks">OperatingSystemApp/icons/16x16/actions/cursor-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">OperatingSystemApp/icons/16x16/actions/wobbly-windows-symbolic.svg</file>
     <file compressed="true">OperatingSystemApp/cursors/cursor-cheese.xmc</file>
     <file compressed="true">OperatingSystemApp/cursors/cursor-daemon.xmc</file>
     <file compressed="true">OperatingSystemApp/cursors/cursor-default.xmc</file>
