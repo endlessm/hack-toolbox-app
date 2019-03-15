@@ -157,7 +157,10 @@ var Toolbox = GObject.registerClass({
 
     revealTopic(id) {
         const [topicRow, topic] = this._findTopic(id);
-
+        if (!topicRow.visible) {
+            const sound = SoundServer.getDefault();
+            sound.play('hack-toolbox/topic/show');
+        }
         topicRow.noShowAll = false;
         topicRow.show_all();
         topic.get_style_context().add_class('reveal');  // animates once
