@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.22.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <requires lib="hack-toolbox" version="0.0"/>
-    <object class="GtkAdjustment" id="frictionAdjustment">
+  <object class="GtkAdjustment" id="frictionAdjustment">
     <property name="lower">2</property>
     <property name="upper">10</property>
     <property name="value">3</property>
@@ -45,142 +45,156 @@
         <property name="vexpand">True</property>
         <property name="border_width">4</property>
         <child>
-        <object class="GtkGrid">
-          <property name="visible">True</property>
-          <property name="can_focus">False</property>
-          <property name="row_spacing">16</property>
-          <property name="column_spacing">24</property>
-          <child>
-            <object class="Section">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="orientation">vertical</property>
-              <property name="heading">Windows</property>
-              <child>
-                <object class="GtkGrid">
-                  <property name="visible">True</property>
-                  <property name="can_focus">False</property>
-                  <property name="border_width">12</property>
-                  <property name="row_spacing">12</property>
-                  <property name="column_spacing">12</property>
-                  <property name="column_homogeneous">True</property>
-                  <child>
-                    <object class="GtkCheckButton" id="wobblyCheck">
-                      <property name="label" translatable="yes">Enable</property>
-                      <property name="visible">True</property>
-                      <property name="can_focus">True</property>
-                      <property name="receives_default">False</property>
-                      <property name="draw_indicator">True</property>
-                    </object>
-                    <packing>
-                      <property name="left_attach">0</property>
-                      <property name="top_attach">1</property>
-                    </packing>
-                  </child>
-                  <child>
-                    <object class="SpinInput" id="wobblyMovement">
-                      <property name="visible">True</property>
-                      <property name="can_focus">False</property>
-                      <property name="valign">start</property>
-                      <property name="orientation">vertical</property>
-                      <property name="label">Movement</property>
-                      <property name="adjustment">movementAdjustment</property>
-                    </object>
-                    <packing>
-                      <property name="left_attach">0</property>
-                      <property name="top_attach">2</property>
-                    </packing>
-                  </child>
-                  <child>
-                    <object class="SpinInput" id="wobblySlowdown">
-                      <property name="visible">True</property>
-                      <property name="can_focus">False</property>
-                      <property name="valign">start</property>
-                      <property name="orientation">vertical</property>
-                      <property name="label">Slowdown</property>
-                      <property name="digits">1</property>
-                      <property name="adjustment">slowdownAdjustment</property>
-                    </object>
-                    <packing>
-                      <property name="left_attach">1</property>
-                      <property name="top_attach">2</property>
-                    </packing>
-                  </child>
-                  <child>
-                    <object class="SpinInput" id="wobblyFriction">
-                      <property name="visible">True</property>
-                      <property name="can_focus">False</property>
-                      <property name="valign">start</property>
-                      <property name="orientation">vertical</property>
-                      <property name="label">Friction</property>
-                      <property name="digits">1</property>
-                      <property name="adjustment">frictionAdjustment</property>
-                    </object>
-                    <packing>
-                      <property name="left_attach">0</property>
-                      <property name="top_attach">3</property>
-                    </packing>
-                  </child>
-                  <child>
-                    <object class="SpinInput" id="wobblySpring">
-                      <property name="visible">True</property>
-                      <property name="can_focus">False</property>
-                      <property name="valign">start</property>
-                      <property name="orientation">vertical</property>
-                      <property name="label">Spring</property>
-                      <property name="digits">1</property>
-                      <property name="adjustment">springAdjustment</property>
-                    </object>
-                    <packing>
-                      <property name="left_attach">1</property>
-                      <property name="top_attach">3</property>
-                    </packing>
-                  </child>
-                  <child>
-                    <placeholder/>
-                  </child>
-                </object>
-                <packing>
-                  <property name="left_attach">0</property>
-                  <property name="top_attach">1</property>
-                </packing>
-              </child>
-            </object>  
-            <packing>
-              <property name="left_attach">0</property>
-              <property name="top_attach">0</property>
+          <object class="GtkGrid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="row_spacing">16</property>
+            <property name="column_spacing">24</property>
+            <child>
+              <object class="Section">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">start</property>
+                <property name="orientation">vertical</property>
+                <property name="heading">Windows</property>
+                <child>
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="border_width">12</property>
+                    <property name="row_spacing">12</property>
+                    <property name="column_spacing">12</property>
+                    <property name="column_homogeneous">True</property>
+                    <child>
+                      <object class="GtkCheckButton" id="wobblyCheck">
+                        <property name="label" translatable="yes">Enable</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="SpinInput" id="wobblyMovement">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="valign">start</property>
+                        <property name="orientation">vertical</property>
+                        <property name="label">Movement</property>
+                        <property name="adjustment">movementAdjustment</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="SpinInput" id="wobblySlowdown">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="valign">start</property>
+                        <property name="orientation">vertical</property>
+                        <property name="label">Slowdown</property>
+                        <property name="digits">1</property>
+                        <property name="adjustment">slowdownAdjustment</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="SpinInput" id="wobblyFriction">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="valign">start</property>
+                        <property name="orientation">vertical</property>
+                        <property name="label">Friction</property>
+                        <property name="digits">1</property>
+                        <property name="adjustment">frictionAdjustment</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="SpinInput" id="wobblySpring">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="valign">start</property>
+                        <property name="orientation">vertical</property>
+                        <property name="label">Spring</property>
+                        <property name="digits">1</property>
+                        <property name="adjustment">springAdjustment</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="Lockscreen" id="codeLock">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">start</property>
+                <child>
+                  <object class="Codeview" id="codeview">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="index">-1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+                <property name="height">2</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="index">-1</property>
           </packing>
-          </child>
-          <child>
-            <object class="Lockscreen" id="codeLock">
-              <property name="visible">True</property>
-              <property name="can_focus">False</property>
-              <property name="valign">start</property>
-              <child>
-                <object class="Codeview" id="codeview">
-                  <property name="visible">True</property>
-                  <property name="can_focus">False</property>
-                  <child>
-                    <placeholder/>
-                  </child>
-                </object>
-                <packing>
-                  <property name="index">-1</property>
-                </packing>
-              </child>
-            </object>
-            <packing>
-              <property name="left_attach">1</property>
-              <property name="top_attach">0</property>
-              <property name="height">2</property>
-            </packing>
-          </child>
-        </object>
-        <packing>
-          <property name="index">-1</property>
-        </packing>
-      </child>
-    </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+      </packing>
     </child>
   </template>
 </interface>
