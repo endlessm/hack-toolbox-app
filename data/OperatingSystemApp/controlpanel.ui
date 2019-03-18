@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.22.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <requires lib="hack-toolbox" version="0.0"/>
@@ -26,6 +26,7 @@
       <object class="Section">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="valign">start</property>
         <property name="orientation">vertical</property>
         <property name="heading">Cursor</property>
         <child>
@@ -130,6 +131,9 @@
         <property name="top_attach">0</property>
         <property name="height">2</property>
       </packing>
+    </child>
+    <child>
+      <placeholder/>
     </child>
   </template>
 </interface>

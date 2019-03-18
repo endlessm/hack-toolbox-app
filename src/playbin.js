@@ -22,7 +22,7 @@ const Lock = GObject.registerClass({
         try {
             this._css_provider.load_from_data(`
 lock {
-    background: url('${url}') no-repeat center;
+    background: url('${url}') no-repeat center/cover;
     transition: background 1s ease;
 }`
             );
