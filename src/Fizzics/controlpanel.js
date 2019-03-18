@@ -40,6 +40,12 @@ var FizzicsControlPanel = GObject.registerClass({
         this._model = model;
     }
 
+    unbindModel() {
+        this._model = null;
+        this._level1.unbindModel();
+        this._level2.unbindModel();
+    }
+
     bindWindow(win) {
         win.lockscreen.key = 'item.key.fizzics.1';
         win.lockscreen.lock = 'lock.fizzics.1';

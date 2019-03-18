@@ -87,25 +87,38 @@ var FizzicsObjectEditor = GObject.registerClass({
     bindModel(model, map) {
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
         const flagsInvert = flags | GObject.BindingFlags.INVERT_BOOLEAN;
-        model.bind_property(map['radius'], this._adjustmentRadius, 'value', flags);
-        model.bind_property(map['gravity'], this._adjustmentGravity, 'value', flags);
-        model.bind_property(map['collision'], this._adjustmentBounce, 'value', flags);
-        model.bind_property(map['friction'], this._adjustmentFriction, 'value', flags);
-        model.bind_property(map['physics'], this._buttonFrozen, 'active', flagsInvert);
-        model.bind_property(map['social0'], this._adjustmentSocial0, 'value', flags);
-        model.bind_property(map['social1'], this._adjustmentSocial1, 'value', flags);
-        model.bind_property(map['social2'], this._adjustmentSocial2, 'value', flags);
-        model.bind_property(map['social3'], this._adjustmentSocial3, 'value', flags);
-        model.bind_property(map['social4'], this._adjustmentSocial4, 'value', flags);
-        model.bind_property(map['badSFX'], this._comboBadSFX, 'active', flags);
-        model.bind_property(map['badVFX'], this._comboBadVFX, 'active', flags);
-        model.bind_property(map['goodSFX'], this._comboGoodSFX, 'active', flags);
-        model.bind_property(map['goodVFX'], this._comboGoodVFX, 'active', flags);
-        model.bind_property(map['skin'], this._menuSkin, 'index', flags);
-        model.bind_property(map['skin0'], this._imageSkin0, 'index', flags);
-        model.bind_property(map['skin1'], this._imageSkin1, 'index', flags);
-        model.bind_property(map['skin2'], this._imageSkin2, 'index', flags);
-        model.bind_property(map['skin3'], this._imageSkin3, 'index', flags);
-        model.bind_property(map['skin4'], this._imageSkin4, 'index', flags);
+
+        const bindingInfo = [
+            [map['radius'], this._adjustmentRadius, 'value', flags],
+            [map['gravity'], this._adjustmentGravity, 'value', flags],
+            [map['collision'], this._adjustmentBounce, 'value', flags],
+            [map['friction'], this._adjustmentFriction, 'value', flags],
+            [map['physics'], this._buttonFrozen, 'active', flagsInvert],
+            [map['social0'], this._adjustmentSocial0, 'value', flags],
+            [map['social1'], this._adjustmentSocial1, 'value', flags],
+            [map['social2'], this._adjustmentSocial2, 'value', flags],
+            [map['social3'], this._adjustmentSocial3, 'value', flags],
+            [map['social4'], this._adjustmentSocial4, 'value', flags],
+            [map['badSFX'], this._comboBadSFX, 'active', flags],
+            [map['badVFX'], this._comboBadVFX, 'active', flags],
+            [map['goodSFX'], this._comboGoodSFX, 'active', flags],
+            [map['goodVFX'], this._comboGoodVFX, 'active', flags],
+            [map['skin'], this._menuSkin, 'index', flags],
+            [map['skin0'], this._imageSkin0, 'index', flags],
+            [map['skin1'], this._imageSkin1, 'index', flags],
+            [map['skin2'], this._imageSkin2, 'index', flags],
+            [map['skin3'], this._imageSkin3, 'index', flags],
+            [map['skin4'], this._imageSkin4, 'index', flags],
+        ];
+
+        this._bindings = bindingInfo.map(([prop, target, targetProp, bindingFlags]) =>
+            model.bind_property(prop, target, targetProp, bindingFlags));
+    }
+
+    unbindModel() {
+        if (this._bindings) {
+            this._bindings.forEach(binding => binding.unbind());
+            this._bindings = null;
+        }
     }
 });

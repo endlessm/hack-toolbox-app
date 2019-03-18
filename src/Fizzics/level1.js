@@ -78,22 +78,45 @@ var FizzicsLevel1 = GObject.registerClass({
         );
     }
 
+    _unbindModelToEditor(index) {
+        this[`_editor${index}`].unbindModel();
+    }
+
     bindModel(model) {
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
-        model.bind_property('backgroundImageIndex', this._menuBackground, 'index', flags);
-        model.bind_property('moveToolActive', this._buttonDrag, 'active', flags);
-        model.bind_property('flingToolActive', this._buttonFling, 'active', flags);
-        model.bind_property('createToolActive', this._buttonAdd, 'active', flags);
-        model.bind_property('deleteToolActive', this._buttonDelete, 'active', flags);
-        model.bind_property('imageIndex-0', this._image0, 'index', flags);
-        model.bind_property('imageIndex-1', this._image1, 'index', flags);
-        model.bind_property('imageIndex-2', this._image2, 'index', flags);
-        model.bind_property('imageIndex-3', this._image3, 'index', flags);
-        model.bind_property('imageIndex-4', this._image4, 'index', flags);
+
+        const bindingInfo = [
+            ['backgroundImageIndex', this._menuBackground, 'index'],
+            ['moveToolActive', this._buttonDrag, 'active'],
+            ['flingToolActive', this._buttonFling, 'active'],
+            ['createToolActive', this._buttonAdd, 'active'],
+            ['deleteToolActive', this._buttonDelete, 'active'],
+            ['imageIndex-0', this._image0, 'index'],
+            ['imageIndex-1', this._image1, 'index'],
+            ['imageIndex-2', this._image2, 'index'],
+            ['imageIndex-3', this._image3, 'index'],
+            ['imageIndex-4', this._image4, 'index'],
+        ];
+        this._bindings = bindingInfo.map(([prop, target, targetProp]) =>
+            model.bind_property(prop, target, targetProp, flags));
+
         this._bindModelToEditor(model, 0);
         this._bindModelToEditor(model, 1);
         this._bindModelToEditor(model, 2);
         this._bindModelToEditor(model, 3);
         this._bindModelToEditor(model, 4);
+    }
+
+    unbindModel() {
+        if (this._bindings) {
+            this._bindings.forEach(binding => binding.unbind());
+            this._bindings = null;
+        }
+
+        this._unbindModelToEditor(0);
+        this._unbindModelToEditor(1);
+        this._unbindModelToEditor(2);
+        this._unbindModelToEditor(3);
+        this._unbindModelToEditor(4);
     }
 });

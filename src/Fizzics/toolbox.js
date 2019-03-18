@@ -31,4 +31,9 @@ var FizzicsToolbox = GObject.registerClass(class FizzicsToolbox extends Toolbox 
         win.get_style_context().add_class('Fizzics');
         this._controlPanel.bindWindow(win);
     }
+
+    shutdown() {
+        super.shutdown();
+        this._controlPanel.unbindModel();
+    }
 });
