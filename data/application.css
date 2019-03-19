@@ -402,6 +402,44 @@ popover.error button:hover {
     border-radius: 8px 8px 8px 8px;
 }
 
+#fake-saniel-dialog {
+    background-color: transparent;
+    border: 0 none;
+    color: black;
+    font-family: "Metropolis Medium";
+    margin: 10px;
+}
+
+#fake-saniel-dialog frame {
+    background-color: white;
+    border-radius: 12px;
+    margin: 16px;
+    padding: 32px 128px 40px 24px;
+}
+
+#fake-saniel-dialog button {
+    background-image: image(#ce5611);
+    border: 0;
+    border-radius: 17.5px;
+    box-shadow: 0 2px 4px 4px rgba(0, 0, 0, .2);
+    color: white;
+    padding: 4px 48px;
+    margin-left: 40px;
+    text-shadow: 0 0.5px 2px rgba(0, 0, 0, .4);
+}
+#fake-saniel-dialog button:hover {
+    background-image: image(#d56f34);
+}
+#fake-saniel-dialog button:active {
+    background-image: image(#af490e);
+}
+
+#saniel-head {
+    background-image: url('resource:///com/endlessm/HackToolbox/OperatingSystemApp/saniel-still.png');
+    background-position: top right;
+    background-repeat: no-repeat;
+}
+
 /* Miscellaneous theme overrides */
 arrow, button.down, button.up, .dropdown {
    opacity: 0.81;

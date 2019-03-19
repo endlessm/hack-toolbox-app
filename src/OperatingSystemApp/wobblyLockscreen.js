@@ -1,6 +1,6 @@
 /* exported WobblyLockscreen */
 
-const {GLib, GObject} = imports.gi;
+const {GLib, GObject, Gtk} = imports.gi;
 
 const {Lockscreen} = imports.lockscreen;
 const SoundServer = imports.soundServer;
@@ -96,6 +96,11 @@ var WobblyLockscreen = GObject.registerClass({
                 this._timeout = null;
                 return GLib.SOURCE_REMOVE;
             });
+
+            if (this._manager.hasKey('item.key.OperatingSystemApp.2'))
+                this._showFakeSanielDialog();
+            else
+                SoundServer.getDefault().play('hack-toolbox/lockscreen/inactive');
         }
     }
 
@@ -115,5 +120,49 @@ var WobblyLockscreen = GObject.registerClass({
                 }
             }
         }
+    }
+
+    _showFakeSanielDialog() {
+        if (!this._fakeSanielDialog) {
+            this._fakeSanielDialog = new Gtk.Overlay({
+                halign: Gtk.Align.END,
+                name: 'fake-saniel-dialog',
+                valign: Gtk.Align.START,
+            });
+            const frame = new Gtk.Frame({
+                shadowType: Gtk.ShadowType.NONE,
+            });
+            const label = new Gtk.Label({
+                label: "You're not allowed here! You better skedaddle! Don't come back!",
+                maxWidthChars: 28,
+                wrap: true,
+                xalign: 0,
+            });
+            const button = new Gtk.Button({
+                halign: Gtk.Align.START,
+                label: 'Okay',
+                valign: Gtk.Align.END,
+            });
+            const saniel = new Gtk.Frame({
+                halign: Gtk.Align.END,
+                name: 'saniel-head',
+                shadowType: Gtk.ShadowType.NONE,
+                valign: Gtk.Align.FILL,
+            });
+
+            this._fakeSanielDialog.add(frame);
+            frame.add(label);
+            this._fakeSanielDialog.add_overlay(button);
+            this._fakeSanielDialog.add_overlay(saniel);
+            this.add_overlay(this._fakeSanielDialog);
+
+            button.connect('clicked', () => {
+                SoundServer.getDefault().play('clubhouse/dialog/close');
+                this._fakeSanielDialog.hide();
+            });
+        }
+
+        SoundServer.getDefault().play('quests/saniel-angry');
+        this._fakeSanielDialog.show_all();
     }
 });
