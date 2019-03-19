@@ -55,18 +55,33 @@ var FrameworkLevel1 = GObject.registerClass({
 
     bindModel(model) {
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
-        model.bind_property('accent-color', this._accentColorButton, 'rgba', flags);
-        model.bind_property('border-color', this._borderColorButton, 'rgba', flags);
-        model.bind_property('border-width', this._borderWidthAdjustment, 'value', flags);
-        model.bind_property('card-layout', this._layoutGroup, 'value', flags);
-        model.bind_property('card-order', this._orderGroup, 'value', flags);
-        model.bind_property('font', this._fontChooser, 'active-id', flags);
-        model.bind_property('font-size', this._fontSizeAdjustment, 'value', flags);
-        model.bind_property('info-color', this._infoColorButton, 'rgba', flags);
-        model.bind_property('logo-color', this._logoColorButton, 'rgba', flags);
-        model.bind_property('logo-graphic', this._logoGroup, 'value', flags);
-        model.bind_property('main-color', this._mainColorButton, 'rgba', flags);
+
+        const bindingInfo = [
+            ['accent-color', this._accentColorButton, 'rgba'],
+            ['border-color', this._borderColorButton, 'rgba'],
+            ['border-width', this._borderWidthAdjustment, 'value'],
+            ['card-layout', this._layoutGroup, 'value'],
+            ['card-order', this._orderGroup, 'value'],
+            ['font', this._fontChooser, 'active-id'],
+            ['font-size', this._fontSizeAdjustment, 'value'],
+            ['info-color', this._infoColorButton, 'rgba'],
+            ['logo-color', this._logoColorButton, 'rgba'],
+            ['logo-graphic', this._logoGroup, 'value'],
+            ['main-color', this._mainColorButton, 'rgba'],
+        ];
+
+        this._bindings = bindingInfo.map(([prop, target, targetProp]) =>
+            model.bind_property(prop, target, targetProp, flags));
 
         this._model = model;
+    }
+
+    unbindModel() {
+        this._model = null;
+
+        if (this._bindings) {
+            this._bindings.forEach(binding => binding.unbind());
+            this._bindings = null;
+        }
     }
 });

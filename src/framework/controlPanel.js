@@ -50,6 +50,12 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         this._level3.bindModel(model);
     }
 
+    unbindModel() {
+        this._level1.unbindModel();
+        this._level2.unbindModel();
+        this._level3.unbindModel();
+    }
+
     bindWindow(win) {
         this._level2lock.connect('notify::locked', () => {
             if (!this._level2lock.locked)

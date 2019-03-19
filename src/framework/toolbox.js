@@ -52,7 +52,11 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
 
     // parent class override
     shutdown() {
+        super.shutdown();
         if (this._timeout)
             GLib.Source.remove(this._timeout);
+
+        if (this._controlPanel)
+            this._controlPanel.unbindModel();
     }
 });

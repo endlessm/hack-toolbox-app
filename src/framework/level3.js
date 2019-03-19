@@ -262,4 +262,12 @@ hyperlinks = ${this._model.hyperlinks ? 'true' : 'false'};
             this._onNotify.bind(this));
         this._regenerateCode();
     }
+
+    unbindModel() {
+        if (this._model && this._notifyHandler) {
+            this._model.disconnect(this._notifyHandler);
+            this._model = null;
+            this._notifyHandler = 0;
+        }
+    }
 });
