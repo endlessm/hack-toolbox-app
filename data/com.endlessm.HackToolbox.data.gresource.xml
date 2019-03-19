@@ -106,5 +106,6 @@
     <file>OperatingSystemApp/icons/cursor-magic-wand.png</file>
     <file>OperatingSystemApp/icons/cursor-poop.png</file>
     <file>OperatingSystemApp/icons/cursor-rainbow-unicorn.png</file>
+    <file compressed="true">OperatingSystemApp/saniel-still.png</file>
   </gresource>
 </gresources>
