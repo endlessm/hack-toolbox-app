@@ -3,6 +3,20 @@ Hack Toolbox
 
 ## Development
 
+### Building a Flatpak bundle
+
+Use the `./build-flatpak.sh` script to build a Flatpak from the latest
+git commit.
+
+### Building a local Flatpak
+
+Use the `build-local-flatpak.sh` script for developing. The script
+also takes any extra arguments for `flatpak-builder`, thus, if you
+want to quickly build a Flatpak with any changes you may have done,
+and install it in the user installation base, you can do:
+
+`./tools/build-local-flatpak.sh --install`
+
 ### Coding Style
 
 The continuous integration tool runs checks to validate the PRs. To
