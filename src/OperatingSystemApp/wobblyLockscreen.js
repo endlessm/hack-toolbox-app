@@ -67,6 +67,10 @@ var WobblyLockscreen = GObject.registerClass({
     _updateLockStateWithLock() {
         if (this._manager.isUnlocked(this.lock)) {
             this._playDoneMode = 'end';
+
+            if (this._trapSequence === null)
+                super._updateLockStateWithLock();
+
             return;
         }
 
