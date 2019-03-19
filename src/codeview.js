@@ -167,6 +167,8 @@ var Codeview = GObject.registerClass({
             buffer: this._buffer,
             showLineNumbers: true,
             visible: true,
+            tab_width: 4,
+            insert_spaces_instead_of_tabs: true,
         });
 
         const background = new Gdk.RGBA({red: 1, green: 1, blue: 1, alpha: 0.1});
