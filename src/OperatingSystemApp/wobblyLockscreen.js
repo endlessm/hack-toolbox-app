@@ -2,6 +2,7 @@
 
 const {GLib, GObject, Gtk} = imports.gi;
 
+const Clubhouse = imports.clubhouse;
 const {Lockscreen} = imports.lockscreen;
 const SoundServer = imports.soundServer;
 
@@ -123,6 +124,10 @@ var WobblyLockscreen = GObject.registerClass({
     }
 
     _showFakeSanielDialog() {
+        const clubhouse = Clubhouse.getDefault();
+        if (['Investigation', 'BreakingIn'].includes(clubhouse.RunningQuest))
+            return;
+
         if (!this._fakeSanielDialog) {
             this._fakeSanielDialog = new Gtk.Overlay({
                 halign: Gtk.Align.END,
