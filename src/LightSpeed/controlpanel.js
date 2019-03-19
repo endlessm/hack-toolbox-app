@@ -36,35 +36,47 @@ var LSCombinedTopic = GObject.registerClass({
         this._variablesCodeview.connect('should-compile', this._compile.bind(this));
     }
 
-    bindGlobal(model) {
-        this._global = model;
-        this._globalNotifyHandler = model.connect('notify', this._onGlobalNotify.bind(this));
+    bindModel(model) {
+        this._model = model;
+        this._modelNotifyHandler = model.connect('notify', this._onGlobalNotify.bind(this));
 
         this._currentLevel = model.currentLevel;
-        this._bindModel(this._global.getModel(this._currentLevel));
+        this._bindLocalModel(this._model.getModel(this._currentLevel));
+    }
+
+    unbindModel() {
+        this._unbindLocalModel();
+        if (this._model && this._modelNotifyHandler) {
+            this._model.disconnect(this._modelNotifyHandler);
+            this._modelNotifyHandler = 0;
+        }
     }
 
     _onGlobalNotify() {
-        if (this._global.currentLevel === this._currentLevel)
+        if (this._model.currentLevel === this._currentLevel)
             return;
-        this._currentLevel = this._global.currentLevel;
-        this._bindModel(this._global.getModel(this._currentLevel));
+        this._currentLevel = this._model.currentLevel;
+        this._bindLocalModel(this._model.getModel(this._currentLevel));
     }
 
-    _bindModel(model) {
-        if (this._model) {
+    _unbindLocalModel() {
+        if (this._localModel) {
             if (this._notifyHandler) {
-                this._model.disconnect(this._notifyHandler);
-                this._notifyHandler = null;
+                this._localModel.disconnect(this._notifyHandler);
+                this._notifyHandler = 0;
             }
             if (this._bindings) {
                 this._bindings.forEach(binding => binding.unbind());
                 this._bindings = null;
             }
-            this._model = null;
+            this._localModel = null;
         }
+    }
 
-        this._model = model;
+    _bindLocalModel(model) {
+        this._unbindLocalModel();
+
+        this._localModel = model;
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
 
         const bindingInfo = {
@@ -126,22 +138,22 @@ var LSCombinedTopic = GObject.registerClass({
         // are propagating updates from the codeview to the GUI. Instead,
         // connect a temporary handler that lets us know if anything actually
         // did change.
-        GObject.signal_handler_block(this._model, this._notifyHandler);
+        GObject.signal_handler_block(this._localModel, this._notifyHandler);
 
         let guiUpdated = false;
-        const tempHandler = this._model.connect('notify', () => {
+        const tempHandler = this._localModel.connect('notify', () => {
             guiUpdated = true;
         });
 
         try {
-            this._model.scoreTarget = scope.scoreTarget;
-            this._model.astronautSize = scope.astronautSize;
-            this._model.shipAsset = scope.shipAsset;
-            this._model.shipSize = scope.shipSize;
-            this._model.shipSpeed = scope.shipSpeed;
+            this._localModel.scoreTarget = scope.scoreTarget;
+            this._localModel.astronautSize = scope.astronautSize;
+            this._localModel.shipAsset = scope.shipAsset;
+            this._localModel.shipSize = scope.shipSize;
+            this._localModel.shipSpeed = scope.shipSpeed;
         } finally {
-            this._model.disconnect(tempHandler);
-            GObject.signal_handler_unblock(this._model, this._notifyHandler);
+            this._localModel.disconnect(tempHandler);
+            GObject.signal_handler_unblock(this._localModel, this._notifyHandler);
         }
 
         if (guiUpdated)
@@ -187,7 +199,7 @@ var LSCombinedTopic = GObject.registerClass({
         const oldText = this._variablesCodeview.text;
         this._regenerateCode();
         const timeMicrosec = GLib.get_monotonic_time();
-        if (this._updateSoundEnabled && !this._model.inReset &&
+        if (this._updateSoundEnabled && !this._localModel.inReset &&
             oldText !== this._variablesCodeview.text &&
             timeMicrosec - this._lastCodeviewSoundMicrosec >= 100e3) {
             SoundServer.getDefault().play('hack-toolbox/update-codeview');
@@ -197,13 +209,13 @@ var LSCombinedTopic = GObject.registerClass({
 
     _regenerateCode() {
         this._variablesCodeview.text =
-`scoreTarget = ${this._model.scoreTarget};
+`scoreTarget = ${this._localModel.scoreTarget};
 
-astronautSize = ${this._model.astronautSize};
+astronautSize = ${this._localModel.astronautSize};
 
-shipAsset = '${this._model.shipAsset}';
-shipSize = ${this._model.shipSize};
-shipSpeed = ${this._model.shipSpeed};
+shipAsset = '${this._localModel.shipAsset}';
+shipSize = ${this._localModel.shipSize};
+shipSpeed = ${this._localModel.shipSpeed};
 `;
     }
 });

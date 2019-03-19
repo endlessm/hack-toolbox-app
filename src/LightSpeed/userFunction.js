@@ -126,12 +126,20 @@ var LSUserFunction = GObject.registerClass({
         this.get_style_context().add_class('user-function');
     }
 
-    bindGlobal(model) {
-        this._global = model;
-        this._globalNotifyHandler = model.connect('notify', this._onGlobalNotify.bind(this));
+    bindModel(model) {
+        this._model = model;
+        this._modelNotifyHandler = model.connect('notify', this._onGlobalNotify.bind(this));
 
         this._currentLevel = model.currentLevel;
-        this._bindModel(this._global.getModel(this._currentLevel));
+        this._bindModel(this._model.getModel(this._currentLevel));
+    }
+
+    unbindModel() {
+        this._unbindLocalModel();
+        if (this._model && this._modelNotifyHandler) {
+            this._model.disconnect(this._modelNotifyHandler);
+            this._modelNotifyHandler = 0;
+        }
     }
 
     _onGlobalNotify() {
@@ -141,11 +149,15 @@ var LSUserFunction = GObject.registerClass({
         this._bindModel(this._global.getModel(this._currentLevel));
     }
 
-    _bindModel(model) {
-        if (this._model)
-            this._model = null;
+    _unbindLocalModel() {
+        this._localModel = null;
+    }
 
-        this._model = model;
+    _bindLocalModel(model) {
+        if (this._localModel)
+            this._localModel = null;
+
+        this._localModel = model;
 
         const {name, args, modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
         this._codeview.text = `function ${name}(${args.join(', ')}) {
@@ -201,6 +213,6 @@ ${code}
         this._codeview.setCompileResults([]);
 
         const funcBody = this._codeview.getFunctionBody(name);
-        this._model[modelProp] = funcBody;
+        this._localModel[modelProp] = funcBody;
     }
 });

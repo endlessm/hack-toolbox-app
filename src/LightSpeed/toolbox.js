@@ -16,38 +16,38 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         const iconTheme = Gtk.IconTheme.get_default();
         iconTheme.add_resource_path('/com/endlessm/HackToolbox/LightSpeed/icons');
 
-        this._global = new LSGlobalModel();
+        this._model = new LSGlobalModel();
 
         this._combinedTopic = new LSCombinedTopic();
-        this._combinedTopic.bindGlobal(this._global);
+        this._combinedTopic.bindModel(this._model);
         this.addTopic('game', 'Game', 'rocket-symbolic', this._combinedTopic);
 
         this._spawnEnemyTopic = new LSUserFunction('spawnEnemy');
-        this._spawnEnemyTopic.bindGlobal(this._global);
+        this._spawnEnemyTopic.bindModel(this._model);
         this.addTopic('spawnEnemy', 'Spawn', 'spawn-symbolic',
             this._spawnEnemyTopic);
         this.hideTopic('spawnEnemy');
 
         this._updateAsteroidTopic = new LSUserFunction('updateAsteroid');
-        this._updateAsteroidTopic.bindGlobal(this._global);
+        this._updateAsteroidTopic.bindModel(this._model);
         this.addTopic('updateAsteroid', 'Asteroid', 'asteroid-symbolic',
             this._updateAsteroidTopic);
         this.hideTopic('updateAsteroid');
 
         this._updateSpinnerTopic = new LSUserFunction('updateSpinner');
-        this._updateSpinnerTopic.bindGlobal(this._global);
+        this._updateSpinnerTopic.bindModel(this._model);
         this.addTopic('updateSpinner', 'Spinner', 'spinner-symbolic',
             this._updateSpinnerTopic);
         this.hideTopic('updateSpinner');
 
         this._updateSquidTopic = new LSUserFunction('updateSquid');
-        this._updateSquidTopic.bindGlobal(this._global);
+        this._updateSquidTopic.bindModel(this._model);
         this.addTopic('updateSquid', 'Squid', 'squid-symbolic',
             this._updateSquidTopic);
         this.hideTopic('updateSquid');
 
         this._updateBeamTopic = new LSUserFunction('updateBeam');
-        this._updateBeamTopic.bindGlobal(this._global);
+        this._updateBeamTopic.bindModel(this._model);
         this.addTopic('updateBeam', 'Beam', 'beam-symbolic',
             this._updateBeamTopic);
         this.hideTopic('updateBeam');
@@ -55,7 +55,8 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         this._updateLevelInfo();
         this.show_all();
 
-        this._global.connect('notify::currentLevel', this._updateLevelInfo.bind(this));
+        this._updateLevelHandler = this._model.connect('notify::currentLevel',
+            this._updateLevelInfo.bind(this));
         this.connect('reset', this._onReset.bind(this));
 
         this._showTopicsInitially()
@@ -68,8 +69,8 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
     }
 
     _updateLevelInfo() {
-        let text = `Level ${this._global.currentLevel}`;
-        if (this._global.currentLevel === 0)
+        let text = `Level ${this._model.currentLevel}`;
+        if (this._model.currentLevel === 0)
             text = 'Intro';
         this.setInfo(text);
     }
@@ -109,5 +110,22 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
             this.revealTopic(topic);
         else
             this.hideTopic(topic);
+    }
+
+    shutdown() {
+        super.shutdown();
+
+        if (this._model && this._updateLevelHandler) {
+            this._model.disconnect(this._updateLevelHandler);
+            this._model = null;
+            this._updateLevelHandler = 0;
+        }
+
+        this._combinedTopic.unbindModel();
+        this._spawnEnemyTopic.unbindModel();
+        this._updateAsteroidTopic.unbindModel();
+        this._updateSpinnerTopic.unbindModel();
+        this._updateSquidTopic.unbindModel();
+        this._updateBeamTopic.unbindModel();
     }
 });
