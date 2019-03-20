@@ -12,6 +12,14 @@ var LSGlobalModel = GObject.registerClass({
             _propFlags, 0, Number.MAX_SAFE_INTEGER, 2),
         currentLevel: GObject.ParamSpec.double('currentLevel', 'Current level', '',
             _propFlags, 0, Number.MAX_SAFE_INTEGER, 0),
+        updateAsteroidCode: GObject.ParamSpec.string('updateAsteroidCode',
+            'Update asteroid code', '', _propFlags, ''),
+        updateSpinnerCode: GObject.ParamSpec.string('updateSpinnerCode',
+            'Update spinner code', '', _propFlags, ''),
+        updateSquidCode: GObject.ParamSpec.string('updateSquidCode',
+            'Update squid code', '', _propFlags, ''),
+        updateBeamCode: GObject.ParamSpec.string('updateBeamCode',
+            'Update beam code', '', _propFlags, ''),
     },
 }, class LSGlobalModel extends ClippyWrapper {
     _init(level, props = {}) {
