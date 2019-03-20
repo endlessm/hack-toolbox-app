@@ -3,10 +3,10 @@
 const {GObject, Gtk} = imports.gi;
 const {Codeview} = imports.codeview;
 const {CursorImage, cursorIDToResource} = imports.OperatingSystemApp.cursorImage;
-const {OSCursorModel, VALID_CURSORS} = imports.OperatingSystemApp.oscursormodel;
 const {Section} = imports.section;
 const {SpinInput} = imports.spinInput;
 const {PopupMenu} = imports.popupMenu;
+const {VALID_CURSORS} = imports.OperatingSystemApp.oscursormodel;
 
 GObject.type_ensure(Codeview.$gtype);
 GObject.type_ensure(Section.$gtype);
@@ -26,9 +26,7 @@ var OSControlPanel = GObject.registerClass({
     ],
 }, class OSControlPanel extends Gtk.Grid {
     _init(props = {}) {
-        const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
-
-        /* Setup icons path */
+        // Setup icons path
         var theme = Gtk.IconTheme.get_default();
         theme.add_resource_path('/com/endlessm/HackToolbox/OperatingSystemApp/icons');
 
@@ -38,9 +36,6 @@ var OSControlPanel = GObject.registerClass({
         // the old design
         this._codeview.minContentHeight = 424;
 
-        /* Create data model for editable properties */
-        this._cursor = new OSCursorModel();
-
         const cursorChoices = {};
         VALID_CURSORS.forEach(cursor => {
             cursorChoices[cursor] = cursorIDToResource(cursor);
@@ -48,13 +43,21 @@ var OSControlPanel = GObject.registerClass({
         this._cursorGroup = new PopupMenu(this._cursorButton, cursorChoices,
             CursorImage, 'resource', {});
 
-        /* Bind model properties with UI elements */
-        this._cursor.bind_property('theme', this._cursorGroup, 'value', flags);
-        this._cursor.bind_property('size', this._cursorSizeAdjustment, 'value', flags);
-        this._cursor.bind_property('speed', this._cursorSpeedAdjustment, 'value', flags);
-
         this._previous_size = this._cursorSizeAdjustment.value;
         this._cursorSizeAdjustment.connect('value-changed', this._snapSizeToOption.bind(this));
+    }
+
+    bindModel(model) {
+        this._cursor = model;
+
+        const bindingInfo = [
+            ['theme', this._cursorGroup],
+            ['size', this._cursorSizeAdjustment],
+            ['speed', this._cursorSpeedAdjustment],
+        ];
+        const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
+        this._bindings = bindingInfo.map(args =>
+            this._cursor.bind_property(...args, 'value', flags));
     }
 
     reset() {

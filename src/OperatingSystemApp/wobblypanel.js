@@ -3,7 +3,6 @@
 const {GObject, Gtk} = imports.gi;
 
 const {Codeview} = imports.codeview;
-const {OSWobblyModel} = imports.OperatingSystemApp.oswobblymodel;
 const {Section} = imports.section;
 const {WobblyLockscreen} = imports.OperatingSystemApp.wobblyLockscreen;
 
@@ -28,9 +27,7 @@ var WobblyPanel = GObject.registerClass({
     ],
 }, class WobblyPanel extends Gtk.Grid {
     _init(props = {}) {
-        const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
-
-        /* Setup icons path */
+        // Setup icons path
         var theme = Gtk.IconTheme.get_default();
         theme.add_resource_path('/com/endlessm/HackToolbox/OperatingSystemApp/icons');
 
@@ -39,17 +36,21 @@ var WobblyPanel = GObject.registerClass({
         // Temporary fix for keeping the toolbox the same height as it was in
         // the old design
         this._codeview.minContentHeight = 424;
+    }
 
-        this._wobbly = new OSWobblyModel();
-        this._wobbly.bind_property('wobblyEffect', this._wobblyCheck, 'active', flags);
-        this._wobbly.bind_property('wobblyObjectMovementRange', this._movementAdjustment,
-            'value', flags);
-        this._wobbly.bind_property('wobblySlowdownFactor', this._slowdownAdjustment,
-            'value', flags);
-        this._wobbly.bind_property('wobblySpringFriction', this._frictionAdjustment,
-            'value', flags);
-        this._wobbly.bind_property('wobblySpringK', this._springAdjustment,
-            'value', flags);
+    bindModel(model) {
+        this._wobbly = model;
+
+        const bindingInfo = [
+            ['wobblyEffect', this._wobblyCheck, 'active'],
+            ['wobblyObjectMovementRange', this._movementAdjustment, 'value'],
+            ['wobblySlowdownFactor', this._slowdownAdjustment, 'value'],
+            ['wobblySpringFriction', this._frictionAdjustment, 'value'],
+            ['wobblySpringK', this._springAdjustment, 'value'],
+        ];
+        const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
+        this._bindings = bindingInfo.map(args =>
+            this._wobbly.bind_property(...args, flags));
     }
 
     reset() {

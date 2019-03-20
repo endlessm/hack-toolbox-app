@@ -3,6 +3,8 @@
 const {GObject, Gtk} = imports.gi;
 
 const {OSControlPanel} = imports.OperatingSystemApp.controlpanel;
+const {OSCursorModel} = imports.OperatingSystemApp.oscursormodel;
+const {OSWobblyModel} = imports.OperatingSystemApp.oswobblymodel;
 const {Toolbox} = imports.toolbox;
 const {WobblyPanel} = imports.OperatingSystemApp.wobblypanel;
 
@@ -17,9 +19,14 @@ var OSToolbox = GObject.registerClass(class OSToolbox extends Toolbox {
 
         this._controlPanel = new OSControlPanel({visible: true});
         this.addTopic('main', 'Cursor', 'cursor-symbolic', this._controlPanel);
+        const cursorModel = new OSCursorModel();
+        this._controlPanel.bindModel(cursorModel);
         this.show_all();
+
         this._wobblyPanel = new WobblyPanel({visible: true});
         this.addTopic('wobblyPanel', 'Windows', 'wobbly-windows-symbolic', this._wobblyPanel);
+        const wobblyModel = new OSWobblyModel();
+        this._wobblyPanel.bindModel(wobblyModel);
         this.showTopic('wobblyPanel');
 
         this.connect('reset', () => {
