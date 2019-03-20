@@ -44,6 +44,14 @@ var LSCombinedTopic = GObject.registerClass({
         this._bindModel(this._global.getModel(this._currentLevel));
     }
 
+    unbindGlobalModel() {
+        this._unbindLevelModel();
+        if (this._global && this._globalNotifyHandler) {
+            this._global.disconnect(this._globalNotifyHandler);
+            this._globalNotifyHandler = null;
+        }
+    }
+
     _onGlobalNotify() {
         if (this._global.currentLevel === this._currentLevel)
             return;
@@ -51,7 +59,7 @@ var LSCombinedTopic = GObject.registerClass({
         this._bindModel(this._global.getModel(this._currentLevel));
     }
 
-    _bindModel(model) {
+    _unbindLevelModel() {
         if (this._model) {
             if (this._notifyHandler) {
                 this._model.disconnect(this._notifyHandler);
@@ -63,6 +71,10 @@ var LSCombinedTopic = GObject.registerClass({
             }
             this._model = null;
         }
+    }
+
+    _bindModel(model) {
+        this._unbindLevelModel();
 
         this._model = model;
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
