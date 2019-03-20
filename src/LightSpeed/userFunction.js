@@ -134,6 +134,14 @@ var LSUserFunction = GObject.registerClass({
         this._bindModel(this._global.getModel(this._currentLevel));
     }
 
+    unbindGlobalModel() {
+        this._unbindLevelModel();
+        if (this._global && this._globalNotifyHandler) {
+            this._global.disconnect(this._globalNotifyHandler);
+            this._globalNotifyHandler = null;
+        }
+    }
+
     _onGlobalNotify() {
         if (this._global.currentLevel === this._currentLevel)
             return;
@@ -141,9 +149,13 @@ var LSUserFunction = GObject.registerClass({
         this._bindModel(this._global.getModel(this._currentLevel));
     }
 
+    _unbindLevelModel() {
+        this._model = null;
+    }
+
     _bindModel(model) {
         if (this._model)
-            this._model = null;
+            this._unbindLevelModel();
 
         this._model = model;
 

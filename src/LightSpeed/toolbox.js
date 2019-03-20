@@ -55,7 +55,8 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         this._updateLevelInfo();
         this.show_all();
 
-        this._global.connect('notify::currentLevel', this._updateLevelInfo.bind(this));
+        this._updateLevelHandler = this._global.connect('notify::currentLevel',
+            this._updateLevelInfo.bind(this));
         this.connect('reset', this._onReset.bind(this));
 
         this._showTopicsInitially()
@@ -109,5 +110,22 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
             this.revealTopic(topic);
         else
             this.hideTopic(topic);
+    }
+
+    shutdown() {
+        super.shutdown();
+
+        if (this._global && this._updateLevelHandler) {
+            this._global.disconnect(this._updateLevelHandler);
+            this._global = null;
+            this._updateLevelHandler = null;
+        }
+
+        this._combinedTopic.unbindGlobalModel();
+        this._spawnEnemyTopic.unbindGlobalModel();
+        this._updateAsteroidTopic.unbindGlobalModel();
+        this._updateSpinnerTopic.unbindGlobalModel();
+        this._updateSquidTopic.unbindGlobalModel();
+        this._updateBeamTopic.unbindGlobalModel();
     }
 });
