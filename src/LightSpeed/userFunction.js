@@ -174,8 +174,17 @@ ${this._model[modelProp]}
 }`;
     }
 
+    _updateCode(funcBody) {
+        const {modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
+        // Block the normal notify handler that updates the code view, since we
+        // are propagating updates from the codeview to the GUI.
+        GObject.signal_handler_block(this._model, this._notifyHandler);
+        this._model[modelProp] = funcBody;
+        GObject.signal_handler_unblock(this._model, this._notifyHandler);
+    }
+
     _compile() {
-        const {name, args, modelProp, getScope} = USER_FUNCTIONS[this._codeview.userFunction];
+        const {name, args, getScope} = USER_FUNCTIONS[this._codeview.userFunction];
         const code = this._codeview.text;
         const scope = getScope();
         let userFunction;
@@ -222,6 +231,6 @@ ${code}
         this._codeview.setCompileResults([]);
 
         const funcBody = this._codeview.getFunctionBody(name);
-        this._model[modelProp] = funcBody;
+        this._updateCode(funcBody);
     }
 });
