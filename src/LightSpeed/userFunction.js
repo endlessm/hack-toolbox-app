@@ -150,6 +150,11 @@ var LSUserFunction = GObject.registerClass({
     }
 
     _unbindLevelModel() {
+        if (this._model && this._notifyHandler) {
+            this._model.disconnect(this._notifyHandler);
+            this._notifyHandler = null;
+        }
+
         this._model = null;
     }
 
@@ -158,10 +163,14 @@ var LSUserFunction = GObject.registerClass({
             this._unbindLevelModel();
 
         this._model = model;
+        this._notifyHandler = model.connect('notify', this._setCode.bind(this));
+        this._setCode();
+    }
 
+    _setCode() {
         const {name, args, modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
         this._codeview.text = `function ${name}(${args.join(', ')}) {
-${model[modelProp]}
+${this._model[modelProp]}
 }`;
     }
 
