@@ -56,7 +56,9 @@ const COMMON_SPAWN_SCOPE = {
 const COMMON_UPDATE_SCOPE = {
     // Keep this in sync with UpdateEnemyScope class in
     // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
-    playerShipY: 0,
+    playerShip: {
+        position: {x: 0, y: 0},
+    },
     enemy: {
         position: {x: 0, y: 0},
         velocity: {x: 0, y: 0},
