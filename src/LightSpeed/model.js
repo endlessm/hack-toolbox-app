@@ -19,14 +19,6 @@ var LSModel = GObject.registerClass({
             _propFlags, 0, Number.MAX_SAFE_INTEGER, 500),
         spawnEnemyCode: GObject.ParamSpec.string('spawnEnemyCode',
             'Spawn enemy code', '', _propFlags, ''),
-        updateAsteroidCode: GObject.ParamSpec.string('updateAsteroidCode',
-            'Update asteroid code', '', _propFlags, ''),
-        updateSpinnerCode: GObject.ParamSpec.string('updateSpinnerCode',
-            'Update spinner code', '', _propFlags, ''),
-        updateSquidCode: GObject.ParamSpec.string('updateSquidCode',
-            'Update squid code', '', _propFlags, ''),
-        updateBeamCode: GObject.ParamSpec.string('updateBeamCode',
-            'Update beam code', '', _propFlags, ''),
     },
 }, class LSModel extends ClippyWrapper {
     _init(level, props = {}) {

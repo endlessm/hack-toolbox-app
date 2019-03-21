@@ -71,6 +71,7 @@ const USER_FUNCTIONS = {
         name: 'spawnEnemy',
         args: [],
         modelProp: 'spawnEnemyCode',
+        perLevel: true,
         getScope() {
             return Object.assign({}, COMMON_SPAWN_SCOPE, COMMON_SCOPE);
         },
@@ -80,6 +81,7 @@ const USER_FUNCTIONS = {
         args: [],
         modelProp: 'updateAsteroidCode',
         childWidget: '_updateAsteroidCodeview',
+        perLevel: false,
         getScope() {
             return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
         },
@@ -88,6 +90,7 @@ const USER_FUNCTIONS = {
         name: 'updateSpinner',
         args: [],
         modelProp: 'updateSpinnerCode',
+        perLevel: false,
         getScope() {
             return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
         },
@@ -96,6 +99,7 @@ const USER_FUNCTIONS = {
         name: 'updateSquid',
         args: [],
         modelProp: 'updateSquidCode',
+        perLevel: false,
         getScope() {
             return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
         },
@@ -104,6 +108,7 @@ const USER_FUNCTIONS = {
         name: 'updateBeam',
         args: [],
         modelProp: 'updateBeamCode',
+        perLevel: false,
         getScope() {
             return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
         },
@@ -128,10 +133,18 @@ var LSUserFunction = GObject.registerClass({
 
     bindGlobal(model) {
         this._global = model;
-        this._globalNotifyHandler = model.connect('notify', this._onGlobalNotify.bind(this));
+        const {perLevel, modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
 
-        this._currentLevel = model.currentLevel;
-        this._bindModel(this._global.getModel(this._currentLevel));
+        if (perLevel) {
+            this._globalNotifyHandler = model.connect('notify',
+                this._onGlobalNotify.bind(this));
+            this._currentLevel = model.currentLevel;
+            this._bindModel(this._global.getModel(this._currentLevel));
+        } else {
+            this._globalNotifyHandler = model.connect(`notify::${modelProp}`,
+                this._setCode.bind(this));
+            this._setCode();
+        }
     }
 
     unbindGlobalModel() {
@@ -168,19 +181,38 @@ var LSUserFunction = GObject.registerClass({
     }
 
     _setCode() {
-        const {name, args, modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
+        const {name, args, perLevel, modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
+
+        let code;
+        if (perLevel)
+            code = this._model[modelProp];
+        else
+            code = this._global[modelProp];
+
         this._codeview.text = `function ${name}(${args.join(', ')}) {
-${this._model[modelProp]}
+${code}
 }`;
     }
 
     _updateCode(funcBody) {
-        const {modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
+        const {perLevel, modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
         // Block the normal notify handler that updates the code view, since we
         // are propagating updates from the codeview to the GUI.
-        GObject.signal_handler_block(this._model, this._notifyHandler);
-        this._model[modelProp] = funcBody;
-        GObject.signal_handler_unblock(this._model, this._notifyHandler);
+        if (perLevel) {
+            GObject.signal_handler_block(this._model, this._notifyHandler);
+            try {
+                this._model[modelProp] = funcBody;
+            } finally {
+                GObject.signal_handler_unblock(this._model, this._notifyHandler);
+            }
+        } else {
+            GObject.signal_handler_block(this._global, this._globalNotifyHandler);
+            try {
+                this._global[modelProp] = funcBody;
+            } finally {
+                GObject.signal_handler_unblock(this._global, this._globalNotifyHandler);
+            }
+        }
     }
 
     _compile() {
