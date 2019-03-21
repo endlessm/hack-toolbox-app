@@ -34,6 +34,12 @@ var WobblyLockscreen = GObject.registerClass({
         this._playbin.background = `file://${assetsPath}/trap${this._trapSequence}`;
         this._playbin.uri = `file://${assetsPath}/trap${this._trapSequence}.webm`;
 
+        // Ugh, changing the key state will re-enter this function. However,
+        // at this point we no longer need to track changes to the key. The
+        // lock is open and we've started the end sequence.
+        this._untrackKeyChanges();
+        this._manager.setUsed(this._key);
+
         this._stopActiveSound();
 
         const sound = SoundServer.getDefault();
