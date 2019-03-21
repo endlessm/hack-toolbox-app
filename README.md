@@ -17,6 +17,14 @@ and install it in the user installation base, you can do:
 
 `./tools/build-local-flatpak.sh --install`
 
+
+### Testing local changes
+Commit your local changes.
+Use the `./build-flatpak.sh` script to build a Flatpak from the latest
+git commit.
+Update the local application using `flatpak update --assumeyes --no-deps com.endlessm.HackToolbox`
+Run the local version using `flatpak run --env=HACK_TOOLBOX_PERSIST=1 com.endlessm.HackToolbox`
+
 ### Coding Style
 
 The continuous integration tool runs checks to validate the PRs. To
