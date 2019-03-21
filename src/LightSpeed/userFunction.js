@@ -133,18 +133,10 @@ var LSUserFunction = GObject.registerClass({
 
     bindGlobal(model) {
         this._global = model;
-        const {perLevel, modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
 
-        if (perLevel) {
-            this._globalNotifyHandler = model.connect('notify',
-                this._onGlobalNotify.bind(this));
-            this._currentLevel = model.currentLevel;
-            this._bindModel(this._global.getModel(this._currentLevel));
-        } else {
-            this._globalNotifyHandler = model.connect(`notify::${modelProp}`,
-                this._setCode.bind(this));
-            this._setCode();
-        }
+        this._globalNotifyHandler = model.connect('notify',
+            this._onGlobalNotify.bind(this));
+        this._onGlobalNotify(model);
     }
 
     unbindGlobalModel() {
@@ -155,11 +147,17 @@ var LSUserFunction = GObject.registerClass({
         }
     }
 
-    _onGlobalNotify() {
-        if (this._global.currentLevel === this._currentLevel)
-            return;
-        this._currentLevel = this._global.currentLevel;
-        this._bindModel(this._global.getModel(this._currentLevel));
+    _onGlobalNotify(model, prop) {
+        const {perLevel, modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
+
+        if (perLevel) {
+            if (this._global.currentLevel === this._currentLevel)
+                return;
+            this._currentLevel = this._global.currentLevel;
+            this._bindModel(this._global.getModel(this._currentLevel));
+        } else if (prop && prop.name === modelProp) {
+            this._setCode();
+        }
     }
 
     _unbindLevelModel() {
