@@ -7,6 +7,9 @@ gnome.compile_resources('com.endlessm.HackToolbox.data',
 install_data('com.endlessm.HackToolbox.desktop',
     install_dir: join_paths(get_option('datadir'), 'applications'))
 
+install_data('com.endlessm.HackToolbox.appdata.xml',
+    install_dir: join_paths(get_option('datadir'), 'appdata'))
+
 install_data('framework/app-descriptions/Hackdex_chapter_one.yaml',
     install_dir: join_paths(pkgdatadir, 'app-descriptions'))
 
