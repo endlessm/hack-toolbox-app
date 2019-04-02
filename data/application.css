@@ -135,6 +135,10 @@ toolbox .left-column list row:active {
     margin-left: 12px;
 }
 
+.topic-revealer {
+    padding: 15px 15px 0 0;
+}
+
 .topic {
     background-color: rgba(6, 20, 39, 0.8);
     border-radius: 25px;

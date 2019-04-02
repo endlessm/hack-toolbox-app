@@ -16,6 +16,11 @@ const VALID_SHIPS = ['spaceship', 'daemon', 'unicorn'];
 
 var LSCombinedTopic = GObject.registerClass({
     GTypeName: 'LSCombinedTopic',
+    Properties: {
+        'needs-attention': GObject.ParamSpec.boolean('needs-attention', 'Needs attention',
+            'Display an indicator on the button that it needs attention',
+            GObject.ParamFlags.READWRITE, false),
+    },
     Template: 'resource:///com/endlessm/HackToolbox/LightSpeed/panel.ui',
     InternalChildren: ['astronautSizeAdjustment', 'scoreTargetAdjustment',
         'shipAssetButton', 'shipSizeAdjustment', 'shipSpeedAdjustment',
@@ -120,6 +125,7 @@ var LSCombinedTopic = GObject.registerClass({
             if (!(e instanceof SyntaxError || e instanceof ReferenceError))
                 throw e;
             this._variablesCodeview.setCompileResultsFromException(e);
+            this.set_property('needs-attention', true);
             return;
         }
 
@@ -129,10 +135,12 @@ var LSCombinedTopic = GObject.registerClass({
         const errors = this._searchForErrors(scope);
         if (errors.length > 0) {
             this._variablesCodeview.setCompileResults(errors);
+            this.set_property('needs-attention', true);
             return;
         }
 
         this._variablesCodeview.setCompileResults([]);
+        this.set_property('needs-attention', false);
 
         // Block the normal notify handler that updates the code view, since we
         // are propagating updates from the codeview to the GUI. Instead,
@@ -205,6 +213,7 @@ var LSCombinedTopic = GObject.registerClass({
             SoundServer.getDefault().play('hack-toolbox/update-codeview');
             this._lastCodeviewSoundMicrosec = timeMicrosec;
         }
+        this.set_property('needs-attention', false);
     }
 
     _regenerateCode() {
