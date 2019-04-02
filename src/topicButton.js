@@ -20,19 +20,33 @@ var TopicButton = GObject.registerClass({
         super._init(props);
 
         const overlay = new Gtk.Overlay();
-        const box = new Gtk.Box({
-            halign: Gtk.Align.FILL,
-            orientation: Gtk.Orientation.VERTICAL,
+        this._attentionSign = new Gtk.Revealer({
+            revealChild: false,
+            halign: Gtk.Align.END,
+            name: 'attention-sign',
+            valign: Gtk.Align.START,
         });
+        const attentionIcon = new Gtk.Image({
+            iconName: 'gtk-dialog-error',
+            pixelSize: 20,
+        });
+        this._attentionSign.add(attentionIcon);
+        this._attentionSign.get_style_context().add_class('topic-revealer');
+
         const icon = new Gtk.Image({
             iconName: this._iconName,
             pixelSize: 80,
+        });
+        const box = new Gtk.Box({
+            halign: Gtk.Align.FILL,
+            orientation: Gtk.Orientation.VERTICAL,
         });
         const label = new Gtk.Label({
             hexpand: true,
             label: this._title,
         });
 
+        overlay.add_overlay(this._attentionSign);
         box.set_center_widget(icon);
         box.pack_end(label, false, false, 0);
         overlay.add(box);
@@ -72,7 +86,9 @@ var TopicButton = GObject.registerClass({
     set needs_attention(value) {
         if ('_needsAttention' in this && this._needsAttention === value)
             return;
+
         this._needsAttention = value;
+        this._attentionSign.revealChild = value;
         this.notify('needs-attention');
     }
 });

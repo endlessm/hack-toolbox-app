@@ -133,6 +133,12 @@ var Toolbox = GObject.registerClass({
     addTopic(id, title, iconName, widget) {
         const topic = new TopicButton({id, title, iconName});
         this._topicsList.add(topic);
+        if (GObject.Object.find_property.call(widget.constructor, 'needs-attention')) {
+            widget.bind_property('needs-attention',
+                topic, 'needs-attention', GObject.BindingFlags.SYNC_CREATE);
+        }
+
+
         widget.show_all();  // show_all() only propagates to current stack page
         this._topicsStack.add_titled(widget, id, title);
     }

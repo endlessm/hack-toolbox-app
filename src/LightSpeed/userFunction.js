@@ -116,7 +116,11 @@ const USER_FUNCTIONS = {
 };
 
 var LSUserFunction = GObject.registerClass({
-
+    Properties: {
+        'needs-attention': GObject.ParamSpec.boolean('needs-attention', 'Needs attention',
+            'Display an indicator on the button that it needs attention',
+            GObject.ParamFlags.READWRITE, false),
+    },
 }, class LSUserFunction extends Gtk.Frame {
     _init(userFunctionName, props = {}) {
         super._init(props);
@@ -233,6 +237,7 @@ ${code}
             if (!(e instanceof SyntaxError || e instanceof ReferenceError))
                 throw e;
             this._codeview.setCompileResultsFromException(e);
+            this.set_property('needs-attention', true);
             return;
         }
 
@@ -257,11 +262,12 @@ ${code}
             userFunction();
         } catch (e) {
             this._codeview.setCompileResultsFromException(e);
+            this.set_property('needs-attention', true);
             return;
         }
 
         this._codeview.setCompileResults([]);
-
+        this.set_property('needs-attention', false);
         const funcBody = this._codeview.getFunctionBody(name);
         this._updateCode(funcBody);
     }
