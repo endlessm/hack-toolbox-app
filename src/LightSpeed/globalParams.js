@@ -20,6 +20,8 @@ var LSGlobalModel = GObject.registerClass({
             'Update squid code', '', _propFlags, ''),
         updateBeamCode: GObject.ParamSpec.string('updateBeamCode',
             'Update beam code', '', _propFlags, ''),
+        activatePowerupCode: GObject.ParamSpec.string('activatePowerupCode',
+            'Activate powerup code', '', _propFlags, ''),
     },
 }, class LSGlobalModel extends ClippyWrapper {
     _init(level, props = {}) {
