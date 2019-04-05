@@ -38,6 +38,12 @@ const COMMON_SCOPE = {
         return min;
     },
 
+    pickOne(...choices) {
+        if (choices.length === 0)
+            throw new Error('You need at least one thing to pick from');
+        return choices[0];
+    },
+
     sin(theta) {
         return Math.sin(theta);
     },
@@ -111,6 +117,36 @@ const USER_FUNCTIONS = {
         perLevel: false,
         getScope() {
             return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
+        },
+    },
+    spawnPowerup: {
+        name: 'spawnPowerup',
+        args: [],
+        modelProp: 'spawnPowerupCode',
+        perLevel: true,
+        getScope() {
+            return Object.assign({
+                tickCount: 0,
+                tickDelay: 0,
+            }, COMMON_SCOPE);
+        },
+    },
+    activatePowerup: {
+        name: 'activatePowerup',
+        args: [],
+        modelProp: 'activatePowerupCode',
+        perLevel: false,
+        getScope() {
+            return Object.assign({
+                ship: {
+                    position: {x: 0, y: 0},
+                    invulnerableTimer: 0,
+                    shrinkTimer: 0,
+                    attractTimer: 0,
+                },
+                powerUpType: 0,
+                blowUpEnemies() {},  // eslint-disable-line no-empty-function
+            }, COMMON_SCOPE);
         },
     },
 };

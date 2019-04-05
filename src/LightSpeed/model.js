@@ -19,6 +19,8 @@ var LSModel = GObject.registerClass({
             _propFlags, 0, Number.MAX_SAFE_INTEGER, 500),
         spawnEnemyCode: GObject.ParamSpec.string('spawnEnemyCode',
             'Spawn enemy code', '', _propFlags, ''),
+        spawnPowerupCode: GObject.ParamSpec.string('spawnPowerupCode',
+            'Spawn powerup code', '', _propFlags, ''),
     },
 }, class LSModel extends ClippyWrapper {
     _init(level, props = {}) {
