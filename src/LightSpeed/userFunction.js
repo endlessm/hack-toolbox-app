@@ -125,10 +125,7 @@ const USER_FUNCTIONS = {
         modelProp: 'spawnPowerupCode',
         perLevel: true,
         getScope() {
-            return Object.assign({
-                tickCount: 0,
-                tickDelay: 0,
-            }, COMMON_SCOPE);
+            return Object.assign({}, COMMON_SPAWN_SCOPE, COMMON_SCOPE);
         },
     },
     activatePowerup: {
