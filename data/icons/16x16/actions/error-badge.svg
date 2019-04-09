@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>@3xtoolbox/errorbadge01</title>
+    <desc>Created with Sketch.</desc>
+    <g id="toolbox/errorbadge01" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(0.000000, -1.000000)">
+            <g id="Group-7"></g>
+        </g>
+        <circle id="Oval" fill="#FF6A6A" fill-rule="nonzero" cx="10" cy="10" r="10"></circle>
+        <path d="M8.864,11.722 L8.18,4 L11.6,4 L10.934,11.722 L8.864,11.722 Z M9.908,16.582 C8.828,16.582 8,15.736 8,14.692 C8,13.72 8.828,12.874 9.908,12.874 C10.898,12.874 11.726,13.72 11.726,14.692 C11.726,15.736 10.898,16.582 9.908,16.582 Z" id="!" fill="#FFFFFF" fill-rule="nonzero"></path>
+    </g>
+</svg>

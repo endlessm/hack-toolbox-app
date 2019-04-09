@@ -27,7 +27,7 @@ var TopicButton = GObject.registerClass({
             valign: Gtk.Align.START,
         });
         const attentionIcon = new Gtk.Image({
-            iconName: 'gtk-dialog-error',
+            iconName: 'error-badge',
             pixelSize: 20,
         });
         this._attentionSign.add(attentionIcon);
