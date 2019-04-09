@@ -277,13 +277,14 @@ class RaModelBase extends GObject.Object {
             const gameState = GameState.getDefault();
             const key = 'app.com_endlessm_Hackdex_chapter_one.corruption';
             let corruption;
+            let state;
             try {
                 corruption = (await gameState.Get(key)).deep_unpack();
+                state = corruption.state.deep_unpack();
             } catch (e) {
                 void e;
                 return;  // key not yet present, nothing to do
             }
-            const state = corruption.state.deep_unpack();
             if (state === 'corrupted' && this.main_color.alpha > 0.05 ||
                 state === 'fixed') {
                 // Quest was solved, player set main color to a visible color;
