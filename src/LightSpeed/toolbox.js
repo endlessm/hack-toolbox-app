@@ -6,6 +6,7 @@ const Signals = imports.signals;
 const GameState = imports.gameState;
 const {LSCombinedTopic} = imports.LightSpeed.controlpanel;
 const {LSGlobalModel} = imports.LightSpeed.globalParams;
+const {LSSpawnTopic} = imports.LightSpeed.spawnTopic;
 const {LSUserFunction} = imports.LightSpeed.userFunction;
 const {Toolbox} = imports.toolbox;
 
@@ -22,11 +23,10 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         this._combinedTopic.bindGlobal(this._global);
         this.addTopic('game', 'Game', 'rocket-symbolic', this._combinedTopic);
 
-        this._spawnEnemyTopic = new LSUserFunction('spawnEnemy');
-        this._spawnEnemyTopic.bindGlobal(this._global);
-        this.addTopic('spawnEnemy', 'Spawn', 'spawn-symbolic',
-            this._spawnEnemyTopic);
-        this.hideTopic('spawnEnemy');
+        this._spawnTopic = new LSSpawnTopic();
+        this._spawnTopic.bindGlobal(this._global);
+        this.addTopic('spawn', 'Spawn', 'spawn-symbolic', this._spawnTopic);
+        this.hideTopic('spawn');
 
         this._updateAsteroidTopic = new LSUserFunction('updateAsteroid');
         this._updateAsteroidTopic.bindGlobal(this._global);
@@ -51,12 +51,6 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         this.addTopic('updateBeam', 'Beam', 'beam-symbolic',
             this._updateBeamTopic);
         this.hideTopic('updateBeam');
-
-        this._spawnPowerupTopic = new LSUserFunction('spawnPowerup');
-        this._spawnPowerupTopic.bindGlobal(this._global);
-        this.addTopic('spawnPowerup', 'NAME', 'go-home-symbolic',
-            this._spawnPowerupTopic);
-        this.hideTopic('spawnPowerup');
 
         this._activatePowerupTopic = new LSUserFunction('activatePowerup');
         this._activatePowerupTopic.bindGlobal(this._global);
@@ -97,8 +91,8 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
     }
 
     async _showTopicsInitially() {
-        const topics = ['spawnEnemy', 'updateAsteroid', 'updateSpinner',
-            'updateSquid', 'updateBeam', 'spawnPowerup', 'activatePowerup'];
+        const topics = ['spawn', 'updateAsteroid', 'updateSpinner',
+            'updateSquid', 'updateBeam', 'activatePowerup'];
         const gameState = GameState.getDefault();
 
         await Promise.all(topics.map(async topic => {
@@ -107,6 +101,14 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
             if (revealed)
                 this.showTopic(topic);
         }));
+
+        // Backwards compatibility with old game state
+        if (!this.isTopicVisible('spawn')) {
+            const revealed = await gameState.getDictValue(
+                'lightspeed.topic.spawnEnemy', 'visible', false);
+            if (revealed)
+                this.showTopic('spawn');
+        }
 
         Signals._connect.call(gameState, 'changed', this._onGameStateChanged.bind(this));
     }
@@ -134,12 +136,11 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         }
 
         this._combinedTopic.unbindGlobalModel();
-        this._spawnEnemyTopic.unbindGlobalModel();
+        this._spawnTopic.unbindGlobalModel();
         this._updateAsteroidTopic.unbindGlobalModel();
         this._updateSpinnerTopic.unbindGlobalModel();
         this._updateSquidTopic.unbindGlobalModel();
         this._updateBeamTopic.unbindGlobalModel();
-        this._spawnPowerupTopic.unbindGlobalModel();
         this._activatePowerupTopic.unbindGlobalModel();
     }
 });

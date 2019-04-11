@@ -172,6 +172,11 @@ var Toolbox = GObject.registerClass({
         topic.get_style_context().add_class('reveal');  // animates once
     }
 
+    isTopicVisible(id) {
+        const [topicRow] = this._findTopic(id);
+        return topicRow.visible;
+    }
+
     showTopic(id) {
         const [topicRow] = this._findTopic(id);
 
