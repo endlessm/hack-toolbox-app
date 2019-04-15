@@ -81,6 +81,7 @@
     <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/spawn-symbolic.svg</file>
     <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/spinner-symbolic.svg</file>
     <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/squid-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/powerup-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">LightSpeed/panel.ui</file>
     <file>LightSpeed/ships/daemon.png</file>
     <file>LightSpeed/ships/spaceship.png</file>

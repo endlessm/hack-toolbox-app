@@ -54,7 +54,7 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
 
         this._activatePowerupTopic = new LSUserFunction('activatePowerup');
         this._activatePowerupTopic.bindGlobal(this._global);
-        this.addTopic('activatePowerup', 'NAME', 'weather-snow-symbolic',
+        this.addTopic('activatePowerup', 'Power-Up', 'powerup-symbolic',
             this._activatePowerupTopic);
         this.hideTopic('activatePowerup');
 
