@@ -87,7 +87,16 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
             new GLib.Variant('(sava{sv})', ['reset', [], {}]),
             null, Gio.DBusCallFlags.NONE, -1, null);
         this._combinedTopic.reset();
-        // The user functions are reset by the LightSpeed app already
+
+        // In the case where there's an error in a code view, it will not have
+        // been synced to the Lightspeed game state. Any discrepancies between
+        // the code view and the game state must be discarded.
+        this._spawnTopic.discardChanges();
+        this._updateAsteroidTopic.discardChanges();
+        this._updateSpinnerTopic.discardChanges();
+        this._updateSquidTopic.discardChanges();
+        this._updateBeamTopic.discardChanges();
+        this._activatePowerupTopic.discardChanges();
     }
 
     async _showTopicsInitially() {

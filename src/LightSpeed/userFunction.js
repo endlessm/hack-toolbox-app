@@ -304,4 +304,9 @@ ${code}
         const funcBody = this._codeview.getFunctionBody(name);
         this._updateCode(funcBody);
     }
+
+    discardChanges() {
+        this._setCode();
+        this.set_property('needs-attention', false);
+    }
 });
