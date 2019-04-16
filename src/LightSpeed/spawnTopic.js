@@ -31,4 +31,9 @@ var LSSpawnTopic = GObject.registerClass({
         this._spawnEnemy.unbindGlobalModel();
         this._spawnPowerup.unbindGlobalModel();
     }
+
+    discardChanges() {
+        this._spawnEnemy.discardChanges();
+        this._spawnPowerup.discardChanges();
+    }
 });
