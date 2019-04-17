@@ -193,7 +193,7 @@ var Lockscreen = GObject.registerClass({
         this._activeSoundID = null;
     }
 
-    _updateLockStateWithLock(retries = null) {
+    _updateLockStateWithLock(retries = 3) {
         this._playbin.hasLock = !!this._lock;
 
         if (!this._lock)
@@ -205,15 +205,14 @@ var Lockscreen = GObject.registerClass({
             if (!this._manager.isUnlocked(this._lock))
                 return;
         } catch (e) {
-            const retry = retries === null ? 3 : retries;
             const nextTryTimeout = 100;
 
-            if (retry > 0) {
+            if (retries > 0) {
                 logError(e, 'Error trying to load unlock state, ' +
                     `trying again in ${nextTryTimeout} milisecond`);
                 GLib.timeout_add(GLib.PRIORITY_HIGH, nextTryTimeout,
                     () => {
-                        this._updateLockStateWithLock(retry - 1);
+                        this._updateLockStateWithLock(retries - 1);
                         return GLib.SOURCE_REMOVE;
                     });
             } else {
