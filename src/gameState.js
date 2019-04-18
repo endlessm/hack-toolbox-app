@@ -59,6 +59,9 @@ var getDefault = (function() {
                     const dict = variant.deep_unpack();
                     return dict[property].deep_unpack();
                 } catch (e) {
+                    if (e.matches(Gio.DBusError, Gio.DBusError.SERVICE_UNKNOWN))
+                        throw e;
+
                     return defaultValue;
                 }
             };
