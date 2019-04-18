@@ -106,17 +106,26 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
 
         await Promise.all(topics.map(async topic => {
             const key = `lightspeed.topic.${topic}`;
-            const revealed = await gameState.getDictValue(key, 'visible', false);
-            if (revealed)
+            try {
+                const revealed = await gameState.getDictValue(key, 'visible', false);
+                if (revealed)
+                    this.showTopic(topic);
+            } catch (e) {
+                // fail conservatively
                 this.showTopic(topic);
+            }
         }));
 
         // Backwards compatibility with old game state
         if (!this.isTopicVisible('spawn')) {
-            const revealed = await gameState.getDictValue(
-                'lightspeed.topic.spawnEnemy', 'visible', false);
-            if (revealed)
+            try {
+                const revealed = await gameState.getDictValue(
+                    'lightspeed.topic.spawnEnemy', 'visible', false);
+                if (revealed)
+                    this.showTopic('spawn');
+            } catch (e) {
                 this.showTopic('spawn');
+            }
         }
 
         Signals._connect.call(gameState, 'changed', this._onGameStateChanged.bind(this));
