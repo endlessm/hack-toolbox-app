@@ -21,6 +21,18 @@ const KEYS = {
 const COLORS = Symbol('colors');
 
 const DEFAULTS = {
+    unknown: {
+        'logo-graphic': 'encyclopedia',
+        font: 'Fira Sans',
+        'card-layout': 'tiledGrid',
+        [COLORS]: {
+            logo: 'white',
+            main: '#2d3e4e',
+            accent: '#ff6835',
+            info: '#5e7790',
+            border: 'black',
+        },
+    },
     'com.endlessm.dinosaurs.en': {
         'logo-graphic': 'dinosaur',
         font: 'Skranji',
@@ -72,6 +84,8 @@ const COMMON_DEFAULTS = {
 };
 
 const AVAILABLE_FONTS = {
+    unknown: ['Fira Sans', 'HammersmithOne', 'Lato', 'Libre Baskerville',
+        'Marcellus SC', 'Pathway Gothic One', 'Podkova', 'Raleway', 'Skranji'],
     'com.endlessm.dinosaurs.en': ['Fira Sans', 'HammersmithOne', 'Lato',
         'Libre Baskerville', 'Marcellus SC', 'Pathway Gothic One',
         'Patrick Hand SC', 'Podkova', 'Raleway', 'Skranji'],
@@ -96,7 +110,7 @@ function _valueToCode(value) {
 var Defaults = class Defaults {
     constructor(appId) {
         this._appId = appId;
-        this._defaults = DEFAULTS[appId];
+        this._defaults = DEFAULTS[appId] || DEFAULTS.unknown;
         this._applyQuestOverridesSync();
     }
 
@@ -152,7 +166,7 @@ var Defaults = class Defaults {
     }
 
     get fonts() {
-        return AVAILABLE_FONTS[this._appId];
+        return AVAILABLE_FONTS[this._appId] || AVAILABLE_FONTS.unknown;
     }
 
     get keys() {
