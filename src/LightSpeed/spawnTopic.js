@@ -16,10 +16,22 @@ var LSSpawnTopic = GObject.registerClass({
         super._init(props);
 
         this._spawnEnemy = new LSUserFunction('spawnEnemy');
+        this._spawnEnemy.connect('notify::needs-attention',
+            this._notifyNeedsAttention.bind(this));
         this.add(this._spawnEnemy);
 
         this._spawnPowerup = new LSUserFunction('spawnPowerup');
+        this._spawnPowerup.connect('notify::needs-attention',
+            this._notifyNeedsAttention.bind(this));
         this.add(this._spawnPowerup);
+    }
+
+    _notifyNeedsAttention() {
+        this.notify('needs-attention');
+    }
+
+    get needs_attention() {
+        return this._spawnEnemy.needs_attention || this._spawnPowerup.needs_attention;
     }
 
     bindGlobal(model) {
