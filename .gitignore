@@ -1,0 +1,5 @@
+**/.flatpak-builder
+**/build
+**/repo
+com.endlessm.*.flatpak
+com.endlessm.*.json
