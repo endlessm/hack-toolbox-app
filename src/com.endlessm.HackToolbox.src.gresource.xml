@@ -42,6 +42,11 @@
     <file>OperatingSystemApp/wobblypanel.js</file>
     <file>OperatingSystemApp/wobblyLockscreen.js</file>
     <file>OperatingSystemApp/toolbox.js</file>
+    <file>RileyMaze/RMZUnit.js</file>
+    <file>RileyMaze/globalParams.js</file>
+    <file>RileyMaze/model.js</file>
+    <file>RileyMaze/toolbox.js</file>
+    <file>RileyMaze/userFunction.js</file>
     <file>lockscreen.js</file>
     <file>locksManager.js</file>
     <file>main.js</file>

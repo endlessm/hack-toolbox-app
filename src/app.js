@@ -27,6 +27,8 @@ function _toolboxClassForAppId(targetAppId) {
         return imports.LightSpeed.toolbox.LSToolbox;
     case 'com.endlessm.OperatingSystemApp':
         return imports.OperatingSystemApp.toolbox.OSToolbox;
+    case 'com.endlessm.Sidetrack':
+        return imports.RileyMaze.toolbox.RMZToolbox;
     default:
         return imports.hacktoolbox.hacktoolbox.DefaultHackToolbox;
     }
