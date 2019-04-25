@@ -403,7 +403,7 @@ function ensureModelClass(appId, defaults) {
         return _createdClasses.get(appId);
 
     const ModelClass = GObject.registerClass({
-        GTypeName: `RaModel_for_${appId.replace(/./g, '_')}`,
+        GTypeName: `RaModel_for_${appId.replace(/\./g, '_')}`,
         Properties: {
             changed: GObject.ParamSpec.boolean('changed', 'Changed', '',
                 GObject.ParamFlags.READABLE, false),
