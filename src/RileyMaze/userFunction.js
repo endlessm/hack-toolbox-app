@@ -8,42 +8,57 @@ const FORWARD = 1;
 const UP = 2;
 const DOWN = 3;
 const JUMP = 4;
+const MAX_QUEUE_LEN = 8;
+
+class InstructionError extends Error {
+}
 
 const RILEY = {
     // Keep this in sync with riley class in
     // hack-toy-apps/com.endlessm.RileyMaze/parameters.js
     queue: [],
     forward() {
-        if (this.queue.length >= 8)
-            throw new SyntaxError('Instructions must have 8 moves');
-
         this.queue.push(FORWARD);
+
+        if (this.queue.length > MAX_QUEUE_LEN)
+            throw new InstructionError('Instructions must have 8 moves.');
     },
 
     up() {
-        if (this.queue.length >= 8)
-            throw new SyntaxError('Instructions must have 8 moves');
-
         this.queue.push(UP);
+
+        if (this.queue.length > MAX_QUEUE_LEN)
+            throw new InstructionError('Instructions must have 8 moves.');
     },
 
     down() {
-        if (this.queue.length >= 8)
-            throw new SyntaxError('Instructions must have 8 moves');
-
         this.queue.push(DOWN);
+
+        if (this.queue.length > MAX_QUEUE_LEN)
+            throw new InstructionError('Instructions must have 8 moves.');
     },
 
     jump() {
-        if (this.queue.length >= 8)
-            throw new SyntaxError('Instructions must have 8 moves');
-
         this.queue.push(JUMP);
+
+        if (this.queue.length > MAX_QUEUE_LEN)
+            throw new InstructionError('Instructions must have 8 moves.');
     },
 };
 
+const HANDLER = {
+    get(target, name, receiver) {
+        if (name in target)
+            return Reflect.get(target, name, receiver);
+
+        throw new InstructionError(`unknown instruction ${name}`);
+    },
+};
+
+const proxy = new Proxy(RILEY, HANDLER);
+
 const INSTRUCTION_SCOPE = {
-    riley: RILEY,
+    riley: proxy,
 };
 
 const COMMON_SCOPE = {
@@ -60,15 +75,19 @@ const LEVEL_EDIT_SCOPE = {
     goalposition: 2,
     add(unit, x, y) {
         if (Number.isNaN(Number(x)))
-            throw new TypeError(`${x} isn't a number`);
+            throw new TypeError(`${x} isn't a number.`);
+
         if (Number.isNaN(Number(y)))
-            throw new TypeError(`${y} isn't a number`);
+            throw new TypeError(`${y} isn't a number.`);
+
         if (!UNITS.includes(unit))
-            throw new TypeError(`${unit} isn't a valid unit`);
+            throw new TypeError(`${unit} isn't a valid unit.`);
+
         if (x < 0 || x > 7)
-            throw new RangeError(`${x} must be between 0 and 7`);
+            throw new RangeError('x must be between 0 and 7.');
+
         if (y < 0 || y > 4)
-            throw new RangeError(`${y} must be between 0 and 4`);
+            throw new RangeError('y must be between 0 and 4.');
     },
 };
 
@@ -79,7 +98,12 @@ const USER_FUNCTIONS = {
         modelProp: 'instructionCode',
         perLevel: true,
         getScope() {
+            INSTRUCTION_SCOPE.riley.queue.length = 0;
             return Object.assign({}, COMMON_SCOPE, INSTRUCTION_SCOPE);
+        },
+        validate() {
+            if (INSTRUCTION_SCOPE.riley.queue.length < MAX_QUEUE_LEN)
+                throw Error('Instructions must have 8 moves.');
         },
     },
     level: {
@@ -89,6 +113,9 @@ const USER_FUNCTIONS = {
         perLevel: true,
         getScope() {
             return Object.assign({}, COMMON_SCOPE, LEVEL_EDIT_SCOPE);
+        },
+        validate() {
+            // eslint-disable-line no-empty-function
         },
     },
 };
@@ -195,10 +222,10 @@ ${code}
     }
 
     _compile() {
-        const {name, args, getScope} = USER_FUNCTIONS[this._codeview.userFunction];
+        const {name, args, getScope, validate} = USER_FUNCTIONS[this._codeview.userFunction];
         const code = this._codeview.text;
         const scope = getScope();
-        scope.riley.queue.length = 0;
+
         let userFunction;
 
         try {
@@ -210,10 +237,18 @@ ${code}
 }`);
             userFunction = factoryFunc(scope);
         } catch (e) {
-            if (!(e instanceof SyntaxError || e instanceof ReferenceError))
+            if (!(e instanceof SyntaxError || e instanceof ReferenceError ||
+                e instanceof InstructionError))
                 throw e;
-            this._codeview.setCompileResultsFromException(e);
-            return;
+            if (e instanceof SyntaxError || e instanceof ReferenceError) {
+                this._codeview.setCompileResultsFromException(e);
+                return;
+            } else if (e instanceof InstructionError) {
+                this._codeview.setCompileResultsFromException(e);
+                const funcBody = this._codeview.getFunctionBody(name);
+                this._updateCode(funcBody);
+                return;
+            }
         }
 
         if (!userFunction) {
@@ -237,6 +272,16 @@ ${code}
             userFunction();
         } catch (e) {
             this._codeview.setCompileResultsFromException(e);
+            return;
+        }
+
+
+        try {
+            validate();
+        } catch (e) {
+            this._codeview.setCompileResultsFromException(e);
+            const funcBody = this._codeview.getFunctionBody(name);
+            this._updateCode(funcBody);
             return;
         }
 
