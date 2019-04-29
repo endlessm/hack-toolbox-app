@@ -140,6 +140,14 @@ var Defaults = class Defaults {
                     this._defaults[COLORS]['main'] = color;
             }
         }
+
+        if (this._appId === 'com.endlessm.Hackdex_chapter_two') {
+            // Override for the "decrypt Leviathan" quest
+            const gameState = GameState.getDefault();
+            const key = 'app.com_endlessm_Hackdex_chapter_two.encryption';
+            const rotation = gameState.getDictValueSync(key, 'rotation', 0);
+            this._defaults['text-cipher'] = rotation;
+        }
     }
 
     _getColor(propertyName) {
@@ -147,10 +155,10 @@ var Defaults = class Defaults {
     }
 
     value(propertyName) {
-        if (propertyName in COMMON_DEFAULTS)
-            return COMMON_DEFAULTS[propertyName];
         if (propertyName in this._defaults)
             return this._defaults[propertyName];
+        if (propertyName in COMMON_DEFAULTS)
+            return COMMON_DEFAULTS[propertyName];
         if (propertyName.endsWith('-color')) {
             const retval = new Gdk.RGBA();
             retval.parse(this._getColor(propertyName));
@@ -161,10 +169,10 @@ var Defaults = class Defaults {
 
     code(variableName) {
         const propertyName = variableName.replace(/_/g, '-');
-        if (propertyName in COMMON_DEFAULTS)
-            return _valueToCode(COMMON_DEFAULTS[propertyName]);
         if (propertyName in this._defaults)
             return _valueToCode(this._defaults[propertyName]);
+        if (propertyName in COMMON_DEFAULTS)
+            return _valueToCode(COMMON_DEFAULTS[propertyName]);
         if (propertyName.endsWith('-color'))
             return _valueToCode(this._getColor(propertyName));
         throw new Error(`unknown property name ${propertyName}`);

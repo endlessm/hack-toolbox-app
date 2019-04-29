@@ -47,6 +47,7 @@ class RaModelBase extends GObject.Object {
         this.info_color = defaults.value('info-color');
         this.logo_color = defaults.value('logo-color');
         this.main_color = defaults.value('main-color');
+        this.text_cipher = defaults.value('text-cipher');
 
         this.connect('notify', (obj, pspec) => {
             if (pspec.name === 'changed' || this.changed)
@@ -296,6 +297,15 @@ class RaModelBase extends GObject.Object {
                     color: Utils.rgbaToString(this.main_color),
                 }));
             }
+        }
+
+        // Check hackdex chapter 2 quest
+        if (this.constructor.appId === 'com.endlessm.Hackdex_chapter_two') {
+            const gameState = GameState.getDefault();
+            const key = 'app.com_endlessm_Hackdex_chapter_two.encryption';
+            await gameState.Set(key, new GLib.Variant('a{sv}', {
+                rotation: new GLib.Variant('u', this._textCipher),
+            }));
         }
     }
 
