@@ -24,6 +24,11 @@ var RMZUnitsTopic = GObject.registerClass({
     InternalChildren: ['units', 'robotAAssetButton', 'robotAUp',
         'robotADown', 'robotBAssetButton', 'robotBUp', 'robotBDown',
         'variablesCodeview'],
+    Properties: {
+        'needs-attention': GObject.ParamSpec.boolean('needs-attention', 'Needs attention',
+            'Display an indicator on the button that it needs attention',
+            GObject.ParamFlags.READWRITE, false),
+    },
 }, class RMZCombinedTopic extends Gtk.Grid {
     _init(props = {}) {
         this._lastCodeviewSoundMicrosec = 0;
@@ -135,6 +140,7 @@ var RMZUnitsTopic = GObject.registerClass({
             const func = new Function('scope', `with(scope){\n${code}\n;}`);
             func(scope);
         } catch (e) {
+            this.set_property('needs-attention', true);
             if (!(e instanceof SyntaxError || e instanceof ReferenceError))
                 throw e;
             this._variablesCodeview.setCompileResultsFromException(e);
@@ -147,10 +153,12 @@ var RMZUnitsTopic = GObject.registerClass({
         const errors = this._searchForErrors(scope);
         if (errors.length > 0) {
             this._variablesCodeview.setCompileResults(errors);
+            this.set_property('needs-attention', true);
             return;
         }
 
         this._variablesCodeview.setCompileResults([]);
+        this.set_property('needs-attention', false);
 
         // Block the normal notify handler that updates the code view, since we
         // are propagating updates from the codeview to the GUI. Instead,
@@ -213,6 +221,7 @@ var RMZUnitsTopic = GObject.registerClass({
             SoundServer.getDefault().play('hack-toolbox/update-codeview');
             this._lastCodeviewSoundMicrosec = timeMicrosec;
         }
+        this.set_property('needs-attention', false);
     }
 
     _regenerateCode() {
