@@ -122,7 +122,11 @@ const USER_FUNCTIONS = {
 
 
 var RMZUserFunction = GObject.registerClass({
-
+    Properties: {
+        'needs-attention': GObject.ParamSpec.boolean('needs-attention', 'Needs attention',
+            'Display an indicator on the button that it needs attention',
+            GObject.ParamFlags.READWRITE, false),
+    },
 }, class RMZUserFunction extends Gtk.Frame {
     _init(userFunctionName, props = {}) {
         super._init(props);
@@ -237,6 +241,7 @@ ${code}
 }`);
             userFunction = factoryFunc(scope);
         } catch (e) {
+            this.set_property('needs-attention', true);
             if (!(e instanceof SyntaxError || e instanceof ReferenceError ||
                 e instanceof InstructionError))
                 throw e;
@@ -265,6 +270,7 @@ ${code}
                 message: `Expected a function named ${name}.`,
                 fixme: `function ${name}(${args.join('\n')}) {\n}\n`,
             }]);
+            this.set_property('needs-attention', true);
             return;
         }
 
@@ -272,6 +278,7 @@ ${code}
             userFunction();
         } catch (e) {
             this._codeview.setCompileResultsFromException(e);
+            this.set_property('needs-attention', true);
             return;
         }
 
@@ -282,11 +289,18 @@ ${code}
             this._codeview.setCompileResultsFromException(e);
             const funcBody = this._codeview.getFunctionBody(name);
             this._updateCode(funcBody);
+            this.set_property('needs-attention', true);
             return;
         }
 
         this._codeview.setCompileResults([]);
+        this.set_property('needs-attention', false);
         const funcBody = this._codeview.getFunctionBody(name);
         this._updateCode(funcBody);
+    }
+
+    discardChanges() {
+        this._setCode();
+        this.set_property('needs-attention', false);
     }
 });
