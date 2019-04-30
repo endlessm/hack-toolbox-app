@@ -18,6 +18,7 @@ function _toolboxClassForAppId(targetAppId) {
     case 'com.endlessm.dinosaurs.en':
     case 'com.endlessm.encyclopedia.en':
     case 'com.endlessm.Hackdex_chapter_one':
+    case 'com.endlessm.Hackdex_chapter_two':
         return imports.framework.toolbox.FrameworkToolbox;
     case 'com.endlessm.Fizzics':
         return imports.Fizzics.toolbox.FizzicsToolbox;

@@ -16,6 +16,11 @@ const KEYS = {
         'item.key.hackdex1.2',
         'item.key.hackdex1.3',
     ],
+    'com.endlessm.Hackdex_chapter_two': [
+        'item.key.levi_hackdex.1',
+        'item.key.levi_hackdex.2',
+        'item.key.levi_hackdex.3',
+    ],
 };
 
 const COLORS = Symbol('colors');

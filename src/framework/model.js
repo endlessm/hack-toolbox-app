@@ -30,7 +30,8 @@ const HACKABLE_PROPERTIES = ['logo-graphic', 'logo-color', 'main-color',
     'text-transformation', 'card-order', 'card-layout', 'image-filter',
     'sounds-cursor-hover', 'sounds-cursor-click', 'text-cipher', 'hyperlinks'];
 
-const NONSTANDARD_PRESET_APPS = ['com.endlessm.Hackdex_chapter_one'];
+const NONSTANDARD_PRESET_APPS = ['com.endlessm.Hackdex_chapter_one',
+    'com.endlessm.Hackdex_chapter_two'];
 
 const _createdClasses = new Map();
 
