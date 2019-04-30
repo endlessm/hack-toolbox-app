@@ -1,6 +1,6 @@
 /* exported FrameworkToolbox */
 
-const {GLib, GObject} = imports.gi;
+const {GLib, GObject, Gtk} = imports.gi;
 
 const {Defaults} = imports.framework.defaults;
 const Model = imports.framework.model;
@@ -40,7 +40,10 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
         });
         this._model.snapshot();  // ignore any initial syncing
 
-        this._controlPanel = new RaControlPanel(defaults, {visible: true});
+        this._controlPanel = new RaControlPanel(defaults, {
+            valign: Gtk.Align.START,
+            visible: true,
+        });
         this._controlPanel.bindModel(this._model);
         this._controlPanel.bindWindow(win);
         this.addTopic('main', 'Tools', 'preferences-other-symbolic', this._controlPanel);

@@ -30,7 +30,8 @@ const HACKABLE_PROPERTIES = ['logo-graphic', 'logo-color', 'main-color',
     'text-transformation', 'card-order', 'card-layout', 'image-filter',
     'sounds-cursor-hover', 'sounds-cursor-click', 'text-cipher', 'hyperlinks'];
 
-const NONSTANDARD_PRESET_APPS = ['com.endlessm.Hackdex_chapter_one'];
+const NONSTANDARD_PRESET_APPS = ['com.endlessm.Hackdex_chapter_one',
+    'com.endlessm.Hackdex_chapter_two'];
 
 const _createdClasses = new Map();
 
@@ -46,6 +47,7 @@ class RaModelBase extends GObject.Object {
         this.info_color = defaults.value('info-color');
         this.logo_color = defaults.value('logo-color');
         this.main_color = defaults.value('main-color');
+        this.text_cipher = defaults.value('text-cipher');
 
         this.connect('notify', (obj, pspec) => {
             if (pspec.name === 'changed' || this.changed)
@@ -296,6 +298,15 @@ class RaModelBase extends GObject.Object {
                 }));
             }
         }
+
+        // Check hackdex chapter 2 quest
+        if (this.constructor.appId === 'com.endlessm.Hackdex_chapter_two') {
+            const gameState = GameState.getDefault();
+            const key = 'app.com_endlessm_Hackdex_chapter_two.encryption';
+            await gameState.Set(key, new GLib.Variant('a{sv}', {
+                rotation: new GLib.Variant('u', this._textCipher),
+            }));
+        }
     }
 
     _createCSS() {
@@ -403,7 +414,7 @@ function ensureModelClass(appId, defaults) {
         return _createdClasses.get(appId);
 
     const ModelClass = GObject.registerClass({
-        GTypeName: `RaModel_for_${appId.replace(/./g, '_')}`,
+        GTypeName: `RaModel_for_${appId.replace(/\./g, '_')}`,
         Properties: {
             changed: GObject.ParamSpec.boolean('changed', 'Changed', '',
                 GObject.ParamFlags.READABLE, false),

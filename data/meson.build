@@ -11,6 +11,7 @@ install_data('com.endlessm.HackToolbox.appdata.xml',
     install_dir: join_paths(get_option('datadir'), 'appdata'))
 
 install_data('framework/app-descriptions/Hackdex_chapter_one.yaml',
+    'framework/app-descriptions/Hackdex_chapter_two.yaml',
     install_dir: join_paths(pkgdatadir, 'app-descriptions'))
 
 subst = configuration_data()

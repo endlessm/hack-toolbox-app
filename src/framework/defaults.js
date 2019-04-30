@@ -16,11 +16,28 @@ const KEYS = {
         'item.key.hackdex1.2',
         'item.key.hackdex1.3',
     ],
+    'com.endlessm.Hackdex_chapter_two': [
+        'item.key.levi_hackdex.1',
+        'item.key.levi_hackdex.2',
+        'item.key.levi_hackdex.3',
+    ],
 };
 
 const COLORS = Symbol('colors');
 
 const DEFAULTS = {
+    unknown: {
+        'logo-graphic': 'encyclopedia',
+        font: 'Fira Sans',
+        'card-layout': 'tiledGrid',
+        [COLORS]: {
+            logo: 'white',
+            main: '#2d3e4e',
+            accent: '#ff6835',
+            info: '#5e7790',
+            border: 'black',
+        },
+    },
     'com.endlessm.dinosaurs.en': {
         'logo-graphic': 'dinosaur',
         font: 'Skranji',
@@ -72,6 +89,8 @@ const COMMON_DEFAULTS = {
 };
 
 const AVAILABLE_FONTS = {
+    unknown: ['Fira Sans', 'HammersmithOne', 'Lato', 'Libre Baskerville',
+        'Marcellus SC', 'Pathway Gothic One', 'Podkova', 'Raleway', 'Skranji'],
     'com.endlessm.dinosaurs.en': ['Fira Sans', 'HammersmithOne', 'Lato',
         'Libre Baskerville', 'Marcellus SC', 'Pathway Gothic One',
         'Patrick Hand SC', 'Podkova', 'Raleway', 'Skranji'],
@@ -96,7 +115,7 @@ function _valueToCode(value) {
 var Defaults = class Defaults {
     constructor(appId) {
         this._appId = appId;
-        this._defaults = DEFAULTS[appId];
+        this._defaults = DEFAULTS[appId] || DEFAULTS.unknown;
         this._applyQuestOverridesSync();
     }
 
@@ -121,6 +140,14 @@ var Defaults = class Defaults {
                     this._defaults[COLORS]['main'] = color;
             }
         }
+
+        if (this._appId === 'com.endlessm.Hackdex_chapter_two') {
+            // Override for the "decrypt Leviathan" quest
+            const gameState = GameState.getDefault();
+            const key = 'app.com_endlessm_Hackdex_chapter_two.encryption';
+            const rotation = gameState.getDictValueSync(key, 'rotation', 0);
+            this._defaults['text-cipher'] = rotation;
+        }
     }
 
     _getColor(propertyName) {
@@ -128,10 +155,10 @@ var Defaults = class Defaults {
     }
 
     value(propertyName) {
-        if (propertyName in COMMON_DEFAULTS)
-            return COMMON_DEFAULTS[propertyName];
         if (propertyName in this._defaults)
             return this._defaults[propertyName];
+        if (propertyName in COMMON_DEFAULTS)
+            return COMMON_DEFAULTS[propertyName];
         if (propertyName.endsWith('-color')) {
             const retval = new Gdk.RGBA();
             retval.parse(this._getColor(propertyName));
@@ -142,17 +169,17 @@ var Defaults = class Defaults {
 
     code(variableName) {
         const propertyName = variableName.replace(/_/g, '-');
-        if (propertyName in COMMON_DEFAULTS)
-            return _valueToCode(COMMON_DEFAULTS[propertyName]);
         if (propertyName in this._defaults)
             return _valueToCode(this._defaults[propertyName]);
+        if (propertyName in COMMON_DEFAULTS)
+            return _valueToCode(COMMON_DEFAULTS[propertyName]);
         if (propertyName.endsWith('-color'))
             return _valueToCode(this._getColor(propertyName));
         throw new Error(`unknown property name ${propertyName}`);
     }
 
     get fonts() {
-        return AVAILABLE_FONTS[this._appId];
+        return AVAILABLE_FONTS[this._appId] || AVAILABLE_FONTS.unknown;
     }
 
     get keys() {
@@ -167,5 +194,9 @@ var Defaults = class Defaults {
             `lock.${this._appId}.2`,
             `lock.${this._appId}.3`,
         ];
+    }
+
+    get shouldLockLevel1() {
+        return this._appId === 'com.endlessm.Hackdex_chapter_two';
     }
 };

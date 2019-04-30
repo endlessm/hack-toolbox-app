@@ -577,6 +577,396 @@ ${cardDefaultRules}
 
 ${commonRules}
 `;
+    case 'com.endlessm.Hackdex_chapter_two':
+        return `
+$accent-light-color: ${accentColor};
+$primary-light-color: ${mainColor};
+$background-medium-color: #e2e2e2;
+$primary-background-image: 'resource:///app/assets/backgroundHome' !default;
+$font-lightbox-title: 'IBM Plex Mono';
+$font-lightbox-content: 'DK Double Quick';
+
+.overlayBg {
+    background-image: url('resource:///app/assets/board');
+    background-position: center 15px;
+    background-repeat: no-repeat;
+    min-height: 1000px;
+    min-width: 1900px;
+}
+
+.overlayElements {
+    background-image: url('resource:///app/assets/overlayElements.png');
+    background-position: 0 -33px;
+    background-repeat: no-repeat;
+}
+
+.WindowSimple {
+    background-color: #fff;
+    background-image: url($primary-background-image);
+    background-position: 0 -33px;
+    background-size: cover;
+
+    scrollbar {
+        background-color: transparentize(black, 1 - 0.20);
+        padding: 3px;
+
+        slider {
+            background-color: transparentize(white, 1 - 0.50);
+            border-radius: 20px;
+            min-width: 10px;
+        }
+    }
+}
+
+.overlayHead {
+    background-color: rgba(55, 44, 40, 0.62);
+    background-image: url('resource:///app/assets/images/nav-bg.png');
+    background-repeat: no-repeat;
+    color: #fff;
+    font-size: 25px;
+    min-height: 100px;
+    min-width: 1920px;
+
+    .bannerHead {
+        color: #fff;
+        font-size: 30px;
+        letter-spacing: 3px;
+        margin: 5px 45px 0;
+        padding: 10px;
+    }
+}
+
+.ArticleContent-1 {
+    min-height: 3250px;
+}
+
+.ArticleContent-2 {
+    min-height: 3600px;
+}
+
+.ArticleContent-3 {
+  min-height: 4550px;
+}
+
+.Card {
+    margin-left: 55px;
+    min-height: 670px;
+
+
+    &__title {
+        color: transparent;
+    }
+}
+
+.CardHackdex {
+    min-height: 456px;
+    min-width: 300px;
+    margin: 0;
+
+    frame {
+        background-repeat: no-repeat;
+    }
+
+    &.invisible {
+        opacity: 0;
+    }
+
+    &.invisible:hover {
+        opacity: 1;
+    }
+
+    &.invisible.Card__1 frame {
+        background-image: url('ekn:///2df6f9b81a6528ab9fd4184d391a48732a37a89e');
+    }
+
+    &.invisible.Card__2 frame {
+        background-image: url('ekn:///e9b81a6528a2df6f732a37a89b9fd4184d391a48');
+    }
+
+    &.invisible.Card__3 frame{
+        background-image: url('ekn:///a4e92a37a89b9fdb81a6528734184d391a2df6f8');
+    }
+
+    & frame {
+        background-size: cover;
+    }
+
+    &.Card__1 {
+        margin-left: 42px;
+        margin-right: 0;
+        margin-top: 342px;
+        min-height: 626px;
+    }
+
+    &.Card__2 {
+        margin-left: 30px;
+        margin-right: 45px;
+        margin-top: 40px;
+        min-height: 622px;
+    }
+
+    &.Card__3 {
+        margin-left: 89px;
+        margin-right: -8px;
+        margin-top: 182px;
+        min-height: 689px;
+    }
+
+    &.invisible.Card__1 {
+        margin-left: 42px;
+        margin-right: 0;
+        margin-top: 342px;
+        min-height: 626px;
+    }
+
+    &.invisible.Card__2 {
+        margin-left: 35px;
+        margin-right: 45px;
+        margin-top: 40px;
+        min-height: 622px;
+    }
+
+    &.invisible.Card__3 {
+        margin-left: 80px;
+        margin-right: -15px;
+        margin-top: 182px;
+        min-height: 689px;
+    }
+}
+
+.home-page {
+    .LayoutScrolling--maincontainer {
+        padding: 0;
+    }
+
+    .ContentGroup--maincontent {
+        padding-bottom: 0;
+    }
+}
+
+.article-page {
+    .LayoutScrolling--maincontainer {
+        background-color: $background-medium-color;
+    }
+}
+
+@keyframes carrot {
+  0% {
+    background-position: top right;
+  }
+
+  50% {
+    background-position: top left;
+  }
+
+  100% {
+    background-position: top right;
+  }
+}
+
+.LightboxDev__wrap {
+    &.container-expand {
+        margin: 0;
+        background: rgba(12, 14, 22, 0.75);
+        background-image: url('resource:///app/assets/images/headerNavBar.png');
+        background-repeat: no-repeat;
+        background-position: left top;
+
+        .LightboxDev__button-toggle {
+            background-image: url('resource:///app/assets/images/carrot.png');
+            background-repeat: no-repeat;
+            background-position: top right;
+            min-height: 20px;
+            min-width: 20px;
+            margin: 45px 0 0 40px;
+
+            &:hover {
+                background-image: url('resource:///app/assets/images/carrot.png');
+                animation: carrot 1.5s ease infinite;
+            }
+        }
+
+        .Content-Background {
+            background-repeat: no-repeat;
+            min-width: 1920px;
+            min-height: 950px;
+            margin-top: 100px;
+            margin-left: -80px;
+        }
+
+        .Content-title {
+            font-family: $font-lightbox-title;
+            font-size: 27px;
+            margin-top: 32px;
+        }
+
+        .Content-text {
+            font-family: $font-lightbox-content;
+            font-size: 22px;
+        }
+
+        .Content-text-paragraph {
+            color: black;
+            font-size: 25px;
+        }
+
+        .Content-Whale {
+            .Notebook-Whale {
+                margin-left: -11px;
+            }
+
+            .Content-Whale-paragraph-first {
+                margin-top: 317px;
+                margin-left: 1009px;
+            }
+
+            .Content-Whale-paragraph-second {
+                margin-top: 550px;
+                margin-left: 999px;
+            }
+
+            .Content-Whale-paragraph-third {
+                margin-top: 730px;
+                margin-left: 979px;
+            }
+
+            .Content-Whale-paragraph-fourth {
+                margin-top: 730px;
+                margin-left: 979px;
+            }
+        }
+
+        .Content-Franklin {
+            .Notebook-Franklin {
+                margin-left: -11px;
+            }
+
+            .Content-text-wake {
+                margin-left: 1068px;
+                margin-top: 225px;
+            }
+
+            .Content-text-perfect {
+                margin-left: 935px;
+                margin-top: 695px;
+            }
+
+            .Content-text-rise {
+                margin-left: 1518px;
+                margin-top: 180px;
+            }
+
+            .Content-text-work {
+                margin-left: 1518px;
+                margin-top: 308px;
+            }
+
+            .Content-text-read {
+                margin-left: 1518px;
+                margin-top: 385px;
+            }
+
+            .Content-text-work-last {
+                margin-left: 1518px;
+                margin-top: 470px;
+            }
+
+            .Content-text-examine {
+                margin-left: 1518px;
+                margin-top: 580px;
+            }
+
+            .Content-text-sleep {
+                margin-left: 1518px;
+                margin-top: 730px;
+            }
+
+            .Content-Franklin-paragraph-first {
+                margin-top: 317px;
+                margin-left: 1009px;
+            }
+
+            .Content-Franklin-paragraph-second {
+                margin-top: 550px;
+                margin-left: 999px;
+            }
+
+            .Content-Franklin-paragraph-third {
+                margin-top: 730px;
+                margin-left: 979px;
+            }
+
+            .Content-Franklin-paragraph-fourth {
+                margin-top: 730px;
+                margin-left: 979px;
+            }
+        }
+    }
+}
+
+.Layout-LightboxDev-Stonehenge {
+    min-height: 334px;
+    min-width: 185px;
+
+    .LightboxDev__button-toggle:hover {
+        background-image: url('resource:///app/assets/images/paperBlueTicket-hover.png');
+    }
+}
+
+.Layout-LightboxDev-Whale {
+    min-height: 327px;
+    min-width: 149px;
+
+    .LightboxDev__button-toggle:hover {
+        background-image: url('resource:///app/assets/images/paperGreyLeft-hover.png');
+    }
+}
+
+.Layout-LightboxDev-Franklin {
+    min-height: 530px;
+    min-width: 129px;
+
+    .LightboxDev__button-toggle:hover {
+        background-image: url('resource:///app/assets/images/paperLong-hover.png');
+    }
+}
+
+.LightboxDev__button-toggle {
+    background-image: none;
+}
+
+.WindowSimple scrollbar {
+    background: #d5d5d5;
+
+    slider {
+      background: #999b9c;
+    }
+
+    &.horizontal slider {
+      min-height: 10px;
+    }
+}
+
+.Layout-animated-eyes {
+    background-image: url('resource:///app/assets/images/eyes.png');
+}
+
+// Special overrides for hacking toolbox
+
+.CardHackdex {
+    border: ${model.border_width}px solid ${borderColor};
+
+    &__filterOverlay {
+        ${overlayFilterProperties}
+    }
+}
+
+.LightboxDev__button-toggle {
+    ${overlayFilterProperties}
+}
+
+${commonRules}
+`;
     default:
         return '@import "default";';
     }
@@ -848,6 +1238,268 @@ overrides:
     ${JSON.stringify(hackdexCard)}
 ---
 !import 'Hackdex_chapter_one'
+`;
+    }
+    case 'com.endlessm.Hackdex_chapter_two': {
+        // Preserve encryption function from app.yaml; players use the
+        // 'rotation' property to undo this
+        Object.assign(hackableTextProperties, {
+            decodefunc: 'return (letter + 21) % 26;',
+        });
+
+        const root = 'root.window.content.content.home-page.content.overlays';
+        const labelOverrides = {
+            '2.content.overlays.2': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: 'Stonehenge diagrams',
+                },
+                styles: ['Content-title'],
+            },
+            '2.content.overlays.3': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    'margin-left': 523,
+                    'margin-top': 322,
+                    label: `\
+The outer ring was made up of
+30 stones to represent an
+average of 30 days in a month`,
+                },
+                styles: ['Content-text', 'Content-text-ring'],
+            },
+            '2.content.overlays.4': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    'margin-left': 520,
+                    'margin-top': 820,
+                    label: 'Stonehenge may have been\nused as a compass',
+                },
+                styles: ['Content-text', 'Content-text-compass'],
+            },
+            '2.content.overlays.5': {
+                type: 'ContentGroup.HackdexText',
+                properties: {
+                    'margin-left': 1096,
+                    'margin-top': 351,
+                    text: `\
+- hmm, looks like Leviathan had a thing for Stonehenge.
+Sometimes he used symbols related to Stonehenge
+in his legendary hacks. Another coincidence with Saniel!
+
+- Saniel talks about Stonehenge so frequently, it's
+as if he thinks of Stonehenge as his own
+personal watch!
+
+- I've noticed that sometimes Saniel arranges the
+items on his desk in the same pattern of concentric
+circles as the stones in this diagram. Knowing him,
+he probably really can tell time that way!
+`,
+                },
+                styles: [
+                    'Content-text',
+                    'Content-text-paragraph',
+                    'Content-Stonehenge-paragraph-first',
+                ],
+            },
+            '3.content.overlays.3': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: 'Clipping of a whale song',
+                },
+                styles: ['Content-title'],
+            },
+            '3.content.overlays.4': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    'margin-left': 981,
+                    'margin-top': 583,
+                    label: 'Each of these ticks is a unit\nwhich is equivalent to a note',
+                },
+                styles: ['Content-text', 'Content-text-ticks'],
+            },
+            '3.content.overlays.5': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    'margin-left': 1078,
+                    'margin-top': 778,
+                    label: `\
+Whales kind of sing for
+the same reason humans do!
+They want to show their
+friends how they sing and
+to share their song`,
+                },
+                styles: ['Content-text', 'Content-text-friends'],
+            },
+            '3.content.overlays.6': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    'margin-left': 1590,
+                    'margin-top': 653,
+                    label: "Units make up a phrase\nwhich are repeated to\nmake a whale's song",
+                },
+                styles: ['Content-text', 'Content-text-phrase'],
+            },
+            '3.content.overlays.7': {
+                type: 'ContentGroup.HackdexText',
+                properties: {
+                    'margin-left': 234,
+                    'margin-top': 310,
+                    text: `\
+- Leviathan: the great whale. The whale is a very
+important symbol for Saniel.
+
+- We've all heard about Saniel's keen interest in whales,
+especially in regard to his famous sleeping habits.
+
+- When Saniel is deep in concentration, I swear I can
+faintly hear whale songs. I don't know how he does that
+on land! I know that when he's in that zone, he always
+comes up with new solutions!
+
+- Saniel also often delivers random whale facts: the
+other day, he told me that whales learn a new song
+every few years by hearing the songs of other
+populations. So interesting.
+`,
+                },
+                styles: [
+                    'Content-text',
+                    'Content-text-paragraph',
+                    'Content-Whale-paragraph-first',
+                ],
+            },
+            '4.content.overlays.3': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: "Benjamin Franklin's daily schedule",
+                },
+                styles: ['Content-title'],
+            },
+            '4.content.overlays.4': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: 'Wake up at 5am!!!',
+                },
+                styles: ['Content-text', 'Content-text-wake'],
+            },
+            '4.content.overlays.5': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: `\
+Ben Franklin was known to say
+that he wasn't perfect and often
+broke his strict schedule for leisure!`,
+                },
+                styles: ['Content-text', 'Content-text-perfect'],
+            },
+            '4.content.overlays.6': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: "Rise, wash, contrive day's\nbusiness; and breakfast",
+                },
+                styles: ['Content-text', 'Content-text-rise'],
+            },
+            '4.content.overlays.7': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: 'Work',
+                },
+                styles: ['Content-text', 'Content-text-work'],
+            },
+            '4.content.overlays.8': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: 'Read and dine',
+                },
+                styles: ['Content-text', 'Content-text-read'],
+            },
+            '4.content.overlays.9': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: 'work',
+                },
+                styles: ['Content-text', 'Content-text-work-last'],
+            },
+            '4.content.overlays.10': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: 'Put things in their\nplace; examine the day',
+                },
+                styles: ['Content-text', 'Content-text-examine'],
+            },
+            '4.content.overlays.11': {
+                type: 'ContentGroup.EncryptText',
+                properties: {
+                    label: 'sleep',
+                },
+                styles: ['Content-text', 'Content-text-sleep'],
+            },
+            '4.content.overlays.12': {
+                type: 'ContentGroup.HackdexText',
+                properties: {
+                    'margin-left': 266,
+                    'margin-top': 283,
+                    text: `\
+- Leviathan? this scrap from the original Leviathan
+file matches the handwritten scrap on the wall
+above Saniel's Desk.
+
+- I asked him what the numbers meant and he said it
+was Ben Franklin's daily schedule! I'm not surprised
+because Saniel is fascinated with perfecting
+how he uses his time.
+
+- He said he's inspired by Franklin's methodical approach,
+but he keeps his own schedule very open. "Data never
+sleeps," he always says.
+
+- Franklin began his day with this question, "what good
+shall i do this day?" I have heard Saniel say those exact
+words so many times.
+`,
+                },
+                styles: [
+                    'Content-text',
+                    'Content-text-paragraph',
+                    'Content-Franklin-paragraph-first',
+                ],
+            },
+        };
+
+        const overridesString = Object.entries(labelOverrides)
+            .map(([key, module]) => {
+                Object.assign(module.properties, {valign: 'start'},
+                    hackableTextProperties);
+                return `${root}.${key}: ${JSON.stringify(module)}`;
+            })
+            .join('\n  ');
+
+        const arrangementProperties = Object.assign({
+            halign: 'fill',
+            valign: 'fill',
+            vexpand: true,
+        }, soundpackProperties);
+
+        return `---
+overrides:
+  home-articles-card:
+    type: Card.Hackdex
+    properties: ${JSON.stringify(hackableTextProperties)}
+
+  home-articles-arrangement:
+    type: Arrangement.PinterestNoise
+    properties: ${JSON.stringify(arrangementProperties)}
+
+  document-view:
+    type: View.DocumentDev
+    properties: ${JSON.stringify(hackableTextProperties)}
+
+  ${overridesString}
+---
+!import 'Hackdex_chapter_two'
 `;
     }
     default:
