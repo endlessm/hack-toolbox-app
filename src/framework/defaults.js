@@ -195,4 +195,8 @@ var Defaults = class Defaults {
             `lock.${this._appId}.3`,
         ];
     }
+
+    get shouldLockLevel1() {
+        return this._appId === 'com.endlessm.Hackdex_chapter_two';
+    }
 };

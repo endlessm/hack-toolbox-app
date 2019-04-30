@@ -17,16 +17,22 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
         super._init(props);
 
         this._level1 = new FrameworkLevel1(defaults, {visible: true});
-        this.attach(this._level1, 0, 0, 1, 1);
-
-        this._level2lock = new Lockscreen({
+        this._level2 = new FrameworkLevel2({visible: true, hexpand: true});
+        this._secondLock = new Lockscreen({
             hexpand: true,
             valign: Gtk.Align.START,
             visible: true,
         });
-        this._level2 = new FrameworkLevel2({visible: true, hexpand: true});
-        this._level2lock.add(this._level2);
-        this.attach(this._level2lock, 0, 1, 1, 1);
+
+        if (defaults.shouldLockLevel1) {
+            this._secondLock.add(this._level1);
+            this.attach(this._secondLock, 0, 0, 1, 1);
+            this.attach(this._level2, 0, 1, 1, 1);
+        } else {
+            this._secondLock.add(this._level2);
+            this.attach(this._level1, 0, 0, 1, 1);
+            this.attach(this._secondLock, 0, 1, 1, 1);
+        }
 
         this._level3lock = new Lockscreen({
             valign: Gtk.Align.START,
@@ -58,15 +64,15 @@ var RaControlPanel = GObject.registerClass(class RaControlPanel extends Gtk.Grid
     }
 
     bindWindow(win) {
-        this._level2lock.connect('notify::locked', () => {
+        this._secondLock.connect('notify::locked', () => {
             if (!this._level2lock.locked)
                 this._level3lock.show_all();
         });
 
         win.lockscreen.key = this._key1;
         win.lockscreen.lock = this._lock1;
-        this._level2lock.key = this._key2;
-        this._level2lock.lock = this._lock2;
+        this._secondLock.key = this._key2;
+        this._secondLock.lock = this._lock2;
         this._level3lock.key = this._key3;
         this._level3lock.lock = this._lock3;
     }
