@@ -7,6 +7,7 @@ const {RMZGlobalModel} = imports.RileyMaze.globalParams;
 const {RMZUserFunction} = imports.RileyMaze.userFunction;
 const {Toolbox} = imports.toolbox;
 
+
 var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
     _init(appId, props = {}) {
         super._init(appId, props);
@@ -24,18 +25,16 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
         this._unitTopic = new RMZUnitsTopic();
         this._unitTopic.bindGlobalModel(this._global);
         this.addTopic('unit', 'Unit', 'powerup-symbolic',
-            this._unitTopic);
+            this._unitTopic, true);
         this.showTopic('unit');
-        // this.hideTopic('unit');
+        this.addTopicKeys('unit', 'item.key.Sidetrack.2', 'lock.Sidetrack.2');
 
         this._levelTopic = new RMZUserFunction('level');
         this._levelTopic.bindGlobalModel(this._global);
         this.addTopic('level', 'Level', 'spawn-symbolic',
-            this._levelTopic);
+            this._levelTopic, true);
+        this.addTopicKeys('level', 'item.key.Sidetrack.3', 'lock.Sidetrack.3');
         this.showTopic('level');
-
-        this.revealTopic('instructions'); // Hacky until there's an app
-        this.revealTopic('level');
 
         this._updateLevelInfo();
         this.show_all();
@@ -47,9 +46,9 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
 
     bindWindow(win) {
         win.get_style_context().add_class('RileyMaze');
-        this._unitTopic.bindWindow(win);
         win.lockscreen.key = 'item.key.Sidetrack.1';
         win.lockscreen.lock = 'lock.Sidetrack.1';
+        this._unitTopic.bindWindow(win);
     }
 
     _updateLevelInfo() {
@@ -65,21 +64,6 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
             new GLib.Variant('(sava{sv})', ['reset', [], {}]),
             null, Gio.DBusCallFlags.NONE, -1, null);
         this._unitTopic.reset();
-    }
-
-    _onGameStateChanged(self, senderName, [key, value]) {
-        if (!key.startsWith('sidetrack.topic.'))
-            return;
-        const topic = key.slice('sidetrack.topic.'.length);
-        let {visible} = value.deep_unpack();
-        if (visible instanceof GLib.Variant)
-            visible = visible.deep_unpack();
-        if (visible)
-            this.revealTopic(topic);
-        else
-            this.hideTopic(topic);
-        // Just set to visible till we have a gamestate
-        this.revealTopic(topic);
     }
 
     shutdown() {

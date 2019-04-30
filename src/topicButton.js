@@ -2,12 +2,16 @@
 
 const {GObject, Gtk} = imports.gi;
 
+const {Lockscreen} = imports.lockscreen;
+
 var TopicButton = GObject.registerClass({
     Properties: {
         id: GObject.ParamSpec.string('id', 'ID', 'Machine-facing topic ID',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
         title: GObject.ParamSpec.string('title', 'Title', 'Topic title',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
+        lockscreen: GObject.ParamSpec.boolean('lockscreen', 'lockscreen', 'Topic lockscreen',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, false),
         'icon-name': GObject.ParamSpec.string('icon-name', 'Icon name',
             'Named icon for topic illustration',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY, ''),
@@ -18,8 +22,14 @@ var TopicButton = GObject.registerClass({
 }, class TopicButton extends Gtk.Frame {
     _init(props = {}) {
         super._init(props);
-
         const overlay = new Gtk.Overlay();
+
+        if (this._lockscreen) {
+            this.topicLock = new Lockscreen({visible: true});
+            overlay.add_overlay(this.topicLock);
+            this.topicLock.get_style_context().add_class('topic-lockscreen');
+        }
+
         this._attentionSign = new Gtk.Revealer({
             revealChild: false,
             halign: Gtk.Align.END,
@@ -69,6 +79,14 @@ var TopicButton = GObject.registerClass({
 
     set title(value) {
         this._title = value;
+    }
+
+    get lockscreen() {
+        return this._lockscreen;
+    }
+
+    set lockscreen(value) {
+        this._lockscreen = value;
     }
 
     get icon_name() {
