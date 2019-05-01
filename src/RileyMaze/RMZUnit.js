@@ -112,12 +112,6 @@ var RMZUnitsTopic = GObject.registerClass({
         this._model.set_property(childName, directions[button.get_active()]);
     }
 
-    bindWindow(win) {
-        win.lockscreen.key = 'item.key.rileymaze.1';
-        win.lockscreen.lock = 'lock.rileymaze.1';
-        void this;
-    }
-
     _compile() {
         const code = this._variablesCodeview.text;
 
