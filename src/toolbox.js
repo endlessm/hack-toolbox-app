@@ -130,17 +130,26 @@ var Toolbox = GObject.registerClass({
         this.setBusy(false);
     }
 
-    addTopic(id, title, iconName, widget) {
-        const topic = new TopicButton({id, title, iconName});
+    addTopic(id, title, iconName, widget, lockscreen = false) {
+        const topic = new TopicButton({id, title, iconName, lockscreen});
         this._topicsList.add(topic);
+
         if (GObject.Object.find_property.call(widget.constructor, 'needs-attention')) {
             widget.bind_property('needs-attention',
                 topic, 'needs-attention', GObject.BindingFlags.SYNC_CREATE);
         }
 
-
         widget.show_all();  // show_all() only propagates to current stack page
         this._topicsStack.add_titled(widget, id, title);
+    }
+
+    addTopicKeys(id, keyName, lockName) {
+        const [, topic] = this._findTopic(id);
+        topic.topicLock.key = keyName;
+        topic.topicLock.lock = lockName;
+        topic.topicLock._playbin.connect('done', () => {
+            this.selectTopic(id);
+        });
     }
 
     _findTopic(id) {
@@ -159,6 +168,11 @@ var Toolbox = GObject.registerClass({
         topicRow.noShowAll = true;
         topicRow.hide();
         topic.get_style_context().remove_class('reveal');
+    }
+
+    selectTopic(id) {
+        const [topicRow] = this._findTopic(id);
+        this._topicsList.select_row(topicRow);
     }
 
     revealTopic(id) {
