@@ -84,7 +84,7 @@ const LEVEL_EDIT_SCOPE = {
     robotA: 'robotA',
     robotB: 'robotB',
     rileyPosition: 0,
-    goalposition: 2,
+    goalPosition: 2,
     add(unit, x, y) {
         if (Number.isNaN(Number(x)))
             throw new TypeError(`${x} isn't a number.`);
