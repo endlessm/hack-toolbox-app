@@ -85,12 +85,6 @@ var FrameworkLevel3 = GObject.registerClass({
             sounds_cursor_hover: null,
             text_transformation: null,
             hyperlinks: null,
-
-            // aliases for boolean literals
-            yes: true,
-            no: false,
-            on: true,
-            off: false,
         };
         try {
             // eslint-disable-next-line no-new-func
@@ -212,8 +206,7 @@ var FrameworkLevel3 = GObject.registerClass({
         if (scope.hyperlinks !== null && scope.hyperlinks !== true &&
             scope.hyperlinks !== false) {
             errors.push(this._errorRecordAtAssignmentLocation('hyperlinks',
-                `Unknown value "${scope.hyperlinks}": value must be yes or ` +
-                'no, on or off, true or false'));
+                `Unknown value "${scope.hyperlinks}": value must be true or false`));
         }
 
         return errors;
