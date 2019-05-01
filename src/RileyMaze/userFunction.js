@@ -8,6 +8,7 @@ const FORWARD = 1;
 const UP = 2;
 const DOWN = 3;
 const JUMP = 4;
+const PUSH = 5;
 const MAX_QUEUE_LEN = 8;
 
 class InstructionError extends Error {
@@ -44,6 +45,13 @@ const RILEY = {
         if (this.queue.length > MAX_QUEUE_LEN)
             throw new InstructionError('Instructions must have 8 moves.');
     },
+
+    push() {
+        this.queue.push(PUSH);
+
+        if (this.queue.length > MAX_QUEUE_LEN)
+            throw new InstructionError('Instructions must have 8 moves.');
+    },
 };
 
 const HANDLER = {
@@ -71,8 +79,12 @@ const COMMON_SCOPE = {
 
 const UNITS = ['wall', 'pit', 'robotA', 'robotB'];
 const LEVEL_EDIT_SCOPE = {
+    wall: 'wall',
+    pit: 'pit',
+    robotA: 'robotA',
+    robotB: 'robotB',
     rileyPosition: 0,
-    goalposition: 2,
+    goalPosition: 2,
     add(unit, x, y) {
         if (Number.isNaN(Number(x)))
             throw new TypeError(`${x} isn't a number.`);
