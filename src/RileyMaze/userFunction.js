@@ -71,6 +71,10 @@ const COMMON_SCOPE = {
 
 const UNITS = ['wall', 'pit', 'robotA', 'robotB'];
 const LEVEL_EDIT_SCOPE = {
+    wall: 'wall',
+    pit: 'pit',
+    robotA: 'robotA',
+    robotB: 'robotB',
     rileyPosition: 0,
     goalposition: 2,
     add(unit, x, y) {
