@@ -12,7 +12,7 @@ const up = 'up';
 const down = 'down';
 const directions = {true: up, false: down};
 const directionStr = {up: true, down: false};
-
+const VALID_VARIABLES = ['robotADirection', 'robotBDirection'];
 
 var RMZUnitsTopic = GObject.registerClass({
     GTypeName: 'RMZCombinedTopic',
@@ -127,9 +127,10 @@ var RMZUnitsTopic = GObject.registerClass({
         const scope = {
             down: down,
             up: up,
-            robotADirection: null,
-            robotBDirection: null,
         };
+        VALID_VARIABLES.forEach(name => {
+            scope[name] = null;
+        });
         try {
             // eslint-disable-next-line no-new-func
             const func = new Function('scope', `with(scope){\n${code}\n;}`);
@@ -142,7 +143,7 @@ var RMZUnitsTopic = GObject.registerClass({
             return;
         }
 
-        if (Object.getOwnPropertyNames(scope).every(prop => prop === null))
+        if (VALID_VARIABLES.every(prop => scope[prop] === null))
             return;
 
         const errors = this._searchForErrors(scope);

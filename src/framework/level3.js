@@ -19,6 +19,12 @@ const VALID_ENUMS = {
         'tchaik', 'tower'],
 };
 
+const VALID_VARIABLES = ['accent_color', 'border_color', 'border_width',
+    'card_layout', 'card_order', 'font', 'font_size', 'image_filter',
+    'info_color', 'logo_color', 'logo_graphic', 'main_color',
+    'sounds_cursor_click', 'sounds_cursor_hover', 'text_transformation',
+    'hyperlinks'];
+
 const COLOR_PROPS = ['logo_color', 'main_color', 'accent_color', 'info_color',
     'border_color'];
 const ENUM_PROPS = ['text_transformation', 'card_order', 'card_layout',
@@ -68,24 +74,10 @@ var FrameworkLevel3 = GObject.registerClass({
         if (code === '')
             return;
 
-        const scope = {
-            accent_color: null,
-            border_color: null,
-            border_width: null,
-            card_layout: null,
-            card_order: null,
-            font: null,
-            font_size: null,
-            image_filter: null,
-            info_color: null,
-            logo_color: null,
-            logo_graphic: null,
-            main_color: null,
-            sounds_cursor_click: null,
-            sounds_cursor_hover: null,
-            text_transformation: null,
-            hyperlinks: null,
-        };
+        const scope = {};
+        VALID_VARIABLES.forEach(name => {
+            scope[name] = null;
+        });
         try {
             // eslint-disable-next-line no-new-func
             const func = new Function('scope', `with(scope){\n${code}\n;}`);
@@ -97,7 +89,7 @@ var FrameworkLevel3 = GObject.registerClass({
             return;
         }
 
-        if (Object.getOwnPropertyNames(scope).every(prop => prop === null))
+        if (VALID_VARIABLES.every(prop => scope[prop] === null))
             return;
 
         const errors = this._searchCodeForErrors(scope);

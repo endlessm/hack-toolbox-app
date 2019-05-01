@@ -198,9 +198,6 @@ var FizzicsLevel2 = GObject.registerClass({
             return;
         }
 
-        if (Object.getOwnPropertyNames(scope).every(prop => prop === null))
-            return;
-
         const errors = this._searchForErrors(scope);
         if (errors.length > 0) {
             this.set_property('needs-attention', true);

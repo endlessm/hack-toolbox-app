@@ -13,6 +13,8 @@ GObject.type_ensure(Section.$gtype);
 GObject.type_ensure(SpinInput.$gtype);
 
 const VALID_SHIPS = ['spaceship', 'daemon', 'unicorn'];
+const VALID_VARIABLES = ['scoreTarget', 'astronautSize', 'shipAsset',
+    'shipSize', 'shipSpeed'];
 
 var LSCombinedTopic = GObject.registerClass({
     GTypeName: 'LSCombinedTopic',
@@ -108,13 +110,10 @@ var LSCombinedTopic = GObject.registerClass({
         if (code === '')
             return;
 
-        const scope = {
-            scoreTarget: null,
-            astronautSize: null,
-            shipAsset: null,
-            shipSize: null,
-            shipSpeed: null,
-        };
+        const scope = {};
+        VALID_VARIABLES.forEach(name => {
+            scope[name] = null;
+        });
         try {
             // eslint-disable-next-line no-new-func
             const func = new Function('scope', `with(scope){\n${code}\n;}`);
@@ -127,7 +126,7 @@ var LSCombinedTopic = GObject.registerClass({
             return;
         }
 
-        if (Object.getOwnPropertyNames(scope).every(prop => prop === null))
+        if (VALID_VARIABLES.every(prop => scope[prop] === null))
             return;
 
         const errors = this._searchForErrors(scope);
