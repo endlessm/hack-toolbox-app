@@ -201,16 +201,24 @@ function bubbles(text) {
 }
 
 function scrambled(text) {
-    let words = text.split(' ');
-    words = words.map(word => {
-        const sequence = Array.from({length: word.length - 2}, () => Math.random());
-        const letters = word.split('');
-        const beginning = letters[0];  // eslint-disable-line prefer-destructuring
-        const middle = Utils.shuffle(letters.slice(1, -1), sequence);
-        const end = letters[letters.length - 1];
-        return beginning + middle.join('') + end;
+    let lines = text.split('\n');
+    lines = lines.map(line => {
+        let words = line.split(' ');
+        words = words.map(word => {
+            if (word.length < 2)
+                return word;
+
+            const [, startPunct, realWord, endPunct] = word.match(/^(\W*)(.*?)(\W*)$/);
+            const letters = Array.from(realWord);
+            const sequence = Array.from({length: letters.length - 2}, Math.random);
+            const beginning = startPunct + letters[0];
+            const middle = Utils.shuffle(letters.slice(1, -1), sequence);
+            const end = letters[letters.length - 1] + endPunct;
+            return beginning + middle.join('') + end;
+        });
+        return words.join(' ');
     });
-    return words.join(' ');
+    return lines.join('\n');
 }
 
 function creepy(text) {
