@@ -114,6 +114,9 @@ var LSCombinedTopic = GObject.registerClass({
         VALID_VARIABLES.forEach(name => {
             scope[name] = null;
         });
+        VALID_SHIPS.forEach(name => {
+            scope[name] = name;
+        });
         try {
             // eslint-disable-next-line no-new-func
             const func = new Function('scope', `with(scope){\n${code}\n;}`);
@@ -229,7 +232,7 @@ var LSCombinedTopic = GObject.registerClass({
 
 astronautSize = ${this._model.astronautSize};
 
-shipAsset = '${this._model.shipAsset}';
+shipAsset = ${this._model.shipAsset};
 shipSize = ${this._model.shipSize};
 shipSpeed = ${this._model.shipSpeed};
 `;

@@ -79,17 +79,17 @@ var FizzicsLevel2 = GObject.registerClass({
 
     _getValueForScope(scopeProp, modelProp) {
         if (scopeProp === 'background')
-            return `"${BACKGROUNDS[this._model[modelProp]]}"`;
+            return BACKGROUNDS[this._model[modelProp]];
         if (scopeProp === 'skin')
-            return `"${SKINS[this._model[modelProp]]}"`;
+            return SKINS[this._model[modelProp]];
         if (scopeProp === 'vfxBad')
-            return `"${VFXS[this._model[modelProp]]}"`;
+            return VFXS[this._model[modelProp]];
         if (scopeProp === 'sfxBad')
-            return `"${SFXS[this._model[modelProp]]}"`;
+            return SFXS[this._model[modelProp]];
         if (scopeProp === 'vfxGood')
-            return `"${VFXS[this._model[modelProp]]}"`;
+            return VFXS[this._model[modelProp]];
         if (scopeProp === 'sfxGood')
-            return `"${SFXS[this._model[modelProp]]}"`;
+            return SFXS[this._model[modelProp]];
         if (scopeProp === 'frozen')
             return !this._model[modelProp];
         return this._model[modelProp];
@@ -97,18 +97,6 @@ var FizzicsLevel2 = GObject.registerClass({
 
     _getValueForModel(scope, scopeProp) {
         void this;
-        if (scopeProp === 'background')
-            return BACKGROUNDS.indexOf(scope[scopeProp]);
-        if (scopeProp === 'skin')
-            return SKINS.indexOf(scope[scopeProp]);
-        if (scopeProp === 'vfxBad')
-            return VFXS.indexOf(scope[scopeProp]);
-        if (scopeProp === 'sfxBad')
-            return SFXS.indexOf(scope[scopeProp]);
-        if (scopeProp === 'vfxGood')
-            return VFXS.indexOf(scope[scopeProp]);
-        if (scopeProp === 'sfxGood')
-            return SFXS.indexOf(scope[scopeProp]);
         if (scopeProp === 'frozen')
             return !scope[scopeProp];
         return scope[scopeProp];
@@ -134,6 +122,11 @@ var FizzicsLevel2 = GObject.registerClass({
     _createScopeWithProps(props) {
         void this;
         const scope = {};
+        [BACKGROUNDS, SKINS, VFXS, SFXS].forEach(names => {
+            names.forEach((name, ix) => {
+                scope[name] = ix;
+            });
+        });
         Object.keys(props).forEach(prop => {
             scope[prop] = null;
         });

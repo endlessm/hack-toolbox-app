@@ -78,6 +78,11 @@ var FrameworkLevel3 = GObject.registerClass({
         VALID_VARIABLES.forEach(name => {
             scope[name] = null;
         });
+        Object.values(VALID_ENUMS).forEach(names => {
+            names.forEach(name => {
+                scope[name] = name;
+            });
+        });
         try {
             // eslint-disable-next-line no-new-func
             const func = new Function('scope', `with(scope){\n${code}\n;}`);
@@ -210,7 +215,7 @@ var FrameworkLevel3 = GObject.registerClass({
 // Theme
 /////////////////////
 
-logo_graphic = '${this._model.logo_graphic}';
+logo_graphic = ${this._model.logo_graphic};
 logo_color = '${Utils.rgbaToString(this._model.logo_color)}';
 main_color = '${Utils.rgbaToString(this._model.main_color)}';
 accent_color = '${Utils.rgbaToString(this._model.accent_color)}';
@@ -224,12 +229,12 @@ font_size = ${this._model.font_size};
 
 border_width = ${this._model.border_width};
 border_color = '${Utils.rgbaToString(this._model.border_color)}';
-text_transformation = '${this._model.text_transformation}';
-card_order = '${this._model.card_order}';
-card_layout = '${this._model.card_layout}';
-image_filter = '${this._model.image_filter}';
-sounds_cursor_hover = '${this._model.sounds_cursor_hover}';
-sounds_cursor_click = '${this._model.sounds_cursor_click}';
+text_transformation = ${this._model.text_transformation};
+card_order = ${this._model.card_order};
+card_layout = ${this._model.card_layout};
+image_filter = ${this._model.image_filter};
+sounds_cursor_hover = ${this._model.sounds_cursor_hover};
+sounds_cursor_click = ${this._model.sounds_cursor_click};
 hyperlinks = ${this._model.hyperlinks ? 'true' : 'false'};
 `;
     }
