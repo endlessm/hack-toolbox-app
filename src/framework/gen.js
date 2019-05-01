@@ -1023,6 +1023,19 @@ function _arrangementModule(model) {
     }
 }
 
+function walkTreeAndAppendProperties(tree, propsToAppend) {
+    if (tree.type in propsToAppend)
+        tree.properties = Object.assign(tree.properties || {}, propsToAppend[tree.type]);
+    if (tree.slots) {
+        Object.values(tree.slots).forEach(slot => {
+            if (Array.isArray(slot))
+                slot.forEach(module => walkTreeAndAppendProperties(module, propsToAppend));
+            else
+                walkTreeAndAppendProperties(slot, propsToAppend);
+        });
+    }
+}
+
 function generateYAML(model) {
     const order = _orderShortdef(model);
     const layout = _arrangementModule(model);
@@ -1248,231 +1261,15 @@ overrides:
         });
 
         const root = 'root.window.content.content.home-page.content.overlays';
-        const labelOverrides = {
-            '2.content.overlays.2': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: 'Stonehenge diagrams',
-                },
-                styles: ['Content-title'],
-            },
-            '2.content.overlays.3': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    'margin-left': 523,
-                    'margin-top': 322,
-                    label: `\
-The outer ring was made up of
-30 stones to represent an
-average of 30 days in a month`,
-                },
-                styles: ['Content-text', 'Content-text-ring'],
-            },
-            '2.content.overlays.4': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    'margin-left': 520,
-                    'margin-top': 820,
-                    label: 'Stonehenge may have been\nused as a compass',
-                },
-                styles: ['Content-text', 'Content-text-compass'],
-            },
-            '2.content.overlays.5': {
-                type: 'ContentGroup.HackdexText',
-                properties: {
-                    'margin-left': 1096,
-                    'margin-top': 351,
-                    text: `\
-- hmm, looks like Leviathan had a thing for Stonehenge.
-Sometimes he used symbols related to Stonehenge
-in his legendary hacks. Another coincidence with Saniel!
 
-- Saniel talks about Stonehenge so frequently, it's
-as if he thinks of Stonehenge as his own
-personal watch!
-
-- I've noticed that sometimes Saniel arranges the
-items on his desk in the same pattern of concentric
-circles as the stones in this diagram. Knowing him,
-he probably really can tell time that way!
-`,
-                },
-                styles: [
-                    'Content-text',
-                    'Content-text-paragraph',
-                    'Content-Stonehenge-paragraph-first',
-                ],
-            },
-            '3.content.overlays.3': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: 'Clipping of a whale song',
-                },
-                styles: ['Content-title'],
-            },
-            '3.content.overlays.4': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    'margin-left': 981,
-                    'margin-top': 583,
-                    label: 'Each of these ticks is a unit\nwhich is equivalent to a note',
-                },
-                styles: ['Content-text', 'Content-text-ticks'],
-            },
-            '3.content.overlays.5': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    'margin-left': 1078,
-                    'margin-top': 778,
-                    label: `\
-Whales kind of sing for
-the same reason humans do!
-They want to show their
-friends how they sing and
-to share their song`,
-                },
-                styles: ['Content-text', 'Content-text-friends'],
-            },
-            '3.content.overlays.6': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    'margin-left': 1590,
-                    'margin-top': 653,
-                    label: "Units make up a phrase\nwhich are repeated to\nmake a whale's song",
-                },
-                styles: ['Content-text', 'Content-text-phrase'],
-            },
-            '3.content.overlays.7': {
-                type: 'ContentGroup.HackdexText',
-                properties: {
-                    'margin-left': 234,
-                    'margin-top': 310,
-                    text: `\
-- Leviathan: the great whale. The whale is a very
-important symbol for Saniel.
-
-- We've all heard about Saniel's keen interest in whales,
-especially in regard to his famous sleeping habits.
-
-- When Saniel is deep in concentration, I swear I can
-faintly hear whale songs. I don't know how he does that
-on land! I know that when he's in that zone, he always
-comes up with new solutions!
-
-- Saniel also often delivers random whale facts: the
-other day, he told me that whales learn a new song
-every few years by hearing the songs of other
-populations. So interesting.
-`,
-                },
-                styles: [
-                    'Content-text',
-                    'Content-text-paragraph',
-                    'Content-Whale-paragraph-first',
-                ],
-            },
-            '4.content.overlays.3': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: "Benjamin Franklin's daily schedule",
-                },
-                styles: ['Content-title'],
-            },
-            '4.content.overlays.4': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: 'Wake up at 5am!!!',
-                },
-                styles: ['Content-text', 'Content-text-wake'],
-            },
-            '4.content.overlays.5': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: `\
-Ben Franklin was known to say
-that he wasn't perfect and often
-broke his strict schedule for leisure!`,
-                },
-                styles: ['Content-text', 'Content-text-perfect'],
-            },
-            '4.content.overlays.6': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: "Rise, wash, contrive day's\nbusiness; and breakfast",
-                },
-                styles: ['Content-text', 'Content-text-rise'],
-            },
-            '4.content.overlays.7': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: 'Work',
-                },
-                styles: ['Content-text', 'Content-text-work'],
-            },
-            '4.content.overlays.8': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: 'Read and dine',
-                },
-                styles: ['Content-text', 'Content-text-read'],
-            },
-            '4.content.overlays.9': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: 'work',
-                },
-                styles: ['Content-text', 'Content-text-work-last'],
-            },
-            '4.content.overlays.10': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: 'Put things in their\nplace; examine the day',
-                },
-                styles: ['Content-text', 'Content-text-examine'],
-            },
-            '4.content.overlays.11': {
-                type: 'ContentGroup.EncryptText',
-                properties: {
-                    label: 'sleep',
-                },
-                styles: ['Content-text', 'Content-text-sleep'],
-            },
-            '4.content.overlays.12': {
-                type: 'ContentGroup.HackdexText',
-                properties: {
-                    'margin-left': 266,
-                    'margin-top': 283,
-                    text: `\
-- Leviathan? this scrap from the original Leviathan
-file matches the handwritten scrap on the wall
-above Saniel's Desk.
-
-- I asked him what the numbers meant and he said it
-was Ben Franklin's daily schedule! I'm not surprised
-because Saniel is fascinated with perfecting
-how he uses his time.
-
-- He said he's inspired by Franklin's methodical approach,
-but he keeps his own schedule very open. "Data never
-sleeps," he always says.
-
-- Franklin began his day with this question, "what good
-shall i do this day?" I have heard Saniel say those exact
-words so many times.
-`,
-                },
-                styles: [
-                    'Content-text',
-                    'Content-text-paragraph',
-                    'Content-Franklin-paragraph-first',
-                ],
-            },
-        };
-
-        const overridesString = Object.entries(labelOverrides)
+        const Hackdex2 = imports.framework.hackdex2;
+        const overridesString = Object.entries(Hackdex2.LIGHTBOX_OVERRIDES)
             .map(([key, module]) => {
-                Object.assign(module.properties, {valign: 'start'},
-                    hackableTextProperties);
+                walkTreeAndAppendProperties(module, {
+                    'Layout.LightboxDev': soundpackProperties,
+                    'ContentGroup.EncryptText': hackableTextProperties,
+                    'ContentGroup.HackdexText': hackableTextProperties,
+                });
                 return `${root}.${key}: ${JSON.stringify(module)}`;
             })
             .join('\n  ');

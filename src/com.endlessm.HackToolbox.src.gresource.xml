@@ -9,6 +9,7 @@
     <file>framework/controlPanel.js</file>
     <file>framework/defaults.js</file>
     <file>framework/gen.js</file>
+    <file>framework/hackdex2.js</file>
     <file>framework/level1.js</file>
     <file>framework/level2.js</file>
     <file>framework/level3.js</file>
