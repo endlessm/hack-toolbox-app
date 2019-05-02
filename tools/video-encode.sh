@@ -3,6 +3,8 @@
 echo_help_and_exit()
 {
 	echo "Usage: $0 remove-alpha png_dir | encode png_dir [pattern output.webm]"
+	echo "ffmpeg is available at https://ffbinaries.com/downloads"
+	echo "example pattern: '03_SideTrack_L1_Open_%03d.png'"
 	exit
 }
 
