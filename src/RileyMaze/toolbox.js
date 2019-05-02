@@ -27,13 +27,13 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
         this.addTopic('unit', 'Unit', 'powerup-symbolic',
             this._unitTopic, true);
         this.showTopic('unit');
-        this.addTopicKeys('unit', 'item.key.Sidetrack.2', 'lock.Sidetrack.2');
+        this.addTopicKeys('unit', 'item.key.sidetrack.2', 'lock.sidetrack.2');
 
         this._levelTopic = new RMZUserFunction('level');
         this._levelTopic.bindGlobalModel(this._global);
         this.addTopic('level', 'Level', 'spawn-symbolic',
             this._levelTopic, true);
-        this.addTopicKeys('level', 'item.key.Sidetrack.3', 'lock.Sidetrack.3');
+        this.addTopicKeys('level', 'item.key.sidetrack.3', 'lock.sidetrack.3');
         this.showTopic('level');
 
         this._updateLevelInfo();
@@ -46,8 +46,8 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
 
     bindWindow(win) {
         win.get_style_context().add_class('RileyMaze');
-        win.lockscreen.key = 'item.key.Sidetrack.1';
-        win.lockscreen.lock = 'lock.Sidetrack.1';
+        win.lockscreen.key = 'item.key.sidetrack.1';
+        win.lockscreen.lock = 'lock.sidetrack.1';
         void this;
     }
 
