@@ -77,7 +77,7 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
 
         this._instructTopic.unbindGlobalModel();
         this._unitTopic.unbindGlobalModel();
-        this._instructTopic.unbindGlobalModel();
+        this._levelTopic.unbindGlobalModel();
     }
 });
 
