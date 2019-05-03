@@ -598,6 +598,10 @@ $font-lightbox-content: 'DK Double Quick';
     background-image: url('resource:///app/assets/overlayElements.png');
     background-position: 0 -33px;
     background-repeat: no-repeat;
+
+    .Encrypted & {
+        background-image: url('resource:///app/assets/overlayElements-encrypt.png');
+    }
 }
 
 .WindowSimple {
@@ -618,7 +622,8 @@ $font-lightbox-content: 'DK Double Quick';
     }
 }
 
-.overlayHead {
+.overlayHead,
+.overlayBottom {
     background-color: rgba(55, 44, 40, 0.62);
     background-image: url('resource:///app/assets/images/nav-bg.png');
     background-repeat: no-repeat;
@@ -636,16 +641,8 @@ $font-lightbox-content: 'DK Double Quick';
     }
 }
 
-.ArticleContent-1 {
-    min-height: 3250px;
-}
-
-.ArticleContent-2 {
-    min-height: 3600px;
-}
-
-.ArticleContent-3 {
-  min-height: 4550px;
+.overlayBottom {
+    min-width: 1910px;
 }
 
 .Card {
@@ -663,74 +660,84 @@ $font-lightbox-content: 'DK Double Quick';
     min-width: 300px;
     margin: 0;
 
-    frame {
-        background-repeat: no-repeat;
-    }
-
-    &.invisible {
-        opacity: 0;
-    }
-
-    &.invisible:hover {
-        opacity: 1;
-    }
-
-    &.invisible.Card__1 frame {
-        background-image: url('ekn:///2df6f9b81a6528ab9fd4184d391a48732a37a89e');
-    }
-
-    &.invisible.Card__2 frame {
-        background-image: url('ekn:///e9b81a6528a2df6f732a37a89b9fd4184d391a48');
-    }
-
-    &.invisible.Card__3 frame{
-        background-image: url('ekn:///a4e92a37a89b9fdb81a6528734184d391a2df6f8');
-    }
-
     & frame {
-        background-size: cover;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 
     &.Card__1 {
-        margin-left: 42px;
-        margin-right: 0;
-        margin-top: 342px;
-        min-height: 626px;
+        margin-left: 43px;
+        margin-right: -47px;
+        margin-top: 337px;
+        min-height: 656px;
+
+        &:hover {
+            .CardHackdex__thumbnail frame {
+                background-image: url('ekn:///2df6f9b81a6528ab9fd4184d391a48732a37a89e');
+            }
+        }
+
+        &.Encrypted {
+            .CardHackdex__thumbnail frame {
+               background-image: url('ekn:///47bf707ed2bbb38540fb16045129292b61557d8e');
+            }
+
+            &:hover {
+                .CardHackdex__thumbnail frame {
+                    background-image: url('ekn:///5c7b53bdc641c5d4d33821d8eb749d6411c5c6cc');
+                }
+            }
+        }
     }
 
     &.Card__2 {
-        margin-left: 30px;
-        margin-right: 45px;
-        margin-top: 40px;
-        min-height: 622px;
+        margin-left: 44px;
+        margin-right: 30px;
+        margin-top: 37px;
+        min-height: 637px;
+
+        &:hover {
+            .CardHackdex__thumbnail frame {
+                background-image: url('ekn:///e9b81a6528a2df6f732a37a89b9fd4184d391a48');
+            }
+        }
+
+        &.Encrypted {
+            .CardHackdex__thumbnail frame {
+               background-image: url('ekn:///324d886062d33464928cdde02a89ba0a7b33527b');
+            }
+
+            &:hover {
+                .CardHackdex__thumbnail frame {
+                    background-image: url('ekn:///577b0042c4b185e71cfe00b8921a18dff1abf846');
+                }
+            }
+        }
     }
 
     &.Card__3 {
-        margin-left: 89px;
-        margin-right: -8px;
-        margin-top: 182px;
-        min-height: 689px;
-    }
+        margin-left: 47px;
+        margin-right: -20px;
+        margin-top: 178px;
+        min-height: 719px;
 
-    &.invisible.Card__1 {
-        margin-left: 42px;
-        margin-right: 0;
-        margin-top: 342px;
-        min-height: 626px;
-    }
+        &:hover {
+            .CardHackdex__thumbnail frame {
+                background-image: url('ekn:///a4e92a37a89b9fdb81a6528734184d391a2df6f8');
+            }
+        }
 
-    &.invisible.Card__2 {
-        margin-left: 35px;
-        margin-right: 45px;
-        margin-top: 40px;
-        min-height: 622px;
-    }
+        &.Encrypted {
+            .CardHackdex__thumbnail frame {
+               background-image: url('ekn:///bf7ecf84bce85201d0cf522045e22e25aa31bc99');
+            }
 
-    &.invisible.Card__3 {
-        margin-left: 80px;
-        margin-right: -15px;
-        margin-top: 182px;
-        min-height: 689px;
+            &:hover {
+                .CardHackdex__thumbnail frame {
+                    background-image: url('ekn:///4e4f0bb2ae3a615c30325399b27f9aa258bd82fc');
+                }
+            }
+        }
     }
 }
 
@@ -762,6 +769,78 @@ $font-lightbox-content: 'DK Double Quick';
   100% {
     background-position: top right;
   }
+}
+
+.Layout-LightboxDev-Stonehenge {
+    min-height: 314px;
+    min-width: 172px;
+
+    .LightboxDev__button-toggle {
+        background-image: url('resource:///app/assets/images/paperBlueTicket.png');
+
+        &:hover {
+            background-image: url('resource:///app/assets/images/paperBlueTicket-hover.png');
+        }
+    }
+
+    &.Encrypted {
+        .LightboxDev__button-toggle {
+            background-image: url('resource:///app/assets/images/paperBlueTicket-encrypt.png');
+
+            &:hover {
+                background-image:
+                    url('resource:///app/assets/images/paperBlueTicket-encrypt-hover.png');
+            }
+        }
+    }
+}
+
+.Layout-LightboxDev-Whale {
+    min-height: 327px;
+    min-width: 149px;
+
+    .LightboxDev__button-toggle {
+        background-image: url('resource:///app/assets/images/paperGreyLeft.png');
+
+        &:hover {
+            background-image: url('resource:///app/assets/images/paperGreyLeft-hover.png');
+        }
+    }
+
+    &.Encrypted {
+        .LightboxDev__button-toggle {
+            background-image: url('resource:///app/assets/images/paperGreyLeft-encrypt.png');
+
+            &:hover {
+                background-image:
+                    url('resource:///app/assets/images/paperGreyLeft-encrypt-hover.png');
+            }
+        }
+    }
+}
+
+.Layout-LightboxDev-Franklin {
+    min-height: 520px;
+    min-width: 120px;
+
+    .LightboxDev__button-toggle {
+        background-image: url('resource:///app/assets/images/paperLong.png');
+
+        &:hover {
+            background-image: url('resource:///app/assets/images/paperLong-hover.png');
+        }
+    }
+
+    &.Encrypted {
+        .LightboxDev__button-toggle {
+            background-image: url('resource:///app/assets/images/paperLong-encrypt.png');
+
+            &:hover {
+                background-image:
+                    url('resource:///app/assets/images/paperLong-encrypt-hover.png');
+            }
+        }
+    }
 }
 
 .LightboxDev__wrap {
@@ -901,33 +980,6 @@ $font-lightbox-content: 'DK Double Quick';
                 margin-left: 979px;
             }
         }
-    }
-}
-
-.Layout-LightboxDev-Stonehenge {
-    min-height: 334px;
-    min-width: 185px;
-
-    .LightboxDev__button-toggle:hover {
-        background-image: url('resource:///app/assets/images/paperBlueTicket-hover.png');
-    }
-}
-
-.Layout-LightboxDev-Whale {
-    min-height: 327px;
-    min-width: 149px;
-
-    .LightboxDev__button-toggle:hover {
-        background-image: url('resource:///app/assets/images/paperGreyLeft-hover.png');
-    }
-}
-
-.Layout-LightboxDev-Franklin {
-    min-height: 530px;
-    min-width: 129px;
-
-    .LightboxDev__button-toggle:hover {
-        background-image: url('resource:///app/assets/images/paperLong-hover.png');
     }
 }
 

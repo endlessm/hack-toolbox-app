@@ -84,7 +84,7 @@ defines:
                 - Layout-LightboxDev-Stonehenge
               properties:
                 expand: true
-                margin-left: 56
+                margin-left: 60
                 margin-top: 28
               slots:
                 content:
@@ -169,8 +169,8 @@ defines:
                 - Layout-LightboxDev-Whale
               properties:
                 expand: true
-                margin-left: 585
-                margin-top: 40
+                margin-left: 586
+                margin-top: 34
               slots:
                 content:
                   type: Layout.Overlay
@@ -275,8 +275,8 @@ defines:
                 - Layout-LightboxDev-Franklin
               properties:
                 expand: true
-                margin-left: 1245
-                margin-top: 181
+                margin-left: 1249
+                margin-top: 174
               slots:
                 content:
                   type: Layout.Overlay
@@ -462,7 +462,7 @@ defines:
               properties:
                 visible: false
                 expand: true
-                margin-top: 782
+                margin-top: 812
                 margin-left: 1777
                 display-image: "yawning.gif"
 
@@ -490,21 +490,6 @@ defines:
                     properties:
                       valign: start
                       halign: start
-            - type: Layout.Box
-              properties:
-                orientation: horizontal
-                valign: end
-                hexpand: true
-              styles:
-                - overlayHead
-              slots:
-                contents:
-                  - refvar: $home-button
-                    styles:
-                      - bannerHead
-                    properties:
-                      valign: start
-                      halign: start
           content:
             type: 'Layout.Box'
             styles:
@@ -517,6 +502,22 @@ defines:
                 - type: Layout.ArticleStack
                   slots:
                     article: $document-view
+                    nav-content:
+                      type: Layout.Box
+                      properties:
+                        orientation: horizontal
+                        valign: end
+                        hexpand: true
+                      styles:
+                        - overlayBottom
+                      slots:
+                        contents:
+                          - refvar: $home-button
+                            styles:
+                              - bannerHead
+                            properties:
+                              valign: start
+                              halign: start
 
 # App
 root:

@@ -8,7 +8,7 @@ var LIGHTBOX_OVERRIDES = {
     styles: ['Layout-LightboxDev-Stonehenge'],
     properties: {
       expand: true,
-      'margin-left': 56,
+      'margin-left': 60,
       'margin-top': 28,
     },
     slots: {
@@ -113,8 +113,8 @@ he probably really can tell time that way!
     styles: ['Layout-LightboxDev-Whale'],
     properties: {
       expand: true,
-      'margin-left': 585,
-      'margin-top': 40,
+      'margin-left': 586,
+      'margin-top': 34,
     },
     slots: {
       content: {
@@ -243,8 +243,8 @@ populations. So interesting.
     styles: ['Layout-LightboxDev-Franklin'],
     properties: {
       expand: true,
-      'margin-left': 1245,
-      'margin-top': 181,
+      'margin-left': 1249,
+      'margin-top': 174,
     },
     slots: {
       content: {
