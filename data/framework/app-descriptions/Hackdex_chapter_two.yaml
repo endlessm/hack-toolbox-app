@@ -420,6 +420,8 @@ defines:
                 margin-top: 25
                 margin-left: 236
                 display-image: "grid.gif"
+                audio: "hackdex2/dobroide1"
+                audio-hover: "hackdex2/hungry_cats"
             - type: Layout.ImageDev
               styles:
                 - Layout-animated-eyes
@@ -429,6 +431,8 @@ defines:
                 margin-top: 191
                 margin-left: 427
                 display-image: "eyes.gif"
+                audio: "hackdex2/dobroide2"
+                audio-hover: "hackdex2/cat_purring1"
             - type: Layout.ImageDev
               styles:
                 - Layout-animated-whiteBottom
@@ -447,6 +451,8 @@ defines:
                 margin-top: 34
                 margin-left: 1245
                 display-image: "paperWhiteTopRight.gif"
+                audio: "hackdex2/hank1"
+                audio-hover: "hackdex2/cat_purring3"
             - type: Layout.ImageDev
               styles:
                 - Layout-animated-rainbow
@@ -456,6 +462,8 @@ defines:
                 margin-top: 869
                 margin-left: 1364
                 display-image: "rainbow.gif"
+                audio: "hackdex2/hank2"
+                audio-hover: "hackdex2/cat_screaming"
             - type: Layout.ImageDev
               styles:
                 - Layout-animated-yawning
@@ -465,6 +473,8 @@ defines:
                 margin-top: 782
                 margin-left: 1777
                 display-image: "yawning.gif"
+                audio: "hackdex2/lilpur"
+                audio-hover: "hackdex2/hamface_cat"
 
   - &article-page
     type: Layout.Scrolling
