@@ -281,12 +281,14 @@ ${code}
         try {
             userFunction();
         } catch (e) {
-            this._codeview.setCompileResultsFromException(e);
             this.set_property('needs-attention', true);
 
             if (e instanceof InstructionError) {
+                this._codeview.setCompileResultsFromUserFunctionException(e);
                 const funcBody = this._codeview.getFunctionBody(name);
                 this._updateCode(funcBody);
+            } else {
+                this._codeview.setCompileResultsFromException(e);
             }
             return;
         }

@@ -473,6 +473,26 @@ var Codeview = GObject.registerClass({
         }]);
     }
 
+    // Like setCompileResultsFromException(), but instead this is an exception
+    // thrown by the user code itself (for example, during test execution.)
+    setCompileResultsFromUserFunctionException(exception) {
+        const stackFrames = exception.stack.split('\n');
+        // The format of stack frames originating inside a function created with
+        // new Function(...) looks like this:
+        // /original/file.js line 321 > Function:12:3. We are looking for the
+        // topmost such line, since that will contain the line and column where
+        // the exception was thrown in the user code (12 and 3 in this example)
+        const userScriptStackFrame = stackFrames.find(line => (/ > Function:/).test(line));
+        const [line, column] = userScriptStackFrame.split(':').slice(-2);
+        this.setCompileResults([{
+            start: {
+                line: line - 1,
+                column: column - 1,
+            },
+            message: exception.message,
+        }]);
+    }
+
     findAssignmentLocation(variable) {
         const expressions = this.ast.body
             .filter(({type, expression}) => type === 'ExpressionStatement' &&
