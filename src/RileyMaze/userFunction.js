@@ -254,18 +254,10 @@ ${code}
             userFunction = factoryFunc(scope);
         } catch (e) {
             this.set_property('needs-attention', true);
-            if (!(e instanceof SyntaxError || e instanceof ReferenceError ||
-                e instanceof InstructionError))
+            if (!(e instanceof SyntaxError || e instanceof ReferenceError))
                 throw e;
-            if (e instanceof SyntaxError || e instanceof ReferenceError) {
-                this._codeview.setCompileResultsFromException(e);
-                return;
-            } else if (e instanceof InstructionError) {
-                this._codeview.setCompileResultsFromException(e);
-                const funcBody = this._codeview.getFunctionBody(name);
-                this._updateCode(funcBody);
-                return;
-            }
+            this._codeview.setCompileResultsFromException(e);
+            return;
         }
 
         if (!userFunction) {
@@ -289,8 +281,15 @@ ${code}
         try {
             userFunction();
         } catch (e) {
-            this._codeview.setCompileResultsFromException(e);
             this.set_property('needs-attention', true);
+
+            if (e instanceof InstructionError) {
+                this._codeview.setCompileResultsFromUserFunctionException(e);
+                const funcBody = this._codeview.getFunctionBody(name);
+                this._updateCode(funcBody);
+            } else {
+                this._codeview.setCompileResultsFromException(e);
+            }
             return;
         }
 
