@@ -161,7 +161,7 @@ toolbox .left-column list row:active {
     padding: 4px 17px;
 }
 
-row:hover .topic {
+row:hover .topic:not(.insensitive) {
     background-color: rgba(32, 46, 65, 0.8);  /* lighten rgba(6, 20, 39, 0.8) 10% */
 }
 
@@ -176,12 +176,33 @@ row:hover .topic {
     padding: 4px;
 }
 
-row:selected .topic {
+row:selected .topic:not(.insensitive) {
     background-color: #f18c22;
 }
 
-row:selected:hover .topic {
+row:selected:hover .topic:not(.insensitive) {
     background-color: #ffa63c;  /* lighten #f18c22 10% */
+}
+
+.topic.insensitive {
+    background-color:  rgba(0, 0, 0, 0.3);
+    border-radius: 25px;
+    min-height: 154px;
+    min-width: 154px;
+    outline-width: 0;
+    transition: background-color 200ms;
+}
+
+.topic.insensitive label {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(109, 110, 112, 1.0);
+    border-radius: 12px;
+    margin-top: 12px;
+    padding: 4px;
+}
+
+.topic.insensitive image {
+    color: rgba(109, 110, 112, 0.4);
 }
 
 .sourceview {

@@ -18,6 +18,7 @@ var OSToolbox = GObject.registerClass(class OSToolbox extends Toolbox {
         this._controlPanel = new OSControlPanel({visible: true});
         this.addTopic('main', 'Cursor', 'cursor-symbolic', this._controlPanel);
         this.show_all();
+        this.selectTopic('main');
         this._wobblyPanel = new WobblyPanel({visible: true});
         this.addTopic('wobblyPanel', 'Windows', 'wobbly-windows-symbolic', this._wobblyPanel);
         this.showTopic('wobblyPanel');

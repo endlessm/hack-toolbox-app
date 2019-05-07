@@ -14,6 +14,7 @@ var FizzicsToolbox = GObject.registerClass(class FizzicsToolbox extends Toolbox 
         this._controlPanel.bindModel(this._model);
         this.addTopic('main', 'Tools', 'preferences-other-symbolic', this._controlPanel);
         this.show_all();
+        this.selectTopic('main');
 
         this.connect('reset', () => {
             Gio.DBus.session.call_sync(

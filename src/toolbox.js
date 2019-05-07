@@ -24,7 +24,7 @@ var Toolbox = GObject.registerClass({
 }, class Toolbox extends Gtk.Grid {
     _init(appId, props = {}) {
         super._init(props);
-
+        this.appId = appId;
         const leftColumn = new Gtk.Grid({
             orientation: Gtk.Orientation.VERTICAL,
             valign: Gtk.Align.FILL,
@@ -70,7 +70,7 @@ var Toolbox = GObject.registerClass({
         });
         this._topicsList = new Gtk.ListBox({
             halign: Gtk.Align.START,
-            selectionMode: Gtk.SelectionMode.BROWSE,
+            selectionMode: Gtk.SelectionMode.SINGLE,
         });
         this._topicsList.connect('row-selected', this._onRowSelected.bind(this));
         topicsScroll.add(this._topicsList);
@@ -130,14 +130,23 @@ var Toolbox = GObject.registerClass({
         this.setBusy(false);
     }
 
-    addTopic(id, title, iconName, widget, lockscreen = false) {
-        const topic = new TopicButton({id, title, iconName, lockscreen});
+    addTopic(id, title, iconName, widget, lockscreen = false, sensitive = true) {
+        const topic = new TopicButton({id, title, iconName, lockscreen, sensitive});
         this._topicsList.add(topic);
 
         if (GObject.Object.find_property.call(widget.constructor, 'needs-attention')) {
             widget.bind_property('needs-attention',
                 topic, 'needs-attention', GObject.BindingFlags.SYNC_CREATE);
         }
+        topic.connect('notify::revealed', () => {
+            this._notifyRevealed(topic, id);
+        });
+
+        topic.connect('notify::sensitive', () => {
+            this._notifySensitive(topic, id);
+        });
+
+        topic.dbusRegister(this.appId);
 
         widget.show_all();  // show_all() only propagates to current stack page
         this._topicsStack.add_titled(widget, id, title);
@@ -152,6 +161,15 @@ var Toolbox = GObject.registerClass({
         });
     }
 
+    _notifyRevealed(topic, id) {
+        if (topic.revealed) {
+            this.revealTopic(id);
+            this.selectTopic(id);
+        } else {
+            this.hideTopic(id);
+        }
+    }
+
     _findTopic(id) {
         const rows = this._topicsList.get_children();
         const topicRow = rows.find(row => row.get_child().id === id);
@@ -163,7 +181,7 @@ var Toolbox = GObject.registerClass({
         const [topicRow, topic] = this._findTopic(id);
 
         if (this._topicsList.get_selected_row() === topicRow)
-            this._topicsList.select_row(null);
+            this._topicsList.unselect_row(topicRow);
 
         topicRow.noShowAll = true;
         topicRow.hide();
@@ -205,10 +223,13 @@ var Toolbox = GObject.registerClass({
         }
 
         const topic = row.get_child();
-        this._headerLabel.label = topic.title;
-        this._headerImage.iconName = topic.icon_name;
-        this._topicsStack.visibleChildName = topic.id;
-        this._setMinimized(false);
+        if (topic.sensitive) {
+            this._headerLabel.label = topic.title;
+            this._headerImage.iconName = topic.icon_name;
+            this._topicsStack.visibleChildName = topic.id;
+            this._setMinimized(false);
+        }
+        topic.emit('clicked');
     }
 
     _onResetClicked() {
@@ -237,8 +258,18 @@ var Toolbox = GObject.registerClass({
         this._infoLabel.label = text;
     }
 
+    _notifySensitive(topic, id) {
+        const child = this._topicsStack.get_child_by_name(id);
+        child.sensitive = topic.sensitive;
+        this.minimizeButton = this._leftStack.get_child_by_name('normal');
+        this.minimizeButton.sensitive = topic.sensitive;
+    }
+
     // Can be overridden by subclasses to do any work on window close
     shutdown() {
-        void this;
+        this._topicsList.get_children().forEach(row => {
+            const topic = row.get_child();
+            topic.dbusUnregister();
+        });
     }
 });
