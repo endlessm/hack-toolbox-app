@@ -110,8 +110,10 @@
     <file>OperatingSystemApp/icons/cursor-rainbow-unicorn.png</file>
     <file compressed="true">OperatingSystemApp/saniel-still.png</file>
     <file compressed="true" preprocess="xml-stripblanks">RileyMaze/panel.ui</file>
-    <file preprocess="xml-stripblanks">RileyMaze/icons/16x16/actions/spawn-symbolic.svg</file>
-    <file preprocess="xml-stripblanks">RileyMaze/icons/16x16/actions/powerup-symbolic.svg</file>
-    <file>RileyMaze/units/unicorn.png</file>
+    <file preprocess="xml-stripblanks">RileyMaze/icons/16x16/actions/instructions-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">RileyMaze/icons/16x16/actions/levels-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">RileyMaze/icons/16x16/actions/units-symbolic.svg</file>
+    <file>RileyMaze/units/robotA.png</file>
+    <file>RileyMaze/units/robotB.png</file>
   </gresource>
 </gresources>
