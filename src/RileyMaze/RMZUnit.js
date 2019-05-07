@@ -10,8 +10,8 @@ const SoundServer = imports.soundServer;
 GObject.type_ensure(Codeview.$gtype);
 GObject.type_ensure(Section.$gtype);
 // Placeholders for the units
-const VALID_ROBOT_A = ['unicorn'];
-const VALID_ROBOT_B = ['unicorn'];
+const VALID_ROBOT_A = ['robotA'];
+const VALID_ROBOT_B = ['robotB'];
 const up = 'up';
 const down = 'down';
 const directions = {true: up, false: down};

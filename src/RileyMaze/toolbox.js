@@ -18,20 +18,21 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
         this._global = new RMZGlobalModel();
         this._instructTopic = new RMZUserFunction('instructions');
         this._instructTopic.bindGlobalModel(this._global);
-        this.addTopic('instructions', 'Instructions', 'spawn-symbolic',
+        this.addTopic('instructions', 'Instructions', 'instructions-symbolic',
             this._instructTopic);
         this.showTopic('instructions');
 
         this._unitTopic = new RMZUnitsTopic();
         this._unitTopic.bindGlobalModel(this._global);
-        this.addTopic('unit', 'Unit', 'powerup-symbolic',
+
+        this.addTopic('unit', 'Unit', 'units-symbolic',
             this._unitTopic, true);
         this.showTopic('unit');
         this.addTopicKeys('unit', 'item.key.sidetrack.2', 'lock.sidetrack.2');
 
         this._levelTopic = new RMZUserFunction('level');
         this._levelTopic.bindGlobalModel(this._global);
-        this.addTopic('level', 'Level', 'spawn-symbolic',
+        this.addTopic('level', 'Level', 'levels-symbolic',
             this._levelTopic, true);
         this.addTopicKeys('level', 'item.key.sidetrack.3', 'lock.sidetrack.3');
         this.showTopic('level');
