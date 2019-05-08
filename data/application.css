@@ -185,20 +185,12 @@ row:selected:hover .topic:not(.insensitive) {
 }
 
 .topic.insensitive {
-    background-color:  rgba(0, 0, 0, 0.3);
-    border-radius: 25px;
-    min-height: 154px;
-    min-width: 154px;
-    outline-width: 0;
-    transition: background-color 200ms;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .topic.insensitive label {
     background-color: rgba(0, 0, 0, 0.1);
     color: rgba(109, 110, 112, 1.0);
-    border-radius: 12px;
-    margin-top: 12px;
-    padding: 4px;
 }
 
 .topic.insensitive image {
