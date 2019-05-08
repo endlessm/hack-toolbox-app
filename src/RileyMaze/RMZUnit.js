@@ -3,15 +3,11 @@
 const {GLib, GObject, Gtk} = imports.gi;
 
 const {Codeview} = imports.codeview;
-const {PopupMenu} = imports.popupMenu;
 const {Section} = imports.section;
 const SoundServer = imports.soundServer;
 
 GObject.type_ensure(Codeview.$gtype);
 GObject.type_ensure(Section.$gtype);
-// Placeholders for the units
-const VALID_ROBOT_A = ['robotA'];
-const VALID_ROBOT_B = ['robotB'];
 const up = 'up';
 const down = 'down';
 const directions = {true: up, false: down};
@@ -21,8 +17,8 @@ const directionStr = {up: true, down: false};
 var RMZUnitsTopic = GObject.registerClass({
     GTypeName: 'RMZCombinedTopic',
     Template: 'resource:///com/endlessm/HackToolbox/RileyMaze/panel.ui',
-    InternalChildren: ['units', 'robotAAssetButton', 'robotAUp',
-        'robotADown', 'robotBAssetButton', 'robotBUp', 'robotBDown',
+    InternalChildren: ['units', 'robotAAsset', 'robotAUp',
+        'robotADown', 'robotBAsset', 'robotBUp', 'robotBDown',
         'variablesCodeview'],
     Properties: {
         'needs-attention': GObject.ParamSpec.boolean('needs-attention', 'Needs attention',
@@ -34,19 +30,13 @@ var RMZUnitsTopic = GObject.registerClass({
         this._lastCodeviewSoundMicrosec = 0;
         super._init(props);
 
-        const robotAInfo = {};
-        VALID_ROBOT_A.forEach(id => {
-            robotAInfo[id] = `/com/endlessm/HackToolbox/RileyMaze/units/${id}.png`;
-        });
-        this._robotAAssetMenu = new PopupMenu(this._robotAAssetButton, robotAInfo,
-            Gtk.Image, 'resource');
+        const iconTheme = Gtk.IconTheme.get_default();
+        iconTheme.add_resource_path('/com/endlessm/HackToolbox/RileyMaze/units');
 
-        const robotBInfo = {};
-        VALID_ROBOT_B.forEach(id => {
-            robotBInfo[id] = `/com/endlessm/HackToolbox/RileyMaze/units/${id}.png`;
-        });
-        this._robotBAssetMenu = new PopupMenu(this._robotBAssetButton, robotBInfo,
-            Gtk.Image, 'resource');
+        this._robotAAsset.set_from_icon_name('robotA', Gtk.IconSize.NONE);
+        this._robotAAsset.get_style_context().add_class('units');
+        this._robotBAsset.set_from_icon_name('robotB', Gtk.IconSize.NONE);
+        this._robotBAsset.get_style_context().add_class('units');
         this._variablesCodeview.connect('should-compile', this._compile.bind(this));
     }
 
