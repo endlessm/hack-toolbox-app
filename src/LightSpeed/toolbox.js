@@ -22,6 +22,7 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         this._combinedTopic = new LSCombinedTopic();
         this._combinedTopic.bindGlobal(this._global);
         this.addTopic('game', 'Game', 'rocket-symbolic', this._combinedTopic);
+        this.selectTopic('game');
 
         this._spawnTopic = new LSSpawnTopic();
         this._spawnTopic.bindGlobal(this._global);

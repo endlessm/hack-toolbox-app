@@ -47,8 +47,8 @@ var FrameworkToolbox = GObject.registerClass(class FrameworkToolbox extends Tool
         this._controlPanel.bindModel(this._model);
         this._controlPanel.bindWindow(win);
         this.addTopic('main', 'Tools', 'preferences-other-symbolic', this._controlPanel);
-
         this.show_all();
+        this.selectTopic('main');
 
         this.setBusy(false);
     }

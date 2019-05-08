@@ -21,6 +21,7 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
         this.addTopic('instructions', 'Instructions', 'instructions-symbolic',
             this._instructTopic);
         this.showTopic('instructions');
+        this.selectTopic('instructions');
 
         this._unitTopic = new RMZUnitsTopic();
         this._unitTopic.bindGlobalModel(this._global);

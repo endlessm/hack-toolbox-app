@@ -1,8 +1,20 @@
 /* exported TopicButton */
-
-const {GObject, Gtk} = imports.gi;
+const {GObject, Gtk, GLib, Gio} = imports.gi;
 
 const {Lockscreen} = imports.lockscreen;
+
+const TopicIface = `
+<node>
+  <interface name="com.endlessm.HackToolbox.Topic">
+    <method name="reveal">
+      <arg type="b" direction="in" name="revealed"/>
+    </method>
+    <property name="sensitive" type="b" access="readwrite"/>
+    <signal name="clicked">
+      <arg type="s" name="button"/>
+    </signal>
+  </interface>
+</node>`;
 
 var TopicButton = GObject.registerClass({
     Properties: {
@@ -18,10 +30,20 @@ var TopicButton = GObject.registerClass({
         'needs-attention': GObject.ParamSpec.boolean('needs-attention', 'Needs attention',
             'Display an indicator on the button that it needs attention',
             GObject.ParamFlags.READWRITE, false),
+        sensitive: GObject.ParamSpec.boolean('sensitive', 'sensitive',
+            'Indicates whether the Topic Button is sensitive',
+            GObject.ParamFlags.READWRITE, false),
+        revealed: GObject.ParamSpec.boolean('revealed', 'revealed',
+            'Indicates whether the Topic is revealed',
+            GObject.ParamFlags.READWRITE, false),
+    },
+    Signals: {
+        clicked: {},
     },
 }, class TopicButton extends Gtk.Frame {
     _init(props = {}) {
         super._init(props);
+
         const overlay = new Gtk.Overlay();
 
         if (this._lockscreen) {
@@ -108,5 +130,64 @@ var TopicButton = GObject.registerClass({
         this._needsAttention = value;
         this._attentionSign.revealChild = value;
         this.notify('needs-attention');
+    }
+
+    get revealed() {
+        return this._revealed;
+    }
+
+    set revealed(value) {
+        if ('_revealed' in this && this._revealed === value)
+            return;
+
+        this._revealed = value;
+        this.notify('revealed');
+    }
+
+    get sensitive() {
+        return this._sensitive;
+    }
+
+    set sensitive(value) {
+        if ('_sensitive' in this && this._sensitive === value)
+            return;
+
+        this._sensitive = value;
+        this.notify('sensitive');
+
+        if (!this._sensitive)
+            this.get_style_context().add_class('insensitive');
+        else if (this._sensitive)
+            this.get_style_context().remove_class('insensitive');
+    }
+
+    dbusRegister(appId) {
+        const objPath = Gio.Application.get_default().get_dbus_object_path();
+        const winName = appId.replace(/\./gi, '_');
+        this.objectPath = `${objPath}/window/${winName}/topic/${this._id}`;
+        this.address = `com.endlessm.HackToolbox.window.${winName}.topic.${this._id}`;
+        this._dbus = Gio.DBusExportedObject.wrapJSObject(TopicIface, this);
+        try {
+            this._dbus.export(Gio.DBus.session, this.objectPath);
+        } catch (e) {
+            logError(e);
+        }
+        this.connect('clicked', this._handleClickedSignal.bind(this));
+    }
+
+    _handleClickedSignal(button) {
+        const variant = new GLib.Variant('(s)', button.id);
+        this._dbus.emit_signal(
+            'clicked',
+            variant);
+    }
+
+    // D-Bus implementation
+    reveal(isRevealed) {
+        this.set_property('revealed', isRevealed);
+    }
+
+    dbusUnregister() {
+        this._dbus.unexport();
     }
 });
