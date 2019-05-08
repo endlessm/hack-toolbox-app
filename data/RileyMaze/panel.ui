@@ -29,10 +29,8 @@
                 <property name="row_spacing">12</property>
                 <property name="column_spacing">12</property>
                 <child>
-                  <object class="GtkMenuButton" id="robotAAssetButton">
+                  <object class="GtkImage" id="robotAAsset">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
                     <property name="valign">start</property>
                     <property name="margin_start">12</property>
                     <property name="margin_end">12</property>
@@ -115,10 +113,8 @@
                 <property name="row_spacing">12</property>
                 <property name="column_spacing">12</property>
               <child>
-                <object class="GtkMenuButton" id="robotBAssetButton">
+                <object class="GtkImage" id="robotBAsset">
                   <property name="visible">True</property>
-                  <property name="can_focus">True</property>
-                  <property name="receives_default">True</property>
                   <property name="valign">start</property>
                   <property name="margin_start">12</property>
                   <property name="margin_end">12</property>

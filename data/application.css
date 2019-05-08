@@ -479,3 +479,11 @@ button.up:disabled,
      * color: mix(#f18c22, desaturate(#3d3846, 10%), 50%); */
     color: #986531;
 }
+
+.units {
+    min-width: 55px;
+    min-height: 55px;
+    /* Reduce padding from Adwaita */
+    padding: 0px;
+}
+
