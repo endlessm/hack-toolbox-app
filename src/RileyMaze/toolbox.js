@@ -47,7 +47,7 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
     }
 
     bindWindow(win) {
-        win.get_style_context().add_class('RileyMaze');
+        win.get_style_context().add_class('Sidetrack');
         win.lockscreen.key = 'item.key.sidetrack.1';
         win.lockscreen.lock = 'lock.sidetrack.1';
         void this;
