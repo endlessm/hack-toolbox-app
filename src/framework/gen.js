@@ -561,6 +561,83 @@ $body-font: ${model.font};
     .LayoutScrolling--maincontainer {
         background-color: $background-medium-color;
     }
+
+    .Nav-LayoutBox {
+        min-width: 1905px;
+        min-height: 415px;
+    }
+
+    .Gtk-button-back {
+        color: $accent-light-color;
+        font-family: $title-font;
+        font-size: 25px;
+        margin-left: 95px;
+        margin-top: 65px;
+        min-height: 150px;
+        min-width: 150px;
+    }
+
+    .ContentGroup--navcontent {
+        background-color: #3f3532;
+        background-image:
+            url('ekn:///eebc9b8230883b63fccace14f32c594a661cb2da'),
+            url('ekn:///88ebc9b8230b63fccace14f32c594a661cb2da3e');
+        background-repeat: no-repeat, repeat-y;
+        background-position: center top, center 17px;
+        min-height: 100px;
+        min-width: 100px;
+        padding-bottom: 65px;
+        padding-top: 65px;
+
+        .CardHackdexArticle {
+            min-height: 290px;
+            min-width: 240px;
+
+            frame {
+                background-position: center -5px;
+                background-size: 240px;
+            }
+
+            .CardHackdex__title {
+                background-position: center -362px;
+                color: transparent;
+                font-size: ${model.font_size * 4.5}px;
+                margin: 0 2px;
+                padding: 10px;
+            }
+
+            &:hover {
+                .CardHackdex__title {
+                    color: $primary-light-color;
+                }
+
+                frame {
+                    background-position: center -377px;
+                    border: 7px solid white;
+                }
+            }
+
+            &.CardHackdex-0:hover .CardHackdex__title {
+              background-image: url('ekn:///5cf1864ef4c05dbd4590f5d603c2e032094438c7');
+            }
+
+            &.CardHackdex-1:hover .CardHackdex__title {
+              background-image: url('ekn:///5349c23fb5d6f593cc0e1136efcc54b1c18afed0');
+            }
+
+            &.CardHackdex-2:hover .CardHackdex__title {
+              background-image: url('ekn:///eded59fbdac4869573bb843a65040e1d4217a326');
+            }
+
+            &.CardHackdex-3:hover .CardHackdex__title {
+              background-image: url('ekn:///3adb924b4f238bb47431a30f17d276c6c49b0ed8');
+            }
+
+            &.CardHackdex-4:hover .CardHackdex__title {
+              background-image: url('ekn:///159bba2319720c2339d42e393bbfc430e9d6b953');
+            }
+        }
+    }
 }
 
 // Special overrides for hacking toolbox

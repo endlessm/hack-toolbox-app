@@ -17,6 +17,11 @@ vars:
   home-articles-card:
     type: Card.Hackdex
 
+  articles-card:
+    type: Card.Hackdex
+    styles:
+      - CardHackdexArticle
+
   home-articles-order:
     type: Order.Sequence
 
@@ -28,6 +33,17 @@ vars:
       row-spacing: 90
       halign: center
       valign: start
+
+  articles-arrangement:
+    type: Arrangement.Grid
+    properties:
+      homogeneous: true
+      column-spacing: 33
+      row-spacing: 90
+      halign: end
+      valign: start
+      margin-right: 80
+      max-children-per-line: 4
 
 defines:
 
@@ -110,7 +126,32 @@ defines:
           contents:
             - type: Layout.ArticleStack
               slots:
-                article: 'View.Document(show_titles: false, show_toc: false)'
+                article: View.DocumentDev
+                nav-content:
+                  type: Layout.Box
+                  styles:
+                    - Nav-LayoutBox
+                  slots:
+                    contents:
+                      - type: ContentGroup.ContentGroup
+                        properties:
+                          cards-per-page: 5
+                          halign: fill
+                          valign: end
+                        styles:
+                          - ContentGroup--navcontent
+                        slots:
+                          arrangement:
+                            refvar: $articles-arrangement
+                            slots:
+                              card: $articles-card
+                          selection:
+                            type: Selection.FeaturedFirst
+                            id: home-articles
+                            slots:
+                              order: $home-articles-order
+                              filter:
+                                type: Filter.CurrentItemDev
 
 # App
 root:
