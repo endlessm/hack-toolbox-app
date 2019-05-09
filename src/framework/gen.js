@@ -759,15 +759,15 @@ $font-lightbox-content: 'DK Double Quick';
 
 @keyframes carrot {
   0% {
-    background-position: top right;
+    background-position: 30px center;
   }
 
   50% {
-    background-position: top left;
+    background-position: left center;
   }
 
   100% {
-    background-position: top right;
+    background-position: 30px center;
   }
 }
 
@@ -854,10 +854,13 @@ $font-lightbox-content: 'DK Double Quick';
         .LightboxDev__button-toggle {
             background-image: url('resource:///app/assets/images/carrot.png');
             background-repeat: no-repeat;
-            background-position: top right;
+            background-position: 30px center;
+            font-family: $font-lightbox-title;
+            font-size: 27px;
             min-height: 20px;
             min-width: 20px;
-            margin: 45px 0 0 40px;
+            margin: 35px 0 0 20px;
+            padding-left: 60px;
 
             &:hover {
                 background-image: url('resource:///app/assets/images/carrot.png');
@@ -1116,6 +1119,12 @@ function generateYAML(model) {
         dynamicBanner = 'Banner.HackableDynamic';
         searchBanner = 'Banner.HackableSearch';
     }
+    const soundpackAndhackableTextProperties = {
+        textfilter: model.text_transformation,
+        rotation: model.text_cipher,
+        allow_navigation: model.hyperlinks,
+        click: model.sounds_cursor_click !== 'none',
+    };
     switch (model.constructor.appId) {
     case 'com.endlessm.dinosaurs.en': {
         const appBanner = {
@@ -1311,6 +1320,9 @@ overrides:
         Object.assign(hackableTextProperties, {
             decodefunc: 'return (letter + 21) % 26;',
         });
+        Object.assign(soundpackAndhackableTextProperties, {
+            decodefunc: 'return (letter + 21) % 26;',
+        });
 
         const root = 'root.window.content.content.home-page.content.overlays';
 
@@ -1318,7 +1330,7 @@ overrides:
         const overridesString = Object.entries(Hackdex2.LIGHTBOX_OVERRIDES)
             .map(([key, module]) => {
                 walkTreeAndAppendProperties(module, {
-                    'Layout.LightboxDev': soundpackProperties,
+                    'Layout.LightboxDev': soundpackAndhackableTextProperties,
                     'ContentGroup.EncryptText': hackableTextProperties,
                     'ContentGroup.HackdexText': hackableTextProperties,
                 });

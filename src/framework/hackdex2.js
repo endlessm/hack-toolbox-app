@@ -10,6 +10,7 @@ var LIGHTBOX_OVERRIDES = {
       expand: true,
       'margin-left': 60,
       'margin-top': 28,
+      'back-button-text': 'Stonehenge diagrams',
     },
     slots: {
       content: {
@@ -44,14 +45,6 @@ var LIGHTBOX_OVERRIDES = {
                 'margin-left': 815,
                 'margin-top': 204,
               },
-            },
-            {
-              type: 'ContentGroup.EncryptText',
-              properties: {
-                valign: 'start',
-                label: 'Stonehenge diagrams',
-              },
-              styles: ['Content-title'],
             },
             {
               type: 'ContentGroup.EncryptText',
@@ -115,6 +108,7 @@ he probably really can tell time that way!
       expand: true,
       'margin-left': 586,
       'margin-top': 34,
+      'back-button-text': 'Clipping of a whale song',
     },
     slots: {
       content: {
@@ -159,14 +153,6 @@ he probably really can tell time that way!
                 'margin-top': 208,
               },
               styles: ['Notebook-Whale'],
-            },
-            {
-              type: 'ContentGroup.EncryptText',
-              properties: {
-                valign: 'start',
-                label: 'Clipping of a whale song',
-              },
-              styles: ['Content-title'],
             },
             {
               type: 'ContentGroup.EncryptText',
@@ -245,6 +231,7 @@ populations. So interesting.
       expand: true,
       'margin-left': 1249,
       'margin-top': 174,
+      'back-button-text': 'Benjamin Franklin\'s daily schedule',
     },
     slots: {
       content: {
@@ -289,14 +276,6 @@ populations. So interesting.
                 'margin-left': 1220,
                 'margin-top': 150,
               },
-            },
-            {
-              type: 'ContentGroup.EncryptText',
-              properties: {
-                valign: 'start',
-                label: "Benjamin Franklin's daily schedule",
-              },
-              styles: ['Content-title'],
             },
             {
               type: 'ContentGroup.EncryptText',
