@@ -86,6 +86,8 @@ defines:
                 expand: true
                 margin-left: 60
                 margin-top: 28
+                back-button-text: "Stonehenge diagrams"
+                decodefunc: *encryption-code
               slots:
                 content:
                   type: Layout.Overlay
@@ -114,13 +116,6 @@ defines:
                           halign: start
                           margin-left: 815
                           margin-top: 204
-                      - type: ContentGroup.EncryptText
-                        properties:
-                          label: "Stonehenge diagrams"
-                          valign: start
-                          decodefunc: *encryption-code
-                        styles:
-                          - Content-title
                       - type: ContentGroup.EncryptText
                         properties:
                           label: "The outer ring was made up of\n30 stones to represent an\naverage of 30 days in a month"
@@ -171,6 +166,8 @@ defines:
                 expand: true
                 margin-left: 586
                 margin-top: 34
+                back-button-text: "Clipping of a whale song"
+                decodefunc: *encryption-code
               slots:
                 content:
                   type: Layout.Overlay
@@ -207,13 +204,6 @@ defines:
                           margin-top: 208
                         styles:
                           - Notebook-Whale
-                      - type: ContentGroup.EncryptText
-                        properties:
-                          label: "Clipping of a whale song"
-                          valign: start
-                          decodefunc: *encryption-code
-                        styles:
-                          - Content-title
                       - type: ContentGroup.EncryptText
                         properties:
                           label: "Each of these ticks is a unit\nwhich is equivalent to a note"
@@ -277,6 +267,8 @@ defines:
                 expand: true
                 margin-left: 1249
                 margin-top: 174
+                back-button-text: "Benjamin Franklin's daily schedule"
+                decodefunc: *encryption-code
               slots:
                 content:
                   type: Layout.Overlay
@@ -313,13 +305,6 @@ defines:
                           halign: start
                           margin-left: 1220
                           margin-top: 150
-                      - type: ContentGroup.EncryptText
-                        properties:
-                          label: "Benjamin Franklin's daily schedule"
-                          valign: start
-                          decodefunc: *encryption-code
-                        styles:
-                          - Content-title
                       - type: ContentGroup.EncryptText
                         properties:
                           label: "Wake up at 5am!!!"
