@@ -13,6 +13,9 @@ var FizzicsLevel2 = GObject.registerClass({
         'update-sound-enabled': GObject.ParamSpec.boolean('update-sound-enabled',
             'Update sound enabled', '',
             GObject.ParamFlags.READWRITE, false),
+        'needs-attention': GObject.ParamSpec.boolean('needs-attention', 'Needs attention',
+            'Display an indicator on the button that it needs attention',
+            GObject.ParamFlags.READWRITE, false),
     },
 
     Template: 'resource:///com/endlessm/HackToolbox/Fizzics/level2.ui',
@@ -189,6 +192,7 @@ var FizzicsLevel2 = GObject.registerClass({
             const func = new Function('scope', `with(scope){\n${code}\n;}`);
             func(scope);
         } catch (e) {
+            this.set_property('needs-attention', true);
             if (!(e instanceof SyntaxError || e instanceof ReferenceError))
                 throw e;
             this._codeview.setCompileResultsFromException(e);
@@ -200,11 +204,13 @@ var FizzicsLevel2 = GObject.registerClass({
 
         const errors = this._searchForErrors(scope);
         if (errors.length > 0) {
+            this.set_property('needs-attention', true);
             this._codeview.setCompileResults(errors);
             return;
         }
 
         this._codeview.setCompileResults([]);
+        this.set_property('needs-attention', false);
 
         // Block the normal notify handler that updates the code view, since we
         // are propagating updates from the codeview to the GUI. Instead,
@@ -320,6 +326,7 @@ var FizzicsLevel2 = GObject.registerClass({
             SoundServer.getDefault().play('hack-toolbox/update-codeview');
             this._lastCodeviewSoundMicrosec = timeMicrosec;
         }
+        this.set_property('needs-attention', false);
     }
 
     bindModel(model) {

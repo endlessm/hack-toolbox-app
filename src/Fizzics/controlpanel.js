@@ -12,6 +12,11 @@ var FizzicsControlPanel = GObject.registerClass({
         'panelLevel1',
         'panelLevel2',
     ],
+    Properties: {
+        'needs-attention': GObject.ParamSpec.boolean('needs-attention', 'Needs attention',
+            'Display an indicator on the button that it needs attention',
+            GObject.ParamFlags.READWRITE, false),
+    },
 }, class FizzicsControlPanel extends Gtk.Box {
     _init(props = {}) {
         super._init(props);
@@ -28,6 +33,9 @@ var FizzicsControlPanel = GObject.registerClass({
         this._level2lock.bind_property('locked',
             this._level2, 'update-sound-enabled',
             GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
+
+        this._level2.bind_property('needs-attention',
+            this, 'needs-attention', GObject.BindingFlags.SYNC_CREATE);
     }
 
     reset() {
