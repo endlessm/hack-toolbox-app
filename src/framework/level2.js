@@ -35,6 +35,7 @@ var FrameworkLevel2 = GObject.registerClass({
 
         this._cipherChooser.connect('output', entry => {
             entry.text = `+${this._cipherAdjustment.value}`;
+            return true;
         });
 
         this._cipherInput.connect('changed', this._updateCipherOutput.bind(this));
