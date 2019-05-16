@@ -200,6 +200,7 @@ var RMZUserFunction = GObject.registerClass({
         this._model = model;
         this._notifyHandler = model.connect('notify', this._setCode.bind(this));
         this._setCode();
+        this._compile();
     }
 
     _setCode() {
