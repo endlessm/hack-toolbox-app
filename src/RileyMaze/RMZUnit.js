@@ -101,6 +101,9 @@ var RMZUnitsTopic = GObject.registerClass({
         });
         this._notifyHandler = model.connect('notify', this._onNotify.bind(this));
         this._regenerateCode();
+        // Sends notify signals to set the buttons to the initial state
+        this._model.notify('robotADirection');
+        this._model.notify('robotBDirection');
     }
 
     _onActiveChanged(childName, button) {
