@@ -380,6 +380,14 @@ popover.error button:hover {
     transition: background-image 10s;
 }
 
+.framework entry.input {
+    color: #f18c22;  /* orange indicates something you can use */
+}
+
+.framework entry.output {
+    color: #babdb6;  /* slightly darker than white to indicate "not editable" */
+}
+
 /* Keep in sync with "toolbox .panel" background above */
 .HackUnlock frame.toolbox {
     background-image: url('resource:///com/endlessm/HackToolbox/hacktoolbox/background.png'),
@@ -466,7 +474,8 @@ arrow, button.down, button.up, .dropdown {
 
 button.toggle,
 button.combo,
-spinbutton {
+spinbutton,
+entry {
     background: rgba(11,28,53,0.60);
 }
 
