@@ -17,3 +17,9 @@ sed \
 
 flatpak-builder build --ccache com.endlessm.HackToolbox.json --repo=${REPO}
 flatpak build-bundle ${REPO} com.endlessm.HackToolbox.flatpak com.endlessm.HackToolbox ${BRANCH}
+# Reload the GSS to make sure we have the freshest changes in case it was modified for testing
+# this build.
+echo
+echo Restarting the GSS
+gdbus call -e -d com.endlessm.GameStateService -o /com/endlessm/GameStateService -m com.endlessm.GameStateService.Reload > /dev/null
+
