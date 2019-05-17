@@ -28,7 +28,6 @@ var LSCombinedTopic = GObject.registerClass({
 }, class LSCombinedTopic extends Gtk.Grid {
     _init(props = {}) {
         this._lastCodeviewSoundMicrosec = 0;
-
         super._init(props);
 
         const shipInfo = {};
@@ -80,10 +79,8 @@ var LSCombinedTopic = GObject.registerClass({
 
     _bindModel(model) {
         this._unbindLevelModel();
-
         this._model = model;
         const flags = GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE;
-
         const bindingInfo = {
             scoreTarget: this._scoreTargetAdjustment,
             astronautSize: this._astronautSizeAdjustment,
@@ -93,8 +90,8 @@ var LSCombinedTopic = GObject.registerClass({
         };
         this._bindings = Object.entries(bindingInfo).map(([prop, target]) =>
             model.bind_property(prop, target, 'value', flags));
-
-        this._notifyHandler = model.connect('notify', this._onNotify.bind(this));
+        this._notifyHandler = this._model.connect(
+            'notify', (object, pspec) => this._onNotify(pspec));
         this._regenerateCode();
     }
 
@@ -142,7 +139,7 @@ var LSCombinedTopic = GObject.registerClass({
         this._variablesCodeview.setCompileResults([]);
         this.set_property('needs-attention', false);
 
-        // Block the normal notify handler that updates the code view, since we
+        // Block the normal notify handlers that update the code view, since we
         // are propagating updates from the codeview to the GUI. Instead,
         // connect a temporary handler that lets us know if anything actually
         // did change.
@@ -199,8 +196,16 @@ var LSCombinedTopic = GObject.registerClass({
         return errors;
     }
 
-    _onNotify() {
-        this.reset();
+    _onNotify(pspec) {
+        const props = [
+            'scoreTarget',
+            'astronautSize',
+            'shipAsset',
+            'shipSize',
+            'shipSpeed',
+        ];
+        if (props.includes(pspec.name))
+            this.reset();
     }
 
     reset() {

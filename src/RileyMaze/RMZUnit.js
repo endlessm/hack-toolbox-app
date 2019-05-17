@@ -69,6 +69,7 @@ var RMZUnitsTopic = GObject.registerClass({
                 this._model.disconnect(this._notifyHandler);
                 this._notifyHandler = null;
             }
+
             if (this._bindings) {
                 this._bindings.forEach(binding => binding.unbind());
                 this._bindings = null;
@@ -99,11 +100,8 @@ var RMZUnitsTopic = GObject.registerClass({
             else if (dirBool === false)
                 this._robotBDown.set_active(true);
         });
-        this._notifyHandler = model.connect('notify', this._onNotify.bind(this));
+        this._notifyHandler = model.connect('notify', (obj, pspec) => this._onNotify(pspec));
         this._regenerateCode();
-        // Sends notify signals to set the buttons to the initial state
-        this._model.notify('robotADirection');
-        this._model.notify('robotBDirection');
     }
 
     _onActiveChanged(childName, button) {
@@ -152,7 +150,6 @@ var RMZUnitsTopic = GObject.registerClass({
         // connect a temporary handler that lets us know if anything actually
         // did change.
         GObject.signal_handler_block(this._model, this._notifyHandler);
-
         let guiUpdated = false;
         const tempHandler = this._model.connect('notify', () => {
             guiUpdated = true;
@@ -194,8 +191,13 @@ var RMZUnitsTopic = GObject.registerClass({
         return errors;
     }
 
-    _onNotify() {
-        this.reset();
+    _onNotify(obj, pspec) {
+        const props = [
+            'robotADirection',
+            'robotBDirection',
+        ];
+        if (props.includes(pspec.name))
+            this.reset();
     }
 
     reset() {
