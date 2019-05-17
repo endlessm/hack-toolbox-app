@@ -198,13 +198,13 @@ var RMZUserFunction = GObject.registerClass({
             this._unbindLevelModel();
 
         this._model = model;
-        this._notifyHandler = model.connect('notify', this._setCode.bind(this));
+        const {modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
+        this._notifyHandler = model.connect(`notify::${modelProp}`, this._setCode.bind(this));
         this._setCode();
     }
 
     _setCode() {
         const {name, args, perLevel, modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
-
         let code;
         if (perLevel)
             code = this._model[modelProp];
