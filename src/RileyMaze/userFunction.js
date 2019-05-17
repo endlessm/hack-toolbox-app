@@ -201,6 +201,7 @@ var RMZUserFunction = GObject.registerClass({
         const {modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
         this._notifyHandler = model.connect(`notify::${modelProp}`, this._setCode.bind(this));
         this._setCode();
+        this._compile();
     }
 
     _setCode() {
