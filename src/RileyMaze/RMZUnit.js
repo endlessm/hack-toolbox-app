@@ -191,7 +191,7 @@ var RMZUnitsTopic = GObject.registerClass({
         return errors;
     }
 
-    _onNotify(obj, pspec) {
+    _onNotify(pspec) {
         const props = [
             'robotADirection',
             'robotBDirection',
