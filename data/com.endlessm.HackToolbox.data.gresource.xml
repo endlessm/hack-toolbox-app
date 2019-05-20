@@ -113,7 +113,9 @@
     <file preprocess="xml-stripblanks">RileyMaze/icons/16x16/actions/instructions-symbolic.svg</file>
     <file preprocess="xml-stripblanks">RileyMaze/icons/16x16/actions/levels-symbolic.svg</file>
     <file preprocess="xml-stripblanks">RileyMaze/icons/16x16/actions/units-symbolic.svg</file>
-    <file>RileyMaze/units/robotA.png</file>
-    <file>RileyMaze/units/robotB.png</file>
+    <file>RileyMaze/units/robotAUp.png</file>
+    <file>RileyMaze/units/robotBUp.png</file>
+    <file>RileyMaze/units/robotADown.png</file>
+    <file>RileyMaze/units/robotBDown.png</file>
   </gresource>
 </gresources>

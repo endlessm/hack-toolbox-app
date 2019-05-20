@@ -33,9 +33,9 @@ var RMZUnitsTopic = GObject.registerClass({
         const iconTheme = Gtk.IconTheme.get_default();
         iconTheme.add_resource_path('/com/endlessm/HackToolbox/RileyMaze/units');
 
-        this._robotAAsset.set_from_icon_name('robotA', Gtk.IconSize.NONE);
+        this._robotAAsset.set_from_icon_name('robotADown', Gtk.IconSize.NONE);
         this._robotAAsset.get_style_context().add_class('units');
-        this._robotBAsset.set_from_icon_name('robotB', Gtk.IconSize.NONE);
+        this._robotBAsset.set_from_icon_name('robotBUp', Gtk.IconSize.NONE);
         this._robotBAsset.get_style_context().add_class('units');
         this._variablesCodeview.connect('should-compile', this._compile.bind(this));
     }
@@ -86,19 +86,25 @@ var RMZUnitsTopic = GObject.registerClass({
             this._onActiveChanged.bind(this, 'robotADirection'));
         this._model.connect('notify::robotADirection', () => {
             const dirBool = directionStr[this._model.robotADirection];
-            if (dirBool === true)
+            if (dirBool === true) {
                 this._robotAUp.set_active(true);
-            else if (dirBool === false)
+                this._robotAAsset.set_from_icon_name('robotAUp', Gtk.IconSize.NONE);
+            } else if (dirBool === false) {
                 this._robotADown.set_active(true);
+                this._robotAAsset.set_from_icon_name('robotADown', Gtk.IconSize.NONE);
+            }
         });
         this._robotBUp.connect('toggled',
             this._onActiveChanged.bind(this, 'robotBDirection'));
         this._model.connect('notify::robotBDirection', () => {
             const dirBool = directionStr[this._model.robotBDirection];
-            if (dirBool === true)
+            if (dirBool === true) {
                 this._robotBUp.set_active(true);
-            else if (dirBool === false)
+                this._robotBAsset.set_from_icon_name('robotBUp', Gtk.IconSize.NONE);
+            } else if (dirBool === false) {
                 this._robotBDown.set_active(true);
+                this._robotBAsset.set_from_icon_name('robotBDown', Gtk.IconSize.NONE);
+            }
         });
         this._notifyHandler = model.connect('notify', (obj, pspec) => this._onNotify(pspec));
         this._regenerateCode();
