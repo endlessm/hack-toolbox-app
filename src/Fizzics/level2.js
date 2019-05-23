@@ -29,9 +29,8 @@ var FizzicsLevel2 = GObject.registerClass({
         this._updateSoundEnabled = false;
 
         this._codeview = new Codeview();
-        this._codeview.connect('should-compile', () => {
-            this._compile();
-        });
+        this._codeview.connect('should-compile',
+            (widget, userInitiated) => this._compile(userInitiated));
         this._content.add(this._codeview);
     }
 
@@ -180,7 +179,7 @@ var FizzicsLevel2 = GObject.registerClass({
         });
     }
 
-    _compile() {
+    _compile(userInitiated = true) {
         const code = this._codeview.text;
 
         if (code === '')
@@ -224,7 +223,8 @@ var FizzicsLevel2 = GObject.registerClass({
         });
 
         try {
-            this._updateModelFromScope(scope);
+            if (userInitiated)
+                this._updateModelFromScope(scope);
         } finally {
             this._model.disconnect(tempHandler);
             GObject.signal_handler_unblock(this._model, this._notifyHandler);

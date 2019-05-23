@@ -66,6 +66,7 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
             new GLib.Variant('(sava{sv})', ['reset', [], {}]),
             null, Gio.DBusCallFlags.NONE, -1, null);
         this._unitTopic.reset();
+        this._levelTopic.discardChanges();
     }
 
     shutdown() {
