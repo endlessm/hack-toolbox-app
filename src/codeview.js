@@ -133,7 +133,9 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
 var Codeview = GObject.registerClass({
     GTypeName: 'Codeview',
     Signals: {
-        'should-compile': {},
+        'should-compile': {
+            param_types: [GObject.TYPE_BOOLEAN],
+        },
     },
 
     Template: 'resource:///com/endlessm/HackToolbox/codeview.ui',
@@ -224,7 +226,7 @@ var Codeview = GObject.registerClass({
                     this._buffer.text = value;
             });
             this._cached_ast = null;
-            this.setCompileResults([]);
+            this.compile(false);
         } finally {
             if (this._changedHandler)
                 GObject.signal_handler_unblock(this._buffer, this._changedHandler);
@@ -364,8 +366,8 @@ var Codeview = GObject.registerClass({
         this._compileTimeout = null;
     }
 
-    compile() {
-        this.emit('should-compile');
+    compile(userInitiated = true) {
+        this.emit('should-compile', userInitiated);
         this._compileTimeout = null;
         return GLib.SOURCE_REMOVE;
     }
@@ -423,7 +425,7 @@ var Codeview = GObject.registerClass({
         }
     }
 
-    setCompileResults(results) {
+    setCompileResults(results, userInitiated = true) {
         const [begin, bound] = this._buffer.get_bounds();
         this._buffer.remove_source_marks(begin, bound, MarkType.ERROR);
         this._buffer.remove_tag(this._errorStyle, begin, bound);
@@ -453,29 +455,32 @@ var Codeview = GObject.registerClass({
 
         if (this._numErrors !== results.length) {
             this._numErrors = results.length;
-            if (this._numErrors)
-                SoundServer.getDefault().play('codeview/code-error-appearance');
-            else
-                SoundServer.getDefault().play('codeview/code-error-disappearance');
-        }
+            // Only play sounds when user compiles the code
+            if (userInitiated) {
+                if (this._numErrors)
+                    SoundServer.getDefault().play('codeview/code-error-appearance');
+                else
+                    SoundServer.getDefault().play('codeview/code-error-disappearance');
 
-        this._recordErrorMetrics(results)
-            .catch(e => logError(e, 'Error while recording error metrics'));
+                this._recordErrorMetrics(results)
+                    .catch(e => logError(e, 'Error while recording error metrics'));
+            }
+        }
     }
 
-    setCompileResultsFromException(exception) {
+    setCompileResultsFromException(exception, userInitiated = true) {
         this.setCompileResults([{
             start: {
                 line: exception.lineNumber - 1,  // remove initial "with(scope)" line
                 column: exception.columnNumber - 1,  // seems to be 1-based
             },
             message: exception.message,
-        }]);
+        }], userInitiated);
     }
 
     // Like setCompileResultsFromException(), but instead this is an exception
     // thrown by the user code itself (for example, during test execution.)
-    setCompileResultsFromUserFunctionException(exception) {
+    setCompileResultsFromUserFunctionException(exception, userInitiated = true) {
         const stackFrames = exception.stack.split('\n');
         // The format of stack frames originating inside a function created with
         // new Function(...) looks like this:
@@ -490,7 +495,7 @@ var Codeview = GObject.registerClass({
                 column: column - 1,
             },
             message: exception.message,
-        }]);
+        }], userInitiated);
     }
 
     findAssignmentLocation(variable) {

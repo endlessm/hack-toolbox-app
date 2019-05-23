@@ -47,7 +47,8 @@ var FrameworkLevel3 = GObject.registerClass({
 
         this.get_style_context().add_class('codeview-frame');
 
-        this._codeview.connect('should-compile', this.compile.bind(this));
+        this._codeview.connect('should-compile',
+            (widget, userInitiated) => this.compile(userInitiated));
     }
 
     get update_sound_enabled() {

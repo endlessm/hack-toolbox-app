@@ -37,7 +37,8 @@ var RMZUnitsTopic = GObject.registerClass({
         this._robotAAsset.get_style_context().add_class('units');
         this._robotBAsset.set_from_icon_name('robotBUp', Gtk.IconSize.NONE);
         this._robotBAsset.get_style_context().add_class('units');
-        this._variablesCodeview.connect('should-compile', this._compile.bind(this));
+        this._variablesCodeview.connect('should-compile',
+            (widget, userInitiated) => this._compile(userInitiated));
     }
 
     bindGlobalModel(model) {

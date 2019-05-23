@@ -145,8 +145,8 @@ var RMZUserFunction = GObject.registerClass({
 
         this._codeview = new Codeview();
         this._codeview.userFunction = userFunctionName;
-
-        this._codeview.connect('should-compile', this._compile.bind(this));
+        this._codeview.connect('should-compile',
+            (widget, userInitiated) => this._compile(userInitiated));
 
         this.add(this._codeview);
 
@@ -201,7 +201,6 @@ var RMZUserFunction = GObject.registerClass({
         const {modelProp} = USER_FUNCTIONS[this._codeview.userFunction];
         this._notifyHandler = model.connect(`notify::${modelProp}`, this._setCode.bind(this));
         this._setCode();
-        this._compile();
     }
 
     _setCode() {
@@ -238,7 +237,7 @@ ${code}
         }
     }
 
-    _compile() {
+    _compile(userInitiated = true) {
         const {name, args, getScope, validate} = USER_FUNCTIONS[this._codeview.userFunction];
         const code = this._codeview.text;
         const scope = getScope();
@@ -257,7 +256,7 @@ ${code}
             this.set_property('needs-attention', true);
             if (!(e instanceof SyntaxError || e instanceof ReferenceError))
                 throw e;
-            this._codeview.setCompileResultsFromException(e);
+            this._codeview.setCompileResultsFromException(e, userInitiated);
             return;
         }
 
@@ -274,7 +273,7 @@ ${code}
                 },
                 message: `Expected a function named ${name}.`,
                 fixme: `function ${name}(${args.join('\n')}) {\n}\n`,
-            }]);
+            }], userInitiated);
             this.set_property('needs-attention', true);
             return;
         }
@@ -283,36 +282,39 @@ ${code}
             userFunction();
         } catch (e) {
             this.set_property('needs-attention', true);
-
             if (e instanceof InstructionError) {
-                this._codeview.setCompileResultsFromUserFunctionException(e);
+                this._codeview.setCompileResultsFromUserFunctionException(e, userInitiated);
                 const funcBody = this._codeview.getFunctionBody(name);
-                this._updateCode(funcBody);
+
+                if (userInitiated)
+                    this._updateCode(funcBody);
             } else {
-                this._codeview.setCompileResultsFromException(e);
+                this._codeview.setCompileResultsFromException(e, userInitiated);
             }
             return;
         }
 
-
         try {
             validate();
         } catch (e) {
-            this._codeview.setCompileResultsFromException(e);
+            this._codeview.setCompileResultsFromException(e, userInitiated);
             const funcBody = this._codeview.getFunctionBody(name);
-            this._updateCode(funcBody);
+
+            if (userInitiated)
+                this._updateCode(funcBody);
+
             this.set_property('needs-attention', true);
             return;
         }
-
-        this._codeview.setCompileResults([]);
+        this._codeview.setCompileResults([], userInitiated);
         this.set_property('needs-attention', false);
         const funcBody = this._codeview.getFunctionBody(name);
-        this._updateCode(funcBody);
+
+        if (userInitiated)
+            this._updateCode(funcBody);
     }
 
     discardChanges() {
         this._setCode();
-        this.set_property('needs-attention', false);
     }
 });

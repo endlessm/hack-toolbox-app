@@ -161,7 +161,8 @@ var LSUserFunction = GObject.registerClass({
         this._codeview = new Codeview();
         this._codeview.userFunction = userFunctionName;
 
-        this._codeview.connect('should-compile', this._compile.bind(this));
+        this._codeview.connect('should-compile',
+            (widget, userInitiated) => this._compile(userInitiated));
 
         this.add(this._codeview);
 
@@ -253,7 +254,7 @@ ${code}
         }
     }
 
-    _compile() {
+    _compile(userInitiated = true) {
         const {name, args, getScope} = USER_FUNCTIONS[this._codeview.userFunction];
         const code = this._codeview.text;
         const scope = getScope();
@@ -303,7 +304,11 @@ ${code}
         this._codeview.setCompileResults([]);
         this.set_property('needs-attention', false);
         const funcBody = this._codeview.getFunctionBody(name);
-        this._updateCode(funcBody);
+
+        // If _updateCode is called when userInitiated is false
+        // then the result is an infinite loop
+        if (userInitiated)
+            this._updateCode(funcBody);
     }
 
     discardChanges() {

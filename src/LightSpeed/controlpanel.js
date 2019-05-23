@@ -37,7 +37,8 @@ var LSCombinedTopic = GObject.registerClass({
         this._shipAssetMenu = new PopupMenu(this._shipAssetButton, shipInfo,
             Gtk.Image, 'resource');
 
-        this._variablesCodeview.connect('should-compile', this._compile.bind(this));
+        this._variablesCodeview.connect('should-compile',
+            (widget, userInitiated) => this._compile(userInitiated));
     }
 
     bindGlobal(model) {
@@ -101,7 +102,7 @@ var LSCombinedTopic = GObject.registerClass({
         void this;
     }
 
-    _compile() {
+    _compile(userInitiated = true) {
         const code = this._variablesCodeview.text;
 
         if (code === '')
@@ -143,26 +144,28 @@ var LSCombinedTopic = GObject.registerClass({
         // are propagating updates from the codeview to the GUI. Instead,
         // connect a temporary handler that lets us know if anything actually
         // did change.
-        GObject.signal_handler_block(this._model, this._notifyHandler);
+        if (userInitiated) {
+            GObject.signal_handler_block(this._model, this._notifyHandler);
 
-        let guiUpdated = false;
-        const tempHandler = this._model.connect('notify', () => {
-            guiUpdated = true;
-        });
+            let guiUpdated = false;
+            const tempHandler = this._model.connect('notify', () => {
+                guiUpdated = true;
+            });
 
-        try {
-            this._model.scoreTarget = scope.scoreTarget;
-            this._model.astronautSize = scope.astronautSize;
-            this._model.shipAsset = scope.shipAsset;
-            this._model.shipSize = scope.shipSize;
-            this._model.shipSpeed = scope.shipSpeed;
-        } finally {
-            this._model.disconnect(tempHandler);
-            GObject.signal_handler_unblock(this._model, this._notifyHandler);
+            try {
+                this._model.scoreTarget = scope.scoreTarget;
+                this._model.astronautSize = scope.astronautSize;
+                this._model.shipAsset = scope.shipAsset;
+                this._model.shipSize = scope.shipSize;
+                this._model.shipSpeed = scope.shipSpeed;
+            } finally {
+                this._model.disconnect(tempHandler);
+                GObject.signal_handler_unblock(this._model, this._notifyHandler);
+            }
+
+            if (guiUpdated)
+                SoundServer.getDefault().play('hack-toolbox/update-gui');
         }
-
-        if (guiUpdated)
-            SoundServer.getDefault().play('hack-toolbox/update-gui');
     }
 
     _errorRecordAtAssignmentLocation(variable, message, value) {
