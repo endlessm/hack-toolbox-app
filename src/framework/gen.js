@@ -622,6 +622,20 @@ $font-lightbox-content: 'DK Double Quick';
     }
 }
 
+@keyframes carrotback {
+  0% {
+    background-position: 30px 23px;
+  }
+
+  50% {
+    background-position: left 23px;
+  }
+
+  100% {
+    background-position: 30px 23px;
+  }
+}
+
 .overlayHead,
 .overlayBottom {
     background-color: rgba(55, 44, 40, 0.62);
@@ -633,11 +647,19 @@ $font-lightbox-content: 'DK Double Quick';
     min-width: 1920px;
 
     .bannerHead {
+        background-image: url('resource:///app/assets/images/carrot.png');
+        background-repeat: no-repeat;
+        background-position: 30px 23px;
         color: #fff;
         font-size: 30px;
         letter-spacing: 3px;
-        margin: 5px 45px 0;
+        margin: 20px 20px 0;
         padding: 10px;
+        padding-left: 60px;
+
+        &:hover {
+            animation: carrotback 1.5s ease infinite;
+        }
     }
 }
 
