@@ -28,7 +28,7 @@ const SoundServerIface = `
 </node>
 `;
 
-class SoundServer {
+var SoundServer = class {
     constructor(bus_name=null) {
         try {
             this.connection = this._getConnection(bus_name);
@@ -38,13 +38,14 @@ class SoundServer {
             this.connection = this._getConnection();
         }
         const SoundServerProxy = Gio.DBusProxy.makeProxyWrapper(SoundServerIface);
-        this._proxy = new SoundServerProxy(connection,
+        this._proxy = new SoundServerProxy(this.connection,
             'com.endlessm.HackSoundServer', '/com/endlessm/HackSoundServer');
     }
 
     _getConnection(bus_name=null) {
         if (!bus_name)
             return Gio.DBus.session;
+
         const address = Gio.dbus_address_get_for_bus_sync(Gio.BusType.SESSION,
                                                           null);
         const connectionFlags =
@@ -57,6 +58,7 @@ class SoundServer {
         Gio.bus_own_name_on_connection(connection, bus_name,
                                        Gio.BusNameOwnerFlags.NONE,
                                        null, null);
+        return connection;
     }
 
     // Most common use case, fire and forget, no return value

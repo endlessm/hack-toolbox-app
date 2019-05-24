@@ -1,6 +1,7 @@
 /* exported ToolboxWindow */
 
 const {Gio, GLib, GObject, Gtk, HackToolbox} = imports.gi;
+const App = imports.app;
 const {Lockscreen} = imports.lockscreen;
 
 var ToolboxWindow = GObject.registerClass({
@@ -65,6 +66,10 @@ var ToolboxWindow = GObject.registerClass({
         .catch(e => {
             logError(e);
         });
+    }
+
+    get soundServer() {
+        return App.soundServerForAppId(this.target_app_id);
     }
 
     get frame() {

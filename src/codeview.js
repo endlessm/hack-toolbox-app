@@ -20,11 +20,6 @@ const KEYPRESS_SOUNDS = {
     '/': 'codeview/keypress/slash',
 };
 
-function _actionSound(action) {
-    const sound = SoundServer.getDefault();
-    sound.play(`codeview/action/${action}`);
-}
-
 function _markHasFixmeInformation(mark) {
     return typeof mark._fixme !== 'undefined' &&
         typeof mark._endLine !== 'undefined' &&
@@ -32,7 +27,13 @@ function _markHasFixmeInformation(mark) {
 }
 
 
-const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
+const Buffer = GObject.registerClass({
+    Properties: {
+        codeview: GObject.ParamSpec.object('codeview', 'Codeview', '',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            Gtk.Widget),
+    },
+}, class Buffer extends GtkSource.Buffer {
     // This custom buffer class exists because we need to override the default
     // vfunc_undo() and vfunc_redo() behaviour, to block the emission of
     // insert and delete signals while doing undo and redo. Otherwise, the
@@ -51,14 +52,19 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
         this.connect('mark-set', this._onMarkSet.bind(this));
     }
 
+    _actionSound() {
+        const sound = this.codeview.get_toplevel().soundServer;
+        sound.play(`codeview/action/${action}`);
+    }
+
     vfunc_undo() {
         this._withSoundHandlersBlocked(() => super.vfunc_undo());
-        _actionSound('undo');
+        this._actionSound('undo');
     }
 
     vfunc_redo() {
         this._withSoundHandlersBlocked(() => super.vfunc_redo());
-        _actionSound('redo');
+        this._actionSound('redo');
     }
 
     _withSoundHandlersBlocked(func, ...args) {
@@ -93,7 +99,7 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
         if (!text.length === 1)
             return;
 
-        const sound = SoundServer.getDefault();
+        const sound = this.codeview.get_toplevel().soundServer;
         const options = this._calculateKeystrokePitch();
 
         if (text in KEYPRESS_SOUNDS)
@@ -105,7 +111,7 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
     _onDeleteRange(buffer, start, end) {
         const deletedLength = end.get_offset() - start.get_offset();
 
-        const sound = SoundServer.getDefault();
+        const sound = this.codeview.get_toplevel().soundServer;
 
         if (deletedLength === 1) {
             const options = this._calculateKeystrokePitch();
@@ -124,8 +130,10 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
             length = selectionBound.get_offset() - insert.get_offset();
             length *= selectionBound.compare(insert);
         }
-        if (length !== 0 && length !== this._lastSelectionLength)
-            SoundServer.getDefault().play('codeview/action/selection-drag');
+        if (length !== 0 && length !== this._lastSelectionLength) {
+            const sound = this.codeview.get_toplevel().soundServer;
+            sound.play('codeview/action/selection-drag');
+        }
         this._lastSelectionLength = length;
     }
 });
@@ -148,7 +156,7 @@ var Codeview = GObject.registerClass({
         const schemeManager = GtkSource.StyleSchemeManager.get_default();
         const styleScheme = schemeManager.get_scheme('hack');
 
-        this._buffer = new Buffer({language, styleScheme});
+        this._buffer = new Buffer({language, styleScheme, codeview: this});
 
         const bgErr = new Gdk.RGBA();
         bgErr.parse('#ff6a6a');
@@ -191,9 +199,9 @@ var Codeview = GObject.registerClass({
         renderer.connect('query-activatable', (r, iter) =>
             this._getOurSourceMarks(iter).length > 0);
         renderer.connect('activate', this._onRendererActivate.bind(this));
-        this._view.connect_after('cut-clipboard', () => _actionSound('cut'));
-        this._view.connect_after('copy-clipboard', () => _actionSound('copy'));
-        this._view.connect_after('paste-clipboard', () => _actionSound('paste'));
+        this._view.connect_after('cut-clipboard', () => this._actionSound('cut'));
+        this._view.connect_after('copy-clipboard', () => this._actionSound('copy'));
+        this._view.connect_after('paste-clipboard', () => this._actionSound('paste'));
         this._view.connect('move-cursor', this.constructor._onMoveCursor);
         this._view.connect('focus-in-event', this._onFocusIn.bind(this));
         this._view.connect('focus-out-event', this._onFocusOut.bind(this));
@@ -272,7 +280,8 @@ var Codeview = GObject.registerClass({
                 this._buffer.end_user_action();
             }
         });
-        SoundServer.getDefault().play('codeview/popup/fix');
+        const sound = this.get_toplevel().soundServer;
+        sound.play('codeview/popup/fix');
     }
 
     _onRendererQueryData(renderer, start) {
@@ -300,21 +309,23 @@ var Codeview = GObject.registerClass({
 
         this._helpMessage.popup();
         this._helpMessageCloseId = this._helpMessage.connect_after('closed', () => {
+            const sound = this.get_toplevel().soundServer;
             // Popup is closed whenever user clicks outside of it
-            SoundServer.getDefault().play('codeview/popup/close');
+            sound.play('codeview/popup/close');
             this._helpMessage.disconnect(this._helpMessageCloseId);
             this._helpMessageCloseId = null;
         });
-        SoundServer.getDefault().play('codeview/popup/open');
+        sound.play('codeview/popup/open');
     }
 
     static _onMoveCursor(view, step, count, extendSelection) {
         if (!extendSelection && step === Gtk.MovementStep.DISPLAY_LINES ||
             step === Gtk.MovementStep.PARAGRAPHS) {
+            const sound = this.get_toplevel().soundServer;
             if (count === 1)
-                SoundServer.getDefault().play('codeview/keypress/down');
+                sound.play('codeview/keypress/down');
             else if (count === -1)
-                SoundServer.getDefault().play('codeview/keypress/up');
+                sound.play('codeview/keypress/up');
         }
     }
 
@@ -329,10 +340,12 @@ var Codeview = GObject.registerClass({
             return Gdk.EVENT_PROPAGATE;
         }
         this._ambientMusicID = 'pending';
-        SoundServer.getDefault().playAsync('codeview/ambient/hacking')
+        const sound = this.get_toplevel().soundServer;
+        sound.playAsync('codeview/ambient/hacking')
         .then(uuid => {
             if (this._ambientMusicID === 'cancel') {
-                SoundServer.getDefault().stop(uuid);
+                const sound = this.get_toplevel().soundServer;
+                sound.stop(uuid);
                 this._ambientMusicID = null;
                 return;
             }
@@ -346,7 +359,8 @@ var Codeview = GObject.registerClass({
         if (this._ambientMusicID === 'pending') {
             this._ambientMusicID = 'cancel';
         } else if (this._ambientMusicID) {
-            SoundServer.getDefault().stop(this._ambientMusicID);
+            const sound = this.get_toplevel().soundServer;
+            sound.stop(this._ambientMusicID);
             this._ambientMusicID = null;
         }
         return Gdk.EVENT_PROPAGATE;
@@ -453,10 +467,11 @@ var Codeview = GObject.registerClass({
 
         if (this._numErrors !== results.length) {
             this._numErrors = results.length;
+            const sound = this.get_toplevel().soundServer;
             if (this._numErrors)
-                SoundServer.getDefault().play('codeview/code-error-appearance');
+                sound.play('codeview/code-error-appearance');
             else
-                SoundServer.getDefault().play('codeview/code-error-disappearance');
+                sound.play('codeview/code-error-disappearance');
         }
 
         this._recordErrorMetrics(results)

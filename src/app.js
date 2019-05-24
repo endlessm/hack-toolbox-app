@@ -5,6 +5,7 @@ const {Gdk, Gio, GLib, GObject, Gtk} = imports.gi;
 
 const {LocksManager} = imports.locksManager;
 const {ToolboxWindow} = imports.window;
+const {SoundServer} = imports.soundServer;
 
 function _loadStyleSheet(resourcePath) {
     const provider = new Gtk.CssProvider();
@@ -34,6 +35,18 @@ function _toolboxClassForAppId(targetAppId) {
         return imports.hacktoolbox.hacktoolbox.DefaultHackToolbox;
     }
 }
+
+var soundServerForAppId = (function() {
+    let soundServersByAppId = {};
+    return function(targetAppId) {
+        const appName = targetAppId.replace('com.endlessm.', '');
+        const appId = `com.endlessm.HackToolbox.${appName}`;
+
+        if (!(appId in soundServersByAppId))
+            soundServersByAppId[appId] = new SoundServer(appId);
+        return soundServersByAppId[appId];
+    };
+}());
 
 function _toolboxIsDecorated(targetAppId) {
     switch (targetAppId) {
