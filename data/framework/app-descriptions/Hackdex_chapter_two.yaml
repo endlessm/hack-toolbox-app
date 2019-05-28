@@ -7,7 +7,7 @@ vars:
   home-button:
     type: Banner.HomeButton
     properties:
-      text: '< Back'
+      text: 'Back'
 
   home-articles-card:
     type: Card.Hackdex
