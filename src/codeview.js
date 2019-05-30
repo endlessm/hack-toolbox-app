@@ -527,7 +527,7 @@ var Codeview = GObject.registerClass({
         const {start} = funcDecl.body.loc;
         // Workaround for mozjs52 bug; funcDecl.body.loc.end is incorrect
         const {end} = funcDecl.loc;
-        const lines = this._buffer.text.split('\n');
+        const lines = this._buffer.text.split(/\r\n|[\n\v\f\r\x85\u2028\u2029]/);
 
         // Add 2 to the start column, 1 because slice() is inclusive, and
         // another 1 because the position returned by the parser is the one
