@@ -203,6 +203,7 @@ var Codeview = GObject.registerClass({
         this._view.connect('move-cursor', this.constructor._onMoveCursor);
         this._view.connect('focus-in-event', this._onFocusIn.bind(this));
         this._view.connect('focus-out-event', this._onFocusOut.bind(this));
+        this._view.connect('key-press-event', this._onKeyPress.bind(this));
 
         this._compileTimeout = null;
         this._numErrors = 0;
@@ -355,6 +356,124 @@ var Codeview = GObject.registerClass({
             SoundServer.getDefault().stop(this._ambientMusicID);
             this._ambientMusicID = null;
         }
+        return Gdk.EVENT_PROPAGATE;
+    }
+
+    // Returns a string corresponding to one indent level, spaces or tab
+    _getTabString() {
+        let tabCode = '\t';
+        if (this._view.insertSpacesInsteadOfTabs)
+            tabCode = ' '.repeat(this._view.indentWidth);
+        return tabCode;
+    }
+
+    // Inserts text both before the cursor and after it
+    _insertAroundCursor(before, after) {
+        this._buffer.insert_at_cursor(before + after, -1);
+        // refresh cursor and move it to the middle
+        const cursor = this._buffer.get_iter_at_mark(this._buffer.get_insert());
+        cursor.backward_chars(after.length);
+        this._buffer.place_cursor(cursor);
+    }
+
+    _doAutoIndentBracket(cursor, lineBefore) {
+        // Get the line's leading whitespace
+        const [whitespace] = (/^[ \t]+/).exec(lineBefore) || [''];
+
+        const addIndent = `\n${whitespace}${this._getTabString()}`;
+        let addAfter = '';
+
+        // Get everything on the line after the cursor position
+        const lineEnd = cursor.copy();
+        if (!cursor.ends_line())
+            lineEnd.forward_to_line_end();
+        const lineAfter = this._buffer.get_text(cursor, lineEnd, false);
+        if (lineAfter) {
+            // text between beginning and ending brackets should come in the
+            // middle row
+            const endingPos = lineAfter.indexOf('}');
+            const end = cursor.copy();
+            if (endingPos === -1)
+                end.forward_to_line_end();
+            else
+                end.forward_chars(endingPos);
+            const endingText = this._buffer.get_text(cursor, end, false).trim();
+            this._buffer.delete(cursor, end);
+            addAfter = `${endingText}\n${whitespace}`;
+        }
+
+        this._insertAroundCursor(addIndent, addAfter);
+        this._view.reset_cursor_blink();
+        return Gdk.EVENT_STOP;
+    }
+
+    _doAutoUnindentClosingBracket(cursor) {
+        const pos = cursor.copy();
+        const defaultEditable = this._view.editable;
+
+        // Replicate GtkSourceView's "smart backspace" algorithm
+        // Adapted from do_smart_backspace in gtksourceview/gtksourceview.c
+        const visualColumn = this._view.get_visual_column(pos);
+        let {indentWidth} = this._view;
+        if (indentWidth <= 0)
+            indentWidth = this._view.tabWidth;
+        if (visualColumn < indentWidth || visualColumn % indentWidth !== 0)
+            return Gdk.EVENT_PROPAGATE;
+
+        const targetColumn = visualColumn - indentWidth;
+        while (this._view.get_visual_column(pos) > targetColumn)
+            pos.backward_cursor_position();
+        this._buffer.delete_interactive(pos, cursor, defaultEditable);
+        while (this._view.get_visual_column(pos) < targetColumn) {
+            if (!this._buffer.insert_interactive(pos, ' ', 1, defaultEditable))
+                break;
+        }
+
+        this._buffer.insert_at_cursor('}', -1);
+        this._view.reset_cursor_blink();
+        return Gdk.EVENT_STOP;
+    }
+
+    // Auto indent algorithm based on intelligent_text_completion.py from
+    // https://github.com/nymanjens/gedit-intelligent-text-completion
+    _onKeyPress(view, event) {
+        const [hadSelection, cursor] = this._buffer.get_selection_bounds();
+        if (hadSelection)
+            return Gdk.EVENT_PROPAGATE;
+
+        // String roughly corresponding to what is being typed
+        const [, keyval] = event.get_keyval();
+        let typedChar = String.fromCodePoint(Gdk.keyval_to_unicode(keyval));
+        if (typedChar === '\r')
+            typedChar = '\n';
+        if (!'\n}'.includes(typedChar))
+            return Gdk.EVENT_PROPAGATE;
+
+        // Get everything on the line up to the cursor position
+        const lineStartPos = cursor.copy();
+        lineStartPos.set_line_offset(0);
+        const lineBefore = this._buffer.get_text(lineStartPos, cursor, false);
+
+        // Typing a newline directly after an opening brace
+        if (typedChar === '\n' && lineBefore.endsWith('{')) {
+            this._buffer.begin_user_action();
+            try {
+                return this._doAutoIndentBracket(cursor, lineBefore);
+            } finally {
+                this._buffer.end_user_action();
+            }
+        }
+
+        // Typing a closing brace on a line that consists only of whitespace
+        if (typedChar === '}' && !(/\S/).test(lineBefore)) {
+            this._buffer.begin_user_action();
+            try {
+                return this._doAutoUnindentClosingBracket(cursor);
+            } finally {
+                this._buffer.end_user_action();
+            }
+        }
+
         return Gdk.EVENT_PROPAGATE;
     }
 
