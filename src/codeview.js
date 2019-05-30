@@ -166,11 +166,15 @@ var Codeview = GObject.registerClass({
         this._buffer.tagTable.add(this._errorStyle);
 
         this._view = new GtkSource.View({
+            autoIndent: true,
             buffer: this._buffer,
+            indentWidth: 4,
+            insertSpacesInsteadOfTabs: true,
             showLineNumbers: true,
+            smartBackspace: true,
+            smartHomeEnd: GtkSource.SmartHomeEndType.BEFORE,
+            tabWidth: 4,
             visible: true,
-            tab_width: 4,
-            insert_spaces_instead_of_tabs: true,
         });
 
         const background = new Gdk.RGBA({red: 1, green: 1, blue: 1, alpha: 0.1});
