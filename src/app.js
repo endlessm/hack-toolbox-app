@@ -30,6 +30,8 @@ function _toolboxClassForAppId(targetAppId) {
         return imports.OperatingSystemApp.toolbox.OSToolbox;
     case 'com.endlessm.Sidetrack':
         return imports.RileyMaze.toolbox.RMZToolbox;
+    case 'name.ptomato.AbsentRhythm':
+        return imports.sketchbook.toolbox.SketchToolbox;
     default:
         return imports.hacktoolbox.hacktoolbox.DefaultHackToolbox;
     }
