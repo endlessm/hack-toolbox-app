@@ -55,6 +55,8 @@ var SketchCodeTopic = GObject.registerClass({
         }
 
         this._codeview.setCompileResults([]);
+        this._model.code = code;
+        this._model.needsRefresh = true;
         this.set_property('needs-attention', false);
     }
 });

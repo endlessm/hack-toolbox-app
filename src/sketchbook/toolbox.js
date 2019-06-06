@@ -12,19 +12,25 @@ var SketchToolbox = GObject.registerClass(class SketchToolbox extends Toolbox {
         super._init(appId, props);
 
         this._model = new SketchModel();
+        this._model.initAsync()
+            .then(this._completeInit.bind(this))
+            .catch(logError);
 
         this._codeTopic = new SketchCodeTopic();
-        this._codeTopic.bindModel(this._model);
         this.addTopic('code', 'Code', 'accessories-text-editor-symbolic',
             this._codeTopic);
         this.showTopic('code');
         this.selectTopic('code');
 
         this._metadataTopic = new SketchMetadataTopic();
-        this._metadataTopic.bindModel(this._model);
         this.addTopic('metadata', 'About', 'document-edit-symbolic',
             this._metadataTopic);
         this.showTopic('metadata');
+    }
+
+    _completeInit() {
+        this._codeTopic.bindModel(this._model);
+        this._metadataTopic.bindModel(this._model);
 
         this._updateTitle();
         this.show_all();
@@ -36,9 +42,19 @@ var SketchToolbox = GObject.registerClass(class SketchToolbox extends Toolbox {
 
     bindWindow(win) {
         win.get_style_context().add_class('Sketchbook');
+        win.get_style_context().add_class('Sidetrack');  // use Sidetrack shader
         win.lockscreen.key = 'item.key.sidetrack.1';
         win.lockscreen.lock = 'lock.sidetrack.1';
-        void this;
+        win.connect('focus-out-event', this._onWindowFocusOut.bind(this));
+    }
+
+    _onWindowFocusOut() {
+        // If we enable the flip-back action, then we're entirely reponsible for
+        // shutting down and restarting the app. We don't want that. Instead,
+        // try using "focus out" as a rough approximation of flipping back, and
+        // refresh the front of the app in that case.
+        if (this._model && this._model.needsRefresh)
+            this._model.refresh();
     }
 
     _updateTitle() {
