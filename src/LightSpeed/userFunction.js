@@ -21,12 +21,19 @@ const COMMON_SCOPE = {
         'daemon',
         'unicorn',
     ],
+    spaceship: 'spaceship',
+    daemon: 'daemon',
+    unicorn: 'unicorn',
     enemyTypes: [
         'asteroid',
         'spinner',
         'squid',
         'beam',
     ],
+    asteroid: 'asteroid',
+    spinner: 'spinner',
+    squid: 'squid',
+    beam: 'beam',
     data: {},
 
     // validates arguments passed in to random() and returns deterministically
@@ -125,7 +132,11 @@ const USER_FUNCTIONS = {
         modelProp: 'spawnPowerupCode',
         perLevel: true,
         getScope() {
-            return Object.assign({}, COMMON_SPAWN_SCOPE, COMMON_SCOPE);
+            return Object.assign({
+                blowup: 'blowup',
+                invulnerable: 'invulnerable',
+                upgrade: 'upgrade',
+            }, COMMON_SPAWN_SCOPE, COMMON_SCOPE);
         },
     },
     activatePowerup: {
@@ -142,6 +153,15 @@ const USER_FUNCTIONS = {
                     attractTimer: 0,
                 },
                 powerUpType: 0,
+
+                blowup: 'blowup',
+                invulnerable: 'invulnerable',
+                upgrade: 'upgrade',
+
+                shrink: 'shrink',
+                attraction: 'attraction',
+                engine: 'engine',
+
                 blowUpEnemies() {},  // eslint-disable-line no-empty-function
             }, COMMON_SCOPE);
         },

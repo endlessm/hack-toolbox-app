@@ -19,6 +19,12 @@ const VALID_ENUMS = {
         'tchaik', 'tower'],
 };
 
+const VALID_VARIABLES = ['accent_color', 'border_color', 'border_width',
+    'card_layout', 'card_order', 'font', 'font_size', 'image_filter',
+    'info_color', 'logo_color', 'logo_graphic', 'main_color',
+    'sounds_cursor_click', 'sounds_cursor_hover', 'text_transformation',
+    'hyperlinks'];
+
 const COLOR_PROPS = ['logo_color', 'main_color', 'accent_color', 'info_color',
     'border_color'];
 const ENUM_PROPS = ['text_transformation', 'card_order', 'card_layout',
@@ -68,30 +74,15 @@ var FrameworkLevel3 = GObject.registerClass({
         if (code === '')
             return;
 
-        const scope = {
-            accent_color: null,
-            border_color: null,
-            border_width: null,
-            card_layout: null,
-            card_order: null,
-            font: null,
-            font_size: null,
-            image_filter: null,
-            info_color: null,
-            logo_color: null,
-            logo_graphic: null,
-            main_color: null,
-            sounds_cursor_click: null,
-            sounds_cursor_hover: null,
-            text_transformation: null,
-            hyperlinks: null,
-
-            // aliases for boolean literals
-            yes: true,
-            no: false,
-            on: true,
-            off: false,
-        };
+        const scope = {};
+        VALID_VARIABLES.forEach(name => {
+            scope[name] = null;
+        });
+        Object.values(VALID_ENUMS).forEach(names => {
+            names.forEach(name => {
+                scope[name] = name;
+            });
+        });
         try {
             // eslint-disable-next-line no-new-func
             const func = new Function('scope', `with(scope){\n${code}\n;}`);
@@ -103,7 +94,7 @@ var FrameworkLevel3 = GObject.registerClass({
             return;
         }
 
-        if (Object.getOwnPropertyNames(scope).every(prop => prop === null))
+        if (VALID_VARIABLES.every(prop => scope[prop] === null))
             return;
 
         const errors = this._searchCodeForErrors(scope);
@@ -212,8 +203,7 @@ var FrameworkLevel3 = GObject.registerClass({
         if (scope.hyperlinks !== null && scope.hyperlinks !== true &&
             scope.hyperlinks !== false) {
             errors.push(this._errorRecordAtAssignmentLocation('hyperlinks',
-                `Unknown value "${scope.hyperlinks}": value must be yes or ` +
-                'no, on or off, true or false'));
+                `Unknown value "${scope.hyperlinks}": value must be true or false`));
         }
 
         return errors;
@@ -225,7 +215,7 @@ var FrameworkLevel3 = GObject.registerClass({
 // Theme
 /////////////////////
 
-logo_graphic = '${this._model.logo_graphic}';
+logo_graphic = ${this._model.logo_graphic};
 logo_color = '${Utils.rgbaToString(this._model.logo_color)}';
 main_color = '${Utils.rgbaToString(this._model.main_color)}';
 accent_color = '${Utils.rgbaToString(this._model.accent_color)}';
@@ -239,12 +229,12 @@ font_size = ${this._model.font_size};
 
 border_width = ${this._model.border_width};
 border_color = '${Utils.rgbaToString(this._model.border_color)}';
-text_transformation = '${this._model.text_transformation}';
-card_order = '${this._model.card_order}';
-card_layout = '${this._model.card_layout}';
-image_filter = '${this._model.image_filter}';
-sounds_cursor_hover = '${this._model.sounds_cursor_hover}';
-sounds_cursor_click = '${this._model.sounds_cursor_click}';
+text_transformation = ${this._model.text_transformation};
+card_order = ${this._model.card_order};
+card_layout = ${this._model.card_layout};
+image_filter = ${this._model.image_filter};
+sounds_cursor_hover = ${this._model.sounds_cursor_hover};
+sounds_cursor_click = ${this._model.sounds_cursor_click};
 hyperlinks = ${this._model.hyperlinks ? 'true' : 'false'};
 `;
     }
