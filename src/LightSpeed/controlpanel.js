@@ -43,7 +43,7 @@ var LSCombinedTopic = GObject.registerClass({
             (widget, userInitiated) => this._compile(userInitiated));
     }
 
-    bindGlobal(model) {
+    bindGlobalModel(model) {
         this._global = model;
         this._globalNotifyHandler = model.connect('notify', this._onGlobalNotify.bind(this));
 

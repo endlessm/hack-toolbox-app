@@ -59,6 +59,7 @@
     <file>spinInput.js</file>
     <file>toolbox.js</file>
     <file>topicButton.js</file>
+    <file>userFunction.js</file>
     <file>utils.js</file>
     <file>window.js</file>
   </gresource>

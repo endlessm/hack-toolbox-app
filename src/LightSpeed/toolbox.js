@@ -20,41 +20,41 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         this._global = new LSGlobalModel();
 
         this._combinedTopic = new LSCombinedTopic();
-        this._combinedTopic.bindGlobal(this._global);
+        this._combinedTopic.bindGlobalModel(this._global);
         this.addTopic('game', 'Game', 'rocket-symbolic', this._combinedTopic);
         this.selectTopic('game');
 
         this._spawnTopic = new LSSpawnTopic();
-        this._spawnTopic.bindGlobal(this._global);
+        this._spawnTopic.bindGlobalModel(this._global);
         this.addTopic('spawn', 'Spawn', 'spawn-symbolic', this._spawnTopic);
         this.hideTopic('spawn');
 
         this._updateAsteroidTopic = new LSUserFunction('updateAsteroid');
-        this._updateAsteroidTopic.bindGlobal(this._global);
+        this._updateAsteroidTopic.bindGlobalModel(this._global);
         this.addTopic('updateAsteroid', 'Asteroid', 'asteroid-symbolic',
             this._updateAsteroidTopic);
         this.hideTopic('updateAsteroid');
 
         this._updateSpinnerTopic = new LSUserFunction('updateSpinner');
-        this._updateSpinnerTopic.bindGlobal(this._global);
+        this._updateSpinnerTopic.bindGlobalModel(this._global);
         this.addTopic('updateSpinner', 'Spinner', 'spinner-symbolic',
             this._updateSpinnerTopic);
         this.hideTopic('updateSpinner');
 
         this._updateSquidTopic = new LSUserFunction('updateSquid');
-        this._updateSquidTopic.bindGlobal(this._global);
+        this._updateSquidTopic.bindGlobalModel(this._global);
         this.addTopic('updateSquid', 'Squid', 'squid-symbolic',
             this._updateSquidTopic);
         this.hideTopic('updateSquid');
 
         this._updateBeamTopic = new LSUserFunction('updateBeam');
-        this._updateBeamTopic.bindGlobal(this._global);
+        this._updateBeamTopic.bindGlobalModel(this._global);
         this.addTopic('updateBeam', 'Beam', 'beam-symbolic',
             this._updateBeamTopic);
         this.hideTopic('updateBeam');
 
         this._activatePowerupTopic = new LSUserFunction('activatePowerup');
-        this._activatePowerupTopic.bindGlobal(this._global);
+        this._activatePowerupTopic.bindGlobalModel(this._global);
         this.addTopic('activatePowerup', 'Power-Up', 'powerup-symbolic',
             this._activatePowerupTopic);
         this.hideTopic('activatePowerup');

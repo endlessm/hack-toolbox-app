@@ -34,9 +34,9 @@ var LSSpawnTopic = GObject.registerClass({
         return this._spawnEnemy.needs_attention || this._spawnPowerup.needs_attention;
     }
 
-    bindGlobal(model) {
-        this._spawnEnemy.bindGlobal(model);
-        this._spawnPowerup.bindGlobal(model);
+    bindGlobalModel(model) {
+        this._spawnEnemy.bindGlobalModel(model);
+        this._spawnPowerup.bindGlobalModel(model);
     }
 
     unbindGlobalModel() {
