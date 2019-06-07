@@ -60,23 +60,78 @@ const COMMON_SCOPE = {
     },
 };
 
-const COMMON_SPAWN_SCOPE = {
-    // Keep this in sync with SpawnScope class in
-    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
-    ticksSinceSpawn: 0,
-};
+class Point {
+    constructor() {
+        this.x = 0;
+        this.y = 0;
+    }
+}
+// Set method that checks type for number properties of objects
+function propNumFactory(obj, propName) {
+    Object.defineProperty(obj, propName, {
+        set(newVal) {
+            if (Number.isNaN(Number(newVal)))
+                throw new TypeError(`${propName} must be a number.`);
+            else if (Number(newVal) < 0)
+                throw new RangeError(`${propName} must be a positive number.`);
+            obj[`_${propName}`] = newVal; // eslint-disable-line no-param-reassign
+        },
+        get() {
+            return obj[`_${propName}`];
+        },
+    });
+}
+
+const playPos = new Point();
+propNumFactory(playPos, 'x');
+propNumFactory(playPos, 'y');
+
+const enemyPos = new Point();
+propNumFactory(enemyPos, 'x');
+propNumFactory(enemyPos, 'y');
+
+const enemyVelocity = new Point();
+propNumFactory(enemyVelocity, 'x');
+propNumFactory(enemyVelocity, 'y');
 
 const COMMON_UPDATE_SCOPE = {
     // Keep this in sync with UpdateEnemyScope class in
     // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
     playerShip: {
-        position: {x: 0, y: 0},
+        position: playPos,
     },
     enemy: {
-        position: {x: 0, y: 0},
-        velocity: {x: 0, y: 0},
+        position: enemyPos,
+        velocity: enemyVelocity,
         data: {},
     },
+};
+
+const shipPos = new Point();
+propNumFactory(shipPos, 'x');
+propNumFactory(shipPos, 'y');
+
+const POWERUP = {
+    ship: {
+        position: shipPos,
+        invulnerableTimer: 0,
+        shrinkTimer: 0,
+        attractTimer: 0,
+    },
+    powerUpType: 0,
+    blowup: 'blowup',
+    invulnerable: 'invulnerable',
+    upgrade: 'upgrade',
+    shrink: 'shrink',
+    attraction: 'attraction',
+    engine: 'engine',
+    blowUpEnemies() {},  // eslint-disable-line no-empty-function
+};
+
+var COMMON_SPAWN_SCOPE = {
+    // Keep this in sync with SpawnScope class in
+    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
+    ticksSinceSpawn: 0,
 };
 
 const USER_FUNCTIONS = {
@@ -86,7 +141,17 @@ const USER_FUNCTIONS = {
         modelProp: 'spawnEnemyCode',
         perLevel: true,
         getScope() {
-            return Object.assign({}, COMMON_SPAWN_SCOPE, COMMON_SCOPE);
+            const ENEMY_SCOPE = Object.assign({}, COMMON_SPAWN_SCOPE, COMMON_SCOPE);
+            propNumFactory(ENEMY_SCOPE, 'ticksSinceSpawn');
+            return ENEMY_SCOPE;
+        },
+        validate(funcRet) {
+            // Don't throw an error when returning null
+            if (funcRet === null)
+                return;
+
+            if (!COMMON_SCOPE.enemyTypes.includes(funcRet))
+                throw TypeError('The spawnEnemy function must return an enemyType.');
         },
     },
     updateAsteroid: {
@@ -98,6 +163,9 @@ const USER_FUNCTIONS = {
         getScope() {
             return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
         },
+        validate() {
+            // eslint-disable-line no-empty-function
+        },
     },
     updateSpinner: {
         name: 'updateSpinner',
@@ -106,6 +174,9 @@ const USER_FUNCTIONS = {
         perLevel: false,
         getScope() {
             return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
+        },
+        validate() {
+            // eslint-disable-line no-empty-function
         },
     },
     updateSquid: {
@@ -116,6 +187,9 @@ const USER_FUNCTIONS = {
         getScope() {
             return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
         },
+        validate() {
+            // eslint-disable-line no-empty-function
+        },
     },
     updateBeam: {
         name: 'updateBeam',
@@ -125,6 +199,9 @@ const USER_FUNCTIONS = {
         getScope() {
             return Object.assign({}, COMMON_UPDATE_SCOPE, COMMON_SCOPE);
         },
+        validate() {
+            // eslint-disable-line no-empty-function
+        },
     },
     spawnPowerup: {
         name: 'spawnPowerup',
@@ -132,11 +209,19 @@ const USER_FUNCTIONS = {
         modelProp: 'spawnPowerupCode',
         perLevel: true,
         getScope() {
-            return Object.assign({
+            const SPAWN_POWERUP = Object.assign({
                 blowup: 'blowup',
                 invulnerable: 'invulnerable',
                 upgrade: 'upgrade',
             }, COMMON_SPAWN_SCOPE, COMMON_SCOPE);
+            propNumFactory(SPAWN_POWERUP, 'ticksSinceSpawn');
+            return SPAWN_POWERUP;
+        },
+        validate(funcRet) {
+            // Can't explicitly check for null here
+            // since we set it to return undefined sometimes
+            if (funcRet && !POWERUP.powerUpType.includes(funcRet))
+                throw TypeError('The spawnPowerup function must return a powerUpType.');
         },
     },
     activatePowerup: {
@@ -145,25 +230,14 @@ const USER_FUNCTIONS = {
         modelProp: 'activatePowerupCode',
         perLevel: false,
         getScope() {
-            return Object.assign({
-                ship: {
-                    position: {x: 0, y: 0},
-                    invulnerableTimer: 0,
-                    shrinkTimer: 0,
-                    attractTimer: 0,
-                },
-                powerUpType: 0,
-
-                blowup: 'blowup',
-                invulnerable: 'invulnerable',
-                upgrade: 'upgrade',
-
-                shrink: 'shrink',
-                attraction: 'attraction',
-                engine: 'engine',
-
-                blowUpEnemies() {},  // eslint-disable-line no-empty-function
-            }, COMMON_SCOPE);
+            const POWERUP_SCOPE = Object.assign({}, POWERUP, COMMON_SCOPE);
+            propNumFactory(POWERUP_SCOPE.ship, 'invulnerableTimer');
+            propNumFactory(POWERUP_SCOPE.ship, 'shrinkTimer');
+            propNumFactory(POWERUP_SCOPE.ship, 'attractTimer');
+            return POWERUP_SCOPE;
+        },
+        validate() {
+            // eslint-disable-line no-empty-function
         },
     },
 };
@@ -275,9 +349,10 @@ ${code}
     }
 
     _compile(userInitiated = true) {
-        const {name, args, getScope} = USER_FUNCTIONS[this._codeview.userFunction];
+        const {name, args, getScope, validate} = USER_FUNCTIONS[this._codeview.userFunction];
         const code = this._codeview.text;
         const scope = getScope();
+
         let userFunction;
 
         try {
@@ -314,7 +389,8 @@ ${code}
         }
 
         try {
-            userFunction();
+            const ret = userFunction();
+            validate(ret);
         } catch (e) {
             this._codeview.setCompileResultsFromException(e);
             this.set_property('needs-attention', true);
@@ -324,7 +400,6 @@ ${code}
         this._codeview.setCompileResults([]);
         this.set_property('needs-attention', false);
         const funcBody = this._codeview.getFunctionBody(name);
-
         // If _updateCode is called when userInitiated is false
         // then the result is an infinite loop
         if (userInitiated)

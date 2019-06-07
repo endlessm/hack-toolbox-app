@@ -14,6 +14,9 @@ const MAX_QUEUE_LEN = 8;
 class InstructionError extends Error {
 }
 
+class UnitError extends TypeError {
+}
+
 const RILEY = {
     // Keep this in sync with riley class in
     // hack-toy-apps/com.endlessm.RileyMaze/parameters.js
@@ -77,6 +80,19 @@ const COMMON_SCOPE = {
     data: {},
 };
 
+const POSITION_HANDLER = {
+    set(obj, prop, value) {
+        if ((prop === 'rileyPosition' || prop === 'goalPosition') &&
+            Number.isNaN(Number(value)))
+            throw new TypeError(`Value for ${prop} must be a number.`);
+        else if ((prop === 'rileyPosition' || prop === 'goalPosition') &&
+            (value < 0 || value > 4))
+            throw new RangeError(`${prop} must be between 0 and 4.`);
+        else
+            return Reflect.set(obj, prop, value);
+    },
+};
+
 const UNITS = ['wall', 'pit', 'robotA', 'robotB'];
 const LEVEL_EDIT_SCOPE = {
     wall: 'wall',
@@ -93,7 +109,7 @@ const LEVEL_EDIT_SCOPE = {
             throw new TypeError(`${y} isn't a number.`);
 
         if (!UNITS.includes(unit))
-            throw new TypeError(`${unit} isn't a valid unit.`);
+            throw new UnitError(`${unit} isn't a valid unit.`);
 
         if (x < 0 || x > 7)
             throw new RangeError('x must be between 0 and 7.');
@@ -124,7 +140,8 @@ const USER_FUNCTIONS = {
         modelProp: 'levelCode',
         perLevel: true,
         getScope() {
-            return Object.assign({}, COMMON_SCOPE, LEVEL_EDIT_SCOPE);
+            const SCOPE_OBJ = Object.assign({}, COMMON_SCOPE, LEVEL_EDIT_SCOPE);
+            return new Proxy(SCOPE_OBJ, POSITION_HANDLER);
         },
         validate() {
             // eslint-disable-line no-empty-function
@@ -241,7 +258,6 @@ ${code}
         const {name, args, getScope, validate} = USER_FUNCTIONS[this._codeview.userFunction];
         const code = this._codeview.text;
         const scope = getScope();
-
         let userFunction;
 
         try {
@@ -302,7 +318,6 @@ ${code}
 
             if (userInitiated)
                 this._updateCode(funcBody);
-
             this.set_property('needs-attention', true);
             return;
         }
