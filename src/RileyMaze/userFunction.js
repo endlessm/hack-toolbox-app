@@ -300,10 +300,9 @@ ${code}
             this.set_property('needs-attention', true);
             if (e instanceof InstructionError) {
                 this._codeview.setCompileResultsFromUserFunctionException(e, userInitiated);
-                const funcBody = this._codeview.getFunctionBody(name);
 
                 if (userInitiated)
-                    this._updateCode(funcBody);
+                    this._updateCode(String(userFunction));
             } else {
                 this._codeview.setCompileResultsFromException(e, userInitiated);
             }
@@ -314,19 +313,17 @@ ${code}
             validate();
         } catch (e) {
             this._codeview.setCompileResultsFromException(e, userInitiated);
-            const funcBody = this._codeview.getFunctionBody(name);
 
             if (userInitiated)
-                this._updateCode(funcBody);
+                this._updateCode(String(userFunction));
             this.set_property('needs-attention', true);
             return;
         }
         this._codeview.setCompileResults([], userInitiated);
         this.set_property('needs-attention', false);
-        const funcBody = this._codeview.getFunctionBody(name);
 
         if (userInitiated)
-            this._updateCode(funcBody);
+            this._updateCode(String(userFunction));
     }
 
     discardChanges() {

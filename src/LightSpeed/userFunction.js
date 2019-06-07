@@ -399,11 +399,10 @@ ${code}
 
         this._codeview.setCompileResults([]);
         this.set_property('needs-attention', false);
-        const funcBody = this._codeview.getFunctionBody(name);
         // If _updateCode is called when userInitiated is false
         // then the result is an infinite loop
         if (userInitiated)
-            this._updateCode(funcBody);
+            this._updateCode(String(userFunction));
     }
 
     discardChanges() {
