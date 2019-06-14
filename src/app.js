@@ -14,6 +14,10 @@ function _loadStyleSheet(resourcePath) {
 }
 
 function _toolboxClassForAppId(targetAppId) {
+    if (targetAppId.startsWith('com.endlessm.HackSoundServer.PlayerWindow') &&
+            imports.PlayerWindow)
+        return imports.PlayerWindow.toolbox.PlayerWindowToolbox;
+
     switch (targetAppId) {
     case 'com.endlessm.dinosaurs.en':
     case 'com.endlessm.encyclopedia.en':

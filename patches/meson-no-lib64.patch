@@ -1,12 +1,25 @@
-diff -up meson-0.42.0/mesonbuild/mesonlib.py.lib64 meson-0.42.0/mesonbuild/mesonlib.py
---- meson-0.42.0/mesonbuild/mesonlib.py.lib64	2017-09-14 16:01:33.812927457 +0200
-+++ meson-0.42.0/mesonbuild/mesonlib.py	2017-09-14 16:02:17.575331515 +0200
-@@ -334,7 +334,7 @@ def default_libdir():
-                 return 'lib/' + archpath
-         except Exception:
+From 9b787be8b89bbad37b31c7e3dfd7825394abee5e Mon Sep 17 00:00:00 2001
+From: Fabian Orccon <cfoch.fabian@gmail.com>
+Date: Fri, 14 Jun 2019 12:03:45 -0500
+Subject: [PATCH] HackToolbox meson overrides patch
+
+---
+ mesonbuild/mesonlib.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mesonbuild/mesonlib.py b/mesonbuild/mesonlib.py
+index 0afc21b9..021c233b 100644
+--- a/mesonbuild/mesonlib.py
++++ b/mesonbuild/mesonlib.py
+@@ -657,7 +657,7 @@ def default_libdir():
              pass
+     if is_freebsd():
+         return 'lib'
 -    if os.path.isdir('/usr/lib64') and not os.path.islink('/usr/lib64'):
-+    if os.path.isdir('/usr/lib64') and not os.path.islink('/usr/lib64') and False: # We disable lib64 in the freedesktop sdk
++    if os.path.isdir('/usr/lib64') and not os.path.islink('/usr/lib64') and False: # We disable lib64 in the freedesktop sdk:
          return 'lib64'
      return 'lib'
  
+-- 
+2.20.1
+

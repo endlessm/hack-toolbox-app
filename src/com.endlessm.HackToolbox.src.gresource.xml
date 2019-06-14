@@ -35,6 +35,7 @@
     <file>LightSpeed/spawnTopic.js</file>
     <file>LightSpeed/toolbox.js</file>
     <file>LightSpeed/userFunction.js</file>
+    <file>PlayerWindow/toolbox.js</file>
     <file>OperatingSystemApp/cursorImage.js</file>
     <file>OperatingSystemApp/controlpanel.js</file>
     <file>OperatingSystemApp/osmodel.js</file>
