@@ -117,5 +117,6 @@
     <file>RileyMaze/units/robotBUp.png</file>
     <file>RileyMaze/units/robotADown.png</file>
     <file>RileyMaze/units/robotBDown.png</file>
+    <file compressed="true" preprocess="xml-stripblanks">sketchbook/metadata.ui</file>
   </gresource>
 </gresources>

@@ -55,6 +55,10 @@
     <file>popupMenu.js</file>
     <file>resetButton.js</file>
     <file>section.js</file>
+    <file>sketchbook/code.js</file>
+    <file>sketchbook/metadata.js</file>
+    <file>sketchbook/model.js</file>
+    <file>sketchbook/toolbox.js</file>
     <file>soundServer.js</file>
     <file>spinInput.js</file>
     <file>toolbox.js</file>

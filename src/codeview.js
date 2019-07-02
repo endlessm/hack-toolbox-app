@@ -132,6 +132,10 @@ const Buffer = GObject.registerClass(class Buffer extends GtkSource.Buffer {
 
 var Codeview = GObject.registerClass({
     GTypeName: 'Codeview',
+    Properties: {
+        text: GObject.ParamSpec.string('text', 'Text', 'Source code being edited',
+            GObject.ParamFlags.READWRITE, ''),
+    },
     Signals: {
         'should-compile': {
             param_types: [GObject.TYPE_BOOLEAN],
@@ -223,6 +227,9 @@ var Codeview = GObject.registerClass({
     }
 
     set text(value) {
+        if (this._buffer && this._buffer.text === value)
+            return;
+
         if (this._changedHandler)
             GObject.signal_handler_block(this._buffer, this._changedHandler);
         try {
@@ -232,6 +239,7 @@ var Codeview = GObject.registerClass({
             });
             this._cached_ast = null;
             this.compile(false);
+            this.notify('text');
         } finally {
             if (this._changedHandler)
                 GObject.signal_handler_unblock(this._buffer, this._changedHandler);
