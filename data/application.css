@@ -497,3 +497,8 @@ button.up:disabled,
     padding: 0px;
 }
 
+/* HackUnlock topbar */
+
+.toyapp-topbar {
+  background-color: rgba(6, 20, 39, 0.80);
+}
