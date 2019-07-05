@@ -69,9 +69,17 @@ var ToolboxWindow = GObject.registerClass({
         });
         this._toolbox_frame.get_style_context().add_class('toolbox');
 
+        // Check Hack mode.
+        const schema_source = Gio.SettingsSchemaSource.get_default();
+        const schema = schema_source.lookup('org.gnome.shell', false);
+        let isHackMode = !!GLib.getenv('HACK_TOOLBOX_HACK_MODE_ENABLED');
+        if (!isHackMode && schema.list_keys().includes('hack-mode-enabled')) {
+            const shellSettings = Gio.Settings.new('org.gnome.shell');
+            isHackMode = shellSettings.get_boolean('hack-mode-enabled');
+        }
+
         let container = this._lockscreen;
-        if (GLib.getenv('HACK_TOOLBOX_HACK_MODE_ENABLED') &&
-                this.target_app_id === 'com.endlessm.HackUnlock') {
+        if (isHackMode && this.target_app_id === 'com.endlessm.HackUnlock') {
             container = new Gtk.Overlay();
             const topbar = new ToyAppTopbar(this);
 
