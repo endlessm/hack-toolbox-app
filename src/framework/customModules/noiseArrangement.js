@@ -6,7 +6,7 @@ const Dispatcher = imports.framework.dispatcher;
 
 const SoundServerIface = `
 <node>
-  <interface name='com.endlessm.HackSoundServer'>
+  <interface name='com.hack_computer.HackSoundServer'>
     <method name='PlaySound'>
       <arg type='s' name='sound_event' direction='in'/>
       <arg type='s' name='uuid' direction='out'/>
@@ -56,7 +56,7 @@ function generateProto(Name, Extends) {
             const SoundServerProxy = Gio.DBusProxy.makeProxyWrapper(SoundServerIface);
 
             this._audioPlayer = new SoundServerProxy(Gio.DBus.session,
-                'com.endlessm.HackSoundServer', '/com/endlessm/HackSoundServer');
+                'com.hack_computer.HackSoundServer', '/com/hack_computer/HackSoundServer');
 
             if (!this._allowNavigation) {
                 // Prevent clicks on cards from actually going anywhere

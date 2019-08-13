@@ -79,7 +79,7 @@ var ToolboxWindow = GObject.registerClass({
         }
 
         let container = this._lockscreen;
-        if (isHackMode && this.target_app_id === 'com.endlessm.HackUnlock') {
+        if (isHackMode && this.target_app_id === 'com.hack_computer.HackUnlock') {
             container = new Gtk.Overlay();
             const topbar = new ToyAppTopbar(this);
 

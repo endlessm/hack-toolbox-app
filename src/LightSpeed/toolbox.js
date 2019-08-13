@@ -83,8 +83,8 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
     }
 
     _onReset() {
-        Gio.DBus.session.call_sync('com.endlessm.LightSpeed',
-            '/com/endlessm/LightSpeed', 'org.gtk.Actions', 'Activate',
+        Gio.DBus.session.call_sync('com.hack_computer.LightSpeed',
+            '/com/hack_computer/LightSpeed', 'org.gtk.Actions', 'Activate',
             new GLib.Variant('(sava{sv})', ['reset', [], {}]),
             null, Gio.DBusCallFlags.NONE, -1, null);
         this._combinedTopic.reset();

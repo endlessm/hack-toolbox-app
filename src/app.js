@@ -20,15 +20,15 @@ function _toolboxClassForAppId(targetAppId) {
     case 'com.endlessm.Hackdex_chapter_one':
     case 'com.endlessm.Hackdex_chapter_two':
         return imports.framework.toolbox.FrameworkToolbox;
-    case 'com.endlessm.Fizzics':
+    case 'com.hack_computer.Fizzics':
         return imports.Fizzics.toolbox.FizzicsToolbox;
-    case 'com.endlessm.HackUnlock':
+    case 'com.hack_computer.HackUnlock':
         return imports.HackUnlock.toolbox.HUToolbox;
-    case 'com.endlessm.LightSpeed':
+    case 'com.hack_computer.LightSpeed':
         return imports.LightSpeed.toolbox.LSToolbox;
-    case 'com.endlessm.OperatingSystemApp':
+    case 'com.hack_computer.OperatingSystemApp':
         return imports.OperatingSystemApp.toolbox.OSToolbox;
-    case 'com.endlessm.Sidetrack':
+    case 'com.hack_computer.Sidetrack':
         return imports.RileyMaze.toolbox.RMZToolbox;
     case 'com.endlessm.Sketchbook':
         return imports.sketchbook.toolbox.SketchToolbox;
@@ -39,7 +39,7 @@ function _toolboxClassForAppId(targetAppId) {
 
 function _toolboxIsDecorated(targetAppId) {
     switch (targetAppId) {
-    case 'com.endlessm.HackUnlock':
+    case 'com.hack_computer.HackUnlock':
         return false;
     default:
         return true;

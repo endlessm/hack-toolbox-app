@@ -21,5 +21,5 @@ flatpak build-bundle ${REPO} com.endlessm.HackToolbox.flatpak com.endlessm.HackT
 # this build.
 echo
 echo Restarting the GSS
-gdbus call -e -d com.endlessm.GameStateService -o /com/endlessm/GameStateService -m com.endlessm.GameStateService.Reload > /dev/null
+gdbus call -e -d com.hack_computer.GameStateService -o /com/hack_computer/GameStateService -m com.hack_computer.GameStateService.Reload > /dev/null
 

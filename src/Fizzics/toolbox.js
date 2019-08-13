@@ -18,8 +18,8 @@ var FizzicsToolbox = GObject.registerClass(class FizzicsToolbox extends Toolbox 
 
         this.connect('reset', () => {
             Gio.DBus.session.call_sync(
-                'com.endlessm.Fizzics',
-                '/com/endlessm/Fizzics',
+                'com.hack_computer.Fizzics',
+                '/com/hack_computer/Fizzics',
                 'org.gtk.Actions', 'Activate',
                 new GLib.Variant('(sava{sv})', ['reset', [], {}]),
                 null, Gio.DBusCallFlags.NONE, -1, null

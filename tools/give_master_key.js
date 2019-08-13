@@ -1,10 +1,10 @@
 const {Gio, GLib} = imports.gi;
 
-const BusName = 'com.endlessm.GameStateService';
-const BusPath = '/com/endlessm/GameStateService';
+const BusName = 'com.hack_computer.GameStateService';
+const BusPath = '/com/hack_computer/GameStateService';
 const BusIface = `
     <node>
-      <interface name='com.endlessm.GameStateService'>
+      <interface name='com.hack_computer.GameStateService'>
         <method name='Set'>
           <arg type='s' name='key' direction='in'/>
           <arg type='v' name='value' direction='in'/>

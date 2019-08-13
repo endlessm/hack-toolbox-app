@@ -15,9 +15,9 @@ app window and executing the flipping animation.
 
 The toolbox application exports an action on DBus, called `flip`.
 When the user clicks the flip-to-hack button, this action is activated,
-with two parameters: the application ID (e.g. `com.endlessm.Fizzics`)
+with two parameters: the application ID (e.g. `com.hack_computer.Fizzics`)
 and the DBus object path of the window that was flipped (e.g.
-`/com/endlessm/Fizzics/window/1`).
+`/com/hack_computer/Fizzics/window/1`).
 The latter parameter is theoretically to be able to handle flipping
 applications with more than one window, but that wasn't currently used.
 

@@ -61,8 +61,8 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
     }
 
     _onReset() {
-        Gio.DBus.session.call_sync('com.endlessm.Sidetrack',
-            '/com/endlessm/Sidetrack', 'org.gtk.Actions', 'Activate',
+        Gio.DBus.session.call_sync('com.hack_computer.Sidetrack',
+            '/com/hack_computer/Sidetrack', 'org.gtk.Actions', 'Activate',
             new GLib.Variant('(sava{sv})', ['reset', [], {}]),
             null, Gio.DBusCallFlags.NONE, -1, null);
         this._unitTopic.reset();
