@@ -15,7 +15,7 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         super._init(appId, props);
 
         const iconTheme = Gtk.IconTheme.get_default();
-        iconTheme.add_resource_path('/com/endlessm/HackToolbox/LightSpeed/icons');
+        iconTheme.add_resource_path('/com/hack_computer/HackToolbox/LightSpeed/icons');
 
         this._global = new LSGlobalModel();
 

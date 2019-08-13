@@ -40,7 +40,7 @@ var HackableTitle = new Module.Class({
             ''),
     },
 
-    Template: 'resource:///com/endlessm/HackToolbox/CustomModules/card/hackableTitle.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/CustomModules/card/hackableTitle.ui',
     InternalChildren: ['title-label'],
 
     _init(params = {}) {

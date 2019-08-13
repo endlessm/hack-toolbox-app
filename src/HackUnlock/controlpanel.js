@@ -4,7 +4,7 @@ const {GObject, Gtk} = imports.gi;
 
 var HUControlPanel = GObject.registerClass({
     GTypeName: 'HUControlPanel',
-    Template: 'resource:///com/endlessm/HackToolbox/HackUnlock/controlpanel.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/HackUnlock/controlpanel.ui',
     InternalChildren: [
         'adjustmentAmplitude',
         'adjustmentFrequency',

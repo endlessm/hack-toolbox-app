@@ -1,7 +1,7 @@
 # Copyright 2018 Endless Mobile, Inc.
 
-gnome.compile_resources('com.endlessm.HackToolbox.src',
-    'com.endlessm.HackToolbox.src.gresource.xml',
+gnome.compile_resources('com.hack_computer.HackToolbox.src',
+    'com.hack_computer.HackToolbox.src.gresource.xml',
     gresource_bundle: true, install: true, install_dir: pkgdatadir)
 
 subst = configuration_data()
@@ -10,13 +10,13 @@ subst.set('PACKAGE_VERSION', meson.project_version())
 subst.set('prefix', get_option('prefix'))
 subst.set('libdir', get_option('libdir'))
 subst.set('pkgdatadir', pkgdatadir)
-configure_file(input: 'com.endlessm.HackToolbox.in',
-    output: 'com.endlessm.HackToolbox',
+configure_file(input: 'com.hack_computer.HackToolbox.in',
+    output: 'com.hack_computer.HackToolbox',
     configuration: subst, install_dir: get_option('bindir'))
 
 gdbus_targets = gnome.gdbus_codegen('hack-toolbox-objects',
-    '../data/com.endlessm.HackToolbox.xml',
-    interface_prefix: 'com.endlessm.HackToolbox',
+    '../data/com.hack_computer.HackToolbox.xml',
+    interface_prefix: 'com.hack_computer.HackToolbox',
     namespace: 'HackToolbox')
 
 installed_headers = [

@@ -4,7 +4,7 @@ const {GObject, Gtk} = imports.gi;
 
 var SketchMetadataTopic = GObject.registerClass({
     GTypeName: 'SketchMetadataTopic',
-    Template: 'resource:///com/endlessm/HackToolbox/sketchbook/metadata.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/sketchbook/metadata.ui',
     InternalChildren: ['descriptionText', 'instructionsText', 'titleText'],
 }, class SketchMetadataTopic extends Gtk.Grid {
     bindModel(model) {

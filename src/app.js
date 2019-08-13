@@ -112,11 +112,11 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
     vfunc_startup() {
         super.vfunc_startup();
 
-        _loadStyleSheet('/com/endlessm/HackToolbox/application.css');
+        _loadStyleSheet('/com/hack_computer/HackToolbox/application.css');
 
         const iconTheme = Gtk.IconTheme.get_default();
-        iconTheme.add_resource_path('/com/endlessm/HackToolbox/icons');
-        iconTheme.add_resource_path('/com/endlessm/HackToolbox/framework/icons');
+        iconTheme.add_resource_path('/com/hack_computer/HackToolbox/icons');
+        iconTheme.add_resource_path('/com/hack_computer/HackToolbox/framework/icons');
         // We need the ability to peek at other apps' icons
         iconTheme.append_search_path('/var/lib/flatpak/exports/share/icons');
 

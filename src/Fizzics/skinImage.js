@@ -15,7 +15,7 @@ var FizzicsSkinImage = GObject.registerClass({
         'resource-path': GObject.ParamSpec.string(
             'resource-path', 'resource-path', 'resource-path',
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
-            '/com/endlessm/HackToolbox/Fizzics/skins'),
+            '/com/hack_computer/HackToolbox/Fizzics/skins'),
     },
 }, class FizzicsSkinImage extends Gtk.Image {
     get index() {

@@ -735,7 +735,7 @@
           <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="resource">/com/endlessm/HackToolbox/Fizzics/icons/16x16/actions/eye-symbolic.svg</property>
+            <property name="resource">/com/hack_computer/HackToolbox/Fizzics/icons/16x16/actions/eye-symbolic.svg</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -746,7 +746,7 @@
           <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="resource">/com/endlessm/HackToolbox/Fizzics/icons/16x16/actions/speaker-symbolic.svg</property>
+            <property name="resource">/com/hack_computer/HackToolbox/Fizzics/icons/16x16/actions/speaker-symbolic.svg</property>
           </object>
           <packing>
             <property name="left_attach">0</property>

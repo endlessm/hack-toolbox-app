@@ -13,7 +13,7 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
         super._init(appId, props);
 
         const iconTheme = Gtk.IconTheme.get_default();
-        iconTheme.add_resource_path('/com/endlessm/HackToolbox/RileyMaze/icons');
+        iconTheme.add_resource_path('/com/hack_computer/HackToolbox/RileyMaze/icons');
 
         this._global = new RMZGlobalModel();
         this._instructTopic = new RMZUserFunction('instructions');

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/com/endlessm/HackToolbox">
+  <gresource prefix="/com/hack_computer/HackToolbox">
     <file compressed="true">application.css</file>
     <file compressed="true">codeview.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">section.ui</file>

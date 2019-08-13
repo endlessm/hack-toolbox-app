@@ -18,7 +18,7 @@ var FizzicsLevel2 = GObject.registerClass({
             GObject.ParamFlags.READWRITE, false),
     },
 
-    Template: 'resource:///com/endlessm/HackToolbox/Fizzics/level2.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/Fizzics/level2.ui',
     InternalChildren: [
         'content',
     ],

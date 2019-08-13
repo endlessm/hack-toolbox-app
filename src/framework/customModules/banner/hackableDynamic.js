@@ -47,7 +47,7 @@ var HackableDynamic = new Module.Class({
             ''),
     },
 
-    Template: 'resource:///com/endlessm/HackToolbox/CustomModules/banner/hackableDynamic.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/CustomModules/banner/hackableDynamic.ui',
     InternalChildren: ['subtitle-label', 'logo'],
 
     _init(props = {}) {

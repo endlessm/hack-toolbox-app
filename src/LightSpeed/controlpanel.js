@@ -23,7 +23,7 @@ var LSCombinedTopic = GObject.registerClass({
             'Display an indicator on the button that it needs attention',
             GObject.ParamFlags.READWRITE, false),
     },
-    Template: 'resource:///com/endlessm/HackToolbox/LightSpeed/panel.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/LightSpeed/panel.ui',
     InternalChildren: ['astronautSizeAdjustment', 'scoreTargetAdjustment',
         'shipAssetButton', 'shipSizeAdjustment', 'shipSpeedAdjustment',
         'variablesCodeview'],
@@ -34,7 +34,7 @@ var LSCombinedTopic = GObject.registerClass({
 
         const shipInfo = {};
         VALID_SHIPS.forEach(id => {
-            shipInfo[id] = `/com/endlessm/HackToolbox/LightSpeed/ships/${id}.png`;
+            shipInfo[id] = `/com/hack_computer/HackToolbox/LightSpeed/ships/${id}.png`;
         });
         this._shipAssetMenu = new PopupMenu(this._shipAssetButton, shipInfo,
             Gtk.Image, 'resource');

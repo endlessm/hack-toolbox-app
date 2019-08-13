@@ -3,7 +3,7 @@
 const {Gio, GLib, GObject, Gtk, HackToolbox} = imports.gi;
 const {Lockscreen} = imports.lockscreen;
 
-const DATA_RESOURCE_PATH = 'resource:///com/endlessm/HackToolbox';
+const DATA_RESOURCE_PATH = 'resource:///com/hack_computer/HackToolbox';
 
 var ToyAppTopbar = GObject.registerClass({
     GTypeName: 'ToyAppTopbar',

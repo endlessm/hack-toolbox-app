@@ -11,7 +11,7 @@ GObject.type_ensure(Section.$gtype);
 
 var FizzicsLevel1 = GObject.registerClass({
     GTypeName: 'FizzicsLevel1',
-    Template: 'resource:///com/endlessm/HackToolbox/Fizzics/level1.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/Fizzics/level1.ui',
     InternalChildren: [
         'buttonBackground',
         'buttonDrag',
@@ -36,7 +36,7 @@ var FizzicsLevel1 = GObject.registerClass({
         const indices = Array.from({length: 3}, (v, i) => i);
         this._menuBackground = new PopupMenu(this._buttonBackground, indices,
             FizzicsSkinImage, 'index',
-            {'resource-path': '/com/endlessm/HackToolbox/Fizzics/backgrounds'});
+            {'resource-path': '/com/hack_computer/HackToolbox/Fizzics/backgrounds'});
         this._addTabForIndex(0);
         this._addTabForIndex(1);
         this._addTabForIndex(2);

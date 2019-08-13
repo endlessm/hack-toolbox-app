@@ -111,7 +111,7 @@ var OSCursorModel = GObject.registerClass({
 
         /* Build cursor resource path */
         var cursor = Gio.File.new_for_uri(
-            `resource:///com/endlessm/HackToolbox/OperatingSystemApp/cursors/${
+            `resource:///com/hack_computer/HackToolbox/OperatingSystemApp/cursors/${
                 this._theme}.xmc`);
 
         /* Build user custom cursors directory path

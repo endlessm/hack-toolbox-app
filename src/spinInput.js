@@ -18,7 +18,7 @@ var SpinInput = GObject.registerClass({
             GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
             Gtk.Adjustment),
     },
-    Template: 'resource:///com/endlessm/HackToolbox/spininput.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/spininput.ui',
     InternalChildren: ['input', 'label'],
 }, class SpinInput extends Gtk.Box {
     _init(props) {

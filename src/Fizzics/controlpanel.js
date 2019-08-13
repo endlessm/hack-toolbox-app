@@ -7,7 +7,7 @@ const {Lockscreen} = imports.lockscreen;
 
 var FizzicsControlPanel = GObject.registerClass({
     GTypeName: 'FizzicsControlPanel',
-    Template: 'resource:///com/endlessm/HackToolbox/Fizzics/controlpanel.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/Fizzics/controlpanel.ui',
     InternalChildren: [
         'panelLevel1',
         'panelLevel2',
