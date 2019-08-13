@@ -25,7 +25,7 @@ var LSGlobalModel = GObject.registerClass({
     },
 }, class LSGlobalModel extends ClippyWrapper {
     _init(level, props = {}) {
-        super._init('com.endlessm.LightSpeed', props);
+        super._init('com.hack_computer.LightSpeed', props);
         this._models = [];
     }
 

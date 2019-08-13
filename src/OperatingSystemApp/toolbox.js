@@ -13,7 +13,7 @@ var OSToolbox = GObject.registerClass(class OSToolbox extends Toolbox {
 
         /* Setup icons path */
         var theme = Gtk.IconTheme.get_default();
-        theme.add_resource_path('/com/endlessm/HackToolbox/OperatingSystemApp/icons');
+        theme.add_resource_path('/com/hack_computer/HackToolbox/OperatingSystemApp/icons');
 
         this._controlPanel = new OSControlPanel({visible: true});
         this.addTopic('main', 'Cursor', 'cursor-symbolic', this._controlPanel);

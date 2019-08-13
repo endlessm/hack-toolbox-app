@@ -15,9 +15,9 @@ app window and executing the flipping animation.
 
 The toolbox application exports an action on DBus, called `flip`.
 When the user clicks the flip-to-hack button, this action is activated,
-with two parameters: the application ID (e.g. `com.endlessm.Fizzics`)
+with two parameters: the application ID (e.g. `com.hack_computer.Fizzics`)
 and the DBus object path of the window that was flipped (e.g.
-`/com/endlessm/Fizzics/window/1`).
+`/com/hack_computer/Fizzics/window/1`).
 The latter parameter is theoretically to be able to handle flipping
 applications with more than one window, but that wasn't currently used.
 
@@ -243,8 +243,8 @@ and install it in the user installation base, you can do:
 Commit your local changes.
 Use the `./build-flatpak.sh` script to build a Flatpak from the latest
 git commit.
-Update the local application using `flatpak update --assumeyes --no-deps com.endlessm.HackToolbox`
-Run the local version using `flatpak run --env=HACK_TOOLBOX_PERSIST=1 com.endlessm.HackToolbox`
+Update the local application using `flatpak update --assumeyes --no-deps com.hack_computer.HackToolbox`
+Run the local version using `flatpak run --env=HACK_TOOLBOX_PERSIST=1 com.hack_computer.HackToolbox`
 
 ### Coding Style
 

@@ -20,15 +20,15 @@ function _toolboxClassForAppId(targetAppId) {
     case 'com.endlessm.Hackdex_chapter_one':
     case 'com.endlessm.Hackdex_chapter_two':
         return imports.framework.toolbox.FrameworkToolbox;
-    case 'com.endlessm.Fizzics':
+    case 'com.hack_computer.Fizzics':
         return imports.Fizzics.toolbox.FizzicsToolbox;
-    case 'com.endlessm.HackUnlock':
+    case 'com.hack_computer.HackUnlock':
         return imports.HackUnlock.toolbox.HUToolbox;
-    case 'com.endlessm.LightSpeed':
+    case 'com.hack_computer.LightSpeed':
         return imports.LightSpeed.toolbox.LSToolbox;
-    case 'com.endlessm.OperatingSystemApp':
+    case 'com.hack_computer.OperatingSystemApp':
         return imports.OperatingSystemApp.toolbox.OSToolbox;
-    case 'com.endlessm.Sidetrack':
+    case 'com.hack_computer.Sidetrack':
         return imports.RileyMaze.toolbox.RMZToolbox;
     case 'com.endlessm.Sketchbook':
         return imports.sketchbook.toolbox.SketchToolbox;
@@ -39,7 +39,7 @@ function _toolboxClassForAppId(targetAppId) {
 
 function _toolboxIsDecorated(targetAppId) {
     switch (targetAppId) {
-    case 'com.endlessm.HackUnlock':
+    case 'com.hack_computer.HackUnlock':
         return false;
     default:
         return true;
@@ -112,11 +112,11 @@ var HackToolboxApplication = GObject.registerClass(class extends Gtk.Application
     vfunc_startup() {
         super.vfunc_startup();
 
-        _loadStyleSheet('/com/endlessm/HackToolbox/application.css');
+        _loadStyleSheet('/com/hack_computer/HackToolbox/application.css');
 
         const iconTheme = Gtk.IconTheme.get_default();
-        iconTheme.add_resource_path('/com/endlessm/HackToolbox/icons');
-        iconTheme.add_resource_path('/com/endlessm/HackToolbox/framework/icons');
+        iconTheme.add_resource_path('/com/hack_computer/HackToolbox/icons');
+        iconTheme.add_resource_path('/com/hack_computer/HackToolbox/framework/icons');
         // We need the ability to peek at other apps' icons
         iconTheme.append_search_path('/var/lib/flatpak/exports/share/icons');
 

@@ -13,7 +13,7 @@ GObject.type_ensure(WobblyLockscreen.$gtype);
 
 var WobblyPanel = GObject.registerClass({
     GTypeName: 'WobblyPanel',
-    Template: 'resource:///com/endlessm/HackToolbox/OperatingSystemApp/wobblypanel.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/OperatingSystemApp/wobblypanel.ui',
     Children: [
         'wobblyLock',
     ],
@@ -32,7 +32,7 @@ var WobblyPanel = GObject.registerClass({
 
         /* Setup icons path */
         var theme = Gtk.IconTheme.get_default();
-        theme.add_resource_path('/com/endlessm/HackToolbox/OperatingSystemApp/icons');
+        theme.add_resource_path('/com/hack_computer/HackToolbox/OperatingSystemApp/icons');
 
         super._init(props);
 

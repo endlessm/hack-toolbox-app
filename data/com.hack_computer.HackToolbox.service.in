@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.hack_computer.HackToolbox
+Exec=@bindir@/com.hack_computer.HackToolbox

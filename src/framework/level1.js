@@ -10,7 +10,7 @@ GObject.type_ensure(Section.$gtype);
 
 var FrameworkLevel1 = GObject.registerClass({
     GTypeName: 'FrameworkLevel1',
-    Template: 'resource:///com/endlessm/HackToolbox/framework/level1.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/framework/level1.ui',
     InternalChildren: ['accentColorButton', 'borderColorButton',
         'borderWidthAdjustment', 'fontChooser', 'fontRenderer',
         'fontSizeAdjustment', 'infoColorButton', 'layoutButton', 'logoButton',

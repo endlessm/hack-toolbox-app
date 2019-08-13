@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/com/endlessm/HackToolbox/js">
+  <gresource prefix="/com/hack_computer/HackToolbox/js">
     <file>app.js</file>
     <file>clippyWrapper.js</file>
     <file>clubhouse.js</file>

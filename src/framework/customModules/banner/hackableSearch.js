@@ -32,7 +32,7 @@ var HackableSearch = new Module.Class({
             ''),
     },
 
-    Template: 'resource:///com/endlessm/HackToolbox/CustomModules/banner/hackableSearch.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/CustomModules/banner/hackableSearch.ui',
 
     _init(props = {}) {
         // eslint-disable-next-line no-restricted-syntax

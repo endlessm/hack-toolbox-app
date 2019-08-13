@@ -51,7 +51,7 @@ var HackableDefault = new Module.Class({
     Extends: Gtk.Button,
     Implements: [View, Card.Card],
 
-    Template: 'resource:///com/endlessm/HackToolbox/CustomModules/card/hackableDefault.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/CustomModules/card/hackableDefault.ui',
     InternalChildren: ['layout', 'inner-content-grid', 'thumbnail-frame',
         'grid', 'title-label', 'synopsis-label', 'context-frame',
         'thumbnail-overlay', 'content-overlay', 'title-box'],

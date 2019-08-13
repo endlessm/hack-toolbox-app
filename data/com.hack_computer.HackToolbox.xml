@@ -1,5 +1,5 @@
 <node>
-  <interface name="com.endlessm.HackToolbox.Toolbox">
+  <interface name="com.hack_computer.HackToolbox.Toolbox">
     <property name="Target" type="(ss)" access="read"/>
   </interface>
 <node>

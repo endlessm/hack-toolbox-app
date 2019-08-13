@@ -11,7 +11,7 @@ const {Codeview} = imports.codeview;
 // deal with runtime errors for that purpose.
 const COMMON_SCOPE = {
     // Keep this in sync with UserScope class in
-    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
+    // hack-toy-apps/com.hack_computer.LightSpeed/userScope.js
     tick: 0,
     time: 0,
     width: 1920,
@@ -96,7 +96,7 @@ propNumFactory(enemyVelocity, 'y');
 
 const COMMON_UPDATE_SCOPE = {
     // Keep this in sync with UpdateEnemyScope class in
-    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
+    // hack-toy-apps/com.hack_computer.LightSpeed/userScope.js
     playerShip: {
         position: playPos,
     },
@@ -130,7 +130,7 @@ const POWERUP = {
 
 var COMMON_SPAWN_SCOPE = {
     // Keep this in sync with SpawnScope class in
-    // hack-toy-apps/com.endlessm.LightSpeed/userScope.js
+    // hack-toy-apps/com.hack_computer.LightSpeed/userScope.js
     ticksSinceSpawn: 0,
 };
 

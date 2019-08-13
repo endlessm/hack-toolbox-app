@@ -3,8 +3,8 @@ const {GLib, Gio} = imports.gi;
 if (ARGV.length < 3)
     ARGV[2] = 'flip';
 
-Gio.DBus.session.call_sync('com.endlessm.HackToolbox',
-    '/com/endlessm/HackToolbox',
+Gio.DBus.session.call_sync('com.hack_computer.HackToolbox',
+    '/com/hack_computer/HackToolbox',
     'org.gtk.Actions', 'Activate',
     new GLib.Variant('(sava{sv})', [
         ARGV[2],

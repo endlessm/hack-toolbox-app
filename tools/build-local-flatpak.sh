@@ -22,10 +22,10 @@ BRANCH=${BRANCH:-master}
 
 sed -e "s|@GIT_CLONE_BRANCH@|${GIT_CLONE_BRANCH}|g" \
     -e "s|@BRANCH@|${BRANCH}|g" \
-  com.endlessm.HackToolbox.json.in > com.endlessm.HackToolbox.json
+  com.hack_computer.HackToolbox.json.in > com.hack_computer.HackToolbox.json
 
 # Add any extra options from the user to the flatpak-builder command (e.g. --install)
-flatpak-builder build --user --force-clean com.endlessm.HackToolbox.json --repo=${REPO} $@ || ret=$?
+flatpak-builder build --user --force-clean com.hack_computer.HackToolbox.json --repo=${REPO} $@ || ret=$?
 
 popd
 

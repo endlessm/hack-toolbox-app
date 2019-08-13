@@ -4,7 +4,7 @@ const {GObject} = imports.gi;
 
 const {Toolbox} = imports.toolbox;
 
-const DATA_RESOURCE_PATH = 'resource:///com/endlessm/HackToolbox';
+const DATA_RESOURCE_PATH = 'resource:///com/hack_computer/HackToolbox';
 
 var DefaultHackToolbox = GObject.registerClass({
     Template: `${DATA_RESOURCE_PATH}/hacktoolbox/toolbox.ui`,

@@ -3,7 +3,7 @@
 const {Gio, GLib, GObject, Gtk, HackToolbox} = imports.gi;
 const {Lockscreen} = imports.lockscreen;
 
-const DATA_RESOURCE_PATH = 'resource:///com/endlessm/HackToolbox';
+const DATA_RESOURCE_PATH = 'resource:///com/hack_computer/HackToolbox';
 
 var ToyAppTopbar = GObject.registerClass({
     GTypeName: 'ToyAppTopbar',
@@ -79,7 +79,7 @@ var ToolboxWindow = GObject.registerClass({
         }
 
         let container = this._lockscreen;
-        if (isHackMode && this.target_app_id === 'com.endlessm.HackUnlock') {
+        if (isHackMode && this.target_app_id === 'com.hack_computer.HackUnlock') {
             container = new Gtk.Overlay();
             const topbar = new ToyAppTopbar(this);
 

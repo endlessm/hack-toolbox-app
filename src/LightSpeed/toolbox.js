@@ -15,7 +15,7 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
         super._init(appId, props);
 
         const iconTheme = Gtk.IconTheme.get_default();
-        iconTheme.add_resource_path('/com/endlessm/HackToolbox/LightSpeed/icons');
+        iconTheme.add_resource_path('/com/hack_computer/HackToolbox/LightSpeed/icons');
 
         this._global = new LSGlobalModel();
 
@@ -83,8 +83,8 @@ var LSToolbox = GObject.registerClass(class LSToolbox extends Toolbox {
     }
 
     _onReset() {
-        Gio.DBus.session.call_sync('com.endlessm.LightSpeed',
-            '/com/endlessm/LightSpeed', 'org.gtk.Actions', 'Activate',
+        Gio.DBus.session.call_sync('com.hack_computer.LightSpeed',
+            '/com/hack_computer/LightSpeed', 'org.gtk.Actions', 'Activate',
             new GLib.Variant('(sava{sv})', ['reset', [], {}]),
             null, Gio.DBusCallFlags.NONE, -1, null);
         this._combinedTopic.reset();

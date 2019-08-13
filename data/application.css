@@ -8,7 +8,7 @@
 }
 
 lockscreen > playbin.no-lock > lock {
-    background: url('resource:///com/endlessm/HackToolbox/hacktoolbox/lockscreen.jpg') no-repeat center / cover;
+    background: url('resource:///com/hack_computer/HackToolbox/hacktoolbox/lockscreen.jpg') no-repeat center / cover;
 }
 
 toolbox {
@@ -16,7 +16,7 @@ toolbox {
 }
 
 toolbox .panel {
-    background-image: url('resource:///com/endlessm/HackToolbox/hacktoolbox/background.png'),
+    background-image: url('resource:///com/hack_computer/HackToolbox/hacktoolbox/background.png'),
                       radial-gradient(at -47% 158%,
                                       rgba(197, 163, 93, 0.81) 0%,
                                       rgba(208, 95, 52, 0.80) 14%,
@@ -369,13 +369,13 @@ popover.error button:hover {
 }
 
 .framework.toolbox-surrounding-window.has-changes {
-    background-image: cross-fade(100% url('resource:///com/endlessm/HackToolbox/framework/toolbox-background.png'),
+    background-image: cross-fade(100% url('resource:///com/hack_computer/HackToolbox/framework/toolbox-background.png'),
                                  linear-gradient(transparent, transparent));
     transition-duration: 200ms;
 }
 
 .framework.toolbox-surrounding-window {
-    background-image: cross-fade(0% url('resource:///com/endlessm/HackToolbox/framework/toolbox-background.png'),
+    background-image: cross-fade(0% url('resource:///com/hack_computer/HackToolbox/framework/toolbox-background.png'),
                                  linear-gradient(transparent, transparent));
     transition: background-image 10s;
 }
@@ -390,7 +390,7 @@ popover.error button:hover {
 
 /* Keep in sync with "toolbox .panel" background above */
 .HackUnlock frame.toolbox {
-    background-image: url('resource:///com/endlessm/HackToolbox/hacktoolbox/background.png'),
+    background-image: url('resource:///com/hack_computer/HackToolbox/hacktoolbox/background.png'),
                       radial-gradient(at -47% 158%,
                                       rgba(197, 163, 93, 0.81) 0%,
                                       rgba(208, 95, 52, 0.80) 14%,
@@ -461,7 +461,7 @@ popover.error button:hover {
 }
 
 #saniel-head {
-    background-image: url('resource:///com/endlessm/HackToolbox/OperatingSystemApp/saniel-still.png');
+    background-image: url('resource:///com/hack_computer/HackToolbox/OperatingSystemApp/saniel-still.png');
     background-position: top right;
     background-repeat: no-repeat;
 }

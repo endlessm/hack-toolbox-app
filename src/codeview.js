@@ -10,7 +10,7 @@ const CODEVIEW_ERROR_EVENT = 'e98aa2b8-3f11-4a25-b8e9-b10a635df121';
 
 // Can add more, e.g. WARNING, SUGGESTION
 const MarkType = {
-    ERROR: 'com.endlessm.HackToolbox.codeview.error',
+    ERROR: 'com.hack_computer.HackToolbox.codeview.error',
 };
 
 const KEYPRESS_SOUNDS = {
@@ -142,7 +142,7 @@ var Codeview = GObject.registerClass({
         },
     },
 
-    Template: 'resource:///com/endlessm/HackToolbox/codeview.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/codeview.ui',
     InternalChildren: ['fixButton', 'helpLabel', 'helpMessage'],
 }, class Codeview extends Gtk.ScrolledWindow {
     _init(props = {}) {

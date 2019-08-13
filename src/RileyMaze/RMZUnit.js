@@ -16,7 +16,7 @@ const VALID_VARIABLES = ['robotADirection', 'robotBDirection'];
 
 var RMZUnitsTopic = GObject.registerClass({
     GTypeName: 'RMZCombinedTopic',
-    Template: 'resource:///com/endlessm/HackToolbox/RileyMaze/panel.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/RileyMaze/panel.ui',
     InternalChildren: ['units', 'robotAAsset', 'robotAUp',
         'robotADown', 'robotBAsset', 'robotBUp', 'robotBDown',
         'variablesCodeview'],
@@ -31,7 +31,7 @@ var RMZUnitsTopic = GObject.registerClass({
         super._init(props);
 
         const iconTheme = Gtk.IconTheme.get_default();
-        iconTheme.add_resource_path('/com/endlessm/HackToolbox/RileyMaze/units');
+        iconTheme.add_resource_path('/com/hack_computer/HackToolbox/RileyMaze/units');
 
         this._robotAAsset.set_from_icon_name('robotADown', Gtk.IconSize.NONE);
         this._robotAAsset.get_style_context().add_class('units');

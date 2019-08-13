@@ -5,7 +5,7 @@ FRAMEWORKAPPS="
 	com.endlessm.encyclopedia.en
 "
 
-LOCKSCREENSDIR=${MESON_INSTALL_PREFIX}/share/com.endlessm.HackToolbox/lockscreens
+LOCKSCREENSDIR=${MESON_INSTALL_PREFIX}/share/com.hack_computer.HackToolbox/lockscreens
 
 for app in ${FRAMEWORKAPPS}; do
   ln -s framework.1 ${LOCKSCREENSDIR}/lock.${app}.1

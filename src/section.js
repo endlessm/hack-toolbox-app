@@ -10,7 +10,7 @@ var Section = GObject.registerClass({
             GObject.ParamFlags.READWRITE, ''),
     },
 
-    Template: 'resource:///com/endlessm/HackToolbox/section.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/section.ui',
     InternalChildren: ['label'],
 }, class Section extends Gtk.Grid {
     _init(props = {}) {

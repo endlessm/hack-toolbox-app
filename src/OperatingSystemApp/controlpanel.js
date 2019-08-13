@@ -14,7 +14,7 @@ GObject.type_ensure(SpinInput.$gtype);
 
 var OSControlPanel = GObject.registerClass({
     GTypeName: 'OSControlPanel',
-    Template: 'resource:///com/endlessm/HackToolbox/OperatingSystemApp/controlpanel.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/OperatingSystemApp/controlpanel.ui',
     Children: [
         'codeLock',
     ],
@@ -30,7 +30,7 @@ var OSControlPanel = GObject.registerClass({
 
         /* Setup icons path */
         var theme = Gtk.IconTheme.get_default();
-        theme.add_resource_path('/com/endlessm/HackToolbox/OperatingSystemApp/icons');
+        theme.add_resource_path('/com/hack_computer/HackToolbox/OperatingSystemApp/icons');
 
         super._init(props);
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/com/endlessm/HackToolbox/CustomModules">
+  <gresource prefix="/com/hack_computer/HackToolbox/CustomModules">
     <file compressed="true" preprocess="xml-stripblanks">banner/hackableDynamic.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">banner/hackableSearch.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">card/hackableDefault.ui</file>

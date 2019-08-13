@@ -3,7 +3,7 @@
 const {GdkPixbuf, GObject, Gtk} = imports.gi;
 
 function cursorIDToResource(id) {
-    return `/com/endlessm/HackToolbox/OperatingSystemApp/icons/${id}.png`;
+    return `/com/hack_computer/HackToolbox/OperatingSystemApp/icons/${id}.png`;
 }
 
 var CursorImage = GObject.registerClass({

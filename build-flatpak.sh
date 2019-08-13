@@ -12,14 +12,14 @@ sed \
   -e "s|@BRANCH@|${BRANCH}|g" \
   -e "s|@GIT_CLONE_BRANCH@|${GIT_CLONE_BRANCH}|g" \
   -e "s|\"@RUN_TESTS@\"|${RUN_TESTS}|g" \
-  com.endlessm.HackToolbox.json.in \
-  > com.endlessm.HackToolbox.json
+  com.hack_computer.HackToolbox.json.in \
+  > com.hack_computer.HackToolbox.json
 
-flatpak-builder build --ccache com.endlessm.HackToolbox.json --repo=${REPO}
-flatpak build-bundle ${REPO} com.endlessm.HackToolbox.flatpak com.endlessm.HackToolbox ${BRANCH}
+flatpak-builder build --ccache com.hack_computer.HackToolbox.json --repo=${REPO}
+flatpak build-bundle ${REPO} com.hack_computer.HackToolbox.flatpak com.hack_computer.HackToolbox ${BRANCH}
 # Reload the GSS to make sure we have the freshest changes in case it was modified for testing
 # this build.
 echo
 echo Restarting the GSS
-gdbus call -e -d com.endlessm.GameStateService -o /com/endlessm/GameStateService -m com.endlessm.GameStateService.Reload > /dev/null
+gdbus call -e -d com.hack_computer.GameStateService -o /com/hack_computer/GameStateService -m com.hack_computer.GameStateService.Reload > /dev/null
 

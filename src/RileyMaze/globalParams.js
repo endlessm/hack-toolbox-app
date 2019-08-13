@@ -15,7 +15,7 @@ var RMZGlobalModel = GObject.registerClass({
     },
 }, class RMZGlobalModel extends ClippyWrapper {
     _init(level, props = {}) {
-        super._init('com.endlessm.Sidetrack', props);
+        super._init('com.hack_computer.Sidetrack', props);
         this._models = [];
     }
 

@@ -7,7 +7,7 @@ const {SKINS, VFXS, SFXS} = imports.Fizzics.model;
 
 var FizzicsObjectEditor = GObject.registerClass({
     GTypeName: 'FizzicsObjectEditor',
-    Template: 'resource:///com/endlessm/HackToolbox/Fizzics/objectEditor.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/Fizzics/objectEditor.ui',
     InternalChildren: [
         'adjustmentRadius',
         'adjustmentGravity',

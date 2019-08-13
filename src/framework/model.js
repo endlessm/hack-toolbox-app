@@ -322,7 +322,7 @@ class RaModelBase extends GObject.Object {
         // A few apps must deviate from the standard SDK include path as they
         // don't use standard presets
         if (NONSTANDARD_PRESET_APPS.includes(this.constructor.appId))
-            includePath = '/app/share/com.endlessm.HackToolbox/app-descriptions';
+            includePath = '/app/share/com.hack_computer.HackToolbox/app-descriptions';
 
         return Utils.transformStringToFD(yaml, ['autobahn', '-I', includePath]);
     }
@@ -331,7 +331,7 @@ class RaModelBase extends GObject.Object {
         const tmpDir = Gio.File.new_for_path(GLib.get_user_runtime_dir());
 
         const logoResource = Gio.File.new_for_uri(
-            `resource:///com/endlessm/HackToolbox/framework/${this._logoGraphic}.svg`);
+            `resource:///com/hack_computer/HackToolbox/framework/${this._logoGraphic}.svg`);
         const logo = tmpDir.get_child('logo');
         await logoResource.copy_async(logo, Gio.FileCopyFlags.OVERWRITE, _PRIO,
             null, null);

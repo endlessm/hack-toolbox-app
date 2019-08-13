@@ -5,7 +5,7 @@ const {Lockscreen} = imports.lockscreen;
 
 const TopicIface = `
 <node>
-  <interface name="com.endlessm.HackToolbox.Topic">
+  <interface name="com.hack_computer.HackToolbox.Topic">
     <method name="reveal">
       <arg type="b" direction="in" name="revealed"/>
     </method>
@@ -165,7 +165,7 @@ var TopicButton = GObject.registerClass({
         const objPath = Gio.Application.get_default().get_dbus_object_path();
         const winName = appId.replace(/\./gi, '_');
         this.objectPath = `${objPath}/window/${winName}/topic/${this._id}`;
-        this.address = `com.endlessm.HackToolbox.window.${winName}.topic.${this._id}`;
+        this.address = `com.hack_computer.HackToolbox.window.${winName}.topic.${this._id}`;
         this._dbus = Gio.DBusExportedObject.wrapJSObject(TopicIface, this);
         try {
             this._dbus.export(Gio.DBus.session, this.objectPath);

@@ -1,6 +1,6 @@
 # Copyright 2018 Endless Mobile, Inc.
 
-project('com.endlessm.HackToolbox', 'c', version: '0.0.0',
+project('com.hack_computer.HackToolbox', 'c', version: '0.0.0',
     license: ['LGPL-2.1'], meson_version: '>= 0.40.0')
 
 gnome = import('gnome')

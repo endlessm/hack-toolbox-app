@@ -7,7 +7,7 @@ var VALID_LOGOS = ['animals', 'art', 'astronomy', 'biology', 'celebrities',
     'math', 'nature', 'physics', 'soccer', 'socialsciences', 'travel'];
 
 function logoIDToResource(id) {
-    return `/com/endlessm/HackToolbox/framework/${id}.svg`;
+    return `/com/hack_computer/HackToolbox/framework/${id}.svg`;
 }
 
 var LogoImage = GObject.registerClass({

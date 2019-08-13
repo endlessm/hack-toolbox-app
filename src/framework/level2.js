@@ -9,7 +9,7 @@ GObject.type_ensure(Section.$gtype);
 
 var FrameworkLevel2 = GObject.registerClass({
     GTypeName: 'FrameworkLevel2',
-    Template: 'resource:///com/endlessm/HackToolbox/framework/level2.ui',
+    Template: 'resource:///com/hack_computer/HackToolbox/framework/level2.ui',
     InternalChildren: ['cipherAdjustment', 'cipherChooser', 'cipherInput',
         'cipherOutput', 'clickSoundChooser', 'effectButton', 'filterButton',
         'hoverSoundChooser', 'hyperlinksButton'],

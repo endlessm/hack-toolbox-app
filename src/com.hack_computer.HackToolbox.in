@@ -1,12 +1,12 @@
 #!@GJS@
-/* com.endlessm.HackToolbox
+/* com.hack_computer.HackToolbox
  *
  * Copyright (c) 2018 Endless Mobile Inc.
  *
  * This file is the entry point for Endless Hack's "Hack Toolbox" sample.
  */
 imports.package.init({
-    name: 'com.endlessm.HackToolbox',
+    name: 'com.hack_computer.HackToolbox',
     version: '@PACKAGE_VERSION@',
     prefix: '@prefix@',
     libdir: '@libdir@',
