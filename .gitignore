@@ -3,3 +3,6 @@
 **/repo
 com.endlessm.*.flatpak
 com.endlessm.*.json
+com.hack_computer.*.flatpak
+com.hack_computer.*.json
+
