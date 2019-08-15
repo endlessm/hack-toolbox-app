@@ -4,7 +4,7 @@ const {Gio} = imports.gi;
 
 const ClubhouseIface = `
 <node>
-  <interface name="com.endlessm.Clubhouse">
+  <interface name="com.hack_computer.Clubhouse">
     <method name="show">
       <arg type="u" direction="in" name="timestamp"/>
     </method>
@@ -28,7 +28,7 @@ var getDefault = (function() {
     return function() {
         if (!defaultClubhouse) {
             defaultClubhouse = new ClubhouseProxy(Gio.DBus.session,
-                'com.endlessm.Clubhouse', '/com/endlessm/Clubhouse');
+                'com.hack_computer.Clubhouse', '/com/hack_computer/Clubhouse');
         }
         return defaultClubhouse;
     };
