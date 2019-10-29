@@ -7,6 +7,7 @@ const _propFlags = GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT;
 
 var VALID_CURSORS = [
     'cursor-default',
+    'cursor-hack',
     'cursor-cheese',
     'cursor-ice-cream',
     'cursor-poop',
@@ -51,7 +52,7 @@ var OSCursorModel = GObject.registerClass({
             schemaId: 'org.gnome.desktop.peripherals.mouse',
         });
 
-        this._copiedCursors = [];
+        this._copiedCursors = ['cursor-hack'];
 
         this.bindSetting(ifaceSettings, 'cursor-size', 'size');
         this.bindSetting(ifaceSettings, 'cursor-theme', 'theme');
