@@ -27,15 +27,24 @@ var OSWobblyModel = GObject.registerClass({
     _init() {
         super._init();
 
-        var settings = new Gio.Settings({
-            schemaId: 'org.gnome.shell',
-            path: '/org/gnome/shell/',
-        });
+        // Compatible with EOS <= 3.7
+        if (this._getShellVersion() < '3.36') {
+            var settings = new Gio.Settings({
+                schemaId: 'org.gnome.shell',
+                path: '/org/gnome/shell/',
+            });
 
-        this.bindSetting(settings, 'wobbly-effect', 'wobblyEffect');
-        this.bindSetting(settings, 'wobbly-object-movement-range', 'wobblyObjectMovementRange');
-        this.bindSetting(settings, 'wobbly-slowdown-factor', 'wobblySlowdownFactor');
-        this.bindSetting(settings, 'wobbly-spring-friction', 'wobblySpringFriction');
-        this.bindSetting(settings, 'wobbly-spring-k', 'wobblySpringK');
+            this.bindSetting(settings, 'wobbly-effect', 'wobblyEffect');
+            this.bindSetting(settings, 'wobbly-object-movement-range', 'wobblyObjectMovementRange');
+            this.bindSetting(settings, 'wobbly-slowdown-factor', 'wobblySlowdownFactor');
+            this.bindSetting(settings, 'wobbly-spring-friction', 'wobblySpringFriction');
+            this.bindSetting(settings, 'wobbly-spring-k', 'wobblySpringK');
+        } else {
+            this.bindHackProp('WobblyEffect', 'wobblyEffect');
+            this.bindHackProp('WobblyObjectMovementRange', 'wobblyObjectMovementRange');
+            this.bindHackProp('WobblySlowdownFactor', 'wobblySlowdownFactor');
+            this.bindHackProp('WobblySpringFriction', 'wobblySpringFriction');
+            this.bindHackProp('WobblySpringK', 'wobblySpringK');
+        }
     }
 });

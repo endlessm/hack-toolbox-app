@@ -10,6 +10,8 @@
     "--socket=x11",
     "--socket=wayland",
     "--socket=session-bus",
+    "--talk-name=org.gnome.Shell",
+    "--talk-name=com.hack_computer.hack",
     "--talk-name=com.endlessm.Libanimation",
     "--own-name=com.hack_computer.HackToolbox",
     "--filesystem=xdg-run/dconf",
