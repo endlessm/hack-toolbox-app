@@ -8,18 +8,11 @@ const DATA_RESOURCE_PATH = 'resource:///com/hack_computer/HackToolbox';
 var ToyAppTopbar = GObject.registerClass({
     GTypeName: 'ToyAppTopbar',
     Template: `${DATA_RESOURCE_PATH}/hacktoolbox/topbar.ui`,
-    InternalChildren: ['close_button', 'revealer'],
+    InternalChildren: ['close_button'],
 }, class ToyAppTopbar extends Gtk.EventBox {
     _init(window) {
         super._init();
         this._window = window;
-
-        this.connect('enter-notify-event', () => {
-            this._revealer.set_reveal_child(true);
-        });
-        this.connect('leave-notify-event', () => {
-            this._revealer.set_reveal_child(false);
-        });
         this._close_button.connect('clicked', () => {
             this._window.close();
         });
