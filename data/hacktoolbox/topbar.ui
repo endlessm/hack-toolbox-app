@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.22.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <template class="ToyAppTopbar" parent="GtkEventBox">
@@ -7,73 +7,65 @@
     <property name="can_focus">False</property>
     <property name="valign">start</property>
     <child>
-      <object class="GtkRevealer" id="revealer">
+      <object class="GtkBox" id="container">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="valign">start</property>
-        <property name="transition_type">crossfade</property>
+        <property name="homogeneous">True</property>
         <child>
-          <object class="GtkBox" id="container">
+          <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="homogeneous">True</property>
+            <property name="margin_left">6</property>
+            <property name="margin_right">6</property>
+            <property name="margin_top">6</property>
+            <property name="margin_bottom">6</property>
+            <property name="spacing">6</property>
             <child>
-              <object class="GtkBox">
+              <object class="GtkButtonBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">6</property>
-                <property name="margin_right">6</property>
-                <property name="margin_top">6</property>
-                <property name="margin_bottom">6</property>
-                <property name="spacing">6</property>
+                <property name="homogeneous">True</property>
+                <property name="layout_style">expand</property>
                 <child>
-                  <object class="GtkButtonBox">
+                  <object class="GtkButton" id="close_button">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="homogeneous">True</property>
-                    <property name="layout_style">expand</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
                     <child>
-                      <object class="GtkButton" id="close_button">
+                      <object class="GtkImage">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <child>
-                          <object class="GtkImage">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="icon_name">window-close-symbolic</property>
-                          </object>
-                        </child>
-                        <style>
-                          <class name="toyapp-topbar"/>
-                        </style>
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">window-close-symbolic</property>
                       </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
+                    <style>
+                      <class name="toyapp-topbar"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="pack_type">end</property>
-                    <property name="position">0</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
+                <property name="pack_type">end</property>
                 <property name="position">0</property>
               </packing>
             </child>
-            <style>
-              <class name="toyapp-topbar"/>
-            </style>
           </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
         </child>
+        <style>
+          <class name="toyapp-topbar"/>
+        </style>
       </object>
     </child>
   </template>
