@@ -4,7 +4,7 @@ const {Gio, GObject} = imports.gi;
 
 const INTERFACE = `
 <node>
-  <interface name="com.endlessm.Sketchbook.Variables">
+  <interface name="com.hack_computer.Sketchbook.Variables">
     <property name="Title" type="s" access="readwrite"/>
     <property name="Description" type="s" access="readwrite"/>
     <property name="Instructions" type="s" access="readwrite"/>
@@ -64,8 +64,8 @@ var SketchModel = GObject.registerClass({
     async initAsync(cancellable = null) {
         const sessionBus = await Gio.DBus.get(Gio.BusType.SESSION, cancellable);
         this._proxy = await new Promise((resolve, reject) => {
-            void new VariablesProxy(sessionBus, 'com.endlessm.Sketchbook',
-                '/com/endlessm/Sketchbook',
+            void new VariablesProxy(sessionBus, 'com.hack_computer.Sketchbook',
+                '/com/hack_computer/Sketchbook',
                 (initable, error) => {
                     if (error)
                         reject(error);
