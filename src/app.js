@@ -30,7 +30,7 @@ function _toolboxClassForAppId(targetAppId) {
         return imports.OperatingSystemApp.toolbox.OSToolbox;
     case 'com.hack_computer.Sidetrack':
         return imports.RileyMaze.toolbox.RMZToolbox;
-    case 'com.endlessm.Sketchbook':
+    case 'com.hack_computer.Sketchbook':
         return imports.sketchbook.toolbox.SketchToolbox;
     default:
         return imports.hacktoolbox.hacktoolbox.DefaultHackToolbox;
