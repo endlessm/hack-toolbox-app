@@ -74,7 +74,6 @@
     <file>Fizzics/skins/8.png</file>
     <file>Fizzics/skins/9.png</file>
     <file>Fizzics/skins/10.png</file>
-    <file>HackUnlock/controlpanel.ui</file>
     <!-- FIXME: placement assets. replace with ones that don't need attribution-->
     <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/asteroid-symbolic.svg</file>
     <file preprocess="xml-stripblanks">LightSpeed/icons/16x16/actions/beam-symbolic.svg</file>

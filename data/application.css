@@ -388,36 +388,8 @@ popover.error button:hover {
     color: #babdb6;  /* slightly darker than white to indicate "not editable" */
 }
 
-/* Keep in sync with "toolbox .panel" background above */
-.HackUnlock frame.toolbox {
-    background-image: url('resource:///com/hack_computer/HackToolbox/hacktoolbox/background.png'),
-                      radial-gradient(at -47% 158%,
-                                      rgba(197, 163, 93, 0.81) 0%,
-                                      rgba(208, 95, 52, 0.80) 14%,
-                                      rgba(32, 69, 108, 0.63) 66%,
-                                      #1C3753 100%),
-                      image(rgba(14, 35, 65, 0.85));
-}
-
-.HackUnlock toolbox {
-    font-family: 'Metropolis Medium';
-}
-
-.HackUnlock frame.toolbox,
-.HackUnlock frame.toolbox border,
-.HackUnlock frame.toolbox > toolbox,
-.HackUnlock frame.toolbox > toolbox > headerbar {
-    border-radius: 8px 8px 0 0;
-}
-
-.HackUnlock frame.toolbox > toolbox > headerbar {
-    background: rgba(6, 20, 39, 0.80);
-    opacity: 0.9;
-}
-
 .framework.toolbox-surrounding-window,
 .OperatingSystemApp.toolbox-surrounding-window,
-.HackUnlock.toolbox-surrounding-window,
 .Fizzics.toolbox-surrounding-window,
 .LightSpeed.toolbox-surrounding-window,
 .Sidetrack.toolbox-surrounding-window {
@@ -497,8 +469,3 @@ button.up:disabled,
     padding: 0px;
 }
 
-/* HackUnlock topbar */
-
-.toyapp-topbar {
-  background-color: rgba(6, 20, 39, 0.80);
-}

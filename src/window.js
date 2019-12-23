@@ -3,22 +3,6 @@
 const {Gio, GLib, GObject, Gtk, HackToolbox} = imports.gi;
 const {Lockscreen} = imports.lockscreen;
 
-const DATA_RESOURCE_PATH = 'resource:///com/hack_computer/HackToolbox';
-
-var ToyAppTopbar = GObject.registerClass({
-    GTypeName: 'ToyAppTopbar',
-    Template: `${DATA_RESOURCE_PATH}/hacktoolbox/topbar.ui`,
-    InternalChildren: ['close_button'],
-}, class ToyAppTopbar extends Gtk.EventBox {
-    _init(window) {
-        super._init();
-        this._window = window;
-        this._close_button.connect('clicked', () => {
-            this._window.close();
-        });
-    }
-});
-
 var ToolboxWindow = GObject.registerClass({
     Properties: {
         'target-app-id': GObject.ParamSpec.string('target-app-id',
@@ -71,16 +55,7 @@ var ToolboxWindow = GObject.registerClass({
             isHackMode = shellSettings.get_boolean('hack-mode-enabled');
         }
 
-        let container = this._lockscreen;
-        if (isHackMode && this.target_app_id === 'com.hack_computer.HackUnlock') {
-            container = new Gtk.Overlay();
-            const topbar = new ToyAppTopbar(this);
-
-            container.add_overlay(this._lockscreen);
-            container.add_overlay(topbar);
-            container.show_all();
-        }
-        Gtk.Container.prototype.add.call(this, container);
+        this.add(this._lockscreen);
         this._lockscreen.add(this._toolbox_frame);
 
         const context = this.get_style_context();

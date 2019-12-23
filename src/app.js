@@ -22,8 +22,6 @@ function _toolboxClassForAppId(targetAppId) {
         return imports.framework.toolbox.FrameworkToolbox;
     case 'com.hack_computer.Fizzics':
         return imports.Fizzics.toolbox.FizzicsToolbox;
-    case 'com.hack_computer.HackUnlock':
-        return imports.HackUnlock.toolbox.HUToolbox;
     case 'com.hack_computer.LightSpeed':
         return imports.LightSpeed.toolbox.LSToolbox;
     case 'com.hack_computer.OperatingSystemApp':
@@ -39,8 +37,6 @@ function _toolboxClassForAppId(targetAppId) {
 
 function _toolboxIsDecorated(targetAppId) {
     switch (targetAppId) {
-    case 'com.hack_computer.HackUnlock':
-        return false;
     default:
         return true;
     }
