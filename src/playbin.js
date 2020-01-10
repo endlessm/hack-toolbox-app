@@ -1,6 +1,6 @@
 /* exported Playbin */
 
-const {Gdk, GLib, GObject, Gtk, Gst} = imports.gi;
+const {Gdk, GLib, GObject, Gtk, Gst, HackToolbox} = imports.gi;
 
 const Lock = GObject.registerClass({
     CssName: 'lock',
@@ -74,13 +74,14 @@ var Playbin = GObject.registerClass({
         Gst.init_check(null);
 
         this._playbin = Gst.parse_launch('playbin3 name=playbin video-sink=gtksink');
-        this._playbin.videoFilter = Gst.parse_bin_from_description(
+        const videoFilter = Gst.parse_bin_from_description(
             'videocrop name=videocrop ! alpha method=green',
             true
         );
-        this._videocrop = this._playbin.videoFilter.get_by_name('videocrop');
+        this._videocrop = videoFilter.get_by_name('videocrop');
+        HackToolbox.playbin_set_video_filter(this._playbin, videoFilter);
 
-        this._video_widget = this._playbin.videoSink.widget;
+        this._video_widget = HackToolbox.playbin_get_widget(this._playbin);
         this._video_widget.expand = true;
         this._video_widget.noShowAll = true;
         this._video_widget.ignoreAlpha = false;
@@ -201,7 +202,7 @@ var Playbin = GObject.registerClass({
 
         if (this._uri) {
             this._ensurePlaybin();
-            this._playbin.uri = this._uri;
+            HackToolbox.playbin_set_uri(this._playbin, this._uri);
             this._playbin.set_state(Gst.State.PAUSED);
         }
     }

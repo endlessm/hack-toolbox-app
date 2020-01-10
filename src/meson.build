@@ -28,6 +28,7 @@ sources = [
     gdbus_targets[0],
     gdbus_targets[1],
     'lib/htb-file.c',
+    'lib/htb-playbin.c',
 ]
 
 include = include_directories('.')
@@ -40,7 +41,7 @@ main_library = shared_library('@0@-@1@'.format(meson.project_name(), api_version
     sources, installed_headers, private_headers,
     c_args: ['-DG_LOG_DOMAIN="@0@"'.format(namespace_name),
              '-DCOMPILING_HACKTOOLBOX'],
-    dependencies: [gio, gio_unix, glib, gobject],
+    dependencies: [gio, gio_unix, glib, gobject, gtk],
     include_directories: include, install: true,
     soversion: api_version, version: libtool_version)
 
@@ -52,7 +53,7 @@ introspection_sources = [
 
 gnome.generate_gir(main_library, extra_args: ['--warn-all', '--warn-error'],
     identifier_prefix: 'HackToolbox', include_directories: include,
-    includes: ['Gio-2.0', 'GLib-2.0', 'GObject-2.0'],
+    includes: ['Gio-2.0', 'GLib-2.0', 'GObject-2.0', 'Gtk-3.0'],
     install: true, namespace: namespace_name, nsversion: api_version,
     sources: introspection_sources, symbol_prefix: 'hack_toolbox')
 
