@@ -18,6 +18,7 @@ gio = dependency('gio-2.0')
 gio_unix = dependency('gio-unix-2.0')
 glib = dependency('glib-2.0')
 gobject = dependency('gobject-2.0')
+gtk = dependency('gtk+-3.0')
 
 pkgdatadir = join_paths(get_option('datadir'), meson.project_name())
 gjs = find_program('gjs', 'gjs-console')

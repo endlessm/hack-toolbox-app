@@ -1,6 +1,6 @@
 /* exported Playbin */
 
-const {Gdk, GLib, GObject, Gtk, Gst} = imports.gi;
+const {Gdk, GLib, GObject, Gtk, Gst, HackToolbox} = imports.gi;
 
 const Lock = GObject.registerClass({
     CssName: 'lock',
@@ -74,13 +74,15 @@ var Playbin = GObject.registerClass({
         Gst.init_check(null);
 
         this._playbin = Gst.parse_launch('playbin3 name=playbin video-sink=gtksink');
-        this._playbin.videoFilter = Gst.parse_bin_from_description(
+        const videoFilter = Gst.parse_bin_from_description(
             'videocrop name=videocrop ! alpha method=green',
             true
         );
-        this._videocrop = this._playbin.videoFilter.get_by_name('videocrop');
+        this._videocrop = videoFilter.get_by_name('videocrop');
+        this._playbin.set_property('video-filter', videoFilter);
 
-        this._video_widget = this._playbin.videoSink.widget;
+        var videoSink = HackToolbox.property_get_object(this._playbin, 'video-sink');
+        this._video_widget = HackToolbox.property_get_object(videoSink, 'widget');
         this._video_widget.expand = true;
         this._video_widget.noShowAll = true;
         this._video_widget.ignoreAlpha = false;
@@ -108,10 +110,10 @@ var Playbin = GObject.registerClass({
         const crop_x = (this._video_width - alloc.width) / 2;
         const crop_y = (this._video_height - alloc.height) / 2;
 
-        this._videocrop.left = crop_x;
-        this._videocrop.right = crop_x;
-        this._videocrop.top = crop_y;
-        this._videocrop.bottom = crop_y;
+        this._videocrop.set_property('left', crop_x);
+        this._videocrop.set_property('right', crop_x);
+        this._videocrop.set_property('top', crop_y);
+        this._videocrop.set_property('bottom', crop_y);
     }
 
     _onStreamsSelected(msg) {
@@ -201,7 +203,7 @@ var Playbin = GObject.registerClass({
 
         if (this._uri) {
             this._ensurePlaybin();
-            this._playbin.uri = this._uri;
+            this._playbin.set_property('uri', this._uri);
             this._playbin.set_state(Gst.State.PAUSED);
         }
     }
