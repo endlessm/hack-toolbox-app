@@ -618,11 +618,16 @@ var Codeview = GObject.registerClass({
         // /original/file.js line 321 > Function:12:3. We are looking for the
         // topmost such line, since that will contain the line and column where
         // the exception was thrown in the user code (12 and 3 in this example)
+        const fixedDelta = 3;
+        // FIXME: However, for some reason, the trace shows up that the error is
+        // in the next 3 lines where the error actually is. For more details, see
+        // https://phabricator.endlessm.com/T29104#793998
+
         const userScriptStackFrame = stackFrames.find(line => (/ > Function:/).test(line));
         const [line, column] = userScriptStackFrame.split(':').slice(-2);
         this.setCompileResults([{
             start: {
-                line: line - 1,
+                line: Math.max(0, line - fixedDelta),
                 column: column - 1,
             },
             message: exception.message,
