@@ -6,6 +6,13 @@ const ByteArray = imports.byteArray;
 const SoundServer = imports.soundServer;
 void imports.utils;  // pull in promisified functions
 
+const CodeViewIface = `
+<node>
+  <interface name="com.hack_computer.HackToolbox.CodeView">
+    <property name="errors" type="b" access="read"/>
+  </interface>
+</node>`;
+
 const CODEVIEW_ERROR_EVENT = 'e98aa2b8-3f11-4a25-b8e9-b10a635df121';
 
 // Can add more, e.g. WARNING, SUGGESTION
@@ -135,6 +142,9 @@ var Codeview = GObject.registerClass({
     Properties: {
         text: GObject.ParamSpec.string('text', 'Text', 'Source code being edited',
             GObject.ParamFlags.READWRITE, ''),
+        errors: GObject.ParamSpec.boolean('errors', 'Errors',
+            'True if there are errors',
+            GObject.ParamFlags.READABLE, false),
     },
     Signals: {
         'should-compile': {
@@ -154,6 +164,7 @@ var Codeview = GObject.registerClass({
         const schemeManager = GtkSource.StyleSchemeManager.get_default();
         const styleScheme = schemeManager.get_scheme('hack');
 
+        this._dbus = null;
         this._buffer = new Buffer({language, styleScheme});
 
         const bgErr = new Gdk.RGBA();
@@ -218,6 +229,10 @@ var Codeview = GObject.registerClass({
         // This is the identifier of the user function being edited in this
         // codeview. Empty string is the regular variable assignment panel.
         this._userFunction = '';
+    }
+
+    get errors() {
+        return !!this._numErrors;
     }
 
     get text() {
@@ -556,6 +571,24 @@ var Codeview = GObject.registerClass({
         }
     }
 
+    dbusRegister(appId, id) {
+        const objPath = Gio.Application.get_default().get_dbus_object_path();
+        const winName = appId.replace(/\./gi, '_');
+        this.objectPath = `${objPath}/window/${winName}/codeview/${id}`;
+        this._dbus = Gio.DBusExportedObject.wrapJSObject(CodeViewIface, this);
+        try {
+            this._dbus.export(Gio.DBus.session, this.objectPath);
+        } catch (e) {
+            this._dbus = null;
+            logError(e);
+        }
+    }
+
+    dbusUnregister() {
+        if (this._dbus)
+            this._dbus.unexport();
+    }
+
     setCompileResults(results, userInitiated = true) {
         const [begin, bound] = this._buffer.get_bounds();
         this._buffer.remove_source_marks(begin, bound, MarkType.ERROR);
@@ -586,6 +619,13 @@ var Codeview = GObject.registerClass({
 
         if (this._numErrors !== results.length) {
             this._numErrors = results.length;
+
+            if (this._dbus) {
+                const variant = new GLib.Variant('b', !!this._numErrors);
+                this._dbus.emit_property_changed('errors', variant);
+                this.notify('errors');
+            }
+
             // Only play sounds when user compiles the code
             if (userInitiated) {
                 if (this._numErrors)
@@ -620,8 +660,8 @@ var Codeview = GObject.registerClass({
         // the exception was thrown in the user code (12 and 3 in this example)
         const fixedDelta = 3;
         // FIXME: However, for some reason, the trace shows up that the error is
-        // in the next 3 lines where the error actually is. For more details, see
-        // https://phabricator.endlessm.com/T29104#793998
+        // in the next 3 lines where the error actually is. For more details,
+        // see https://phabricator.endlessm.com/T29104#793998
 
         const userScriptStackFrame = stackFrames.find(line => (/ > Function:/).test(line));
         const [line, column] = userScriptStackFrame.split(':').slice(-2);

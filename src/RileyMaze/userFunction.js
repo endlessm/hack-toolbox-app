@@ -157,11 +157,15 @@ var RMZUserFunction = GObject.registerClass({
             GObject.ParamFlags.READWRITE, false),
     },
 }, class RMZUserFunction extends Gtk.Frame {
-    _init(userFunctionName, props = {}) {
+    _init(userFunctionName, appId = '', props = {}) {
         super._init(props);
 
         this._codeview = new Codeview();
         this._codeview.userFunction = userFunctionName;
+
+        if (appId)
+            this._codeview.dbusRegister(appId, userFunctionName);
+
         this._codeview.connect('should-compile',
             (widget, userInitiated) => this._compile(userInitiated));
 
@@ -192,6 +196,8 @@ var RMZUserFunction = GObject.registerClass({
             this._global.disconnect(this._globalNotifyHandler);
             this._globalNotifyHandler = null;
         }
+
+        this._codeview.dbusUnregister();
     }
 
     _onGlobalNotify() {
