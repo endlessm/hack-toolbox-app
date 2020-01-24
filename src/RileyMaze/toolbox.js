@@ -16,7 +16,7 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
         iconTheme.add_resource_path('/com/hack_computer/HackToolbox/RileyMaze/icons');
 
         this._global = new RMZGlobalModel();
-        this._instructTopic = new RMZUserFunction('instructions');
+        this._instructTopic = new RMZUserFunction('instructions', appId);
         this._instructTopic.bindGlobalModel(this._global);
         this.addTopic('instructions', 'Instructions', 'instructions-symbolic',
             this._instructTopic);
@@ -31,7 +31,7 @@ var RMZToolbox = GObject.registerClass(class RMZToolbox extends Toolbox {
         this.showTopic('unit');
         this.addTopicKeys('unit', 'item.key.sidetrack.2', 'lock.sidetrack.2');
 
-        this._levelTopic = new RMZUserFunction('level');
+        this._levelTopic = new RMZUserFunction('level', appId);
         this._levelTopic.bindGlobalModel(this._global);
         this.addTopic('level', 'Level', 'levels-symbolic',
             this._levelTopic, true);
