@@ -30,6 +30,7 @@ var ClippyWrapper = GObject.registerClass({
     }
 
     _setupRemote(viewName) {
+        log(`Set up Clippy proxy for '${this._appId}' at '${viewName}'.`);
         const Proxy = Gio.DBusProxy.makeProxyWrapper(ClippyIface);
         const proxy = new Proxy(Gio.DBus.session, this._appId, ClippyObjectPath);
         const [path, iface] = proxy.ExportSync(viewName);
