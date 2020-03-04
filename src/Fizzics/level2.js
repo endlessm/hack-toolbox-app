@@ -95,6 +95,24 @@ var FizzicsLevel2 = GObject.registerClass({
         return this._model[modelProp];
     }
 
+    _getValueForScopeValue(scopeProp, scopeValue) {
+        if (scopeProp === 'background')
+            return BACKGROUNDS[scopeValue];
+        if (scopeProp === 'skin')
+            return SKINS[scopeValue];
+        if (scopeProp === 'vfxBad')
+            return VFXS[scopeValue];
+        if (scopeProp === 'sfxBad')
+            return SFXS[scopeValue];
+        if (scopeProp === 'vfxGood')
+            return VFXS[scopeValue];
+        if (scopeProp === 'sfxGood')
+            return SFXS[scopeValue];
+        if (scopeProp === 'frozen')
+            return !scopeValue;
+        return scopeValue;
+    }
+
     _getValueForModel(scope, scopeProp) {
         void this;
         if (scopeProp === 'frozen')
@@ -237,14 +255,16 @@ var FizzicsLevel2 = GObject.registerClass({
             const value = this._getValueForScope(prop, modelProp);
             const type = typeof value;
             const options = this._getOptionsForScopeValue(scope, prop);
-            const baseMessage = `Unknown value "${scope[prop]}" for ${prop}`;
-            if (typeof scope[prop] !== type) {
+            const scopeValue = this._getValueForScopeValue(prop, scope[prop]);
+
+            const baseMessage = `Unknown value "${scopeValue}" for ${prop}`;
+            if (typeof scopeValue !== type) {
                 errors.push(this._errorRecordAtAssignmentLocation(
                     prefix ? `${prefix}${prop}` : prop,
                     `${baseMessage}: value must be a ${type}`,
                     value
                 ));
-            } else if (options !== null && options.indexOf(scope[prop]) === -1) {
+            } else if (options !== null && options.indexOf(scopeValue) === -1) {
                 errors.push(this._errorRecordAtAssignmentLocation(
                     prefix ? `${prefix}${prop}` : prop,
                     `${baseMessage}: value must be one of ` +
