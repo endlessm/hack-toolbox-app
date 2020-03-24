@@ -55,7 +55,7 @@ var OSModel = GObject.registerClass({
 
     _getShellVersion() {
         const proxy = this._getShellProxy();
-        shell_proxy.get_cached_property('ShellVersion');
+        const prop = proxy.get_cached_property('ShellVersion');
         return prop.unpack();
     }
 
