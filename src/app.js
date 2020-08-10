@@ -26,9 +26,9 @@ function _toolboxClassForAppId(targetAppId) {
         return imports.HackUnlock.toolbox.HUToolbox;
     case 'com.hack_computer.LightSpeed':
         return imports.LightSpeed.toolbox.LSToolbox;
-    case 'com.hack_computer.OperatingSystemApp':
+    case 'com.hack_computer.Clubhouse.OperatingSystemApp':
         return imports.OperatingSystemApp.toolbox.OSToolbox;
-    case 'com.hack_computer.Sidetrack':
+    case 'com.hack_computer.Clubhouse.Sidetrack':
         return imports.RileyMaze.toolbox.RMZToolbox;
     case 'com.hack_computer.Sketchbook':
         return imports.sketchbook.toolbox.SketchToolbox;
