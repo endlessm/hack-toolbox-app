@@ -7,8 +7,8 @@ gnome.compile_resources('com.hack_computer.HackToolbox.data',
 install_data('com.hack_computer.HackToolbox.desktop',
     install_dir: join_paths(get_option('datadir'), 'applications'))
 
-install_data('com.hack_computer.HackToolbox.appdata.xml',
-    install_dir: join_paths(get_option('datadir'), 'appdata'))
+install_data('com.hack_computer.HackToolbox.metainfo.xml',
+    install_dir: join_paths(get_option('datadir'), 'metainfo'))
 
 install_data('framework/app-descriptions/Hackdex_chapter_one.yaml',
     'framework/app-descriptions/Hackdex_chapter_two.yaml',
