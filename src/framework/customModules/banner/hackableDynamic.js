@@ -35,6 +35,7 @@ void FormattableLabel;
 
 const LOGO_URI = 'resource:///app/assets/logo';
 
+// eslint-disable-next-line no-unused-vars
 var HackableDynamic = new Module.Class({
     Name: 'Banner.HackableDynamic',
     Extends: Gtk.Grid,
