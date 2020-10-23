@@ -55,7 +55,8 @@ var OSWobblyModel = GObject.registerClass({
             });
 
             this.bindSetting(settings, 'wobbly-effect', 'wobblyEffect');
-            this.bindSetting(settings, 'wobbly-object-movement-range', 'wobblyObjectMovementRange');
+            this.bindSetting(settings,
+                'wobbly-object-movement-range', 'wobblyObjectMovementRange');
             this.bindSetting(settings, 'wobbly-slowdown-factor', 'wobblySlowdownFactor');
             this.bindSetting(settings, 'wobbly-spring-friction', 'wobblySpringFriction');
             this.bindSetting(settings, 'wobbly-spring-k', 'wobblySpringK');

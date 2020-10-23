@@ -116,6 +116,7 @@ var FizzicsLevel2 = GObject.registerClass({
     }
 
     _getValueForScopeValue(scopeProp, scopeValue) {
+        void this;
         if (scopeProp === 'background')
             return BACKGROUNDS[scopeValue];
         if (scopeProp === 'skin')
