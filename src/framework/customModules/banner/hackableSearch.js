@@ -32,6 +32,7 @@ const Utils = imports.framework.utils;
 
 const _ = Gettext.dgettext.bind(null, Config.GETTEXT_PACKAGE);
 
+// eslint-disable-next-line no-unused-vars
 var HackableSearch = new Module.Class({
     Name: 'Banner.HackableSearch',
     Extends: Gtk.Label,
