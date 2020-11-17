@@ -35,6 +35,11 @@ const ClubhouseIface = `
       <arg type="s" direction="in" name="path"/>
       <arg type="v" direction="out" name="metadata"/>
     </method>
+    <method name="recordMetric">
+      <arg type="s" direction="in" name="key"/>
+      <arg type="v" direction="in" name="payload"/>
+      <arg type="a{sv}" direction="in" name="custom"/>
+    </method>
     <property name="Visible" type="b" access="read"/>
     <property name="RunningQuest" type="s" access="read"/>
     <property name="SuggestingOpen" type="b" access="read"/>
