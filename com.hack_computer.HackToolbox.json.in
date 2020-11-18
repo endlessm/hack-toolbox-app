@@ -22,8 +22,7 @@
     "--filesystem=host",
     "--filesystem=/var/lib/flatpak/exports/share/applications:ro",
     "--filesystem=/var/lib/flatpak/exports/share/icons:ro",
-    "--env=GSETTINGS_SCHEMA_DIR=/run/host/usr/share/glib-2.0/schemas/",
-    "--system-talk-name=com.endlessm.Metrics"
+    "--env=GSETTINGS_SCHEMA_DIR=/run/host/usr/share/glib-2.0/schemas/"
   ],
   "modules": [
     {

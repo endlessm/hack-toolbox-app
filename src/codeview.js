@@ -20,8 +20,9 @@
  */
 /* exported Codeview */
 
-const {EosMetrics, Gdk, Gio, GLib, GObject, Gtk, GtkSource, HackToolbox} = imports.gi;
+const {Gdk, Gio, GLib, GObject, Gtk, GtkSource, HackToolbox} = imports.gi;
 const ByteArray = imports.byteArray;
+const Clubhouse = imports.clubhouse;
 
 const SoundServer = imports.soundServer;
 void imports.utils;  // pull in promisified functions
@@ -32,8 +33,6 @@ const CodeViewIface = `
     <property name="errors" type="b" access="read"/>
   </interface>
 </node>`;
-
-const CODEVIEW_ERROR_EVENT = 'e98aa2b8-3f11-4a25-b8e9-b10a635df121';
 
 // Can add more, e.g. WARNING, SUGGESTION
 const MarkType = {
@@ -558,33 +557,37 @@ var Codeview = GObject.registerClass({
         if (this._numErrors === 0 && !this._inMetricsEvent)
             return;
 
-        const recorder = EosMetrics.EventRecorder.get_default();
+        const clubhouse = Clubhouse.getDefault();
+
         const eventKey = new GLib.Variant('(ss)',
             [Gio.Application.get_default().applicationId, this._userFunction]);
 
         if (this._numErrors && !this._inMetricsEvent) {
-            const payload = new GLib.Variant('(sssa(suquq))', [
-                Gio.Application.get_default().applicationId,
-                this._userFunction,
-                this._buffer.text,
-                results.map(result => {
-                    const {start, message} = result;
-                    const end = result.end || start;
-                    return [message, start.line, start.column,
-                        end.line, end.column];
-                }),
-            ]);
-            recorder.record_start(CODEVIEW_ERROR_EVENT, eventKey, payload);
+            const customVariables = {
+                app: new GLib.Variant('s', Gio.Application.get_default().applicationId),
+                'user-function': new GLib.Variant('s', this._userFunction),
+                text: new GLib.Variant('s', this._buffer.text),
+                errors: new GLib.Variant('a(suquq)',
+                    results.map(result => {
+                        const {start, message} = result;
+                        const end = result.end || start;
+                        return [message, start.line, start.column,
+                            end.line, end.column];
+                    })),
+            };
+            clubhouse.recordMetricRemote('CODEVIEW_ERROR_EVENT_START',
+                eventKey, customVariables);
             this._inMetricsEvent = true;
             this._lastCompiledText = this._buffer.text;
         } else if (this._inMetricsEvent) {
             const edScript = await this._diffFromLastCompiledText();
-            const payload = new GLib.Variant('s', edScript);
+            const customVariables = {diff: new GLib.Variant('s', edScript)};
             if (this._numErrors) {
-                recorder.record_progress(CODEVIEW_ERROR_EVENT, eventKey, payload);
+                clubhouse.recordMetricRemote('CODEVIEW_ERROR_EVENT', eventKey, customVariables);
                 this._lastCompiledText = this._buffer.text;
             } else {
-                recorder.record_stop(CODEVIEW_ERROR_EVENT, eventKey, payload);
+                clubhouse.recordMetricRemote('CODEVIEW_ERROR_EVENT_STOP',
+                    eventKey, customVariables);
                 this._inMetricsEvent = false;
                 this._lastCompiledText = null;
             }

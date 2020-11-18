@@ -30,7 +30,6 @@
 pkg.initGettext();
 pkg.initFormat();
 pkg.require({
-    EosMetrics: '0',
     Gdk: '3.0',
     GdkPixbuf: '2.0',
     Gtk: '3.0',
