@@ -72,6 +72,7 @@ function appInfoForAppId(id) {
 
     // Check system data dirs, and also flatpak export dirs and host's data dir
     const dirs = GLib.get_system_data_dirs().concat([
+        `${GLib.get_home_dir()}/.local/share/flatpak/exports/share`,
         '/var/lib/flatpak/exports/share',
         '/var/endless-extra/flatpak/exports/share',
         '/run/host/usr/share',
@@ -102,6 +103,16 @@ function appInfoForAppId(id) {
         // desktop ID and there is no way to set it after construction.
         appInfo.get_id = function() {
             return `${id}.desktop`;
+        };
+        // Need to override the get_icon function here - creating the desktop
+        // file with Gio.DesktopAppInfo.new_from_keyfile does not set the
+        // underlying desktop icon and there is no way to set it after
+        // construction.
+        appInfo.get_icon = function() {
+            const iconsDir = 'icons/hicolor/128x128/apps';
+            const iconName = desktopFile.get_string('Desktop Entry', 'Icon') || id;
+            const iconPath = GLib.build_filenamev([datadir, iconsDir, `${iconName}.png`]);
+            return Gio.FileIcon.new(Gio.File.new_for_path(iconPath));
         };
 
         return appInfo;
