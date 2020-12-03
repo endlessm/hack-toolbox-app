@@ -19,6 +19,10 @@
     <file>framework/utils.js</file>
     <file>gameState.js</file>
     <file>hacktoolbox/hacktoolbox.js</file>
+    <file>extensions/toolbox.js</file>
+    <file>extensions/codeview.js</file>
+    <file>extensions/snow/controlpanel.js</file>
+    <file>extensions/snow/model.js</file>
     <file>Fizzics/controlpanel.js</file>
     <file>Fizzics/model.js</file>
     <file>Fizzics/toolbox.js</file>
