@@ -144,7 +144,7 @@ initialFlakes = ${this._model.getVariable('_initialFlakes')};
         } catch (e) {
             if (!(e instanceof SyntaxError || e instanceof ReferenceError))
                 throw e;
-            this._codeview.setCompileResultsFromException(e);
+            this._codeview.setCompileResultsFromException(e, true, -3);
             return;
         }
 
