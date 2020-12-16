@@ -151,6 +151,16 @@ initialFlakes = ${this._model.getVariable('_initialFlakes')};
         if (VALID_VARIABLES.every(prop => scope[prop] === null))
             return;
 
+        // Validate limits
+        if (!this._validateLimits(scope.initialFlakes, this._initialAdjustment, 6))
+            return;
+        if (!this._validateLimits(scope.max, this._maxAdjustment, 2))
+            return;
+        if (!this._validateLimits(scope.duration, this._durationAdjustment, 4))
+            return;
+        if (!this._validateLimits(scope.meltDuration, this._meltAdjustment, 5))
+            return;
+
         this._codeview.setCompileResults([]);
 
         if (userInitiated) {
@@ -161,5 +171,19 @@ initialFlakes = ${this._model.getVariable('_initialFlakes')};
             this._model.setVariable('_meltDuration', scope.meltDuration);
             this.fillAdjustements();
         }
+    }
+
+    _validateLimits(value, adjustement, line = 1) {
+        const upper = adjustement.get_upper();
+        const lower = adjustement.get_lower();
+        if (typeof value !== 'number' || value > upper || value < lower) {
+            this._codeview.setCompileResults([{
+                start: {line: line, column: 0},
+                message: `The value should be a number between ${lower} and ${upper}`,
+            }]);
+            return false;
+        }
+
+        return true;
     }
 });
