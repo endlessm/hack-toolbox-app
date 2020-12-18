@@ -61,7 +61,11 @@ var Toolbox = GObject.registerClass({
 
         const appInfo = Utils.appInfoForAppId(appId);
         if (appInfo) {
-            appIcon.set_from_gicon(appInfo.get_icon(), Gtk.IconSize.DIALOG);
+            const icon = appInfo.get_icon();
+            if (icon)
+                appIcon.set_from_gicon(icon, Gtk.IconSize.DIALOG);
+            else
+                appIcon.set_from_icon_name('user-available', Gtk.IconSize.DIALOG);
             appNameLabel.label = appInfo.get_name();
         } else {
             // Application not installed, this is not expected during normal

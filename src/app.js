@@ -52,6 +52,8 @@ function _toolboxClassForAppId(targetAppId) {
         return imports.RileyMaze.toolbox.RMZToolbox;
     case 'com.hack_computer.Sketchbook':
         return imports.sketchbook.toolbox.SketchToolbox;
+    case 'org.gnome.Extensions':
+        return imports.extensions.toolbox.ExtensionsToolbox;
     default:
         return imports.hacktoolbox.hacktoolbox.DefaultHackToolbox;
     }

@@ -662,10 +662,10 @@ var Codeview = GObject.registerClass({
         }
     }
 
-    setCompileResultsFromException(exception, userInitiated = true) {
+    setCompileResultsFromException(exception, userInitiated = true, delta = -1) {
         this.setCompileResults([{
             start: {
-                line: exception.lineNumber - 1,  // remove initial "with(scope)" line
+                line: exception.lineNumber + delta,  // remove initial "with(scope)" line
                 column: exception.columnNumber - 1,  // seems to be 1-based
             },
             message: exception.message,
