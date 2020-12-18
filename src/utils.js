@@ -112,7 +112,11 @@ function appInfoForAppId(id) {
             const iconsDir = 'icons/hicolor/128x128/apps';
             const iconName = desktopFile.get_string('Desktop Entry', 'Icon') || id;
             const iconPath = GLib.build_filenamev([datadir, iconsDir, `${iconName}.png`]);
-            return Gio.FileIcon.new(Gio.File.new_for_path(iconPath));
+            const file = Gio.File.new_for_path(iconPath);
+            if (!file.query_exists(null))
+                return null;
+
+            return Gio.FileIcon.new(file);
         };
 
         return appInfo;
