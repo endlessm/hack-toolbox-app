@@ -114,30 +114,38 @@ var OSModel = GObject.registerClass({
         const props = changedProps.unpack();
         Object.keys(this._hackBindProps).forEach(k => {
             const propName = this._hackBindProps[k];
-            if (k in props)
-                this[propName] = props[k];
+            if (k in props) {
+                let value = props[k].deep_unpack().unpack();
+                if (value && value !== this[propName]) {
+                    this[propName] = value;
+                }
+            }
         });
     }
 
-    bindHackProp(hackProp, property) {
+    bindHackProp(hackProp, property, type) {
         const proxy = this._getHackPropertiesProxy();
 
         this._hackBindProps[hackProp] = property;
 
         this.connect(`notify::${property}`, () => {
             let vtype = 'b';
-            switch (typeof this[property]) {
-            case 'string':
-                vtype = 's';
-                break;
-            case 'boolean':
-                vtype = 'b';
-                break;
-            case 'number':
-                vtype = 'd';
-                break;
-            default:
-                vtype = 'v';
+            if (type) {
+                vtype = type
+            } else {
+                switch (typeof this[property]) {
+                case 'string':
+                    vtype = 's';
+                    break;
+                case 'boolean':
+                    vtype = 'b';
+                    break;
+                case 'number':
+                    vtype = 'd';
+                    break;
+                default:
+                    vtype = 'v';
+                }
             }
             const value = new GLib.Variant(vtype, this[property]);
             const variant = new GLib.Variant('(ssv)', [HACK_DBUS, hackProp, value]);

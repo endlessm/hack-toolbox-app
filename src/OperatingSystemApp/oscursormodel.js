@@ -60,47 +60,11 @@ var OSCursorModel = GObject.registerClass({
 
         super._init();
 
-        var ifaceSettings = new Gio.Settings({
-            schemaId: 'org.gnome.desktop.interface',
-        });
-
-        this._touchpadSettings = new Gio.Settings({
-            schemaId: 'org.gnome.desktop.peripherals.touchpad',
-        });
-
-        this._mouseSettings = new Gio.Settings({
-            schemaId: 'org.gnome.desktop.peripherals.mouse',
-        });
-
         this._copiedCursors = ['cursor-hack'];
 
-        this.bindSetting(ifaceSettings, 'cursor-size', 'size');
-        this.bindSetting(ifaceSettings, 'cursor-theme', 'theme');
-
-        /* Manually update touchpad and mouse speed when speed changes */
-        this.connect('notify::speed', () => {
-            if (!double_equals(this.speed, this._touchpadSettings.get_double('speed')))
-                this._touchpadSettings.set_double('speed', this.speed);
-
-            if (!double_equals(this.speed, this._mouseSettings.get_double('speed')))
-                this._mouseSettings.set_double('speed', this.speed);
-        });
-
-        /* Listen to touchpad and mouse speed changes */
-        this._touchpadSettings.connect('changed', this._on_speed_changed.bind(this));
-        this._mouseSettings.connect('changed', this._on_speed_changed.bind(this));
-
-        /* Initialize speed from touchpad */
-        this.set_property('speed', this._touchpadSettings.get_double('speed'));
-    }
-
-    _on_speed_changed(settings, prop) {
-        var speed = settings.get_double('speed');
-
-        if (prop !== 'speed' || double_equals(speed, this.speed))
-            return;
-
-        this.set_property('speed', speed);
+        this.bindHackProp('CursorSize', 'size', 'i');
+        this.bindHackProp('CursorTheme', 'theme');
+        this.bindHackProp('MouseSpeed', 'speed');
     }
 
     reset() {
@@ -110,8 +74,8 @@ var OSCursorModel = GObject.registerClass({
          * up to 256px
          */
         this.theme = 'cursor-default';
-
-        this._touchpadSettings.reset('speed');
+        this.size = 24;
+        this.speed = 0;
     }
 
     get theme() {
